@@ -49,10 +49,10 @@ class NI_Api{
                     exit;
                 }
                 $SelfDataArray = self::FromatPostData(self::$data);
-                var_dump($SelfDataArray);
+                NI_Api::$data = $SelfDataArray;
                 if (array_key_exists(self::$url,  NI_Api_route::$PostRoutes)) {
                     $callback =  NI_Api_route::$PostRoutes[self::$url];
-                    call_user_func_array($callback,$SelfDataArray);
+                    call_user_func($callback);
                 }else if(array_key_exists(self::$url,  NI_Api_route::$any)){
                     $callback =  NI_Api_route::$any[self::$url];
                     call_user_func($callback);
