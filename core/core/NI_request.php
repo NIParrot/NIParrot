@@ -61,10 +61,10 @@ class NI_request{
         if (!empty($data)) {
             foreach ($data as $key => $value) {
                 if (is_array($value)) {
-                    $data[$key] = NI_security::PoolFilterus($value, $key ?? false)[1] ?? false ;
+                    $data[$key] = NI_security::PoolFilterus($value, $post_data[$key] ?? false)[1] ?? false ;
                     if ($data[$key] == false) $TempErrorCheck[] =  $key.' not valid';
                 }else{
-                    $data[$key] = NI_security::Filterus($value, $key ?? false)[1] ?? false ;
+                    $data[$key] = NI_security::Filterus($value, $post_data[$key] ?? false)[1] ?? false ;
                     if ($data[$key] == false) $TempErrorCheck[] =  $key.' not valid';
                 }
             }
