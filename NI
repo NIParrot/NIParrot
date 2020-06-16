@@ -159,7 +159,7 @@ php NI install "plugin"
     {
         echo "\e[1;33;40m reading connction data \e[0m\n";
 
-            echo "\e[1;34;40m trying to connction frist time to creat database: \e[0m \e[0;32m ${self::$dbname} \e[0m\n";
+            echo "\e[1;34;40m trying to connction frist time to creat database: \e[0m \e[0;32m ".self::$dbname." \e[0m\n";
             $conn = @ new mysqli(self::$host, self::$user, self::$pass);
             if ($conn->connect_error) {
                 echo "\e[0;31;40m DB Connection Error: \e[0m \e[0;35m $conn->connect_error \e[0m\n";
@@ -223,7 +223,7 @@ php NI install "plugin"
         $tableArray = self::getTables();
         if (empty($tableArray)) exit; 
         foreach ($tableArray as $key => $value) {
-            $createTable = $conn->prepare("CREATE TABLE IF NOT EXISTS ${self::$dbname}.{$key} ($value)COLLATE='utf8_general_ci'");
+            $createTable = $conn->prepare("CREATE TABLE IF NOT EXISTS ".self::$dbname.'.'.$key." ($value)COLLATE='utf8_general_ci'");
             $createTable->execute();
             if ($createTable) 
             {

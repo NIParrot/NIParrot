@@ -6,9 +6,9 @@ class NI_request{
         foreach ($_POST as $key => $value) {
             if (is_array($_POST[$key])) {
                 $var =implode(',', $_POST[$key]);
-                $_POST[$key] = NI_security::anti_XSS($var);
+                $_POST[$key] = NI_security::check($var);
             }else{
-                $_POST[$key] = NI_security::anti_XSS($value);
+                $_POST[$key] = NI_security::check($value);
             }
            
         }
@@ -46,10 +46,10 @@ class NI_request{
     public static function APiall(array $arr){
         foreach ($arr as $key => $value) {
             if (is_array($arr[$key])) {
-                $var =implode(',', $_POST[$key]);
-                $arr[$key] = NI_security::anti_XSS($var);
+                $var =implode(',', $arr[$key]);
+                $arr[$key] = NI_security::check($var);
             }else{
-                $arr[$key] = NI_security::anti_XSS($value);
+                $arr[$key] = NI_security::check($value);
             }
            
         }

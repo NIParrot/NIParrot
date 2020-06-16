@@ -138,9 +138,7 @@ class NI_Api{
             header("Content-Type: application/json; charset=UTF-8");
             header("Access-Control-Allow-Methods: *");
             header("Access-Control-Max-Age: 3600");
-            header("Access-Control-Expose-Headers: *");
             header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-
             $json_response = is_object(self::$response['data']) ? self::$response['data'] : json_encode(self::$response['data']);
             echo ($json_response);
             exit;
