@@ -83,7 +83,7 @@ class NI_Api{
         foreach ($arr as $temp) {
             $temparr = explode('=',$temp);
             $key = $temparr[0];
-            $value = is_numeric($temparr[1]) ? $temparr[1] : "$temparr[1]";
+            $value = is_numeric($temparr[1]) ? (int)$temparr[1] : (string)$temparr[1];
             $newarr[$key] = $value;
         }
         return $newarr;
@@ -132,20 +132,17 @@ class NI_Api{
 			503 => 'Service Unavailable',  
 			504 => 'Gateway Timeout',  
 			505 => 'HTTP Version Not Supported'
-            );
-            header('HTTP/1.1 '.self::$response['status'].' '.$http_response_code[ self::$response['status'] ]);
-            header("Access-Control-Allow-Origin: * ");
-            header("Content-Type: application/json; charset=UTF-8");
-            header("Access-Control-Allow-Methods: *");
-            header("Access-Control-Max-Age: 3600");
-            header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-            $json_response = is_object(self::$response['data']) ? self::$response['data'] : json_encode(self::$response['data']);
-            echo ($json_response);
-            exit;
+        );
+        header('HTTP/1.1 '.self::$response['status'].' '.$http_response_code[ self::$response['status'] ]);
+        header("Access-Control-Allow-Origin: * ");
+        header("Content-Type: application/json; charset=UTF-8");
+        header("Access-Control-Allow-Methods: *");
+        header("Access-Control-Max-Age: 3600");
+        header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+        $json_response = is_object(self::$response['data']) ? self::$response['data'] : json_encode(self::$response['data']);
+        echo ($json_response);
+        exit;
     }
-    
-
-
 }
 
 

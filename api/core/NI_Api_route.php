@@ -7,7 +7,7 @@ class NI_Api_route{
 
     public static function get($action, Closure $callback){
         $routepath = '/'.implode('',explode('/',explode("?", $action)[0]));
-        if (!key_exists($routepath,self::$routes))  self::$routes[$routepath] = $callback;
+        if (!key_exists($routepath,self::$routes)) self::$routes[$routepath] = $callback;
     }
 
     public static function post($action, Closure $callback){
@@ -17,7 +17,7 @@ class NI_Api_route{
 
     public static function any($action, Closure $callback){
         $routepath = '/'.implode('',explode('/',explode("?", $action)[0]));
-        if (!key_exists($routepath,self::$any))  self::$any[$routepath] = $callback;
+        if (!key_exists($routepath,self::$any)) self::$any[$routepath] = $callback;
     }
 
 }	

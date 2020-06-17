@@ -2,6 +2,7 @@
 class NI_template{
     public static $lang_code;
     public static $kit;
+    public static $bootstrap;
     public static $lang_dir;
     public static $page;
     public static $url_array = [];
@@ -10,10 +11,12 @@ class NI_template{
         switch (self::$lang_code) {
             case 'ar':
                 self::$kit = 'uikit-rtl';
+                self::$bootstrap = 'bootstrap-rtl';
                 self::$lang_dir = 'rtl';
                 break;
             default:
                 self::$kit = 'uikit';
+                self::$bootstrap = 'bootstrap';
                 self::$lang_dir = 'ltr';
                 break;
         }
@@ -62,9 +65,11 @@ class NI_template{
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta http-equiv="X-UA-Compatible" content="ie=edge">
-            <link rel="stylesheet" href="/engien/static/css/all.css">
-            <link rel="stylesheet" href="/engien/static/css/bootstrap-grid.min.css">
+            <script src="/engien/static/js/fontawesome.js"></script>
             <link rel="stylesheet" href="/engien/static/css/'.self::$kit.'.min.css">
+            <link rel="stylesheet" href="/engien/static/css/'.self::$bootstrap.'.min.css">
+            <script src="/engien/static/js/uikit.min.js"></script>
+            <script src="/engien/static/js/uikit-icons.min.js"></script>
         ';  
     }
 
@@ -110,8 +115,9 @@ class NI_template{
     public static function footer(){
         $args = func_get_args();
         echo '
-                <script src="/engien/static/js/uikit.min.js"></script>
-                <script src="/engien/static/js/uikit-icons.min.js"></script>
+                <script src="/engien/static/js/jquery.js"></script>
+                <script src="/engien/static/js/popper.min.js"></script>
+                <script src="/engien/static/js/bootstrap.min.js"></script>
             ';
         if (!empty($args)) {
             $js_lib = self::special_js($args[0]);

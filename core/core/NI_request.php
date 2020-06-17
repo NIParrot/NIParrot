@@ -6,9 +6,9 @@ class NI_request{
         foreach ($_POST as $key => $value) {
             if (is_array($_POST[$key])) {
                 $var =implode(',', $_POST[$key]);
-                $_POST[$key] = NI_security::check($var);
+                $_POST[$key] = is_numeric(NI_security::check($var)) ? (int)NI_security::check($var) : NI_security::check($var);
             }else{
-                $_POST[$key] = NI_security::check($value);
+                $_POST[$key] = is_numeric(NI_security::check($value)) ? (int)NI_security::check($value) : NI_security::check($value);
             }
            
         }
@@ -47,9 +47,9 @@ class NI_request{
         foreach ($arr as $key => $value) {
             if (is_array($arr[$key])) {
                 $var =implode(',', $arr[$key]);
-                $arr[$key] = NI_security::check($var);
+                $arr[$key] = is_numeric(NI_security::check($var)) ? (int)NI_security::check($var) : NI_security::check($var);
             }else{
-                $arr[$key] = NI_security::check($value);
+                $arr[$key] = is_numeric(NI_security::check($value)) ? (int)NI_security::check($value) : NI_security::check($value);
             }
            
         }
