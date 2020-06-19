@@ -83,7 +83,7 @@ class NI_Api{
         foreach ($arr as $temp) {
             $temparr = explode('=',$temp);
             $key = $temparr[0];
-            $value = is_numeric($temparr[1]) ? (int)$temparr[1] : (string)$temparr[1];
+            $value = is_numeric($temparr[1]) ? (int)$temparr[1] : str_replace('%40','@',(string)$temparr[1]);
             $newarr[$key] = $value;
         }
         return $newarr;
