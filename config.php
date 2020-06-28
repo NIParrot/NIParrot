@@ -39,6 +39,11 @@ define("TRACKING", false);
 define("HTTPS_PROTOCOL", false);
 define("DEV", true);
 define("USEDB", false);
+define("FrontFrame", null);
+/**
+ * FrontFrame : UIkit
+ * FrontFrame : Bootstrap
+ */
 /**
  * DataBase Connection data
  */
@@ -47,7 +52,11 @@ define("PORT", '3306');
 define("USER", 'root');
 define("PASS", '');
 define("DBNAME", 'NI Parrot');
-define("DBTYPE", 'NI Parrot');
+define("DBTYPE", null);
+/**
+ * DBTYPE : mysql
+ * DBTYPE : sqlserv
+ */
 /**
  * @var APISK and @var Appname using in Api with JWT
  */

@@ -43,9 +43,11 @@ $ErrorDocumentMessage = [
     511=>'Network Authentication Required', 
     599=>'Network connect timeout error'
 ];
+$errnum = $_SERVER["REDIRECT_STATUS"] ?? 404;
+
 $ErrorDocument = [
-    'number' => $_SERVER["REDIRECT_STATUS"] == 200 ? 404 : $_SERVER["REDIRECT_STATUS"],
-    'message' => $ErrorDocumentMessage[$_SERVER["REDIRECT_STATUS"]] ?? 'NOT Found'
+    'number' => $errnum == 200 ? 404 : $errnum,
+    'message' => $ErrorDocumentMessage[$errnum] ?? 'NOT Found'
 ];
 require_once __DIR__.DIRECTORY_SEPARATOR.'engien'.DIRECTORY_SEPARATOR.'error'.DIRECTORY_SEPARATOR.'error.php';
 ?>
