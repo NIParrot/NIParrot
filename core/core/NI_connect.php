@@ -2571,10 +2571,19 @@ class NI_connect extends ORM{
         $this->configure("mysql:host=$this->host;dbname=$this->dbname");
         $this->configure('username', $this->user);
         $this->configure('password', $this->pass);
+        $this->configure('driver_options', array(
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES => false,
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"
+        ));
     }
     public function sqlsrv(){
         $this->configure("sqlsrv:Server=$this->host;Database=$this->dbname");
         $this->configure('username', $this->user);
         $this->configure('password', $this->pass);
+    }
+    public function sqlite(){
+        $this->configure("sqlite:$this->host");
     }
 }

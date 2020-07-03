@@ -66,11 +66,30 @@ class NI_template{
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta http-equiv="X-UA-Compatible" content="ie=edge">
             <script src="/engien/static/js/fontawesome.js"></script>
-            <link rel="stylesheet" href="/engien/static/css/'.self::$kit.'.min.css">
-            <link rel="stylesheet" href="/engien/static/css/'.self::$bootstrap.'.min.css">
-            <script src="/engien/static/js/uikit.min.js"></script>
-            <script src="/engien/static/js/uikit-icons.min.js"></script>
-        ';  
+        ';
+        switch (FrontFrame) {
+            case 'UIkit':
+                echo '
+                <link rel="stylesheet" href="/engien/static/css/'.self::$kit.'.min.css">
+                <script src="/engien/static/js/uikit.min.js"></script>
+                <script src="/engien/static/js/uikit-icons.min.js"></script>
+                ';
+                break;
+            case 'Bootstrap':
+                echo '
+                <link rel="stylesheet" href="/engien/static/css/'.self::$bootstrap.'.min.css">
+                ';
+                break;
+            case 'all':
+                echo '
+                <link rel="stylesheet" href="/engien/static/css/'.self::$kit.'.min.css">
+                <link rel="stylesheet" href="/engien/static/css/'.self::$bootstrap.'.min.css">
+                <script src="/engien/static/js/uikit.min.js"></script>
+                <script src="/engien/static/js/uikit-icons.min.js"></script>
+                ';
+                break;
+            default:
+        }
     }
 
     public static function langfile(){
@@ -116,9 +135,13 @@ class NI_template{
         $args = func_get_args();
         echo '
                 <script src="/engien/static/js/jquery.js"></script>
-                <script src="/engien/static/js/popper.min.js"></script>
-                <script src="/engien/static/js/bootstrap.min.js"></script>
             ';
+        if (FrontFrame == 'Bootstrap' || FrontFrame == 'all') {
+            echo '
+            <script src="/engien/static/js/popper.min.js"></script>
+            <script src="/engien/static/js/bootstrap.min.js"></script>
+            ';
+        }
         if (!empty($args)) {
             $js_lib = self::special_js($args[0]);
             foreach ($js_lib as $js) {

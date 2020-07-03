@@ -95,6 +95,9 @@ if (USEDB == true){
         case 'sqlsrv':
             $NI_connect->sqlsrv();
             break;
+        case 'sqlite':
+            $NI_connect->sqlite();
+            break;
     }
 }
 

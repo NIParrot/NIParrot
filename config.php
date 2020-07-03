@@ -43,6 +43,7 @@ define("FrontFrame", null);
 /**
  * FrontFrame : UIkit
  * FrontFrame : Bootstrap
+ * FrontFrame : all
  */
 /**
  * DataBase Connection data
@@ -56,6 +57,7 @@ define("DBTYPE", null);
 /**
  * DBTYPE : mysql
  * DBTYPE : sqlserv
+ * DBTYPE : sqlite --> HOST = /path/to/database.db
  */
 /**
  * @var APISK and @var Appname using in Api with JWT

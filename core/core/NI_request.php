@@ -1,7 +1,19 @@
 <?php
 
 class NI_request{
-
+    public static $data = [];
+    
+    public static function FromatPostData($str){
+        $arr = explode('&',$str);
+        $newarr = [];
+        foreach ($arr as $temp) {
+            $temparr = explode('=',$temp);
+            $key = $temparr[0];
+            $value = is_numeric($temparr[1]) ? (int)$temparr[1] : str_replace('%40','@',(string)$temparr[1]);
+            $newarr[$key] = $value;
+        }
+        return $newarr;
+    }
     public static function all(){
         foreach ($_POST as $key => $value) {
             if (is_array($_POST[$key])) {

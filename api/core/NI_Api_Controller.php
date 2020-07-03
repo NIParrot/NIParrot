@@ -10,8 +10,7 @@ class NI_Api_Controller{
         $method = $class_method[1];
 
         if (!empty($Controller) && method_exists($class,$method)){ 
-            $Data_for_send = NI_Api::$data ?? null;
-            $class::$method($Data_for_send);
+            $class::$method();
         }else{
             NI_Api::$response['status'] = 404;
             NI_Api::$response['data'] =[

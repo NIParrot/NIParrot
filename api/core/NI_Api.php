@@ -61,8 +61,55 @@ class NI_Api{
                     NI_Api::$response['data'] = 'Not Found no api run on this url';
                     return NI_Api::$response;
                 }	
+                break;
+
+            case 'PUT':
+                self::$data = file_get_contents("php://input");
+
+                if (empty(self::$data)) {
+                    NI_Api::$response['status'] = 400;  // not api url
+                    NI_Api::$response['data'] = 'bad request no data';
+                    return NI_Api::$response;
+                    exit;
+                }
+                $SelfDataArray = self::FromatPostData(self::$data);
+                NI_Api::$data = $SelfDataArray;
+                if (array_key_exists(self::$url,  NI_Api_route::$PutRoutes)) {
+                    $callback =  NI_Api_route::$PutRoutes[self::$url];
+                    call_user_func($callback);
+                }else if(array_key_exists(self::$url,  NI_Api_route::$any)){
+                    $callback =  NI_Api_route::$any[self::$url];
+                    call_user_func($callback);
+                }else{
+                    NI_Api::$response['status'] = 404;  // not api url
+                    NI_Api::$response['data'] = 'Not Found no api run on this url';
+                    return NI_Api::$response;
+                }	
                 break;	
-            
+
+            case 'DELETE':
+                self::$data = file_get_contents("php://input");
+
+                if (empty(self::$data)) {
+                    NI_Api::$response['status'] = 400;  // not api url
+                    NI_Api::$response['data'] = 'bad request no data';
+                    return NI_Api::$response;
+                    exit;
+                }
+                $SelfDataArray = self::FromatPostData(self::$data);
+                NI_Api::$data = $SelfDataArray;
+                if (array_key_exists(self::$url,  NI_Api_route::$DeleteRoutes)) {
+                    $callback =  NI_Api_route::$DeleteRoutes[self::$url];
+                    call_user_func($callback);
+                }else if(array_key_exists(self::$url,  NI_Api_route::$any)){
+                    $callback =  NI_Api_route::$any[self::$url];
+                    call_user_func($callback);
+                }else{
+                    NI_Api::$response['status'] = 404;  // not api url
+                    NI_Api::$response['data'] = 'Not Found no api run on this url';
+                    return NI_Api::$response;
+                }	
+                break;	
             default:
 
             if(array_key_exists(self::$url,  NI_Api_route::$any)){

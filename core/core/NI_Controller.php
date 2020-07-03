@@ -9,7 +9,8 @@ class NI_Controller{
         $method = $class_method[1];
 
         if (!empty($Controller) && method_exists($class,$method)){ 
-            $class::$method();
+            $Data_for_send = NI_request::$data ?? null;
+            $class::$method($Data_for_send);
             exit;
         }else{
             echo 'method dose not exist';
