@@ -1,9 +1,16 @@
 <?php
 require_once 'config.php';
-define("MARKET",ROOT.SEP.'market-place' .SEP);
-define("API_MODEL",ROOT.SEP.'api' .SEP.'Controller'.SEP);
-define("JS", ROOT . SEP . 'app' . SEP . 'static' . SEP. 'js' . SEP);
-define("CSS", ROOT . SEP . 'app' . SEP . 'static' . SEP. 'css' . SEP);
+require_once 'core/core/NI_route.php';
+require_once 'api/core/NI_Api_route.php';
+require_once 'CLDB/CLI_Classes/CLI_Helper.php';
+require_once 'CLDB/CLI_Classes/CLI_Plugin.php';
+require_once 'CLDB/CLI_Classes/CLI_Routes.php';
+require_once 'CLDB/CLI_Classes/CLI_DB.php';
+require_once 'CLDB/CLI_Classes/CLI_MVC.php';
+define("MARKET", ROOT . SEP . 'market-place' . SEP);
+define("API_MODEL", ROOT . SEP . 'api' . SEP . 'Controller' . SEP);
+define("JS", ROOT . SEP . 'app' . SEP . 'static' . SEP . 'js' . SEP);
+define("CSS", ROOT . SEP . 'app' . SEP . 'static' . SEP . 'css' . SEP);
 echo "\e[0;34m
  ____  _____  _____       _       ____  ____ 
 |_   \|_   _||_   _|     / \     |_   ||   _|
@@ -13,641 +20,101 @@ echo "\e[0;34m
 |_____|\____||_____||____| |____||____||____|
 \e[0m\n";
 
-class NI_CLI{
-    public static $host ;
-    public static $port ;
-    public static $user ;
-    public static $pass ;
-    public static $dbname ;
-    public function __construct($host,$port,$user,$pass,$dbname)
+class NI_CLI
+{
+    public static function run($input = array())
     {
-        $this->host = $host;
-        $this->port = $port;
-        $this->user = $user;
-        $this->pass = $pass;
-        $this->dbname = $dbname;
-    }
-    public static function run($args=array()){
-
-        switch ($args[1]) {
-            case 'git':
-                self::git($args);
+        switch ($input[0]) {
+            case 'Git':
+                CLI_Plugin::GitPluginFrom_github($input);
+                break;
+            case 'Check':
+                CLI_Plugin::CheckPluginFiles($input);
+                break;
+            case 'Install':
+                CLI_Plugin::InstallPlugin($input);
+                break;
+            case 'GetRoutes':
+                CLI_Routes::GetRoutes();
+                break;
+            case 'GetApiRoutes':
+                CLI_Routes::GetApiRoutes();
                 break;
 
-            case 'install':
-                
-                if (self::check($args)== true) {
-                    self::install($args);
-                }
+/*             case 'ModelAddFunc':
+                self::make($input);
                 break;
-
-            case 'check':
-                self::check($args);
+            case 'ControllerAddFunc':
+                self::make($input);
                 break;
+                 */
 
             case 'make':
-                self::make($args);
-                break;
-
-            default:
-               echo '
-php NI git "username" "repo"
-php NI check "plugin"
-php NI install "plugin"
-               
-               ';
-                break;
-        }
-    }
-
-
-
-
-    ################################# git area #########################################
-
-    public static function git($args = array()){
-        if (isset($args[2]) && isset($args[3])) {
-            $user = $args[2] ;
-            $app = $args[3];
-            mkdir(MARKET.$app, 0755);
-            $url = 'https://codeload.github.com/'.$user.'/'.$app.'/zip/master';
-            $plugins = MARKET.$app.SEP.$app;
-            $plugin = MARKET.$app.SEP;
-            system(" wget $url -O $plugins"); 
-            chmod($plugins, 0777);
-            system(" unzip $plugins -d $plugin"); 
-            system(" mv market-place/$app/$app-master/* market-place/$app/"); 
-            system(" rm market-place/$app/$app"); 
-            system(" rm -r market-place/$app/$app-master"); 
-        }else{
-            echo 'command: php install git "username" "repo"';
-        }
-    }
-
-    ############################### end git area #########################################
-
-
-#=====================================#
-
-
-    ################################# make area #########################################
-
-    public static function make($args = array())
-    {
-        if (isset($args[2])) {
-
-            switch ($args[2]) {
-                case 'model':
-                    self::makeModel($args);
-                    break;
-    
-                case 'db':
-                    self::makeDB();
-                    break;
-    
-                case 'migrate':
-                    self::migrate();
-                    break;
-
-                case 'seeds':
-                    self::seeds();
-                    break;
-
-                default:
-                    break;
-            }
-        
-        }else{
-            echo 'enter model';
-        }
-    }
-
-
-    public static function seeds()
-    {
-        $conn = self::conn();
-        if (!$conn) exit;
-        $seeds = self::getSeeds();
-        if (empty($seeds)) exit;
-        foreach ($seeds as $TableName => $TableArray) {
-            if (empty($TableArray)) exit;
-            $bind = ':'.implode(',:', array_keys($TableArray));
-            foreach ($TableArray as $keyn => $valuen) {
-                $query1 = "SELECT COUNT(".$keyn.") FROM $TableName WHERE $keyn='".$valuen."'";
-                $s1 = $conn->prepare($query1);
-                $s1->execute();
-                if ($s1->fetchColumn() == 0) {
-                    $sql = "INSERT INTO $TableName (".implode(',', array_keys($TableArray)).") VALUES ($bind)";
-                    $stmt = $conn->prepare($sql);
-                    $stmtTrue = $stmt->execute(array_combine(explode(',',$bind), array_values($TableArray)));
-                    if ($stmtTrue) {
-                        echo "'$keyn' => '$valuen' done\n";
+                switch ($input[1]) {
+                    case 'DB':
+                        CLI_DB::CreateDataBase();
                         break;
-                    }else {
-                        echo "some thing went wrong in '$keyn' => '$valuen' \n";
+
+                    case 'Migrate':
+                        CLI_DB::CreateTables();
                         break;
-                    }
-                }else{
-                    echo "'$keyn' => '$valuen' alredy exist \n";
-                    break;
+
+                    case 'Seeds':
+                        CLI_DB::InsertIntoDB();
+                        break;
+
+                    case 'Relation':
+                        CLI_DB::CreateRelation($input);
+                        break;
+
+                    case 'Model':
+                        CLI_MVC::makeModel();
+                        break;
+/*
+                    case 'Route':
+                        CLI_MVC::relation($args);
+                        break;
+
+                    case 'ApiRoute':
+                        CLI_MVC::relation($args);
+                        break;
+
+                    case 'Controller':
+                        CLI_MVC::relation($args);
+                        break;
+*/
                 }
-            }
-        }
-    }
-
-    public static function makeDB()
-    {
-        echo "\e[1;33;40m reading connction data \e[0m\n";
-
-            echo "\e[1;34;40m trying to connction frist time to creat database: \e[0m \e[0;32m ".self::$dbname." \e[0m\n";
-            $conn = @ new mysqli(self::$host, self::$user, self::$pass);
-            if ($conn->connect_error) {
-                echo "\e[0;31;40m DB Connection Error: \e[0m \e[0;35m $conn->connect_error \e[0m\n";
-                exit;
-            }
-
-            $sql = "CREATE SCHEMA ".self::$dbname." CHARACTER SET utf8 COLLATE utf8_general_ci";
-            if ($conn->query($sql) === TRUE) {
-                echo "\e[1;33;40m Database:\e[0m \e[0;32m ".self::$dbname." \e[0m \e[1;33;40m Created successfully \e[0m\n";
-            } else {
-                echo "\e[0;31;40m DB Creating Error: \e[0m \e[0;35m $conn->error \e[0m\n";
-            }
-
-            if ($conn->close()) {
-                echo "\e[1;33;40m connection close successfully \e[0m\n";
-            }
-    }
-
-    public static function getTables()
-    {
-        $tableArray = __DIR__.SEP .'CLDB'.SEP.'tables.php';
-        if (is_file($tableArray)) {
-            return include $tableArray;
-        }
-        unset($tableArray);
-        return array();
-    }
-    public static function getSeeds()
-    {
-        $tableArray = __DIR__.SEP .'CLDB'.SEP.'seeds.php';
-        if (is_file($tableArray)) {
-            return include $tableArray;
-        }
-        unset($tableArray);
-        return array();
-    }
-    public static function conn()
-    {
-        echo "\e[1;34;40m trying to connction to creat tables \e[0m\n";
-        $dns = "mysql:host=".self::$host.";port=".self::$port.";dbname=".self::$dbname;
-        try {
-            $conn = new PDO($dns,self::$user,self::$pass,[
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES => false,
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"
-            ]);
-            echo "\e[1;33;40m Connect successfully \e[0m\n";
-            return $conn;
-        } catch (PDOException $e) {
-            echo "\e[0;31;40m DB Connection Error: \e[0m \n \e[0;35m";
-            print_r($e->getMessage());
-            echo " \e[0m \n";
-            exit;
-        }
-    }
-    public static function migrate()
-    {
-        $conn = self::conn();
-        if (!$conn) exit;
-        $tableArray = self::getTables();
-        if (empty($tableArray)) exit; 
-        foreach ($tableArray as $key => $value) {
-            $createTable = $conn->prepare("CREATE TABLE IF NOT EXISTS ".self::$dbname.'.'.$key." ($value)COLLATE='utf8_general_ci'");
-            $createTable->execute();
-            if ($createTable) 
-            {
-                echo "Table \e[0;33;40m $key \e[0m - \e[0;32m Created! \e[0m \n";
-            }
-            else { echo "Table $key not successfully created! \n";
-            }  
-        }
-
-    }
-
-    public static function getDBarr()
-    {
-        $database_arr = [];
-        $t_arr = self::getTables();
-
-        foreach ($t_arr as $key => $value) {
-            $temp_arr = [];
-            $Col_line_arr = explode(',',$value);
-            foreach ($Col_line_arr as $keyINcol) {
-                $Col_Name = explode(' ',$keyINcol)[4];
-                array_push($temp_arr,$Col_Name);
-            }
-            $database_arr[$key]=$temp_arr;
-        }
-        return $database_arr;
-    }
-
-    public static function makeModel($args= array())
-    {
-        $dbarr = self::getDBarr();
-        foreach ($dbarr as $table => $ColArr) {
-            $mymodel = fopen(MODEL.$table.'.php', "w");
-$code = '<?php 
-namespace model; 
-class '.$table.' { 
-    public static function create(array $data) 
-    {
-        $new = \ORM::for_table("'.$table.'")->create();
-        ';
-        $code2 = '';
-        foreach ($ColArr as $key) {
-            if ($key == 'id' || $key == 'update_at' ||$key == 'create_at') continue;
-            $code2 = $code2 . '
-            $new->'.$key.' = $data["'.$key.'"];
-            ';
-        }
-        $code = $code.$code2.'
-        if ($new->save()) {
-            return true;
-        }else{
-            return false;
-        }
-    }
-
-    public static function update() 
-    {
-
-    }
-
-    public static function delete() 
-    {
-
-    }
-
-    public static function select() 
-    {
-        return \ORM::for_table("'.$table.'")->findArray();
-    }
-    }
-    ';
-
-            fwrite($mymodel, $code);
-        }
-        
-    }
-
-    ################################# make area #########################################
-
-
-    ################################# check area #########################################
-
-
-    public static function check($args = array()){
-        if (isset($args[2])) {
-            if (!is_dir(MARKET.$args[2])) {
-                echo "plugin $args[2] dose not exist";
-                return false;
-            }else{
-                $scan = scandir(MARKET.$args[2]);
-                $design_plugin = ['api_model','controller','css','installer','js','lang','model','storage','view'];
-                $match_scan=array_intersect($scan,$design_plugin);
-                if (count($match_scan) >= 9) {
-
-                    echo "\e[1;32;40m plugin '$args[2]' \e[0m  \e[0;32;40m ready  \e[0m  \n";
-                    echo "\e[0;31;42m now will check files and folders \e[0m\n\n";
-                    $p_path = MARKET.$args[2].SEP;
-                    $dir_lang = self::check_folders_($p_path.'lang',2,['ar.php','en.php']);
-                    $dir_installer = self::check_folders_($p_path.'installer',4,
-                    ['api_route.php','route.php','seeds.php','tables.php']);
-
-                    if ($dir_lang == true && $dir_installer == true) {
-                        echo "\n \e[0;33;40m plugin compatable with NI and ready to install \e[0m\n";
-
-                        return true;
-                    }
-                }else{
-                    echo "plugin $args[2] dose not compatable with NI";
-                    return false;
-                }
-            }
-        }else{
-            echo 'command php NI check "plugin_name"';
-            return false;
-        }
-    }
-
-    public static function check_folders_($dir,int $nmatch,$stander=array()){
-        $scan = scandir($dir);
-        $match_scan=array_intersect($scan,$stander);
-        if (count($match_scan) >= $nmatch) {
-            echo "\e[1;32;40m dir $dir \e[0m  \e[0;32;40m ready  \e[0m  \n";
-            return true;
-        }else{
-            echo "\e[0;31;40m dir $dir dose not compatable with NI \e[0m\n";
-            return false;
-        }
-    }
-
-
-    ############################### end check area #########################################
-    
-#=====================================#
-
-
-    ################################# install area #########################################
-    public static function install($args = array()){
-        $instal_path = MARKET.$args[2].SEP.'installer'.SEP;
-
-        $file_api_route = self::cleanfile($instal_path.'api_route.php');
-        $app_api_route = fopen(ROOT.SEP.'api'.SEP.'routes'.SEP.'route.php', 'a+');
-        fwrite($app_api_route, $file_api_route);
-        fclose($app_api_route);
-
-        $file_route = self::cleanfile($instal_path.'route.php');
-        $app_route = fopen(ROOT.SEP.'routes'.SEP.'route.php', 'a+');
-        fwrite($app_route, $file_route);
-        fclose($app_route);
-
-        $file_seeds = self::cleanfile($instal_path.'seeds.php');
-        $app_seeds = fopen(ROOT.SEP.'CLDB'.SEP.'seeds.php', 'a+');
-        fwrite($app_seeds, $file_seeds);
-        fclose($app_seeds);
-
-        $file_tables = self::cleanfile($instal_path.'tables.php');
-        $app_tables = fopen(ROOT.SEP.'CLDB'.SEP.'tables.php', 'a+');
-        fwrite($app_tables, $file_tables);
-        fclose($app_tables);
-
-        $lang_ar = self::cleanfile(MARKET.$args[2].SEP.'lang'.SEP.'ar.php');
-        $app_lang_ar = fopen(ROOT.SEP.'engien'.SEP.'lang'.SEP.'ar.php', 'a+');
-        fwrite($app_lang_ar, $lang_ar);
-        fclose($app_lang_ar);
-
-        $lang_en = self::cleanfile(MARKET.$args[2].SEP.'lang'.SEP.'en.php');
-        $app_lang_en = fopen(ROOT.SEP.'engien'.SEP.'lang'.SEP.'en.php', 'a+');
-        fwrite($app_lang_en, $lang_en);
-        fclose($app_lang_en);
-
-
-        self::copy_files(MARKET.$args[2]);
-
-    } 
-
-    public static function cleanfile($file){
-        $file2 = file_get_contents($file);
-        $file2 = str_replace("<?php","",$file2);
-        $file2 = str_replace("?>","",$file2);
-        return $file2;
-    }
-
-    public static function copy_files($from){
-        $scan_plugin = self::scan_plugins_before_copy($from);
-        $file_list = self::Clean_SPBC($scan_plugin);
-        foreach ($file_list as $file) {
-            $current_file_path = str_replace($from,"",$file);
-            $arr = explode(SEP,$current_file_path);
-            array_shift($arr);
-            $FileType = $arr[0];
-
-            switch ($FileType) {
-                case 'view':
-                    if(!is_dir(VIEW.$arr[1])) mkdir(VIEW.$arr[1], 0755);
-                    if (count($arr)-3  <= 0) {
-                        if (!file_exists(VIEW.$arr[1].SEP.$arr[2])) {
-                            copy($file,VIEW.$arr[1].SEP.$arr[2]);
-                        }else{
-                            copy($file,VIEW.$arr[1].SEP.time().$arr[2]);
-                        }
-                    }else{
-                            $arr2 = $arr;
-                            $arr22 = $arr;
-                            array_shift($arr2);
-                            array_shift($arr22);
-                            array_pop($arr2); 
-                            $newinnerpath = VIEW.implode($arr2,SEP);
-                            $NewInnerFilePath = VIEW.implode($arr22,SEP);
-                             if(!is_dir($newinnerpath)) mkdir($newinnerpath);
-                            if (!file_exists($NewInnerFilePath)) {
-                                $NewInnerFilePath_array = explode(SEP,$NewInnerFilePath);
-                                array_pop($NewInnerFilePath_array);
-                                $n2 = implode(SEP,$NewInnerFilePath_array); 
-                                copy($file,$NewInnerFilePath);
-                            } 
-                    }
                 break;
 
-                case 'model':
-                    if(!is_dir(MODEL.$arr[1])) mkdir(MODEL.$arr[1], 0755);
-                    if (count($arr)-3  <= 0) {
-                        if (!file_exists(MODEL.$arr[1].SEP.$arr[2])) {
-                            copy($file,MODEL.$arr[1].SEP.$arr[2]);
-                        }else{
-                            copy($file,MODEL.$arr[1].SEP.time().$arr[2]);
-                        }
-                    }else{
-                            $arr2 = $arr;
-                            $arr22 = $arr;
-                            array_shift($arr2);
-                            array_shift($arr22);
-                            array_pop($arr2); 
-                            $newinnerpath = MODEL.implode($arr2,SEP);
-                            $NewInnerFilePath = MODEL.implode($arr22,SEP);
-                             if(!is_dir($newinnerpath)) mkdir($newinnerpath);
-                            if (!file_exists($NewInnerFilePath)) {
-                                $NewInnerFilePath_array = explode(SEP,$NewInnerFilePath);
-                                array_pop($NewInnerFilePath_array);
-                                $n2 = implode(SEP,$NewInnerFilePath_array); 
-                                copy($file,$NewInnerFilePath);
-                            } 
-                    }
-                break;
-
-                case 'api_model':
-                    if(!is_dir(API_MODEL.$arr[1])) mkdir(API_MODEL.$arr[1], 0755);
-                    if (count($arr)-3  <= 0) {
-                        if (!file_exists(API_MODEL.$arr[1].SEP.$arr[2])) {
-                            copy($file,API_MODEL.$arr[1].SEP.$arr[2]);
-                        }else{
-                            copy($file,API_MODEL.$arr[1].SEP.time().$arr[2]);
-                        }
-                    }else{
-                            $arr2 = $arr;
-                            $arr22 = $arr;
-                            array_shift($arr2);
-                            array_shift($arr22);
-                            array_pop($arr2); 
-                            $newinnerpath = API_MODEL.implode($arr2,SEP);
-                            $NewInnerFilePath = API_MODEL.implode($arr22,SEP);
-                             if(!is_dir($newinnerpath)) mkdir($newinnerpath);
-                            if (!file_exists($NewInnerFilePath)) {
-                                $NewInnerFilePath_array = explode(SEP,$NewInnerFilePath);
-                                array_pop($NewInnerFilePath_array);
-                                $n2 = implode(SEP,$NewInnerFilePath_array); 
-                                copy($file,$NewInnerFilePath);
-                            } 
-                    }
-                break;
-
-                case 'storage':
-                    if(!is_dir(STORAGE.$arr[1])) mkdir(STORAGE.$arr[1], 0755);
-                    if (count($arr)-3  <= 0) {
-                        if (!file_exists(STORAGE.$arr[1].SEP.$arr[2])) {
-                            copy($file,STORAGE.$arr[1].SEP.$arr[2]);
-                        }else{
-                            copy($file,STORAGE.$arr[1].SEP.time().$arr[2]);
-                        }
-                    }else{
-                            $arr2 = $arr;
-                            $arr22 = $arr;
-                            array_shift($arr2);
-                            array_shift($arr22);
-                            array_pop($arr2); 
-                            $newinnerpath = STORAGE.implode($arr2,SEP);
-                            $NewInnerFilePath = STORAGE.implode($arr22,SEP);
-                             if(!is_dir($newinnerpath)) mkdir($newinnerpath);
-                            if (!file_exists($NewInnerFilePath)) {
-                                $NewInnerFilePath_array = explode(SEP,$NewInnerFilePath);
-                                array_pop($NewInnerFilePath_array);
-                                $n2 = implode(SEP,$NewInnerFilePath_array); 
-                                copy($file,$NewInnerFilePath);
-                            } 
-                    }
-                break;
-
-                case 'controller':
-                    if(!is_dir(CONTROLLER.$arr[1])) mkdir(CONTROLLER.$arr[1], 0755);
-                    if (count($arr)-3  <= 0) {
-                        if (!file_exists(CONTROLLER.$arr[1].SEP.$arr[2])) {
-                            copy($file,CONTROLLER.$arr[1].SEP.$arr[2]);
-                        }else{
-                            copy($file,CONTROLLER.$arr[1].SEP.time().$arr[2]);
-                        }
-                    }else{
-                            $arr2 = $arr;
-                            $arr22 = $arr;
-                            array_shift($arr2);
-                            array_shift($arr22);
-                            array_pop($arr2); 
-                            $newinnerpath = CONTROLLER.implode($arr2,SEP);
-                            $NewInnerFilePath = CONTROLLER.implode($arr22,SEP);
-                             if(!is_dir($newinnerpath)) mkdir($newinnerpath);
-                            if (!file_exists($NewInnerFilePath)) {
-                                $NewInnerFilePath_array = explode(SEP,$NewInnerFilePath);
-                                array_pop($NewInnerFilePath_array);
-                                $n2 = implode(SEP,$NewInnerFilePath_array); 
-                                copy($file,$NewInnerFilePath);
-                            } 
-                    }
-                break;
-
-                case 'js':
-                    if (!isset($arr[2])) {
-                        if (!file_exists(JS.$arr[1])) {
-                            copy($file,JS.$arr[1]);
-                        }else{
-                            copy($file,JS.time().$arr[1]);
-                        }
-                    }else{
-                        if (!file_exists(JS.$arr[1])) mkdir(JS.$arr[1], 0755);
-                        if (!file_exists(JS.$arr[1].SEP.$arr[2])) {
-                            copy($file,JS.$arr[1].SEP.$arr[2]);
-                        }else{
-                            copy($file,JS.$arr[1].SEP.time().$arr[2]);
-                        }
-                    }
-                    break;
-
-                case 'css':
-                    if (!isset($arr[2])) {
-                        if (!file_exists(CSS.$arr[1])) {
-                            copy($file,CSS.$arr[1]);
-                        }else{
-                            copy($file,CSS.time().$arr[1]);
-                        }
-                    }else{
-                        if (!file_exists(CSS.$arr[1])) mkdir(CSS.$arr[1], 0755);
-                        if (!file_exists(CSS.$arr[1].SEP.$arr[2])) {
-                            copy($file,CSS.$arr[1].SEP.$arr[2]);
-                        }else{
-                            copy($file,CSS.$arr[1].SEP.time().$arr[2]);
-                        }
-                    }
-                    break;
-
-                default:
-                    break;
-            }
         }
-        
     }
-
-
-    public static function scan_plugins_before_copy($from){
-        $temp = [];
-        $dir = [];
-        $files = [];
-        
-        $arr = (is_dir($from)) ? scandir($from) : [];
-
-        $invisibleFileNames = array(".", "..", ".htaccess", ".htpasswd","installer","lang");
-
-        foreach ($arr as $key) {
-            if (!in_array($key,$invisibleFileNames)) {
-                array_push($temp,$key);
-            }
-        }
-
-        foreach ($temp as $key) {
-            if (preg_match('/(\.)([a-zA-Z0-9\s_\\.\-\(\):])+/',$key)) {
-                array_push($files,$from.SEP.$key);
-            }else{
-                array_push($dir,$key);
-            }
-        }  
-
-        foreach ($dir as $key) {       
-                $temprecarr = self::scan_plugins_before_copy($from.SEP.$key);
-                array_push($files,$temprecarr);
-        } 
-        
-        return ($files);
-    }
-
-    public static function Clean_SPBC($arr){
-        $result = [];
-    
-        foreach ($arr as $key) {
-    
-           if (is_array($key)) {
-    
-                $temp = self::Clean_SPBC($key);
-    
-                foreach ($temp as $value) {
-                    array_push($result,$value);
-                }
-            
-           }else{ 
-               array_push($result,$key);
-           }
-        }
-        return ($result);
-    }
-
-
-
-    ############################### end install area #########################################
-
-#=====================================#
-
 }
-NI_CLI::$host = HOST;
-NI_CLI::$port = PORT ;
-NI_CLI::$user = USER;
-NI_CLI::$pass = PASS;
-NI_CLI::$dbname = DBNAME;
-NI_CLI::run($argv);
+
+echo "welcome to NI_Parrot CLI Version. How Can I Help You: ";
+$handle = fopen("php://stdin", "r");
+$line = fgets($handle);
+$input = explode(" ", $line);
+$input[count($input)-1] = str_replace("\n", '', $input[count($input)-1]);
+
+if ($input[0] == '?' || $input[0] == 'help' || $input[0] == 'h' || $input[0] == '--h' || $input[0] == '-h') {
+    echo '
+php NI Git "username" "repo"
+php NI Check "plugin"
+php NI Install "plugin"
+php NI GetRoutes
+php NI GetApiRoutes
+php NI ModelAddFunc "Function" "Model"
+php NI ControllerAddFunc "Function" "Controller"
+php NI make DB
+php NI make Migrate
+php NI make Seeds
+php NI make Relation
+php NI make Relation master.id slave [update=$OPTION,delete=$OPTION]
+php NI make Model
+php NI make Route
+php NI make ApiRoute
+php NI make Controller
+';
+} else {
+    NI_CLI::run($input);
+}

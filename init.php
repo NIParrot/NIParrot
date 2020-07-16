@@ -30,7 +30,6 @@ $array_routes_files = call_app_resources(ROOT . SEP . 'routes');
 $array_model_files = call_app_resources(ROOT . SEP . 'app' . SEP . 'Model');
 
 $array_some_core_files = array(
-    ROOT . SEP . 'includes' . SEP . 'autoload.php',
     ROOT . SEP . 'core' . SEP . 'autoload.php',
     ROOT . SEP . 'core' . SEP . 'Mustache' . SEP . 'Autoloader.php',
 );

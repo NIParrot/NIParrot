@@ -26,7 +26,12 @@ define("MODEL", ROOT . SEP . 'app' . SEP . 'Model' . SEP);
 define("CONTROLLER", ROOT . SEP . 'app' . SEP . 'Controller' . SEP);
 define("STORAGE", ROOT . SEP . 'storage' . SEP);
 define("Tracktable", ROOT . SEP . 'engien' . SEP . 'Tracktable.csv');
-
+define("RelationFile", ROOT . SEP . 'CLDB' . SEP . 'relation.txt');
+/**
+ * relation file syntax
+ * Parent_Table.Parent_Column child_Table [update=@var,delete=@var];
+ * @var = ['NO ACTION','CASCADE','SET NULL','SET DEFAULT']
+ */
 
 /**
  * @var TRACKING = True or False, if you want using @method 'Track site visits'
