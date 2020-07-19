@@ -76,7 +76,7 @@ class CLI_Helper
 
     public static function ReadCLITableFile()
     {
-        $tableArray = ROOT . SEP . 'CLDB' . SEP . 'tables.php';
+        $tableArray = ROOT . SEP . 'CLI' . SEP . 'tables.php';
         if (is_file($tableArray)) {
             return include $tableArray;
         }
@@ -86,7 +86,7 @@ class CLI_Helper
 
     public static function ReadCLISeedssFile()
     {
-        $tableArray = ROOT . SEP . 'CLDB' . SEP . 'seeds.php';
+        $tableArray = ROOT . SEP . 'CLI' . SEP . 'seeds.php';
         if (is_file($tableArray)) {
             return include $tableArray;
         }

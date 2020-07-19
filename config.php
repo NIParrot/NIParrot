@@ -26,7 +26,7 @@ define("MODEL", ROOT . SEP . 'app' . SEP . 'Model' . SEP);
 define("CONTROLLER", ROOT . SEP . 'app' . SEP . 'Controller' . SEP);
 define("STORAGE", ROOT . SEP . 'storage' . SEP);
 define("Tracktable", ROOT . SEP . 'engien' . SEP . 'Tracktable.csv');
-define("RelationFile", ROOT . SEP . 'CLDB' . SEP . 'relation.txt');
+define("RelationFile", ROOT . SEP . 'CLI' . SEP . 'relation.txt');
 /**
  * relation file syntax
  * Parent_Table.Parent_Column child_Table [update=@var,delete=@var];
@@ -44,6 +44,7 @@ define("TRACKING", false);
 define("HTTPS_PROTOCOL", false);
 define("DEV", true);
 define("USEDB", false);
+define("DeleteFlag", true);
 define("FrontFrame", null);
 /**
  * FrontFrame : UIkit

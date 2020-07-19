@@ -5,6 +5,34 @@ class CLI_MVC
     {
         $dbarr = CLI_Helper::GetDBColumnArray();
         foreach ($dbarr as $table => $ColArr) {
+            if (DeleteFlag == true) {
+                $deleteFunc = '
+                public static function delete(int $id) 
+                {
+                    $delete = \ORM::for_table("' . $table . '")->find_one([$id]);
+                    if(is_bool($delete)) return false ;
+                    $delete->set("delete_flag",1);
+                    if ($delete->save()) {
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
+                ';
+            }else{
+                $deleteFunc = '
+                public static function delete(int $id) 
+                {
+                    $delete = \ORM::for_table("' . $table . '")->find_one([$id]);
+                    if(is_bool($delete)) return false ;
+                    if ($delete->delete()) {
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
+                ';
+            }
             $new_model = MODEL . $table . '.php';
             if (!is_file($new_model)) {
                 $mymodel = fopen($new_model, "w");
@@ -18,7 +46,7 @@ class ' . $table . ' {
         ';
                 $code2 = '';
                 foreach ($ColArr as $key) {
-                    if ($key == 'id' || $key == 'update_at' || $key == 'create_at') continue;
+                    if ($key == 'id' || $key == 'update_at' || $key == 'create_at' || empty($key)) continue;
                     $code2 = $code2 . '
             $new->' . $key . ' = $data["' . $key . '"];
             ';
@@ -40,19 +68,7 @@ class ' . $table . ' {
             if ($key == "id") continue;
             $update->set($key,$value);
         }
-        if($object->save()){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
-    public static function delete(int $id) 
-    {
-        $delete = \ORM::for_table("' . $table . '")->find_one([$id]);
-        if(is_bool($delete)) return false ;
-        $delete->set("delete_flag",1);
-        if ($delete->save()) {
+        if($update->save()){
             return true;
         }else{
             return false;
@@ -63,8 +79,16 @@ class ' . $table . ' {
     {
         return \ORM::for_table("' . $table . '")->findArray();
     }
+
+    public static function find(array $data) 
+    {
+        return \ORM::for_table("' . $table . '")->find_one([$data["id"]]);
+    }
+    '.$deleteFunc.'
 }
 ';
+
+
 
                 fwrite($mymodel, $code);
                 echo "\e[1;33;40m Model $table create successfully \e[0m\n";

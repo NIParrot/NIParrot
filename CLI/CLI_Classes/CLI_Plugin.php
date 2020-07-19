@@ -76,12 +76,12 @@ class CLI_Plugin
         fclose($app_route);
 
         $file_seeds = CLI_Helper::GetCodeFromPhpFile($ServiceDir . 'seeds.php');
-        $app_seeds = fopen(ROOT . SEP . 'CLDB' . SEP . 'seeds.php', 'a+');
+        $app_seeds = fopen(ROOT . SEP . 'CLI' . SEP . 'seeds.php', 'a+');
         fwrite($app_seeds, $file_seeds);
         fclose($app_seeds);
 
         $file_tables = CLI_Helper::GetCodeFromPhpFile($ServiceDir . 'tables.php');
-        $app_tables = fopen(ROOT . SEP . 'CLDB' . SEP . 'tables.php', 'a+');
+        $app_tables = fopen(ROOT . SEP . 'CLI' . SEP . 'tables.php', 'a+');
         fwrite($app_tables, $file_tables);
         fclose($app_tables);
 

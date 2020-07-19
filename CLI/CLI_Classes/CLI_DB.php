@@ -3,7 +3,7 @@ class CLI_DB
 {
     public static function MysqlConn()
     {
-        $conn = @new mysqli(HOST, PORT, DBNAME);
+        $conn = @new mysqli(HOST, USER, PASS);
         if ($conn->connect_error) {
             echo "\e[0;31;40m DB Connection Error: \e[0m \e[0;35m $conn->connect_error \e[0m\n";
             exit;
@@ -57,15 +57,26 @@ class CLI_DB
         if (!$conn) exit;
         $tableArray = CLI_Helper::ReadCLITableFile();
         if (empty($tableArray)) exit;
-        foreach ($tableArray as $key => $value) {
-            $value = $value . '
+        if (DeleteFlag == true) {
+        $DefaultColumn = '
+        create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        update_at TIMESTAMP DEFAULT 0 ON UPDATE CURRENT_TIMESTAMP,
+        delete_flag INT( 1 ) DEFAULT 0 NOT NULL,
+        create_from VARCHAR( 255 ) NULL,
+        delete_from VARCHAR( 255 ) NULL,
+        update_from VARCHAR( 255 ) NULL
+        ';
+        }else{
+            $DefaultColumn = '
             create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             update_at TIMESTAMP DEFAULT 0 ON UPDATE CURRENT_TIMESTAMP,
-            delete_flag INT( 1 ) NOT NULL,
             create_from VARCHAR( 255 ) NULL,
             delete_from VARCHAR( 255 ) NULL,
             update_from VARCHAR( 255 ) NULL
             ';
+        }
+        foreach ($tableArray as $key => $value) {
+            $value = $value . $DefaultColumn;
             $createTable = $conn->prepare("CREATE TABLE IF NOT EXISTS " . DBNAME . '.' . $key . " ($value)COLLATE='utf8_general_ci'");
             $createTable->execute();
             if ($createTable) {

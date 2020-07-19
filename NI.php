@@ -2,11 +2,11 @@
 require_once 'config.php';
 require_once 'core/core/NI_route.php';
 require_once 'api/core/NI_Api_route.php';
-require_once 'CLDB/CLI_Classes/CLI_Helper.php';
-require_once 'CLDB/CLI_Classes/CLI_Plugin.php';
-require_once 'CLDB/CLI_Classes/CLI_Routes.php';
-require_once 'CLDB/CLI_Classes/CLI_DB.php';
-require_once 'CLDB/CLI_Classes/CLI_MVC.php';
+require_once 'CLI/CLI_Classes/CLI_Helper.php';
+require_once 'CLI/CLI_Classes/CLI_Plugin.php';
+require_once 'CLI/CLI_Classes/CLI_Routes.php';
+require_once 'CLI/CLI_Classes/CLI_DB.php';
+require_once 'CLI/CLI_Classes/CLI_MVC.php';
 define("MARKET", ROOT . SEP . 'market-place' . SEP);
 define("API_MODEL", ROOT . SEP . 'api' . SEP . 'Controller' . SEP);
 define("JS", ROOT . SEP . 'app' . SEP . 'static' . SEP . 'js' . SEP);
@@ -83,7 +83,14 @@ class NI_CLI
                         CLI_MVC::relation($args);
                         break;
 */
+                    default:
+                    echo "command dose not correct use --h to get help";
+                    break;
                 }
+                break;
+
+                default:
+                    echo "command dose not correct use --h to get help";
                 break;
 
         }
