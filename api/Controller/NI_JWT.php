@@ -5,25 +5,20 @@ class NI_JWT{
         try {
             $decoded = JWT::decode($jwt, APISK, array('HS256'));
             $data =json_decode(json_encode($decoded->data), true);
-             $check_user = ORM::for_table('users')
-            ->where_any_is(
-                    array(
-                        array('mail' => $data['mail'], 'password' => $data['password']),
-                        array('phone' => $data['mail'], 'password' => $data['password'])
-                    )
-                )
-            ->find_array(); 
-            if (!empty($check_user)) {
-                return (array(
-                    true,
-                    $check_user[0]['id']
-                ));
-            }else{
+           /*  $user = model\users::check($data);
+            if (empty($user)) {
                 return (array(
                     false,
-                     "error" => 'error on token'
+                     "error" => 'error on token',
+                     "data" => $data
                  ));
-            }
+            }else{
+                return (array(
+                    true,
+                    $user->id,
+                    'user'
+                ));
+            } */
         }catch (Exception $e){             
             return (array(
                false,
