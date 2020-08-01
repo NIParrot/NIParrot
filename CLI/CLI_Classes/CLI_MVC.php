@@ -19,7 +19,7 @@ class CLI_MVC
                     }
                 }
                 ';
-            }else{
+            } else {
                 $deleteFunc = '
                 public static function delete(int $id) 
                 {
@@ -46,7 +46,9 @@ class ' . $table . ' {
         ';
                 $code2 = '';
                 foreach ($ColArr as $key) {
-                    if ($key == 'id' || $key == 'update_at' || $key == 'create_at' || empty($key)) continue;
+                    if ($key == 'id' || $key == 'update_at' || $key == 'create_at' || empty($key)) {
+                        continue;
+                    }
                     $code2 = $code2 . '
             $new->' . $key . ' = $data["' . $key . '"];
             ';
@@ -95,6 +97,167 @@ class ' . $table . ' {
             } else {
                 echo "\e[1;33;40m Model $table already exists \e[0m\n";
             }
+        }
+    }
+
+    public static function ModelAuth(array $input)
+    {
+        $ModelName = $input[2];
+        $ModelPath = MODEL.$input[2].'.php';
+        $code = '
+        public static function check(array $data)
+        {
+
+            $check = \ORM::for_table("'.$ModelName.'")->where(
+                array(
+                ';
+        for ($i=3; $i <= count($input)-1; $i++) {
+            $coma = ($i == count($input)-1) ? '' : ',';
+            $code = $code . "'$input[$i]' => \$data['user'] $coma" ;
+        }
+
+        $code =$code .'
+                )
+                    )->find_one();
+
+                return $check;
+
+            }
+        ';
+        if (file_exists($ModelPath)) {
+            $contents = file_get_contents($ModelPath);
+            $deletelastbractet = rtrim($contents, '}');
+            $fp = fopen($ModelPath, 'w');
+            fwrite($fp, $deletelastbractet);
+            fclose($fp);
+            $fp = fopen($ModelPath, 'a');
+            fwrite($fp, $code);
+            fwrite($fp, '}');
+            fclose($fp);
+        } else {
+            echo 'model dose not exist';
+        }
+    }
+
+
+    public static function ModelUniqe(array $input)
+    {
+        $ModelName = $input[2];
+        $ModelPath = MODEL.$input[2].'.php';
+        $code = '
+        public static function uniqe(array $data)
+        {
+
+            $check = \ORM::for_table("'.$ModelName.'")->where_any_is(
+                array(
+                ';
+        for ($i=3; $i <= count($input)-1; $i++) {
+            $coma = ($i == count($input)-1) ? '' : ',';
+            $code = $code . 'array("'.$input[$i].'" => $data["'.$input[$i].'"])'.$coma ;
+        }
+
+        $code =$code .'
+                )
+                    )->where_not_equal("id",$data["id"])->find_one();
+
+                if (empty($check)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        ';
+        if (file_exists($ModelPath)) {
+            $contents = file_get_contents($ModelPath);
+            $deletelastbractet = rtrim($contents, '}');
+            $fp = fopen($ModelPath, 'w');
+            fwrite($fp, $deletelastbractet);
+            fclose($fp);
+            $fp = fopen($ModelPath, 'a');
+            fwrite($fp, $code);
+            fwrite($fp, '}');
+            fclose($fp);
+        } else {
+            echo 'model dose not exist';
+        }
+    }
+    public static function ModelUniqeRegister(array $input)
+    {
+        $ModelName = $input[2];
+        $ModelPath = MODEL.$input[2].'.php';
+        $code = '
+        public static function uniqregister(array $data)
+        {
+            $check = \ORM::for_table("'.$ModelName.'")->where_any_is(
+                array(
+                ';
+        for ($i=3; $i <= count($input)-1; $i++) {
+            $coma = ($i == count($input)) ? '' : ',';
+            $code = $code . 'array("'.$input[$i].'" => $data["'.$input[$i].'"])'.$coma ;
+        }
+        $code =$code .'
+                )
+                )->find_one();
+
+            if (empty($check)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        ';
+        if (file_exists($ModelPath)) {
+            $contents = file_get_contents($ModelPath);
+            $deletelastbractet = rtrim($contents, '}');
+            $fp = fopen($ModelPath, 'w');
+            fwrite($fp, $deletelastbractet);
+            fclose($fp);
+            $fp = fopen($ModelPath, 'a');
+            fwrite($fp, $code);
+            fwrite($fp, '}');
+            fclose($fp);
+        } else {
+            echo 'model dose not exist';
+        }
+    }
+
+    public static function ModelMultAuth(array $input)
+    {
+        $ModelName = $input[2];
+        $ModelPath = MODEL.$input[2].'.php';
+        $code = '
+        public static function uniqregister(array $data)
+        {
+            $check = \ORM::for_table("'.$ModelName.'")->where_any_is(
+                array(
+                ';
+        for ($i=3; $i <= count($input)-1; $i++) {
+            $coma = ($i == count($input)) ? '' : ',';
+            $code = $code . 'array("'.$input[$i].'" => $data["'.$input[$i].'"], "password" => $data["password"])'.$coma ;
+        }
+        $code =$code .'
+                )
+                )->find_one();
+
+            if (empty($check)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        ';
+        if (file_exists($ModelPath)) {
+            $contents = file_get_contents($ModelPath);
+            $deletelastbractet = rtrim($contents, '}');
+            $fp = fopen($ModelPath, 'w');
+            fwrite($fp, $deletelastbractet);
+            fclose($fp);
+            $fp = fopen($ModelPath, 'a');
+            fwrite($fp, $code);
+            fwrite($fp, '}');
+            fclose($fp);
+        } else {
+            echo 'model dose not exist';
         }
     }
 }

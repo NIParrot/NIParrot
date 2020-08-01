@@ -40,9 +40,13 @@ class NI_CLI
             case 'GetApiRoutes':
                 CLI_Routes::GetApiRoutes();
                 break;
-
-/*             case 'ModelAddFunc':
-                self::make($input);
+            
+            case 'ModelAddFunc':
+                $tttmethod = $input[1];
+                $tttclass = 'CLI_MVC';
+                $tttclass::$tttmethod($input);
+                break;
+/*              
                 break;
             case 'ControllerAddFunc':
                 self::make($input);

@@ -38,11 +38,14 @@ $array_some_core_classes = array(
     ROOT . SEP . 'core' . SEP . 'SingelLibs' . SEP,
     ROOT . SEP . 'engien' . SEP . 'template' . SEP
 );
-$all_app_files = array_merge($array_controller_files, $array_some_core_files, $array_model_files, $array_routes_files);
+$all_app_files = [...$array_controller_files, ...$array_some_core_files, ...$array_model_files, ...$array_routes_files];
 
 /**
  * 2 Array Map for Calling everything on App
  */
+// call vendor library
+require_once 'vendor' . SEP . 'autoload.php';
+
 array_map(static function ($path) {
     array_map(static function ($filename) {
         require_once $filename;
@@ -53,8 +56,6 @@ array_map(static function ($file) {
     if (file_exists($file)) require_once $file;
 }, $all_app_files);
 
-// call vendor library
-require_once 'vendor' . SEP . 'autoload.php';
 
 /**
  * set default lang 
