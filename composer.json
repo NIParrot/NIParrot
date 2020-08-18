@@ -3,6 +3,7 @@
         "twig/twig": "^3.0",
         "delight-im/file-upload": "^1.2",
         "phpmailer/phpmailer": "^6.1.6",
-        "peppeocchi/php-cron-scheduler": "^3.0"
+        "peppeocchi/php-cron-scheduler": "^3.0",
+        "phpunit/phpunit": "^9"
     }
 }

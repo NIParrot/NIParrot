@@ -1,7 +1,7 @@
 <?php
 /**
  * @method call_app_resources take @param RootDirectory $rootDir to read All inner Files
- * then @return allData  As array Have All Files Path
+ * then @return allData  As array Have All PHP Files Path
  */
 function call_app_resources(string $rootDir, $allData = array()) : array
 {
@@ -11,7 +11,9 @@ function call_app_resources(string $rootDir, $allData = array()) : array
         $path = $rootDir . SEP . $content;
         if (!in_array($content, $invisibleFileNames)) {
             if (is_file($path) && is_readable($path)) {
-                $allData[] = $path;
+                if (!empty(pathinfo($path)) && isset(pathinfo($path)['extension']) && pathinfo($path)['extension'] == 'php') {
+                    $allData[] = $path;
+                }
             } elseif (is_dir($path) && is_readable($path)) {
                 $allData = call_app_resources($path, $allData);
             }
@@ -20,11 +22,7 @@ function call_app_resources(string $rootDir, $allData = array()) : array
     return $allData;
 }
 
-/**
- * @var all_app_files =  [@var array_model_files + @var array_controller_files + @var array_some_core_files + @var array_routes_files]
- * @var all_app_files is array have all app files path
- * @var array_some_core_classes have other classes path
- */
+
 $array_controller_files = call_app_resources(ROOT . SEP . 'app' . SEP . 'Controller');
 $array_routes_files = call_app_resources(ROOT . SEP . 'routes');
 $array_model_files = call_app_resources(ROOT . SEP . 'app' . SEP . 'Model');
@@ -53,14 +51,18 @@ array_map(static function ($path) {
 }, $array_some_core_classes);
 
 array_map(static function ($file) {
-    if (file_exists($file)) require_once $file;
+    if (file_exists($file)) {
+        require_once $file;
+    }
 }, $all_app_files);
 
 
 /**
- * set default lang 
+ * set default lang
  */
-if (!isset($_SESSION['lang'])) $_SESSION['lang'] = 'en';
+if (!isset($_SESSION['lang'])) {
+    $_SESSION['lang'] = 'en';
+}
 if (isset($_POST['changlang'])) {
     if (isset($_SESSION['lang']) && $_SESSION['lang'] == "ar") {
         $_SESSION['lang'] = "en";
@@ -81,11 +83,11 @@ if (DEV == true) {
     $NI_whoops->register();
     $NI_bench = new Ubench;
 }
-//set main path for @class View 
+//set main path for @class View
 NI_view::$path = VIEW;
 
 //calling DB connection
-if (USEDB == true){
+if (USEDB == true) {
     $NI_connect = new NI_connect(HOST, PORT, DBNAME, USER, PASS);
     switch (DBTYPE) {
         case 'mysql':
@@ -101,15 +103,14 @@ if (USEDB == true){
     }
 }
 
-// using Mustache template 
+// using Mustache template
 Mustache_Autoloader::register();
 $NI_Mustache = new Mustache_Engine;
 /**
- * using @method TRACKING 
+ * using @method TRACKING
  * it's write users data on Tracktable files
  */
 use SimpleExcel\SimpleExcel;
-
 
 if (TRACKING == true) {
     $UserInfo = new UserInfo();
@@ -117,7 +118,7 @@ if (TRACKING == true) {
     if (file_exists(Tracktable)) {
         $excel->parser->loadFile(Tracktable);
         if (strpos($UserInfo->getCurrentURL(), 'dashboard') === false) {
-            $excel->writer->addRow(array($UserInfo->getIP(), $UserInfo->getReverseDNS(), $UserInfo->getCurrentURL(), (empty(explode('.',$UserInfo->getRefererURL())[1]) ? "other" : explode('.',$UserInfo->getRefererURL())[1]) , $UserInfo->getDevice(), $UserInfo->getOS(), $UserInfo->getBrowser(), $UserInfo->getLanguage(), empty($UserInfo->getCountryCode()) ? 'local' : $UserInfo->getCountryCode(), $UserInfo->getCountryName(), $UserInfo->getRegionCode(), $UserInfo->getRegionName(), $UserInfo->getCity(), $UserInfo->getZipcode(), $UserInfo->getLatitude(), $UserInfo->getLongitude(), $UserInfo->isProxy(), date("F d, Y h:i:s A")));
+            $excel->writer->addRow(array($UserInfo->getIP(), $UserInfo->getReverseDNS(), $UserInfo->getCurrentURL(), (empty(explode('.', $UserInfo->getRefererURL())[1]) ? "other" : explode('.', $UserInfo->getRefererURL())[1]) , $UserInfo->getDevice(), $UserInfo->getOS(), $UserInfo->getBrowser(), $UserInfo->getLanguage(), empty($UserInfo->getCountryCode()) ? 'local' : $UserInfo->getCountryCode(), $UserInfo->getCountryName(), $UserInfo->getRegionCode(), $UserInfo->getRegionName(), $UserInfo->getCity(), $UserInfo->getZipcode(), $UserInfo->getLatitude(), $UserInfo->getLongitude(), $UserInfo->isProxy(), date("F d, Y h:i:s A")));
             $excel->writer->saveFile('Tracktable', Tracktable);
         }
     } else {

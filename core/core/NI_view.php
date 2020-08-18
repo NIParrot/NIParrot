@@ -9,7 +9,7 @@ class NI_view
             'ErrorType' => $_COOKIE['ErrorType']??null,
             'ErrorMsg'=> $_COOKIE['ErrorMsg']??null
         ];
-        self::TwigComponents(['notifications'],$error);
+        self::TwigComponents(['notifications'], $error);
     }
     public static function V_php()
     {
@@ -32,7 +32,6 @@ class NI_view
             require_once ROOT.SEP.'ServerErrorHandeler.php';
             exit;
         }
-        self::notifications();
     }
 
     public static function Mustache()
@@ -44,12 +43,10 @@ class NI_view
             $templats = file_get_contents($page);
             echo $NI_Mustache->render($templats, $view_args[1]);
             self::notifications();
-
         } else {
             require_once ROOT.SEP.'ServerErrorHandeler.php';
             exit;
         }
-
     }
 
     public static function Twig()
@@ -58,7 +55,6 @@ class NI_view
         $page = self::$path . implode(SEP, $view_args[0]) . '.html';
 
         if (file_exists($page)) {
-
             $css_arr = $view_args[1]['css_arr'];
             $header_js_arr = $view_args[1]['header_js_arr'];
             $footer_js_arr = $view_args[1]['footer_js_arr'];
@@ -82,7 +78,6 @@ class NI_view
 
             NI_template::footer($footer_js_arr);
             self::notifications();
-
         } else {
             require_once ROOT.SEP.'ServerErrorHandeler.php';
             exit;
@@ -95,7 +90,6 @@ class NI_view
         $page = self::$path . implode(SEP, $view_args[0]) . '.html';
 
         if (file_exists($page)) {
-
             $arr_for_twig = $view_args[0];
             $file_for_twig = array_pop($arr_for_twig);
             $file_for_twig = $file_for_twig . '.html';
@@ -108,7 +102,6 @@ class NI_view
 
             $twig = new \Twig\Environment(new \Twig\Loader\FilesystemLoader($path_for_twig));
             echo $twig->render($file_for_twig, $render_data);
-
         } else {
             require_once ROOT.SEP.'ServerErrorHandeler.php';
             exit;
