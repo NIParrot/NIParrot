@@ -1,7 +1,6 @@
 <?php
 class NI_Api
 {
-
     public static $url;
     public static $method;
     public static $data = [];
@@ -25,14 +24,12 @@ class NI_Api
 
     public static function HandelMethod()
     {
-
         switch (self::$method) {
             case 'GET':
-                if (array_key_exists(self::$url,  NI_Api_route::$routes)) {
-
+                if (array_key_exists(self::$url, NI_Api_route::$routes)) {
                     $callback =  NI_Api_route::$routes[self::$url];
                     call_user_func($callback);
-                } else if (array_key_exists(self::$url,  NI_Api_route::$any)) {
+                } elseif (array_key_exists(self::$url, NI_Api_route::$any)) {
                     $callback =  NI_Api_route::$any[self::$url];
                     call_user_func($callback);
                 } else {
@@ -49,10 +46,10 @@ class NI_Api
                     return NI_Api::$response;
                     exit;
                 }
-                if (array_key_exists(self::$url,  NI_Api_route::$PostRoutes)) {
+                if (array_key_exists(self::$url, NI_Api_route::$PostRoutes)) {
                     $callback =  NI_Api_route::$PostRoutes[self::$url];
                     call_user_func($callback);
-                } else if (array_key_exists(self::$url,  NI_Api_route::$any)) {
+                } elseif (array_key_exists(self::$url, NI_Api_route::$any)) {
                     $callback =  NI_Api_route::$any[self::$url];
                     call_user_func($callback);
                 } else {
@@ -69,10 +66,10 @@ class NI_Api
                     return NI_Api::$response;
                     exit;
                 }
-                if (array_key_exists(self::$url,  NI_Api_route::$PutRoutes)) {
+                if (array_key_exists(self::$url, NI_Api_route::$PutRoutes)) {
                     $callback =  NI_Api_route::$PutRoutes[self::$url];
                     call_user_func($callback);
-                } else if (array_key_exists(self::$url,  NI_Api_route::$any)) {
+                } elseif (array_key_exists(self::$url, NI_Api_route::$any)) {
                     $callback =  NI_Api_route::$any[self::$url];
                     call_user_func($callback);
                 } else {
@@ -89,10 +86,10 @@ class NI_Api
                     return NI_Api::$response;
                     exit;
                 }
-                if (array_key_exists(self::$url,  NI_Api_route::$DeleteRoutes)) {
+                if (array_key_exists(self::$url, NI_Api_route::$DeleteRoutes)) {
                     $callback =  NI_Api_route::$DeleteRoutes[self::$url];
                     call_user_func($callback);
-                } else if (array_key_exists(self::$url,  NI_Api_route::$any)) {
+                } elseif (array_key_exists(self::$url, NI_Api_route::$any)) {
                     $callback =  NI_Api_route::$any[self::$url];
                     call_user_func($callback);
                 } else {
@@ -103,7 +100,7 @@ class NI_Api
                 break;
             default:
 
-                if (array_key_exists(self::$url,  NI_Api_route::$any)) {
+                if (array_key_exists(self::$url, NI_Api_route::$any)) {
                     $callback =  NI_Api_route::$any[self::$url];
                     call_user_func($callback);
                 } else {
@@ -116,7 +113,9 @@ class NI_Api
     }
     public static function CatchAndHandelRequestData()
     {
-        if (!isset($_SERVER["CONTENT_TYPE"])) return null;
+        if (!isset($_SERVER["CONTENT_TYPE"])) {
+            return null;
+        }
         if (strpos($_SERVER["CONTENT_TYPE"], 'x-www-form-urlencoded') !== false) {
             $arr = explode('&', file_get_contents("php://input"));
             $newarr = [];
@@ -128,7 +127,9 @@ class NI_Api
             }
             return $newarr;
         } elseif (strpos($_SERVER["CONTENT_TYPE"], 'form-data') !== false) {
-            if (empty($_POST) && empty($_FILES)) return null;
+            if (empty($_POST) && empty($_FILES)) {
+                return null;
+            }
             return [$_POST, $_FILES];
         }
     }
@@ -185,7 +186,7 @@ class NI_Api
         header("Access-Control-Max-Age: 3600");
         header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
         $json_response = is_object(self::$response['data']) ? self::$response['data'] : json_encode(self::$response['data']);
-        echo ($json_response);
+        echo($json_response);
         exit;
     }
 }

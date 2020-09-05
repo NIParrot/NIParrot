@@ -32,7 +32,6 @@ class CLI_Plugin
                 $design_plugin = ['api_model', 'controller', 'css', 'installer', 'js', 'lang', 'model', 'storage', 'view'];
                 $match_scan = array_intersect($scan, $design_plugin);
                 if (count($match_scan) >= 9) {
-
                     echo "\e[1;32;40m plugin '$input[1]' \e[0m  \e[0;32;40m ready  \e[0m  \n";
                     echo "\e[0;31;42m now will check files and folders \e[0m\n\n";
                     $p_path = MARKET . $input[1] . SEP;
@@ -61,7 +60,9 @@ class CLI_Plugin
 
     public static function InstallPlugin(array $input)
     {
-        if (self::CheckPluginFiles($input) != true) return;
+        if (self::CheckPluginFiles($input) != true) {
+            return;
+        }
 
         $ServiceDir = MARKET . $input[1] . SEP . 'installer' . SEP;
 
@@ -111,7 +112,9 @@ class CLI_Plugin
 
             switch ($FileType) {
                 case 'view':
-                    if (!is_dir(VIEW . $arr[1])) mkdir(VIEW . $arr[1], 0755);
+                    if (!is_dir(VIEW . $arr[1])) {
+                        mkdir(VIEW . $arr[1], 0755);
+                    }
                     if (count($arr) - 3  <= 0) {
                         if (!file_exists(VIEW . $arr[1] . SEP . $arr[2])) {
                             copy($file, VIEW . $arr[1] . SEP . $arr[2]);
@@ -126,7 +129,9 @@ class CLI_Plugin
                         array_pop($arr2);
                         $newinnerpath = VIEW . implode($arr2, SEP);
                         $NewInnerFilePath = VIEW . implode($arr22, SEP);
-                        if (!is_dir($newinnerpath)) mkdir($newinnerpath);
+                        if (!is_dir($newinnerpath)) {
+                            mkdir($newinnerpath);
+                        }
                         if (!file_exists($NewInnerFilePath)) {
                             $NewInnerFilePath_array = explode(SEP, $NewInnerFilePath);
                             array_pop($NewInnerFilePath_array);
@@ -138,7 +143,9 @@ class CLI_Plugin
                     break;
 
                 case 'model':
-                    if (!is_dir(MODEL . $arr[1])) mkdir(MODEL . $arr[1], 0755);
+                    if (!is_dir(MODEL . $arr[1])) {
+                        mkdir(MODEL . $arr[1], 0755);
+                    }
                     if (count($arr) - 3  <= 0) {
                         if (!file_exists(MODEL . $arr[1] . SEP . $arr[2])) {
                             copy($file, MODEL . $arr[1] . SEP . $arr[2]);
@@ -153,18 +160,23 @@ class CLI_Plugin
                         array_pop($arr2);
                         $newinnerpath = MODEL . implode($arr2, SEP);
                         $NewInnerFilePath = MODEL . implode($arr22, SEP);
-                        if (!is_dir($newinnerpath)) mkdir($newinnerpath);
+                        if (!is_dir($newinnerpath)) {
+                            mkdir($newinnerpath);
+                        }
                         if (!file_exists($NewInnerFilePath)) {
                             $NewInnerFilePath_array = explode(SEP, $NewInnerFilePath);
                             array_pop($NewInnerFilePath_array);
                             $n2 = implode(SEP, $NewInnerFilePath_array);
                             //copy($file, $NewInnerFilePath);
-                            copy($file, $n2);                        }
+                            copy($file, $n2);
+                        }
                     }
                     break;
 
                 case 'api_model':
-                    if (!is_dir(API_MODEL . $arr[1])) mkdir(API_MODEL . $arr[1], 0755);
+                    if (!is_dir(API_MODEL . $arr[1])) {
+                        mkdir(API_MODEL . $arr[1], 0755);
+                    }
                     if (count($arr) - 3  <= 0) {
                         if (!file_exists(API_MODEL . $arr[1] . SEP . $arr[2])) {
                             copy($file, API_MODEL . $arr[1] . SEP . $arr[2]);
@@ -179,18 +191,23 @@ class CLI_Plugin
                         array_pop($arr2);
                         $newinnerpath = API_MODEL . implode($arr2, SEP);
                         $NewInnerFilePath = API_MODEL . implode($arr22, SEP);
-                        if (!is_dir($newinnerpath)) mkdir($newinnerpath);
+                        if (!is_dir($newinnerpath)) {
+                            mkdir($newinnerpath);
+                        }
                         if (!file_exists($NewInnerFilePath)) {
                             $NewInnerFilePath_array = explode(SEP, $NewInnerFilePath);
                             array_pop($NewInnerFilePath_array);
                             $n2 = implode(SEP, $NewInnerFilePath_array);
                             //copy($file, $NewInnerFilePath);
-                            copy($file, $n2);                        }
+                            copy($file, $n2);
+                        }
                     }
                     break;
 
                 case 'storage':
-                    if (!is_dir(STORAGE . $arr[1])) mkdir(STORAGE . $arr[1], 0755);
+                    if (!is_dir(STORAGE . $arr[1])) {
+                        mkdir(STORAGE . $arr[1], 0755);
+                    }
                     if (count($arr) - 3  <= 0) {
                         if (!file_exists(STORAGE . $arr[1] . SEP . $arr[2])) {
                             copy($file, STORAGE . $arr[1] . SEP . $arr[2]);
@@ -205,18 +222,23 @@ class CLI_Plugin
                         array_pop($arr2);
                         $newinnerpath = STORAGE . implode($arr2, SEP);
                         $NewInnerFilePath = STORAGE . implode($arr22, SEP);
-                        if (!is_dir($newinnerpath)) mkdir($newinnerpath);
+                        if (!is_dir($newinnerpath)) {
+                            mkdir($newinnerpath);
+                        }
                         if (!file_exists($NewInnerFilePath)) {
                             $NewInnerFilePath_array = explode(SEP, $NewInnerFilePath);
                             array_pop($NewInnerFilePath_array);
                             $n2 = implode(SEP, $NewInnerFilePath_array);
                             //copy($file, $NewInnerFilePath);
-                            copy($file, $n2);                        }
+                            copy($file, $n2);
+                        }
                     }
                     break;
 
                 case 'controller':
-                    if (!is_dir(CONTROLLER . $arr[1])) mkdir(CONTROLLER . $arr[1], 0755);
+                    if (!is_dir(CONTROLLER . $arr[1])) {
+                        mkdir(CONTROLLER . $arr[1], 0755);
+                    }
                     if (count($arr) - 3  <= 0) {
                         if (!file_exists(CONTROLLER . $arr[1] . SEP . $arr[2])) {
                             copy($file, CONTROLLER . $arr[1] . SEP . $arr[2]);
@@ -231,13 +253,16 @@ class CLI_Plugin
                         array_pop($arr2);
                         $newinnerpath = CONTROLLER . implode($arr2, SEP);
                         $NewInnerFilePath = CONTROLLER . implode($arr22, SEP);
-                        if (!is_dir($newinnerpath)) mkdir($newinnerpath);
+                        if (!is_dir($newinnerpath)) {
+                            mkdir($newinnerpath);
+                        }
                         if (!file_exists($NewInnerFilePath)) {
                             $NewInnerFilePath_array = explode(SEP, $NewInnerFilePath);
                             array_pop($NewInnerFilePath_array);
                             $n2 = implode(SEP, $NewInnerFilePath_array);
                             //copy($file, $NewInnerFilePath);
-                            copy($file, $n2);                        }
+                            copy($file, $n2);
+                        }
                     }
                     break;
 
@@ -249,7 +274,9 @@ class CLI_Plugin
                             copy($file, JS . time() . $arr[1]);
                         }
                     } else {
-                        if (!file_exists(JS . $arr[1])) mkdir(JS . $arr[1], 0755);
+                        if (!file_exists(JS . $arr[1])) {
+                            mkdir(JS . $arr[1], 0755);
+                        }
                         if (!file_exists(JS . $arr[1] . SEP . $arr[2])) {
                             copy($file, JS . $arr[1] . SEP . $arr[2]);
                         } else {
@@ -266,7 +293,9 @@ class CLI_Plugin
                             copy($file, CSS . time() . $arr[1]);
                         }
                     } else {
-                        if (!file_exists(CSS . $arr[1])) mkdir(CSS . $arr[1], 0755);
+                        if (!file_exists(CSS . $arr[1])) {
+                            mkdir(CSS . $arr[1], 0755);
+                        }
                         if (!file_exists(CSS . $arr[1] . SEP . $arr[2])) {
                             copy($file, CSS . $arr[1] . SEP . $arr[2]);
                         } else {

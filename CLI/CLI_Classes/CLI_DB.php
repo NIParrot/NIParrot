@@ -40,7 +40,7 @@ class CLI_DB
         $conn = self::MysqlConn();
 
         $sql = "CREATE SCHEMA " . DBNAME . " CHARACTER SET utf8 COLLATE utf8_general_ci";
-        if ($conn->query($sql) === TRUE) {
+        if ($conn->query($sql) === true) {
             echo "\e[1;33;40m Database:\e[0m \e[0;32m " . DBNAME . " \e[0m \e[1;33;40m Created successfully \e[0m\n";
         } else {
             echo "\e[0;31;40m DB Creating Error: \e[0m \e[0;35m $conn->error \e[0m\n";
@@ -54,11 +54,15 @@ class CLI_DB
     public static function CreateTables()
     {
         $conn = self::PDOConn();
-        if (!$conn) exit;
+        if (!$conn) {
+            exit;
+        }
         $tableArray = CLI_Helper::ReadCLITableFile();
-        if (empty($tableArray)) exit;
+        if (empty($tableArray)) {
+            exit;
+        }
         if (DeleteFlag == true) {
-        $DefaultColumn = '
+            $DefaultColumn = '
         create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         update_at TIMESTAMP DEFAULT 0 ON UPDATE CURRENT_TIMESTAMP,
         delete_flag INT( 1 ) DEFAULT 0 NOT NULL,
@@ -66,7 +70,7 @@ class CLI_DB
         delete_from VARCHAR( 255 ) NULL,
         update_from VARCHAR( 255 ) NULL
         ';
-        }else{
+        } else {
             $DefaultColumn = '
             create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             update_at TIMESTAMP DEFAULT 0 ON UPDATE CURRENT_TIMESTAMP,
@@ -90,11 +94,17 @@ class CLI_DB
     public static function InsertIntoDB()
     {
         $conn = self::PDOConn();
-        if (!$conn) exit;
+        if (!$conn) {
+            exit;
+        }
         $seeds = CLI_Helper::ReadCLISeedssFile();
-        if (empty($seeds)) exit;
+        if (empty($seeds)) {
+            exit;
+        }
         foreach ($seeds as $TableName => $TableArray) {
-            if (empty($TableArray)) exit;
+            if (empty($TableArray)) {
+                exit;
+            }
             $bind = ':' . implode(',:', array_keys($TableArray));
             foreach ($TableArray as $keyn => $valuen) {
                 $query1 = "SELECT COUNT(" . $keyn . ") FROM $TableName WHERE $keyn='" . $valuen . "'";
@@ -122,7 +132,6 @@ class CLI_DB
     public static function CreateRelation(array $input)
     {
         if (isset($input[2]) && isset($input[3]) && isset($input[4]) && strpos($input[2], '.')) {
-
             $Table1Arr = explode('.', $input[2]);
             $Table1 = $Table1Arr[0];
             $Table2 = $input[3];
@@ -140,7 +149,9 @@ class CLI_DB
             $query2 = "ALTER TABLE `$Table2` ADD CONSTRAINT $master_id FOREIGN KEY (`$master_id`) REFERENCES `$Table1` (`$Table1Column`) ON DELETE $d_st ON UPDATE $up_st";
 
             $conn = self::PDOConn();
-            if (!$conn) exit;
+            if (!$conn) {
+                exit;
+            }
 
             if (count($conn->query("SHOW COLUMNS FROM `$Table2` LIKE '$master_id'")->fetchAll())) {
                 try {

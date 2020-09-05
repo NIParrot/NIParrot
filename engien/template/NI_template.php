@@ -1,5 +1,6 @@
-<?php 
-class NI_template{
+<?php
+class NI_template
+{
     public static $lang_code;
     public static $kit;
     public static $bootstrap;
@@ -7,7 +8,8 @@ class NI_template{
     public static $page;
     public static $url_array = [];
     
-    public static function css_lang(){
+    public static function css_lang()
+    {
         switch (self::$lang_code) {
             case 'ar':
                 self::$kit = 'uikit-rtl';
@@ -22,7 +24,8 @@ class NI_template{
         }
     }
 
-    public static function page(){
+    public static function page()
+    {
         $page = basename($_SERVER['REQUEST_URI']);
         $u_arr = explode('/', $_SERVER['REQUEST_URI']);
         array_shift($u_arr);
@@ -31,33 +34,43 @@ class NI_template{
         self::$page = $page;
     }
 
-    public static function http($bool){
-        if ($bool == true) echo '<script>if (location.protocol != "https:"){location.href = "https:" + window.location.href.substring(window.location.protocol.length);}</script>';
+    public static function http($bool)
+    {
+        if ($bool == true) {
+            echo '<script>if (location.protocol != "https:"){location.href = "https:" + window.location.href.substring(window.location.protocol.length);}</script>';
+        }
     }
 
-    public static function special_css($args = array()){
+    public static function special_css($args = array())
+    {
         $result = [];
         if (!empty($args)) {
-           foreach ($args as $css_file) {
+            foreach ($args as $css_file) {
                 $path = 'app'.SEP.'static'.SEP.'css'.SEP.$css_file.'.css';
-                if (file_exists($path)) array_push($result,'    <link rel="stylesheet" href="/'.$path.'">');
-           }
+                if (file_exists($path)) {
+                    array_push($result, '    <link rel="stylesheet" href="/'.$path.'">');
+                }
+            }
         }
         return $result;
     }
 
-    public static function special_js($args = array()){
+    public static function special_js($args = array())
+    {
         $result = [];
         if (!empty($args)) {
-           foreach ($args as $js_file) {
+            foreach ($args as $js_file) {
                 $path = 'app'.SEP.'static'.SEP.'js'.SEP.$js_file.'.js';
-                if (file_exists($path)) array_push($result,'<script src="/'.$path.'"></script>');
-           }
+                if (file_exists($path)) {
+                    array_push($result, '<script src="/'.$path.'"></script>');
+                }
+            }
         }
         return $result;
     }
 
-    public static function call_css(){
+    public static function call_css()
+    {
         echo '
         <!DOCTYPE html>
         <html lang="'.self::$lang_code.'" dir="'.self::$lang_dir.'">
@@ -92,14 +105,16 @@ class NI_template{
         }
     }
 
-    public static function langfile(){
+    public static function langfile()
+    {
         $lang_file = ROOT.SEP.'engien'.SEP.'lang'.SEP.self::$lang_code.'.php';
         if (file_exists($lang_file)) {
             require_once $lang_file;
         }
     }
 
-    public static function head(){
+    public static function head()
+    {
         $args = func_get_args();
         self::$lang_code = $args[0];
         self::css_lang();
@@ -131,7 +146,8 @@ class NI_template{
         self::langfile();
     }
 
-    public static function footer(){
+    public static function footer()
+    {
         $args = func_get_args();
         echo '
                 <script src="/engien/static/js/jquery.js"></script>
@@ -154,7 +170,8 @@ class NI_template{
         ';
     }
 
-    public static function copyright(){
+    public static function copyright()
+    {
         echo '
             <div id="lowerbar" class="text-center uk-background-secondary d-flex align-items-center" dir="ltr">
             <div class="container">

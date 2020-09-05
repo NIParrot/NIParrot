@@ -1,25 +1,27 @@
-<?php 
+<?php
 
-class NI_JWT{
-    public static function CheckToken($jwt){
+class NI_JWT
+{
+    public static function CheckToken($jwt)
+    {
         try {
             $decoded = JWT::decode($jwt, APISK, array('HS256'));
             $data =json_decode(json_encode($decoded->data), true);
-           /*  $user = model\users::check($data);
-            if (empty($user)) {
-                return (array(
-                    false,
-                     "error" => 'error on token',
-                     "data" => $data
+            /*  $user = model\users::check($data);
+             if (empty($user)) {
+                 return (array(
+                     false,
+                      "error" => 'error on token',
+                      "data" => $data
+                  ));
+             }else{
+                 return (array(
+                     true,
+                     $user->id,
+                     'user'
                  ));
-            }else{
-                return (array(
-                    true,
-                    $user->id,
-                    'user'
-                ));
-            } */
-        }catch (Exception $e){             
+             } */
+        } catch (Exception $e) {
             return (array(
                false,
                 "error" => $e->getMessage()
@@ -44,8 +46,7 @@ class NI_JWT{
         $headers = null;
         if (isset($_SERVER['Authorization'])) {
             $headers = trim($_SERVER["Authorization"]);
-        }
-        else if (isset($_SERVER['HTTP_AUTHORIZATION'])) { //Nginx or fast CGI
+        } elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) { //Nginx or fast CGI
             $headers = trim($_SERVER["HTTP_AUTHORIZATION"]);
         } elseif (function_exists('apache_request_headers')) {
             $requestHeaders = apache_request_headers();

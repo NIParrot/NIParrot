@@ -1,6 +1,8 @@
-<?php 
-class NI_files{
-    public static function upload(){
+<?php
+class NI_files
+{
+    public static function upload()
+    {
         $args =func_get_args();
         $input = $args[0];
         $upload = new \Delight\FileUpload\FileUpload();
@@ -16,24 +18,16 @@ class NI_files{
             $uploadedFile = $upload->save();
         
             return $uploadedFile->getFilenameWithExtension();
-    
-        }
-        catch (\Delight\FileUpload\Throwable\InputNotFoundException $e) {
+        } catch (\Delight\FileUpload\Throwable\InputNotFoundException $e) {
             return 'input not found';
-        }
-        catch (\Delight\FileUpload\Throwable\InvalidFilenameException $e) {
+        } catch (\Delight\FileUpload\Throwable\InvalidFilenameException $e) {
             echo ' invalid filename';
-        }
-        catch (\Delight\FileUpload\Throwable\InvalidExtensionException $e) {
+        } catch (\Delight\FileUpload\Throwable\InvalidExtensionException $e) {
             echo ' invalid extension';
-        }
-        catch (\Delight\FileUpload\Throwable\FileTooLargeException $e) {
+        } catch (\Delight\FileUpload\Throwable\FileTooLargeException $e) {
             echo ' file too large';
-        }
-        catch (\Delight\FileUpload\Throwable\UploadCancelledException $e) {
+        } catch (\Delight\FileUpload\Throwable\UploadCancelledException $e) {
             echo ' upload cancelled';
         }
     }
 }
-
-?>

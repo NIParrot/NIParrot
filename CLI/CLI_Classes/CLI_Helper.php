@@ -59,9 +59,7 @@ class CLI_Helper
         $result = [];
 
         foreach ($arr as $key) {
-
             if (is_array($key)) {
-
                 $temp = self::ConvertPluginArraysToArray($key);
 
                 foreach ($temp as $value) {

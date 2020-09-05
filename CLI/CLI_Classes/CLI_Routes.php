@@ -3,7 +3,6 @@ class CLI_Routes
 {
     public static function GetRoutes()
     {
-
         $routes = array_keys(NI_route::$routes);
         $PostRoutes = array_keys(NI_route::$PostRoutes);
         $PutRoutes = array_keys(NI_route::$PutRoutes);
@@ -33,7 +32,6 @@ class CLI_Routes
 
     public static function GetApiRoutes()
     {
-
         $routes = array_keys(NI_Api_route::$routes);
         $PostRoutes = array_keys(NI_Api_route::$PostRoutes);
         $PutRoutes = array_keys(NI_Api_route::$PutRoutes);

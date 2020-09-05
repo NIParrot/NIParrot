@@ -46,7 +46,7 @@ class NI_CLI
                 $tttclass = 'CLI_MVC';
                 $tttclass::$tttmethod($input);
                 break;
-/*              
+/*
                 break;
             case 'ControllerAddFunc':
                 self::make($input);
