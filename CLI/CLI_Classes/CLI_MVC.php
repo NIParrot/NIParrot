@@ -3,8 +3,55 @@ class CLI_MVC
 {
     public static function makeParisModel()
     {
-        $tblArr = CLI_Helper::ReadCLITableFile();
+        $dbarr = CLI_Helper::GetDBColumnArray();
+        foreach ($dbarr as $table => $ColArr) {
+            $new_model = PARISMODEL . $table . '.php';
+            if (is_file($new_model)) {
+                echo "\e[1;33;40m Model $table already exists \e[0m\n";
+                continue;
+            }
+            $mymodel = fopen($new_model, "w");
+            $code = '<?php   
+    namespace ParisModel; 
+    class ' . $table . ' extends \Model { }';
+
+            $msg = fwrite($mymodel, $code) ? "\e[1;33;40m Model $table create successfully \e[0m\n" : "\e[1;33;40m Model $table create Error [*_*] \e[0m\n";
+            echo $msg;
+        }
     }
+
+    
+
+    public static function hasone(array $input)
+    {
+        if (!CLI_Helper::HanelForParis($input)[0]) {
+            echo CLI_Helper::HanelForParis($input)[1];
+            return;
+        };
+
+        $model1 = $input[1];
+        $model2 = $input[3];
+        $ModelPath = PARISMODEL.$model1.'.php';
+
+
+
+        $code = '
+        public function profile() {
+            return $this->has_one("'.$model2.'");
+        }
+        ';
+
+        $contents = file_get_contents($ModelPath);
+        $deletelastbractet = rtrim(rtrim($contents), '}');
+        $fp = fopen($ModelPath, 'w');
+        fwrite($fp, $deletelastbractet);
+        fclose($fp);
+        $fp = fopen($ModelPath, 'a');
+        fwrite($fp, $code);
+        fwrite($fp, '}');
+        fclose($fp);
+    }
+
     public static function makeModel()
     {
         $dbarr = CLI_Helper::GetDBColumnArray();
@@ -241,7 +288,7 @@ class CLI_MVC
                 ';
         for ($i=3; $i <= count($input)-1; $i++) {
             $coma = ($i == count($input)) ? '' : ',';
-            $code = $code . 'array("'.$input[$i].'" => $data["'.$input[$i].'"], "password" => $data["password"])'.$coma ;
+            $code = $code . 'array("'.$input[$i].'" => $data["username"], "password" => $data["password"])'.$coma ;
         }
         $code =$code .'
                 )

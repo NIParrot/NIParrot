@@ -57,4 +57,18 @@ class NI_response
         echo($json_response);
         exit;
     }
+    public static function pagination($data, $limit =10)
+    {
+        $page = !isset($_GET['page']) ? 1 : $_GET['page'];
+        $offset = ($page - 1) * $limit; // offset
+        $total_items = count($data); // total items
+        $total_pages = ceil($total_items / $limit);
+        $final = array_splice($data, $offset, $limit);
+        return ['info' => [
+            'total_pages' => $total_pages,
+            'limit' => $limit,
+            'current' => $page
+        ],
+        'data' => $final];
+    }
 }

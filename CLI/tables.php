@@ -1,7 +1,11 @@
 <?php
 return $tables = [
-    'table' => '
-    column1 plapla,
-    column2 plapla,
+    'Users' => '
+        column1 plapla,
+        column2 plapla,
+    ',
+    'Profils' => '
+        column1 plapla,
+        column2 plapla,
     '
 ];

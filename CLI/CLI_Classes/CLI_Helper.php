@@ -14,6 +14,28 @@ class CLI_Helper
         }
     }
 
+    public static function ExistParisModel(string $modelname)
+    {
+        return file_exists(PARISMODEL.$modelname.'.php') ? true:false;
+    }
+
+    public static function HanelForParis(array $input)
+    {
+        $model1 = $input[1];
+        $model2 = $input[3];
+        $msg = '';
+
+        if (!CLI_Helper::ExistParisModel($model1)) {
+            $msg.= "model $model1 not Exsit";
+            return [false,$msg];
+        }
+        if (!CLI_Helper::ExistParisModel($model2)) {
+            $msg.= "model $model2 not Exsit";
+            return [false,$msg];
+        }
+        return [true,$msg];
+    }
+
     public static function GetCodeFromPhpFile($file)
     {
         $file2 = file_get_contents($file);

@@ -38,11 +38,17 @@ class NI_CLI
                 CLI_Routes::GetRoutes();
                 break;
             case 'GetApiRoutes':
-                CLI_Routes::GetApiRoutes();
+                CLI_Routes::GetRoutes();
                 break;
             
-            case 'ModelAddFunc':
+            case 'MFunc':
                 $tttmethod = $input[1];
+                $tttclass = 'CLI_MVC';
+                $tttclass::$tttmethod($input);
+                break;
+
+            case 'PMFunc':
+                $tttmethod = $input[2];
                 $tttclass = 'CLI_MVC';
                 $tttclass::$tttmethod($input);
                 break;
@@ -73,6 +79,10 @@ class NI_CLI
 
                     case 'Model':
                         CLI_MVC::makeModel();
+                        break;
+
+                    case 'ParisModel':
+                        CLI_MVC::makeParisModel();
                         break;
 /*
                     case 'Route':
@@ -114,7 +124,8 @@ php NI Check "plugin"
 php NI Install "plugin"
 php NI GetRoutes
 php NI GetApiRoutes
-php NI ModelAddFunc "Function" "Model"
+php NI MFunc "Function" "Model" --> (Mfunc for ModelAddFunction)
+php NI MPFunc "Function" "Model" --> (Mfunc for ParisModelAddFunction)
 php NI ControllerAddFunc "Function" "Controller"
 php NI make DB
 php NI make Migrate
@@ -122,6 +133,7 @@ php NI make Seeds
 php NI make Relation
 php NI make Relation master.id slave [update=$OPTION,delete=$OPTION]
 php NI make Model
+php NI make ParisModel
 php NI make Route
 php NI make ApiRoute
 php NI make Controller
