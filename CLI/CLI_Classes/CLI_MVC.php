@@ -168,7 +168,7 @@ class CLI_MVC
                 ';
         for ($i=3; $i <= count($input)-1; $i++) {
             $coma = ($i == count($input)-1) ? '' : ',';
-            $code = $code . "'$input[$i]' => \$data['user'] $coma" ;
+            $code = $code . "'$input[$i]' => \$data['$input[$i]'] $coma" ;
         }
 
         $code =$code .'

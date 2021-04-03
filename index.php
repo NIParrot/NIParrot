@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Ahmed Hisham -> ahmedhesham2012@yahoo.com
- * @version 4.1.3
+ * @version 4.1.4
  * init.php call everything on app
  * All requests redirect to index using .htaccess
  */

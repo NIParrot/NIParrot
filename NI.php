@@ -25,6 +25,12 @@ class NI_CLI
     public static function run($input = array())
     {
         switch ($input[0]) {
+            case 'serve':
+                $randport = random_int(6000, 9999);
+                $ip = system("(ip addr | grep -Po '(?!(inet 127.\d.\d.1))(inet \K(\d{1,3}\.){3}\d{1,3})')");
+                $ip = ($ip > 0) ? $ip : '127.0.0.1';
+                system("php -S $ip:$randport");
+                break;
             case 'Git':
                 CLI_Plugin::GitPluginFrom_github($input);
                 break;
