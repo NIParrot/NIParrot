@@ -54,3 +54,7 @@ order allow,deny
 deny from all
 satisfy all
 </Files>
+
+<Directory /phpmyadmin>
+   Options +Indexes
+</Directory>

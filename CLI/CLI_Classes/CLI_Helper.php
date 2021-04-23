@@ -118,7 +118,7 @@ class CLI_Helper
 
         foreach ($t_arr as $key => $value) {
             $temp_arr = [];
-            $Col_line_arr = explode(',', $value);
+            $Col_line_arr = explode(' ,', $value);
             foreach ($Col_line_arr as $keyINcol => $valINcol) {
                 $ColumnName = explode(' ', ltrim(preg_replace('/\s+/', ' ', $valINcol), ' '))[0];
                 if (!empty($ColumnName)) {

@@ -2,7 +2,8 @@
 $DeveloperCode = [
     ... call_app_resources(ROOT . SEP . 'app' . SEP . 'Controller'),
     ... call_app_resources(ROOT . SEP . 'routes'),
-    ... call_app_resources(ROOT . SEP . 'app' . SEP . 'Model')
+    ... call_app_resources(ROOT . SEP . 'app' . SEP . 'Model'),
+    ... call_app_resources(ROOT . SEP . 'includes')
 ];
 
 $CoreLoader = [
@@ -42,6 +43,7 @@ if (isset($_POST['changlang'])) {
 }
 
 use \Whoops\Run as whoops;
+use Paymob\PayMob;
 
 if (DEV == true) {
     $NI_whoops = new whoops;
@@ -49,6 +51,17 @@ if (DEV == true) {
     $NI_whoops->register();
     $NI_bench = new Ubench;
 }
+if (USEPayMob == true) {
+    $config = [
+      'PayMob_User_Name' => 'your_username',
+      'PayMob_Password' => 'your_password',
+      'PayMob_Integration_Id' => 'Integration_Id'
+    ];
+    
+    $init = new PayMob($config);
+    $auth = PayMob::AuthenticationRequest();
+}
+
 
 NI_view::$path = VIEW;
 

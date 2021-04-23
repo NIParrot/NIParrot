@@ -144,6 +144,7 @@ php NI make Route
 php NI make ApiRoute
 php NI make Controller
 ';
+    var_dump(CLI_Helper::GetDBColumnArray());
 } else {
     NI_CLI::run($input);
 }

@@ -103,7 +103,7 @@ class NI_request
             if (DEV == true) {
                 throw new Exception(implode(', ', $TempErrorCheck), 1);
             } else {
-                $response['status'] = 404;
+                $response['status'] = 400;
                 $response['data'] = [
                     'msg'=> 'valid error',
                     'data' => $TempErrorCheck

@@ -53,6 +53,8 @@ define("TRACKING", false);
 define("HTTPS_PROTOCOL", false);
 define("DEV", true);
 define("USEDB", false);
+define("USEFIREBASE", false);
+define("USEPayMob", false);
 define("DeleteFlag", false);
 define("FrontFrame", null);
 /**
@@ -89,3 +91,16 @@ define('Mail_Host', 'NI Parrot');
 define('Mail_Username', 'NI Parrot');
 define('Mail_Password', 'NI Parrot');
 define('Mail_Port', 'NI Parrot');
+
+/**
+ * init firebase key here while it true
+ */
+define("FIREBASE_KEY", 'KEY');
+
+/**
+ * init patmob here
+ * username and password and integration id
+ */
+define('PayMob_User_Name', 'username');
+define('PayMob_Password', 'password');
+define('PayMob_Integration_Id', 'Integration_Id');
