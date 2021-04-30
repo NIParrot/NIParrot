@@ -5,22 +5,26 @@ class CLI_MVC
     {
         $dbarr = CLI_Helper::GetDBColumnArray();
         foreach ($dbarr as $table => $ColArr) {
-            $new_model = PARISMODEL . $table . '.php';
+            $tableClass = Inflect::singularize($table);
+            $new_model = PARISMODEL . $tableClass . '.php';
             if (is_file($new_model)) {
-                echo "\e[1;33;40m Model $table already exists \e[0m\n";
+                echo "\e[1;33;40m Model $tableClass already exists \e[0m\n";
                 continue;
             }
             $mymodel = fopen($new_model, "w");
             $code = '<?php   
-    namespace ParisModel; 
-    class ' . $table . ' extends \Model { }';
+namespace ParisModel; 
+    class ' . $tableClass . " extends \Model
+    {
+        public static \$_table = '$table';
+    }";
 
-            $msg = fwrite($mymodel, $code) ? "\e[1;33;40m Model $table create successfully \e[0m\n" : "\e[1;33;40m Model $table create Error [*_*] \e[0m\n";
+            $msg = fwrite($mymodel, $code) ? "\e[1;33;40m Model $tableClass create successfully \e[0m\n" : "\e[1;33;40m Model $table create Error [*_*] \e[0m\n";
             echo $msg;
         }
     }
 
-    
+
 
     public static function hasone(array $input)
     {
@@ -31,13 +35,13 @@ class CLI_MVC
 
         $model1 = $input[1];
         $model2 = $input[3];
-        $ModelPath = PARISMODEL.$model1.'.php';
+        $ModelPath = PARISMODEL . $model1 . '.php';
 
 
 
         $code = '
         public function profile() {
-            return $this->has_one("'.$model2.'");
+            return $this->has_one("' . $model2 . '");
         }
         ';
 
@@ -141,7 +145,7 @@ class CLI_MVC
                     {
                         return \ORM::for_table("' . $table . '")->find_one([$id])->as_array();
                     }
-                    '.$deleteFunc.'
+                    ' . $deleteFunc . '
                 }
                 ';
 
@@ -158,20 +162,20 @@ class CLI_MVC
     public static function ModelAuth(array $input)
     {
         $ModelName = $input[2];
-        $ModelPath = MODEL.$input[2].'.php';
+        $ModelPath = MODEL . $input[2] . '.php';
         $code = '
         public static function check(array $data)
         {
 
-            $check = \ORM::for_table("'.$ModelName.'")->where(
+            $check = \ORM::for_table("' . $ModelName . '")->where(
                 array(
                 ';
-        for ($i=3; $i <= count($input)-1; $i++) {
-            $coma = ($i == count($input)-1) ? '' : ',';
-            $code = $code . "'$input[$i]' => \$data['$input[$i]'] $coma" ;
+        for ($i = 3; $i <= count($input) - 1; $i++) {
+            $coma = ($i == count($input) - 1) ? '' : ',';
+            $code = $code . "'$input[$i]' => \$data['$input[$i]'] $coma";
         }
 
-        $code =$code .'
+        $code = $code . '
                 )
                     )->find_one();
 
@@ -198,20 +202,20 @@ class CLI_MVC
     public static function ModelUniqe(array $input)
     {
         $ModelName = $input[2];
-        $ModelPath = MODEL.$input[2].'.php';
+        $ModelPath = MODEL . $input[2] . '.php';
         $code = '
         public static function uniqe(array $data)
         {
 
-            $check = \ORM::for_table("'.$ModelName.'")->where_any_is(
+            $check = \ORM::for_table("' . $ModelName . '")->where_any_is(
                 array(
                 ';
-        for ($i=3; $i <= count($input)-1; $i++) {
-            $coma = ($i == count($input)-1) ? '' : ',';
-            $code = $code . 'array("'.$input[$i].'" => $data["'.$input[$i].'"])'.$coma ;
+        for ($i = 3; $i <= count($input) - 1; $i++) {
+            $coma = ($i == count($input) - 1) ? '' : ',';
+            $code = $code . 'array("' . $input[$i] . '" => $data["' . $input[$i] . '"])' . $coma;
         }
 
-        $code =$code .'
+        $code = $code . '
                 )
                     )->where_not_equal("id",$data["id"])->find_one();
 
@@ -239,18 +243,18 @@ class CLI_MVC
     public static function ModelUniqeRegister(array $input)
     {
         $ModelName = $input[2];
-        $ModelPath = MODEL.$input[2].'.php';
+        $ModelPath = MODEL . $input[2] . '.php';
         $code = '
         public static function uniqregister(array $data)
         {
-            $check = \ORM::for_table("'.$ModelName.'")->where_any_is(
+            $check = \ORM::for_table("' . $ModelName . '")->where_any_is(
                 array(
                 ';
-        for ($i=3; $i <= count($input)-1; $i++) {
+        for ($i = 3; $i <= count($input) - 1; $i++) {
             $coma = ($i == count($input)) ? '' : ',';
-            $code = $code . 'array("'.$input[$i].'" => $data["'.$input[$i].'"])'.$coma ;
+            $code = $code . 'array("' . $input[$i] . '" => $data["' . $input[$i] . '"])' . $coma;
         }
-        $code =$code .'
+        $code = $code . '
                 )
                 )->find_one();
 
@@ -279,18 +283,18 @@ class CLI_MVC
     public static function ModelMultAuth(array $input)
     {
         $ModelName = $input[2];
-        $ModelPath = MODEL.$input[2].'.php';
+        $ModelPath = MODEL . $input[2] . '.php';
         $code = '
         public static function MultAuth(array $data)
         {
-            $check = \ORM::for_table("'.$ModelName.'")->where_any_is(
+            $check = \ORM::for_table("' . $ModelName . '")->where_any_is(
                 array(
                 ';
-        for ($i=3; $i <= count($input)-1; $i++) {
+        for ($i = 3; $i <= count($input) - 1; $i++) {
             $coma = ($i == count($input)) ? '' : ',';
-            $code = $code . 'array("'.$input[$i].'" => $data["username"], "password" => $data["password"])'.$coma ;
+            $code = $code . 'array("' . $input[$i] . '" => $data["username"], "password" => $data["password"])' . $coma;
         }
-        $code =$code .'
+        $code = $code . '
                 )
                 )->find_one();
 

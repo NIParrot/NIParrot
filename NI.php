@@ -1,5 +1,6 @@
 <?php
 require_once 'config.php';
+require_once 'core/core/Inflect.php';
 require_once 'core/core/NI_route.php';
 require_once 'api/core/NI_Api_route.php';
 require_once 'CLI/CLI_Classes/CLI_Helper.php';
@@ -46,7 +47,7 @@ class NI_CLI
             case 'GetApiRoutes':
                 CLI_Routes::GetRoutes();
                 break;
-            
+
             case 'MFunc':
                 $tttmethod = $input[1];
                 $tttclass = 'CLI_MVC';
@@ -58,7 +59,7 @@ class NI_CLI
                 $tttclass = 'CLI_MVC';
                 $tttclass::$tttmethod($input);
                 break;
-/*
+                /*
                 break;
             case 'ControllerAddFunc':
                 self::make($input);
@@ -90,7 +91,7 @@ class NI_CLI
                     case 'ParisModel':
                         CLI_MVC::makeParisModel();
                         break;
-/*
+                        /*
                     case 'Route':
                         CLI_MVC::relation($args);
                         break;
@@ -104,15 +105,14 @@ class NI_CLI
                         break;
 */
                     default:
-                    echo "command dose not correct use --h to get help";
-                    break;
+                        echo "command dose not correct use --h to get help";
+                        break;
                 }
                 break;
 
-                default:
-                    echo "command dose not correct use --h to get help";
+            default:
+                echo "command dose not correct use --h to get help";
                 break;
-
         }
     }
 }
@@ -121,7 +121,7 @@ echo "welcome to NI_Parrot CLI Version. How Can I Help You: ";
 $handle = fopen("php://stdin", "r");
 $line = fgets($handle);
 $input = explode(" ", $line);
-$input[count($input)-1] = str_replace("\n", '', $input[count($input)-1]);
+$input[count($input) - 1] = str_replace("\n", '', $input[count($input) - 1]);
 
 if ($input[0] == '?' || $input[0] == 'help' || $input[0] == 'h' || $input[0] == '--h' || $input[0] == '-h') {
     echo '
@@ -144,7 +144,7 @@ php NI make Route
 php NI make ApiRoute
 php NI make Controller
 ';
-    var_dump(CLI_Helper::GetDBColumnArray());
+    //var_dump(CLI_Helper::GetDBColumnArray());
 } else {
     NI_CLI::run($input);
 }

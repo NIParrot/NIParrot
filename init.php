@@ -1,9 +1,10 @@
 <?php
 $DeveloperCode = [
-    ... call_app_resources(ROOT . SEP . 'app' . SEP . 'Controller'),
-    ... call_app_resources(ROOT . SEP . 'routes'),
-    ... call_app_resources(ROOT . SEP . 'app' . SEP . 'Model'),
-    ... call_app_resources(ROOT . SEP . 'includes')
+    ...call_app_resources(ROOT . SEP . 'app' . SEP . 'Controller'),
+    ...call_app_resources(ROOT . SEP . 'routes'),
+    ...call_app_resources(ROOT . SEP . 'app' . SEP . 'Model'),
+    ...call_app_resources(ROOT . SEP . 'app' . SEP . 'Paris'),
+    ...call_app_resources(ROOT . SEP . 'includes')
 ];
 
 $CoreLoader = [
@@ -53,11 +54,11 @@ if (DEV == true) {
 }
 if (USEPayMob == true) {
     $config = [
-      'PayMob_User_Name' => 'your_username',
-      'PayMob_Password' => 'your_password',
-      'PayMob_Integration_Id' => 'Integration_Id'
+        'PayMob_User_Name' => 'your_username',
+        'PayMob_Password' => 'your_password',
+        'PayMob_Integration_Id' => 'Integration_Id'
     ];
-    
+
     $init = new PayMob($config);
     $auth = PayMob::AuthenticationRequest();
 }
@@ -69,16 +70,16 @@ NI_view::$path = VIEW;
 if (USEDB == true) {
     $NI_connect = new NI_connect(HOST, PORT, DBNAME, USER, PASS);
     switch (DBTYPE) {
-    case 'mysql':
+        case 'mysql':
             $NI_connect->mysql();
             $conn = $NI_connect->connection();
-        break;
-    case 'sqlsrv':
+            break;
+        case 'sqlsrv':
             $NI_connect->sqlsrv();
-        break;
-    case 'sqlite':
+            break;
+        case 'sqlite':
             $NI_connect->sqlite();
-        break;
+            break;
     }
 }
 
@@ -93,7 +94,7 @@ if (TRACKING == true) {
     if (file_exists(Tracktable)) {
         $excel->parser->loadFile(Tracktable);
         if (strpos($UserInfo->getCurrentURL(), 'dashboard') === false) {
-            $excel->writer->addRow(array($UserInfo->getIP(), $UserInfo->getReverseDNS(), $UserInfo->getCurrentURL(), (empty(explode('.', $UserInfo->getRefererURL())[1]) ? "other" : explode('.', $UserInfo->getRefererURL())[1]) , $UserInfo->getDevice(), $UserInfo->getOS(), $UserInfo->getBrowser(), $UserInfo->getLanguage(), empty($UserInfo->getCountryCode()) ? 'local' : $UserInfo->getCountryCode(), $UserInfo->getCountryName(), $UserInfo->getRegionCode(), $UserInfo->getRegionName(), $UserInfo->getCity(), $UserInfo->getZipcode(), $UserInfo->getLatitude(), $UserInfo->getLongitude(), $UserInfo->isProxy(), date("F d, Y h:i:s A")));
+            $excel->writer->addRow(array($UserInfo->getIP(), $UserInfo->getReverseDNS(), $UserInfo->getCurrentURL(), (empty(explode('.', $UserInfo->getRefererURL())[1]) ? "other" : explode('.', $UserInfo->getRefererURL())[1]), $UserInfo->getDevice(), $UserInfo->getOS(), $UserInfo->getBrowser(), $UserInfo->getLanguage(), empty($UserInfo->getCountryCode()) ? 'local' : $UserInfo->getCountryCode(), $UserInfo->getCountryName(), $UserInfo->getRegionCode(), $UserInfo->getRegionName(), $UserInfo->getCity(), $UserInfo->getZipcode(), $UserInfo->getLatitude(), $UserInfo->getLongitude(), $UserInfo->isProxy(), date("F d, Y h:i:s A")));
             $excel->writer->saveFile('Tracktable', Tracktable);
         }
     } else {
@@ -101,7 +102,7 @@ if (TRACKING == true) {
     }
 }
 
-function call_app_resources(string $rootDir, $allData = array()) : array
+function call_app_resources(string $rootDir, $allData = array()): array
 {
     $invisibleFileNames = array(".", "..", ".htaccess", ".htpasswd");
     $dirContent = scandir($rootDir);

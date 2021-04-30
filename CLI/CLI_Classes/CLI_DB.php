@@ -63,14 +63,14 @@ class CLI_DB
         }
         if (DeleteFlag == true) {
             $DefaultColumn = '
-        id INT( 11 ) AUTO_INCREMENT PRIMARY KEY,
-        create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        delete_flag INT( 1 ) DEFAULT 0 NOT NULL,
-        create_from VARCHAR( 255 ) NULL,
-        delete_from VARCHAR( 255 ) NULL,
-        update_from VARCHAR( 255 ) NULL
-        ';
+            id INT( 11 ) AUTO_INCREMENT PRIMARY KEY,
+            create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            delete_flag INT( 1 ) DEFAULT 0 NOT NULL,
+            create_from VARCHAR( 255 ) NULL,
+            delete_from VARCHAR( 255 ) NULL,
+            update_from VARCHAR( 255 ) NULL
+            ';
         } else {
             $DefaultColumn = '
             id INT( 11 ) AUTO_INCREMENT PRIMARY KEY,
