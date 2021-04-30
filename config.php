@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var SEP = / or \ Based on OS
  * @var ROOT = App directory path
@@ -31,7 +32,8 @@ define("VIEW", ROOT . SEP . 'app' . SEP . 'View' . SEP);
 define("ROUTE", ROOT . SEP . 'routes' . SEP);
 define("APIROUTE", ROOT . SEP . 'api' . SEP . 'routes' . SEP);
 define("MODEL", ROOT . SEP . 'app' . SEP . 'Model' . SEP);
-define("PARISMODEL", ROOT . SEP . 'app' . SEP . 'paris' . SEP);
+define("PARISMODEL", ROOT . SEP . 'app' . SEP . 'Paris' . SEP);
+define("MIDDLEWARE", ROOT . SEP . 'app' . SEP . 'Middleware' . SEP);
 define("CONTROLLER", ROOT . SEP . 'app' . SEP . 'Controller' . SEP);
 define("STORAGE", ROOT . SEP . 'storage' . SEP);
 define("Tracktable", ROOT . SEP . 'engien' . SEP . 'Tracktable.csv');
