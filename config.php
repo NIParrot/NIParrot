@@ -55,11 +55,11 @@ define("RelationFile", ROOT . SEP . 'CLI' . SEP . 'relation.txt');
 define("TRACKING", false);
 define("HTTPS_PROTOCOL", false);
 define("DEV", true);
-define("USEDB", true);
-define("USEFIREBASE", true);
+define("USEDB", false);
+define("USEFIREBASE", false);
 define("USEPayMob", false);
 define("DeleteFlag", false);
-define("FrontFrame", 'all');
+define("FrontFrame", 'NI Parrot');
 /**
  * FrontFrame : UIkit
  * FrontFrame : Bootstrap
@@ -70,10 +70,10 @@ define("FrontFrame", 'all');
  */
 define("HOST", '127.0.0.1');
 define("PORT", '3306');
-define("USER", 'ahmed');
-define("PASS", '741852963');
-define("DBNAME", 'Kindergarten');
-define("DBTYPE", 'mysql');
+define("USER", 'NI Parrot');
+define("PASS", 'NI Parrot');
+define("DBNAME", 'NI Parrot');
+define("DBTYPE", 'NI Parrot');
 /**
  * DBTYPE : mysql
  * DBTYPE : sqlserv
@@ -82,8 +82,8 @@ define("DBTYPE", 'mysql');
 /**
  * @var APISK and @var Appname using in Api with JWT
  */
-define('APISK', 'Kindergarten');
-define('Appname', 'دار الشيماء');
+define('APISK', 'NI Parrot');
+define('Appname', 'NI Parrot');
 
 /**
  * @var NOTICE_MAIL = True or False, if you want using @method 'Email notifications'
@@ -98,7 +98,7 @@ define('Mail_Port', 'NI Parrot');
 /**
  * init firebase key here while it true
  */
-define("FIREBASE_KEY", 'AAAASXy2Ex0:APA91bF49cGV0ggkf6OVxngHP4SFPFzj6K_wRjOBZ7A8FFEtWj_HBitmUWhNOzvsRbUBLAIAUmYH8KNJ_84CmczSYTIM99IiaQ0nR9oSTJXb9pzSzIYeo8fu6KWAjDiaXqUN6Sz2hjS8');
+define("FIREBASE_KEY", 'key');
 
 /**
  * init patmob here
