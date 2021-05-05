@@ -8,4 +8,6 @@
 
 namespace Delight\FileUpload\Throwable;
 
-class InputNotSpecifiedError extends Error {}
+class InputNotSpecifiedError extends Error
+{
+}

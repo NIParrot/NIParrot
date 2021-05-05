@@ -9,11 +9,13 @@
  */
 namespace PharIo\Version;
 
-class VersionConstraintParser {
+class VersionConstraintParser
+{
     /**
      * @throws UnsupportedVersionConstraintException
      */
-    public function parse(string $value): VersionConstraint {
+    public function parse(string $value): VersionConstraint
+    {
         if (\strpos($value, '||') !== false) {
             return $this->handleOrGroup($value);
         }
@@ -25,10 +27,10 @@ class VersionConstraintParser {
         }
 
         switch ($value[0]) {
-            case '~':
-                return $this->handleTildeOperator($value);
-            case '^':
-                return $this->handleCaretOperator($value);
+        case '~':
+            return $this->handleTildeOperator($value);
+        case '^':
+            return $this->handleCaretOperator($value);
         }
 
         $constraint = new VersionConstraintValue($value);
@@ -55,7 +57,8 @@ class VersionConstraintParser {
         return new ExactVersionConstraint($constraint->getVersionString());
     }
 
-    private function handleOrGroup(string $value): OrVersionConstraintGroup {
+    private function handleOrGroup(string $value): OrVersionConstraintGroup
+    {
         $constraints = [];
 
         foreach (\explode('||', $value) as $groupSegment) {
@@ -65,7 +68,8 @@ class VersionConstraintParser {
         return new OrVersionConstraintGroup($value, $constraints);
     }
 
-    private function handleTildeOperator(string $value): AndVersionConstraintGroup {
+    private function handleTildeOperator(string $value): AndVersionConstraintGroup
+    {
         $constraintValue = new VersionConstraintValue(\substr($value, 1));
 
         if ($constraintValue->getPatch()->isAny()) {
@@ -87,7 +91,8 @@ class VersionConstraintParser {
         return new AndVersionConstraintGroup($value, $constraints);
     }
 
-    private function handleCaretOperator(string $value): AndVersionConstraintGroup {
+    private function handleCaretOperator(string $value): AndVersionConstraintGroup
+    {
         $constraintValue = new VersionConstraintValue(\substr($value, 1));
 
         $constraints = [

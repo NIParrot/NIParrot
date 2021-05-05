@@ -83,9 +83,13 @@ class ArgumentsWildcard
     public function __toString()
     {
         if (null === $this->string) {
-            $this->string = implode(', ', array_map(function ($token) {
-                return (string) $token;
-            }, $this->tokens));
+            $this->string = implode(
+                ', ', array_map(
+                    function ($token) {
+                        return (string) $token;
+                    }, $this->tokens
+                )
+            );
         }
 
         return $this->string;

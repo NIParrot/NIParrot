@@ -73,7 +73,7 @@ final class Message
     /**
      * Creates a new request message for the given query
      *
-     * @param Query $query
+     * @param  Query $query
      * @return self
      */
     public static function createRequestForQuery(Query $query)
@@ -89,8 +89,8 @@ final class Message
     /**
      * Creates a new response message for the given query with the given answer records
      *
-     * @param Query    $query
-     * @param Record[] $answers
+     * @param  Query    $query
+     * @param  Record[] $answers
      * @return self
      */
     public static function createResponseWithAnswersForQuery(Query $query, array $answers)
@@ -123,8 +123,8 @@ final class Message
      * in the hope that this system is properly protected against outside
      * attackers, for example by using one of the common local DNS proxy stubs.
      *
-     * @return int
-     * @see self::getId()
+     * @return             int
+     * @see                self::getId()
      * @codeCoverageIgnore
      */
     private static function generateId()

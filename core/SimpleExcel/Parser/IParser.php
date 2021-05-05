@@ -9,7 +9,9 @@ namespace SimpleExcel\Parser;
  * @package SimpleExcel
  */
 
-/** define parser interface */
+/**
+ * define parser interface 
+ */
 interface IParser
 {
     public function getCell($row_num, $col_num, $val_only);

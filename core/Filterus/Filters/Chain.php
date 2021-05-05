@@ -2,13 +2,15 @@
 
 namespace Filterus\Filters;
 
-class Chain extends \Filterus\Filter {
+class Chain extends \Filterus\Filter
+{
     
     protected $defaultOptions = array(
         'filters' => array(),
     );
 
-    public function filter($var) {
+    public function filter($var)
+    {
         foreach ($this->options['filters'] as $filter) {
             $filter = self::factory($filter);
             $var = $filter->filter($var);
@@ -16,7 +18,8 @@ class Chain extends \Filterus\Filter {
         return $var;
     }
 
-    public function validate($var) {
+    public function validate($var)
+    {
         foreach ($this->options['filters'] as $filter) {
             $filter = self::factory($filter);
             if (!$filter->validate($var)) {

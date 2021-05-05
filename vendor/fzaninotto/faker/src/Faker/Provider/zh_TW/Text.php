@@ -18,6 +18,7 @@ class Text extends \Faker\Provider\Text
      * Title: 吶喊 Call to Arms (1922)
      * Author: 魯迅 Lu Xun
      * Language: Traditional Chinese
+     *
      * @see https://zh.wikisource.org/wiki/%E5%90%B6%E5%96%8A
      * @var string
      */
@@ -856,7 +857,7 @@ EOT;
     /**
      * Convert original string to utf-8 encoding.
      *
-     * @param string $text
+     * @param  string $text
      * @return array
      */
     protected static function utf8Encoding($text)
@@ -873,21 +874,21 @@ EOT;
             $ord = ord($chars[$i]);
 
             switch (true) {
-                case $ord > 251:
-                    $temp .= $chars[++$i];
-                    // no break
-                case $ord > 247:
-                    $temp .= $chars[++$i];
-                    // no break
-                case $ord > 239:
-                    $temp .= $chars[++$i];
-                    // no break
-                case $ord > 223:
-                    $temp .= $chars[++$i];
-                    // no break
-                case $ord > 191:
-                    $temp .= $chars[++$i];
-                    // no break
+            case $ord > 251:
+                $temp .= $chars[++$i];
+                // no break
+            case $ord > 247:
+                $temp .= $chars[++$i];
+                // no break
+            case $ord > 239:
+                $temp .= $chars[++$i];
+                // no break
+            case $ord > 223:
+                $temp .= $chars[++$i];
+                // no break
+            case $ord > 191:
+                $temp .= $chars[++$i];
+                // no break
             }
 
             $encoding[] = $temp;

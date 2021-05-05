@@ -109,13 +109,17 @@ final class WritableResourceStream extends EventEmitter implements WritableStrea
         }
     }
 
-    /** @internal */
+    /**
+     * @internal 
+     */
     public function handleWrite()
     {
         $error = null;
-        \set_error_handler(function ($_, $errstr) use (&$error) {
-            $error = $errstr;
-        });
+        \set_error_handler(
+            function ($_, $errstr) use (&$error) {
+                $error = $errstr;
+            }
+        );
 
         if ($this->writeChunkSize === -1) {
             $sent = \fwrite($this->stream, $this->data);

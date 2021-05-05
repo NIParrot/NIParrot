@@ -20,9 +20,13 @@ use Prophecy\Exception\InvalidArgumentException;
  */
 class ArrayEntryToken implements TokenInterface
 {
-    /** @var \Prophecy\Argument\Token\TokenInterface */
+    /**
+     * @var \Prophecy\Argument\Token\TokenInterface 
+     */
     private $key;
-    /** @var \Prophecy\Argument\Token\TokenInterface */
+    /**
+     * @var \Prophecy\Argument\Token\TokenInterface 
+     */
     private $value;
 
     /**
@@ -110,7 +114,7 @@ class ArrayEntryToken implements TokenInterface
     /**
      * Wraps non token $value into ExactValueToken
      *
-     * @param $value
+     * @param  $value
      * @return TokenInterface
      */
     private function wrapIntoExactValueToken($value)
@@ -129,11 +133,13 @@ class ArrayEntryToken implements TokenInterface
     private function convertArrayAccessToEntry(\ArrayAccess $object)
     {
         if (!$this->key instanceof ExactValueToken) {
-            throw new InvalidArgumentException(sprintf(
-                'You can only use exact value tokens to match key of ArrayAccess object'.PHP_EOL.
-                'But you used `%s`.',
-                $this->key
-            ));
+            throw new InvalidArgumentException(
+                sprintf(
+                    'You can only use exact value tokens to match key of ArrayAccess object'.PHP_EOL.
+                    'But you used `%s`.',
+                    $this->key
+                )
+            );
         }
 
         $key = $this->key->getValue();

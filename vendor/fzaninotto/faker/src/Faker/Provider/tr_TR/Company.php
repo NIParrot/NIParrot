@@ -30,9 +30,9 @@ class Company extends \Faker\Provider\Company
     );
 
     /**
-    * @link https://tr.wikipedia.org/wiki/Meslekler_listesi
-    * @note Randomly took 300 from this list
-    */
+     * @link https://tr.wikipedia.org/wiki/Meslekler_listesi
+     * @note Randomly took 300 from this list
+     */
     protected static $jobTitleFormat = array(
         'Acil tıp teknisyeni', 'Agronomist', 'Aile hekimi', 'Aktar', 'Aktör', 'Aktüer',
         'Akustikçi', 'Albay', 'Ambarcı', 'Ambulans şoförü', 'Amiral', 'Analist',

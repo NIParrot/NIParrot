@@ -61,11 +61,15 @@ class RejectedPromise implements ExtendedPromiseInterface, CancellablePromiseInt
 
     public function always(callable $onFulfilledOrRejected)
     {
-        return $this->then(null, function ($reason) use ($onFulfilledOrRejected) {
-            return resolve($onFulfilledOrRejected())->then(function () use ($reason) {
-                return new RejectedPromise($reason);
-            });
-        });
+        return $this->then(
+            null, function ($reason) use ($onFulfilledOrRejected) {
+                return resolve($onFulfilledOrRejected())->then(
+                    function () use ($reason) {
+                        return new RejectedPromise($reason);
+                    }
+                );
+            }
+        );
     }
 
     public function progress(callable $onProgress)

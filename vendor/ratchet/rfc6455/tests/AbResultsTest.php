@@ -1,8 +1,10 @@
 <?php
 namespace Ratchet\RFC6455\Test;
 
-class AbResultsTest extends \PHPUnit_Framework_TestCase {
-    private function verifyAutobahnResults($fileName) {
+class AbResultsTest extends \PHPUnit_Framework_TestCase
+{
+    private function verifyAutobahnResults($fileName)
+    {
         if (!file_exists($fileName)) {
             return $this->markTestSkipped('Autobahn TestSuite results not found');
         }
@@ -20,11 +22,13 @@ class AbResultsTest extends \PHPUnit_Framework_TestCase {
         }
     }
 
-    public function testAutobahnClientResults() {
+    public function testAutobahnClientResults()
+    {
         $this->verifyAutobahnResults(__DIR__ . '/ab/reports/clients/index.json');
     }
 
-    public function testAutobahnServerResults() {
+    public function testAutobahnServerResults()
+    {
         $this->verifyAutobahnResults(__DIR__ . '/ab/reports/servers/index.json');
     }
 }

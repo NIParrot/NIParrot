@@ -64,7 +64,7 @@ class ArrayCountToken implements TokenInterface
     /**
      * Returns true if object is either array or instance of \Countable
      *
-     * @param $argument
+     * @param  $argument
      * @return bool
      */
     private function isCountable($argument)

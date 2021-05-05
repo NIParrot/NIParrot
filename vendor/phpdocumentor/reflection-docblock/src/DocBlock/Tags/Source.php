@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Reflection\DocBlock\Tags;
@@ -24,13 +24,19 @@ use function preg_match;
  */
 final class Source extends BaseTag implements Factory\StaticMethod
 {
-    /** @var string */
+    /**
+     * @var string 
+     */
     protected $name = 'source';
 
-    /** @var int The starting line, relative to the structural element's location. */
+    /**
+     * @var int The starting line, relative to the structural element's location. 
+     */
     private $startingLine;
 
-    /** @var int|null The number of lines, relative to the starting line. NULL means "to the end". */
+    /**
+     * @var int|null The number of lines, relative to the starting line. NULL means "to the end". 
+     */
     private $lineCount;
 
     /**

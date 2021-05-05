@@ -8,4 +8,6 @@
 
 namespace Delight\FileUpload\Throwable;
 
-class TotalSizeExceededError extends Error {}
+class TotalSizeExceededError extends Error
+{
+}

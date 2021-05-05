@@ -61,11 +61,13 @@ final class CoopExecutor implements ExecutorInterface
 
             $pending =& $this->pending;
             $counts =& $this->counts;
-            $promise->then(function () use ($key, &$pending, &$counts) {
-                unset($pending[$key], $counts[$key]);
-            }, function () use ($key, &$pending, &$counts) {
-                unset($pending[$key], $counts[$key]);
-            });
+            $promise->then(
+                function () use ($key, &$pending, &$counts) {
+                    unset($pending[$key], $counts[$key]);
+                }, function () use ($key, &$pending, &$counts) {
+                    unset($pending[$key], $counts[$key]);
+                }
+            );
         }
 
         // Return a child promise awaiting the pending query.
@@ -73,16 +75,18 @@ final class CoopExecutor implements ExecutorInterface
         // when no other child promise is awaiting the same query.
         $pending =& $this->pending;
         $counts =& $this->counts;
-        return new Promise(function ($resolve, $reject) use ($promise) {
-            $promise->then($resolve, $reject);
-        }, function () use (&$promise, $key, $query, &$pending, &$counts) {
-            if (--$counts[$key] < 1) {
-                unset($pending[$key], $counts[$key]);
-                $promise->cancel();
-                $promise = null;
+        return new Promise(
+            function ($resolve, $reject) use ($promise) {
+                $promise->then($resolve, $reject);
+            }, function () use (&$promise, $key, $query, &$pending, &$counts) {
+                if (--$counts[$key] < 1) {
+                    unset($pending[$key], $counts[$key]);
+                    $promise->cancel();
+                    $promise = null;
+                }
+                throw new \RuntimeException('DNS query for ' . $query->describe() . ' has been cancelled');
             }
-            throw new \RuntimeException('DNS query for ' . $query->describe() . ' has been cancelled');
-        });
+        );
     }
 
     private function serializeQueryToIdentity(Query $query)

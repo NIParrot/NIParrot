@@ -514,8 +514,9 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             if (isset($sections[$section . '_EXTERNAL'])) {
                 $externalFilename = trim($sections[$section . '_EXTERNAL']);
 
-                if (!is_file($testDirectory . $externalFilename) ||
-                    !is_readable($testDirectory . $externalFilename)) {
+                if (!is_file($testDirectory . $externalFilename) 
+                    || !is_readable($testDirectory . $externalFilename)
+                ) {
                     throw new Exception(
                         sprintf(
                             'Could not load --%s-- %s for PHPT file',

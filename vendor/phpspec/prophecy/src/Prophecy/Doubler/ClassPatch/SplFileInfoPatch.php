@@ -35,8 +35,7 @@ class SplFileInfoPatch implements ClassPatchInterface
             return false;
         }
         return 'SplFileInfo' === $node->getParentClass()
-            || is_subclass_of($node->getParentClass(), 'SplFileInfo')
-        ;
+            || is_subclass_of($node->getParentClass(), 'SplFileInfo');
     }
 
     /**
@@ -60,14 +59,14 @@ class SplFileInfoPatch implements ClassPatchInterface
         }
 
         if ($this->nodeIsSplFileObject($node)) {
-            $filePath = str_replace('\\','\\\\',__FILE__);
+            $filePath = str_replace('\\', '\\\\', __FILE__);
             $constructor->setCode('return parent::__construct("' . $filePath .'");');
 
             return;
         }
 
         if ($this->nodeIsSymfonySplFileInfo($node)) {
-            $filePath = str_replace('\\','\\\\',__FILE__);
+            $filePath = str_replace('\\', '\\\\', __FILE__);
             $constructor->setCode('return parent::__construct("' . $filePath .'", "", "");');
 
             return;
@@ -87,7 +86,7 @@ class SplFileInfoPatch implements ClassPatchInterface
     }
 
     /**
-     * @param ClassNode $node
+     * @param  ClassNode $node
      * @return boolean
      */
     private function nodeIsDirectoryIterator(ClassNode $node)
@@ -99,7 +98,7 @@ class SplFileInfoPatch implements ClassPatchInterface
     }
 
     /**
-     * @param ClassNode $node
+     * @param  ClassNode $node
      * @return boolean
      */
     private function nodeIsSplFileObject(ClassNode $node)
@@ -111,7 +110,7 @@ class SplFileInfoPatch implements ClassPatchInterface
     }
 
     /**
-     * @param ClassNode $node
+     * @param  ClassNode $node
      * @return boolean
      */
     private function nodeIsSymfonySplFileInfo(ClassNode $node)

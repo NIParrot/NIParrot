@@ -14,7 +14,7 @@ use function sprintf;
 class UnexpectedValueException extends BaseUnexpectedValueException implements ExceptionInterface
 {
     /**
-     * @template T of object
+     * @template      T of object
      * @phpstan-param ReflectionClass<T> $reflectionClass
      */
     public static function fromSerializationTriggeredException(
@@ -32,7 +32,7 @@ class UnexpectedValueException extends BaseUnexpectedValueException implements E
     }
 
     /**
-     * @template T of object
+     * @template      T of object
      * @phpstan-param ReflectionClass<T> $reflectionClass
      */
     public static function fromUncleanUnSerialization(

@@ -38,22 +38,30 @@ use function var_export;
  */
 final class Method extends BaseTag implements Factory\StaticMethod
 {
-    /** @var string */
+    /**
+     * @var string 
+     */
     protected $name = 'method';
 
-    /** @var string */
+    /**
+     * @var string 
+     */
     private $methodName;
 
     /**
      * @phpstan-var array<int, array{name: string, type: Type}>
-     * @var array<int, array<string, Type|string>>
+     * @var         array<int, array<string, Type|string>>
      */
     private $arguments;
 
-    /** @var bool */
+    /**
+     * @var bool 
+     */
     private $isStatic;
 
-    /** @var Type */
+    /**
+     * @var Type 
+     */
     private $returnType;
 
     /**
@@ -133,7 +141,8 @@ final class Method extends BaseTag implements Factory\StaticMethod
             $/sux',
             $body,
             $matches
-        )) {
+        )
+        ) {
             return null;
         }
 
@@ -148,7 +157,9 @@ final class Method extends BaseTag implements Factory\StaticMethod
         $returnType  = $typeResolver->resolve($returnType, $context);
         $description = $descriptionFactory->create($description, $context);
 
-        /** @phpstan-var array<int, array{name: string, type: Type}> $arguments */
+        /**
+ * @phpstan-var array<int, array{name: string, type: Type}> $arguments 
+*/
         $arguments = [];
         if ($argumentLines !== '') {
             $argumentsExploded = explode(',', $argumentLines);
@@ -239,7 +250,7 @@ final class Method extends BaseTag implements Factory\StaticMethod
      *
      * @return mixed[][]
      *
-     * @phpstan-param array<int, array{name: string, type: Type}|string> $arguments
+     * @phpstan-param  array<int, array{name: string, type: Type}|string> $arguments
      * @phpstan-return array<int, array{name: string, type: Type}>
      */
     private function filterArguments(array $arguments = []) : array

@@ -38,13 +38,21 @@ class Request
     const HEADER_X_FORWARDED_ALL = 0b11110; // All "X-Forwarded-*" headers
     const HEADER_X_FORWARDED_AWS_ELB = 0b11010; // AWS ELB doesn't send X-Forwarded-Host
 
-    /** @deprecated since version 3.3, to be removed in 4.0 */
+    /**
+ * @deprecated since version 3.3, to be removed in 4.0 
+*/
     const HEADER_CLIENT_IP = self::HEADER_X_FORWARDED_FOR;
-    /** @deprecated since version 3.3, to be removed in 4.0 */
+    /**
+ * @deprecated since version 3.3, to be removed in 4.0 
+*/
     const HEADER_CLIENT_HOST = self::HEADER_X_FORWARDED_HOST;
-    /** @deprecated since version 3.3, to be removed in 4.0 */
+    /**
+ * @deprecated since version 3.3, to be removed in 4.0 
+*/
     const HEADER_CLIENT_PROTO = self::HEADER_X_FORWARDED_PROTO;
-    /** @deprecated since version 3.3, to be removed in 4.0 */
+    /**
+ * @deprecated since version 3.3, to be removed in 4.0 
+*/
     const HEADER_CLIENT_PORT = self::HEADER_X_FORWARDED_PORT;
 
     const METHOD_HEAD = 'HEAD';
@@ -225,7 +233,9 @@ class Request
 
     private static $trustedHeaderSet = -1;
 
-    /** @deprecated since version 3.3, to be removed in 4.0 */
+    /**
+     * @deprecated since version 3.3, to be removed in 4.0 
+     */
     private static $trustedHeaderNames = [
         self::HEADER_FORWARDED => 'FORWARDED',
         self::HEADER_CLIENT_IP => 'X_FORWARDED_FOR',
@@ -341,7 +351,8 @@ class Request
      */
     public static function create($uri, $method = 'GET', $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
     {
-        $server = array_replace([
+        $server = array_replace(
+            [
             'SERVER_NAME' => 'localhost',
             'SERVER_PORT' => 80,
             'HTTP_HOST' => 'localhost',
@@ -354,7 +365,8 @@ class Request
             'SCRIPT_FILENAME' => '',
             'SERVER_PROTOCOL' => 'HTTP/1.1',
             'REQUEST_TIME' => time(),
-        ], $server);
+            ], $server
+        );
 
         $server['PATH_INFO'] = '';
         $server['REQUEST_METHOD'] = strtoupper($method);
@@ -393,21 +405,21 @@ class Request
         }
 
         switch (strtoupper($method)) {
-            case 'POST':
-            case 'PUT':
-            case 'DELETE':
-                if (!isset($server['CONTENT_TYPE'])) {
-                    $server['CONTENT_TYPE'] = 'application/x-www-form-urlencoded';
-                }
-                // no break
-            case 'PATCH':
-                $request = $parameters;
-                $query = [];
-                break;
-            default:
-                $request = [];
-                $query = $parameters;
-                break;
+        case 'POST':
+        case 'PUT':
+        case 'DELETE':
+            if (!isset($server['CONTENT_TYPE'])) {
+                $server['CONTENT_TYPE'] = 'application/x-www-form-urlencoded';
+            }
+            // no break
+        case 'PATCH':
+            $request = $parameters;
+            $query = [];
+            break;
+        default:
+            $request = [];
+            $query = $parameters;
+            break;
         }
 
         $queryString = '';
@@ -644,9 +656,11 @@ class Request
      */
     public static function setTrustedHosts(array $hostPatterns)
     {
-        self::$trustedHostPatterns = array_map(function ($hostPattern) {
-            return sprintf('{%s}i', $hostPattern);
-        }, $hostPatterns);
+        self::$trustedHostPatterns = array_map(
+            function ($hostPattern) {
+                return sprintf('{%s}i', $hostPattern);
+            }, $hostPatterns
+        );
         // we need to reset trusted hosts on trusted host patterns change
         self::$trustedHosts = [];
     }

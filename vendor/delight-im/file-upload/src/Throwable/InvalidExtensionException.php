@@ -8,4 +8,6 @@
 
 namespace Delight\FileUpload\Throwable;
 
-class InvalidExtensionException extends Exception {}
+class InvalidExtensionException extends Exception
+{
+}

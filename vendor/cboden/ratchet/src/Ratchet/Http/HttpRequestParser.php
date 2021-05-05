@@ -9,23 +9,26 @@ use GuzzleHttp\Psr7 as gPsr;
  * and parses HTTP headers, returning a PSR-7 Request object
  * once it's been buffered
  */
-class HttpRequestParser implements MessageInterface {
+class HttpRequestParser implements MessageInterface
+{
     const EOM = "\r\n\r\n";
 
     /**
      * The maximum number of bytes the request can be
      * This is a security measure to prevent attacks
+     *
      * @var int
      */
     public $maxSize = 4096;
 
     /**
-     * @param \Ratchet\ConnectionInterface $context
-     * @param string                       $data Data stream to buffer
+     * @param  \Ratchet\ConnectionInterface $context
+     * @param  string                       $data    Data stream to buffer
      * @return \Psr\Http\Message\RequestInterface
      * @throws \OverflowException If the message buffer has become too large
      */
-    public function onMessage(ConnectionInterface $context, $data) {
+    public function onMessage(ConnectionInterface $context, $data)
+    {
         if (!isset($context->httpBuffer)) {
             $context->httpBuffer = '';
         }
@@ -47,18 +50,21 @@ class HttpRequestParser implements MessageInterface {
 
     /**
      * Determine if the message has been buffered as per the HTTP specification
-     * @param  string  $message
+     *
+     * @param  string $message
      * @return boolean
      */
-    public function isEom($message) {
+    public function isEom($message)
+    {
         return (boolean)strpos($message, static::EOM);
     }
 
     /**
-     * @param string $headers
+     * @param  string $headers
      * @return \Psr\Http\Message\RequestInterface
      */
-    public function parse($headers) {
+    public function parse($headers)
+    {
         return gPsr\parse_request($headers);
     }
 }

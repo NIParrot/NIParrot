@@ -9,17 +9,22 @@
  */
 namespace PharIo\Manifest;
 
-class Url {
-    /** @var string */
+class Url
+{
+    /**
+     * @var string 
+     */
     private $url;
 
-    public function __construct(string $url) {
+    public function __construct(string $url)
+    {
         $this->ensureUrlIsValid($url);
 
         $this->url = $url;
     }
 
-    public function asString(): string {
+    public function asString(): string
+    {
         return $this->url;
     }
 
@@ -28,7 +33,8 @@ class Url {
      *
      * @throws InvalidUrlException
      */
-    private function ensureUrlIsValid($url): void {
+    private function ensureUrlIsValid($url): void
+    {
         if (\filter_var($url, \FILTER_VALIDATE_URL) === false) {
             throw new InvalidUrlException;
         }

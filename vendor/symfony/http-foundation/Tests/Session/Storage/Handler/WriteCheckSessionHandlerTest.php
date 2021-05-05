@@ -30,8 +30,7 @@ class WriteCheckSessionHandlerTest extends TestCase
             ->expects($this->once())
             ->method('close')
             ->with()
-            ->willReturn(true)
-        ;
+            ->willReturn(true);
 
         $this->assertTrue($writeCheckSessionHandler->close());
     }
@@ -45,8 +44,7 @@ class WriteCheckSessionHandlerTest extends TestCase
             ->expects($this->once())
             ->method('write')
             ->with('foo', 'bar')
-            ->willReturn(true)
-        ;
+            ->willReturn(true);
 
         $this->assertTrue($writeCheckSessionHandler->write('foo', 'bar'));
     }
@@ -60,13 +58,11 @@ class WriteCheckSessionHandlerTest extends TestCase
             ->expects($this->once())
             ->method('read')
             ->with('foo')
-            ->willReturn('bar')
-        ;
+            ->willReturn('bar');
 
         $wrappedSessionHandlerMock
             ->expects($this->never())
-            ->method('write')
-        ;
+            ->method('write');
 
         $this->assertEquals('bar', $writeCheckSessionHandler->read('foo'));
         $this->assertTrue($writeCheckSessionHandler->write('foo', 'bar'));
@@ -81,15 +77,13 @@ class WriteCheckSessionHandlerTest extends TestCase
             ->expects($this->once())
             ->method('read')
             ->with('foo')
-            ->willReturn('bar')
-        ;
+            ->willReturn('bar');
 
         $wrappedSessionHandlerMock
             ->expects($this->once())
             ->method('write')
             ->with('foo', 'baZZZ')
-            ->willReturn(true)
-        ;
+            ->willReturn(true);
 
         $this->assertEquals('bar', $writeCheckSessionHandler->read('foo'));
         $this->assertTrue($writeCheckSessionHandler->write('foo', 'baZZZ'));

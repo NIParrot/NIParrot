@@ -24,8 +24,8 @@ interface CacheInterface
      * `var_dump` function. You can use any of the composition provided by
      * [promises](https://github.com/reactphp/promise).
      *
-     * @param string $key
-     * @param mixed  $default Default value to return for cache miss or null if not given.
+     * @param  string $key
+     * @param  mixed  $default Default value to return for cache miss or null if not given.
      * @return PromiseInterface<mixed>
      */
     public function get($key, $default = null);
@@ -69,9 +69,9 @@ interface CacheInterface
      * adjust your system time forward by 20s, the cache item SHOULD still
      * expire in 30s.
      *
-     * @param string $key
-     * @param mixed  $value
-     * @param ?float $ttl
+     * @param  string $key
+     * @param  mixed  $value
+     * @param  ?float $ttl
      * @return PromiseInterface<bool> Returns a promise which resolves to `true` on success or `false` on error
      */
     public function set($key, $value, $ttl = null);
@@ -92,7 +92,7 @@ interface CacheInterface
      * `set()`, this may not happen instantly and a promise is returned to
      * provide guarantees whether or not the item has been removed from cache.
      *
-     * @param string $key
+     * @param  string $key
      * @return PromiseInterface<bool> Returns a promise which resolves to `true` on success or `false` on error
      */
     public function delete($key);
@@ -118,8 +118,8 @@ interface CacheInterface
      * prints some example output. You can use any of the composition provided
      * by [promises](https://github.com/reactphp/promise).
      *
-     * @param string[] $keys A list of keys that can obtained in a single operation.
-     * @param mixed $default Default value to return for keys that do not exist.
+     * @param  string[] $keys    A list of keys that can obtained in a single operation.
+     * @param  mixed    $default Default value to return for keys that do not exist.
      * @return PromiseInterface<array> Returns a promise which resolves to an `array` of cached values
      */
     public function getMultiple(array $keys, $default = null);
@@ -144,8 +144,8 @@ interface CacheInterface
      * This example eventually sets the list of values - the key `foo` to 1 value
      * and the key `bar` to 2. If some of the keys already exist, they are overridden.
      *
-     * @param array  $values A list of key => value pairs for a multiple-set operation.
-     * @param ?float $ttl    Optional. The TTL value of this item.
+     * @param  array  $values A list of key => value pairs for a multiple-set operation.
+     * @param  ?float $ttl    Optional. The TTL value of this item.
      * @return PromiseInterface<bool> Returns a promise which resolves to `true` on success or `false` on error
      */
     public function setMultiple(array $values, $ttl = null);
@@ -153,7 +153,7 @@ interface CacheInterface
     /**
      * Deletes multiple cache items in a single operation.
      *
-     * @param string[] $keys A list of string-based keys to be deleted.
+     * @param  string[] $keys A list of string-based keys to be deleted.
      * @return PromiseInterface<bool> Returns a promise which resolves to `true` on success or `false` on error
      */
     public function deleteMultiple(array $keys);
@@ -187,7 +187,7 @@ interface CacheInterface
      * is subject to a race condition where your has() will return true and immediately after,
      * another script can remove it making the state of your app out of date.
      *
-     * @param string $key The cache item key.
+     * @param  string $key The cache item key.
      * @return PromiseInterface<bool> Returns a promise which resolves to `true` on success or `false` on error
      */
     public function has($key);

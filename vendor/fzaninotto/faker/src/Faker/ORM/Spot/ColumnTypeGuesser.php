@@ -11,6 +11,7 @@ class ColumnTypeGuesser
 
     /**
      * ColumnTypeGuesser constructor.
+     *
      * @param Generator $generator
      */
     public function __construct(Generator $generator)
@@ -19,7 +20,7 @@ class ColumnTypeGuesser
     }
 
     /**
-     * @param array $field
+     * @param  array $field
      * @return \Closure|null
      */
     public function guessFormat(array $field)
@@ -27,10 +28,10 @@ class ColumnTypeGuesser
         $generator = $this->generator;
         $type = $field['type'];
         switch ($type) {
-            case 'boolean':
-                return function () use ($generator) {
+        case 'boolean':
+            return function () use ($generator) {
                     return $generator->boolean;
-                };
+            };
             case 'decimal':
                 $size = isset($field['precision']) ? $field['precision'] : 2;
 

@@ -43,12 +43,16 @@ final class Server extends EventEmitter implements ServerInterface
         $this->server = $server;
 
         $that = $this;
-        $server->on('connection', function (ConnectionInterface $conn) use ($that) {
-            $that->emit('connection', array($conn));
-        });
-        $server->on('error', function (Exception $error) use ($that) {
-            $that->emit('error', array($error));
-        });
+        $server->on(
+            'connection', function (ConnectionInterface $conn) use ($that) {
+                $that->emit('connection', array($conn));
+            }
+        );
+        $server->on(
+            'error', function (Exception $error) use ($that) {
+                $that->emit('error', array($error));
+            }
+        );
     }
 
     public function getAddress()

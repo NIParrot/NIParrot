@@ -61,20 +61,18 @@ class Ubench
     /**
      * Returns the elapsed time, readable or not
      *
-     * @param bool $raw
+     * @param  bool   $raw
      * @param  string $format The format to display (printf format)
      * @return float|string
      * @throws Exception
      */
     public function getTime($raw = false, $format = null)
     {
-        if (!$this->hasStarted())
-        {
+        if (!$this->hasStarted()) {
             throw new LogicException("You must call start()");
         }
 
-        if (!$this->hasEnded())
-        {
+        if (!$this->hasEnded()) {
             throw new LogicException("You must call end()");
         }
 
@@ -115,7 +113,7 @@ class Ubench
      * Additional arguments passed to this method will be passed to
      * the callable.
      *
-     * @param callable $callable
+     * @param  callable $callable
      * @return mixed
      */
     public function run(callable $callable)
@@ -133,10 +131,10 @@ class Ubench
     /**
      * Returns a human readable memory size
      *
-     * @param   int    $size
-     * @param   string $format   The format to display (printf format)
-     * @param   int    $round
-     * @return  string
+     * @param  int    $size
+     * @param  string $format The format to display (printf format)
+     * @param  int    $round
+     * @return string
      */
     public static function readableSize($size, $format = null, $round = 3)
     {
@@ -146,7 +144,7 @@ class Ubench
             $format = '%.2f%s';
         }
 
-        $units = explode(' ','B Kb Mb Gb Tb');
+        $units = explode(' ', 'B Kb Mb Gb Tb');
 
         for ($i = 0; $size > $mod; $i++) {
             $size /= $mod;
@@ -162,8 +160,8 @@ class Ubench
     /**
      * Returns a human readable elapsed time
      *
-     * @param  float $microtime
-     * @param  string  $format   The format to display (printf format)
+     * @param  float  $microtime
+     * @param  string $format    The format to display (printf format)
      * @return string
      */
     public static function readableElapsedTime($microtime, $format = null, $round = 3)

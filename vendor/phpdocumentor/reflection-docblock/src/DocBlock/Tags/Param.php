@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Reflection\DocBlock\Tags;
@@ -32,13 +32,19 @@ use const PREG_SPLIT_DELIM_CAPTURE;
  */
 final class Param extends TagWithType implements Factory\StaticMethod
 {
-    /** @var string|null */
+    /**
+     * @var string|null 
+     */
     private $variableName;
 
-    /** @var bool determines whether this is a variadic argument */
+    /**
+     * @var bool determines whether this is a variadic argument 
+     */
     private $isVariadic;
 
-    /** @var bool determines whether this is passed by reference */
+    /**
+     * @var bool determines whether this is passed by reference 
+     */
     private $isReference;
 
     public function __construct(

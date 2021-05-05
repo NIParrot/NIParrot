@@ -13,7 +13,9 @@ use Psr\Http\Message\StreamInterface;
  */
 class AppendStream implements StreamInterface
 {
-    /** @var StreamInterface[] Streams being decorated */
+    /**
+     * @var StreamInterface[] Streams being decorated 
+     */
     private $streams = [];
 
     private $seekable = true;
@@ -165,8 +167,10 @@ class AppendStream implements StreamInterface
             try {
                 $stream->rewind();
             } catch (\Exception $e) {
-                throw new \RuntimeException('Unable to seek stream '
-                    . $i . ' of the AppendStream', 0, $e);
+                throw new \RuntimeException(
+                    'Unable to seek stream '
+                    . $i . ' of the AppendStream', 0, $e
+                );
             }
         }
 

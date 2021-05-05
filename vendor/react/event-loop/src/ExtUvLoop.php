@@ -185,9 +185,11 @@ final class ExtUvLoop implements LoopInterface
         if (!isset($this->signalEvents[$signal])) {
             $signals = $this->signals;
             $this->signalEvents[$signal] = \uv_signal_init($this->uv);
-            \uv_signal_start($this->signalEvents[$signal], function () use ($signals, $signal) {
-                $signals->call($signal);
-            }, $signal);
+            \uv_signal_start(
+                $this->signalEvents[$signal], function () use ($signals, $signal) {
+                    $signals->call($signal);
+                }, $signal
+            );
         }
     }
 
@@ -258,7 +260,8 @@ final class ExtUvLoop implements LoopInterface
         }
 
         if (!isset($this->readStreams[(int) $stream])
-            && !isset($this->writeStreams[(int) $stream])) {
+            && !isset($this->writeStreams[(int) $stream])
+        ) {
             \uv_poll_stop($this->streamEvents[(int) $stream]);
             \uv_close($this->streamEvents[(int) $stream]);
             unset($this->streamEvents[(int) $stream]);
@@ -318,7 +321,7 @@ final class ExtUvLoop implements LoopInterface
     }
 
     /**
-     * @param float $interval
+     * @param  float $interval
      * @return int
      */
     private function convertFloatSecondsToMilliseconds($interval)

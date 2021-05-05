@@ -23,13 +23,19 @@ use ReflectionMethod;
  */
 final class Registry
 {
-    /** @var null|self */
+    /**
+     * @var null|self 
+     */
     private static $instance;
 
-    /** @var array<string, DocBlock> indexed by class name */
+    /**
+     * @var array<string, DocBlock> indexed by class name 
+     */
     private $classDocBlocks = [];
 
-    /** @var array<string, array<string, DocBlock>> indexed by class name and method name */
+    /**
+     * @var array<string, array<string, DocBlock>> indexed by class name and method name 
+     */
     private $methodDocBlocks = [];
 
     public static function getInstance(): self
@@ -42,7 +48,7 @@ final class Registry
     }
 
     /**
-     * @throws Exception
+     * @throws      Exception
      * @psalm-param class-string $class
      */
     public function forClassName(string $class): DocBlock
@@ -67,7 +73,7 @@ final class Registry
     }
 
     /**
-     * @throws Exception
+     * @throws      Exception
      * @psalm-param class-string $classInHierarchy
      */
     public function forMethod(string $classInHierarchy, string $method): DocBlock

@@ -9,17 +9,22 @@
  */
 namespace PharIo\Version;
 
-class GreaterThanOrEqualToVersionConstraint extends AbstractVersionConstraint {
-    /** @var Version */
+class GreaterThanOrEqualToVersionConstraint extends AbstractVersionConstraint
+{
+    /**
+     * @var Version 
+     */
     private $minimalVersion;
 
-    public function __construct(string $originalValue, Version $minimalVersion) {
+    public function __construct(string $originalValue, Version $minimalVersion)
+    {
         parent::__construct($originalValue);
 
         $this->minimalVersion = $minimalVersion;
     }
 
-    public function complies(Version $version): bool {
+    public function complies(Version $version): bool
+    {
         return $version->getVersionString() === $this->minimalVersion->getVersionString()
             || $version->isGreaterThan($this->minimalVersion);
     }

@@ -21,4 +21,8 @@ $storage->save();
 
 echo empty($_SESSION) ? '$_SESSION is empty' : '$_SESSION is not empty';
 
-ob_start(function ($buffer) { return str_replace(session_id(), 'random_session_id', $buffer); });
+ob_start(
+    function ($buffer) {
+        return str_replace(session_id(), 'random_session_id', $buffer); 
+    }
+);

@@ -1,4 +1,27 @@
 <?php
+function dd()
+{
+    $args = func_get_args();
+    echo '<pre>';
+    var_dump($args);
+    echo '</pre>';
+
+    exit;
+}
+function startsWith($haystack, $needle)
+{
+    $length = strlen($needle);
+    return substr($haystack, 0, $length) === $needle;
+}
+
+function endsWith($haystack, $needle)
+{
+    $length = strlen($needle);
+    if (!$length) {
+        return true;
+    }
+    return substr($haystack, -$length) === $needle;
+}
 $DeveloperCode = [
     ...call_app_resources(ROOT . SEP . 'app' . SEP . 'Controller'),
     ...call_app_resources(ROOT . SEP . 'routes'),
@@ -20,17 +43,26 @@ $coreClassLoader = [
 
 require_once 'vendor' . SEP . 'autoload.php';
 
-array_map(static function ($path) {
-    array_map(static function ($filename) {
-        require_once $filename;
-    }, glob("{$path}/*.php"));
-}, $coreClassLoader);
+array_map(
+    static function ($path) {
+        array_map(
+            static function ($filename) {
+                include_once $filename;
+            },
+            glob("{$path}/*.php")
+        );
+    },
+    $coreClassLoader
+);
 
-array_map(static function ($file) {
-    if (file_exists($file)) {
-        require_once $file;
-    }
-}, $CoreLoader);
+array_map(
+    static function ($file) {
+        if (file_exists($file)) {
+            include_once $file;
+        }
+    },
+    $CoreLoader
+);
 
 if (!isset($_SESSION['lang'])) {
     $_SESSION['lang'] = 'en';
@@ -121,8 +153,11 @@ function call_app_resources(string $rootDir, $allData = array()): array
     return $allData;
 }
 
-array_map(static function ($file) {
-    if (file_exists($file)) {
-        require_once $file;
-    }
-}, $DeveloperCode);
+array_map(
+    static function ($file) {
+        if (file_exists($file)) {
+            include_once $file;
+        }
+    },
+    $DeveloperCode
+);

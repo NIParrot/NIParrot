@@ -71,15 +71,15 @@ class Cookie
                 continue;
             }
             switch ($key = strtolower($key)) {
-                case 'name':
-                case 'value':
-                    break;
-                case 'max-age':
-                    $data['expires'] = time() + (int) $value;
-                    break;
-                default:
-                    $data[$key] = $value;
-                    break;
+            case 'name':
+            case 'value':
+                break;
+            case 'max-age':
+                $data['expires'] = time() + (int) $value;
+                break;
+            default:
+                $data[$key] = $value;
+                break;
             }
         }
 

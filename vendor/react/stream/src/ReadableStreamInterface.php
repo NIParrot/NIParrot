@@ -223,7 +223,7 @@ interface ReadableStreamInterface extends EventEmitterInterface
      * Note that both methods can be called any number of times, in particular
      * calling `pause()` more than once SHOULD NOT have any effect.
      *
-     * @see self::resume()
+     * @see    self::resume()
      * @return void
      */
     public function pause();
@@ -244,7 +244,7 @@ interface ReadableStreamInterface extends EventEmitterInterface
      * Note that both methods can be called any number of times, in particular
      * calling `resume()` without a prior `pause()` SHOULD NOT have any effect.
      *
-     * @see self::pause()
+     * @see    self::pause()
      * @return void
      */
     public function resume();
@@ -318,8 +318,8 @@ interface ReadableStreamInterface extends EventEmitterInterface
      * Once the pipe is set up successfully, the destination stream MUST emit
      * a `pipe` event with this source stream an event argument.
      *
-     * @param WritableStreamInterface $dest
-     * @param array $options
+     * @param  WritableStreamInterface $dest
+     * @param  array                   $options
      * @return WritableStreamInterface $dest stream as-is
      */
     public function pipe(WritableStreamInterface $dest, array $options = array());
@@ -356,7 +356,7 @@ interface ReadableStreamInterface extends EventEmitterInterface
      * Note that this method should not be confused with the `end()` method.
      *
      * @return void
-     * @see WritableStreamInterface::close()
+     * @see    WritableStreamInterface::close()
      */
     public function close();
 }

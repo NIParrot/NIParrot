@@ -13,31 +13,32 @@ class XMLWriter extends BaseWriter implements IWriter
     /**
      * Defines content-type for HTTP header
      * 
-     * @access  protected
-     * @var     string
+     * @access protected
+     * @var    string
      */
     protected $content_type = 'application/xml';
 
     /**
      * Defines file extension to be used when saving file
      * 
-     * @access  protected
-     * @var     string
+     * @access protected
+     * @var    string
      */
     protected $file_extension = 'xml';
 
     /**
      * Array containing document properties
      * 
-     * @access  private
-     * @var     array
+     * @access private
+     * @var    array
      */
     private $doc_prop;
 
     /**
-     * @return  void
+     * @return void
      */
-    public function __construct(){
+    public function __construct()
+    {
         $this->doc_prop = array(
             'Author' => 'SimpleExcel',
             'Company' => 'SimpleExcel',
@@ -51,10 +52,11 @@ class XMLWriter extends BaseWriter implements IWriter
     /**
      * Adding row data to XML
      * 
-     * @param   array   $values An array contains ordered value for every cell
-     * @return  void
+     * @param  array $values An array contains ordered value for every cell
+     * @return void
      */
-    public function addRow($values){
+    public function addRow($values)
+    {
         $row = &$this->tabl_data;
         $row .= '
     <Row ss:AutoFitHeight="0">';
@@ -65,7 +67,7 @@ class XMLWriter extends BaseWriter implements IWriter
             $datatype = 'String';
             
             // check if given variable contains array
-            if(is_array($val)){
+            if(is_array($val)) {
                 $value = $val[0];
                 $datatype = $val[1];
             } else {
@@ -87,9 +89,10 @@ class XMLWriter extends BaseWriter implements IWriter
     /**
      * Get document content as string
      * 
-     * @return  string  Content of document
+     * @return string  Content of document
      */
-    public function saveString(){
+    public function saveString()
+    {
         $content = '<?xml version="1.0"?>
 <?mso-application progid="Excel.Sheet"?>
 <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
@@ -115,13 +118,14 @@ class XMLWriter extends BaseWriter implements IWriter
     }
 
     /**
-    * Set XML data
-    * 
-    * @param    array   $values An array contains ordered value of arrays for all fields
-    * @return   void
-    */
-    public function setData($values){
-        if(!is_array($values)){
+     * Set XML data
+     * 
+     * @param  array $values An array contains ordered value of arrays for all fields
+     * @return void
+     */
+    public function setData($values)
+    {
+        if(!is_array($values)) {
             $values = array($values);
         }
         $this->tabl_data = ""; // reset the xml data.
@@ -133,13 +137,14 @@ class XMLWriter extends BaseWriter implements IWriter
     }
 
     /**
-    * Set a document property of the XML
-    * 
-    * @param    string  $prop   Document property to be set
-    * @param    string  $val    Value of the document property
-    * @return   void
-    */
-    public function setDocProp($prop, $val){
+     * Set a document property of the XML
+     * 
+     * @param  string $prop Document property to be set
+     * @param  string $val  Value of the document property
+     * @return void
+     */
+    public function setDocProp($prop, $val)
+    {
         $this->doc_prop[$prop] = $val;
     }
 }

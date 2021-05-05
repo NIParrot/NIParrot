@@ -2,7 +2,7 @@
 /**
  * Rundiz Upload component.
  * 
- * @author Vee W.
+ * @author  Vee W.
  * @license http://opensource.org/licenses/MIT MIT
  */
 
@@ -14,7 +14,7 @@
  *
  * @package Upload
  * @version 2.0.6
- * @author Vee W.
+ * @author  Vee W.
  * 
  * @property-read array $predefinedErrorMessages Pre-defined error messages.
  */
@@ -89,7 +89,7 @@ class Upload
      * For the RDU_1 to RDU_8 use PHP upload errors. ( http://php.net/manual/en/features.file-upload.errors.php ).
      * 
      * @since 2.0.5
-     * @var array Pre-defined error codes and messages.
+     * @var   array Pre-defined error codes and messages.
      */
     protected $predefinedErrorMessages = array(
         'RDU_1' => 'The uploaded file exceeds the max file size directive. (%s &gt; %s).',
@@ -154,8 +154,8 @@ class Upload
      * </pre>
      * 
      * @since 2.0.1
-     * @see Rundiz\Upload::$predefinedErrorMessages  See `predefinedErrorMessages ` property to see more about all codes and descriptions.
-     * @var array If there is at least one error, it will be set to here.
+     * @see   Rundiz\Upload::$predefinedErrorMessages  See `predefinedErrorMessages ` property to see more about all codes and descriptions.
+     * @var   array If there is at least one error, it will be set to here.
      */
     public $error_codes = array();
 
@@ -167,7 +167,7 @@ class Upload
 
     /**
      * @since 2.0.5
-     * @var array If there is at least one error message it will be set to here. This property contains array format that is ready for use with `vsprintf()` function.
+     * @var   array If there is at least one error message it will be set to here. This property contains array format that is ready for use with `vsprintf()` function.
      * Example:<pre>
      * array(
      *     0 => array('message' => 'The uploaded file exceeds the max file size directive. (%s &gt; %s).', 'replaces' => array(30000, 20000)),
@@ -202,7 +202,7 @@ class Upload
     /**
      * Magic get protected properties.
      * 
-     * @param string $name
+     * @param  string $name
      * @return mixed
      */
     public function __get($name)
@@ -221,7 +221,7 @@ class Upload
      * There is this code in generator class. <code>static::__('Hello');</code><br>
      * Use Poedit to search for __ function to update/retreive the source text and translate it.
      * 
-     * @param string $string The message to use.
+     * @param  string $string The message to use.
      * @return string Return the same string.
      */
     protected static function __($string)
@@ -272,8 +272,8 @@ class Upload
     /**
      * Get default file extensions matched mime types that come with this class.
      * 
-     * @since 2.0.5
-     * @see Rundiz/Upload/file-extensions-mime-types.php
+     * @since  2.0.5
+     * @see    Rundiz/Upload/file-extensions-mime-types.php
      * @return array Return associative array. Example: `array('fileext' => array('mime', 'types'));`
      */
     public function getDefaultFileExtensionsMimeTypes()
@@ -375,14 +375,13 @@ class Upload
         $output = array();
 
         foreach ($this->move_uploaded_queue as $key => $queue_item) {
-            if (
-                is_array($queue_item) && 
-                array_key_exists('name', $queue_item) &&
-                array_key_exists('tmp_name', $queue_item) &&
-                array_key_exists('new_name', $queue_item) &&
-                array_key_exists('move_uploaded_to', $queue_item) &&
-                array_key_exists('move_uploaded_status', $queue_item) && 
-                $queue_item['move_uploaded_status'] === 'success'
+            if (is_array($queue_item)  
+                && array_key_exists('name', $queue_item) 
+                && array_key_exists('tmp_name', $queue_item) 
+                && array_key_exists('new_name', $queue_item) 
+                && array_key_exists('move_uploaded_to', $queue_item) 
+                && array_key_exists('move_uploaded_status', $queue_item)  
+                && $queue_item['move_uploaded_status'] === 'success'
             ) {
                 // get file extension only
                 $file_name_explode = explode('.', $queue_item['name']);
@@ -466,7 +465,7 @@ class Upload
     /**
      * Rename the file where it is duplicate with existing file.
      * 
-     * @param string $file_name File name to check
+     * @param  string $file_name File name to check
      * @return string Return renamed file that will not duplicate the existing file.
      */
     protected function renameDuplicateFile($file_name, $loop_count = 1)
@@ -511,11 +510,10 @@ class Upload
      */
     protected function securityScan()
     {
-        if (
-            is_array($this->files[$this->input_file_name]) && 
-            array_key_exists('name', $this->files[$this->input_file_name]) && 
-            array_key_exists('tmp_name', $this->files[$this->input_file_name]) && 
-            $this->files[$this->input_file_name]['tmp_name'] != null
+        if (is_array($this->files[$this->input_file_name])  
+            && array_key_exists('name', $this->files[$this->input_file_name])  
+            && array_key_exists('tmp_name', $this->files[$this->input_file_name])  
+            && $this->files[$this->input_file_name]['tmp_name'] != null
         ) {
             // there is an uploaded file.
             if (is_file($this->files[$this->input_file_name]['tmp_name'])) {
@@ -553,14 +551,11 @@ class Upload
                 // reference: https://en.wikipedia.org/wiki/Shell_script 
                 // https://stackoverflow.com/questions/10591086/shell-script-headers-bin-sh-vs-bin-csh
                 // https://www.shellscript.sh/
-                if (
-                    stripos($file_content, '#!/') !== false && 
-                    (
-                        stripos($file_content, '/bin/sh') !== false ||
-                        stripos($file_content, '/bin/bash') !== false ||
-                        stripos($file_content, '/bin/csh') !== false ||
-                        stripos($file_content, '/bin/tcsh') !== false
-                    )
+                if (stripos($file_content, '#!/') !== false  
+                    && (                    stripos($file_content, '/bin/sh') !== false 
+                    || stripos($file_content, '/bin/bash') !== false 
+                    || stripos($file_content, '/bin/csh') !== false 
+                    || stripos($file_content, '/bin/tcsh') !== false)
                 ) {
                     // found shell script.
                     $this->setErrorMessage(
@@ -586,12 +581,12 @@ class Upload
      * Set the error message into error_messages and error_codes properties.
      * 
      * @since 2.0.1
-     * @param string $code The error code, start with RDU_ and follow with number or short error message without space.
-     * @param string|array $replaceValues The value to replace using `vsprintf()` function. This will be replace when get error message from `predefinedErrorMessages` property using the code as key.
-     * @param string $errorAttributes Error attributes. For example: 9MB > 2MB in case that limit file size to 2MB but uploaded 9MB, or showing file name that have problem.
-     * @param string $errorFileName The file name with extension.
-     * @param string $errorFileSize The file size in bytes.
-     * @param string $errorFileMime The file mime type.
+     * @param string       $code            The error code, start with RDU_ and follow with number or short error message without space.
+     * @param string|array $replaceValues   The value to replace using `vsprintf()` function. This will be replace when get error message from `predefinedErrorMessages` property using the code as key.
+     * @param string       $errorAttributes Error attributes. For example: 9MB > 2MB in case that limit file size to 2MB but uploaded 9MB, or showing file name that have problem.
+     * @param string       $errorFileName   The file name with extension.
+     * @param string       $errorFileSize   The file size in bytes.
+     * @param string       $errorFileMime   The file mime type.
      */
     protected function setErrorMessage(
         $code, 
@@ -757,8 +752,8 @@ class Upload
      * Test get the real file's mime type using finfo_file.<br>
      * This is very useful when you want to add new file extension and mime type to validate uploaded files.
      * 
-     * @link http://php.net/manual/en/function.finfo-file.php More info about finfo_file() function.
-     * @param string $input_file_name The input file name. This support only one file upload.
+     * @link   http://php.net/manual/en/function.finfo-file.php More info about finfo_file() function.
+     * @param  string $input_file_name The input file name. This support only one file upload.
      * @return string Return file's mime type or error message.
      */
     public function testGetUploadedMimetype($input_file_name = null)
@@ -771,11 +766,10 @@ class Upload
             $input_file_name = $this->input_file_name;
         }
 
-        if (
-            !isset($_FILES[$input_file_name]['name']) || 
-            (isset($_FILES[$input_file_name]['name']) && $_FILES[$input_file_name]['name'] == null) || 
-            !isset($_FILES[$input_file_name]['tmp_name']) || 
-            (isset($_FILES[$input_file_name]['tmp_name']) && $_FILES[$input_file_name]['tmp_name'] == null)
+        if (!isset($_FILES[$input_file_name]['name'])  
+            || (isset($_FILES[$input_file_name]['name']) && $_FILES[$input_file_name]['name'] == null)  
+            || !isset($_FILES[$input_file_name]['tmp_name'])  
+            || (isset($_FILES[$input_file_name]['tmp_name']) && $_FILES[$input_file_name]['tmp_name'] == null)
         ) {
             return static::__('You did not upload any file, please upload a file to get info.');
         }
@@ -895,92 +889,87 @@ class Upload
         // check if there is error while uploading from error array key.
         if (is_array($this->files[$this->input_file_name]) && array_key_exists('error', $this->files[$this->input_file_name]) && $this->files[$this->input_file_name]['error'] != 0) {
             switch ($this->files[$this->input_file_name]['error']) {
-                case 1:
-                    $this->setErrorMessage(
-                        'RDU_' . $this->files[$this->input_file_name]['error'],
-                        array($this->files[$this->input_file_name]['size'], ini_get('upload_max_filesize')),
-                        $this->files[$this->input_file_name]['size'] . ' &gt; ' . ini_get('upload_max_filesize'),
-                        $this->files[$this->input_file_name]['name'],
-                        $this->files[$this->input_file_name]['size'],
-                        $this->files[$this->input_file_name]['type']
-                    );
-                    return false;
-                case 2:
-                    $this->setErrorMessage(
-                        'RDU_' . $this->files[$this->input_file_name]['error'],
-                        '',
-                        '',
-                        $this->files[$this->input_file_name]['name'],
-                        $this->files[$this->input_file_name]['size'],
-                        $this->files[$this->input_file_name]['type']
-                    );
-                    return false;
-                case 3:
-                    $this->setErrorMessage(
-                        'RDU_' . $this->files[$this->input_file_name]['error'],
-                        '',
-                        '',
-                        $this->files[$this->input_file_name]['name'],
-                        $this->files[$this->input_file_name]['size'],
-                        $this->files[$this->input_file_name]['type']
-                    );
-                    return false;
-                case 4:
-                    $this->setErrorMessage(
-                        'RDU_' . $this->files[$this->input_file_name]['error'],
-                        '',
-                        '',
-                        $this->files[$this->input_file_name]['name'],
-                        $this->files[$this->input_file_name]['size'],
-                        $this->files[$this->input_file_name]['type']
-                    );
-                    return false;
-                case 6:
-                    $this->setErrorMessage(
-                        'RDU_' . $this->files[$this->input_file_name]['error'],
-                        '',
-                        '',
-                        $this->files[$this->input_file_name]['name'],
-                        $this->files[$this->input_file_name]['size'],
-                        $this->files[$this->input_file_name]['type']
-                    );
-                    return false;
-                case 7:
-                    $this->setErrorMessage(
-                        'RDU_' . $this->files[$this->input_file_name]['error'],
-                        '',
-                        '',
-                        $this->files[$this->input_file_name]['name'],
-                        $this->files[$this->input_file_name]['size'],
-                        $this->files[$this->input_file_name]['type']
-                    );
-                    return false;
-                case 8:
-                    $this->setErrorMessage(
-                        'RDU_' . $this->files[$this->input_file_name]['error'],
-                        '',
-                        '',
-                        $this->files[$this->input_file_name]['name'],
-                        $this->files[$this->input_file_name]['size'],
-                        $this->files[$this->input_file_name]['type']
-                    );
-                    return false;
+            case 1:
+                $this->setErrorMessage(
+                    'RDU_' . $this->files[$this->input_file_name]['error'],
+                    array($this->files[$this->input_file_name]['size'], ini_get('upload_max_filesize')),
+                    $this->files[$this->input_file_name]['size'] . ' &gt; ' . ini_get('upload_max_filesize'),
+                    $this->files[$this->input_file_name]['name'],
+                    $this->files[$this->input_file_name]['size'],
+                    $this->files[$this->input_file_name]['type']
+                );
+                return false;
+            case 2:
+                $this->setErrorMessage(
+                    'RDU_' . $this->files[$this->input_file_name]['error'],
+                    '',
+                    '',
+                    $this->files[$this->input_file_name]['name'],
+                    $this->files[$this->input_file_name]['size'],
+                    $this->files[$this->input_file_name]['type']
+                );
+                return false;
+            case 3:
+                $this->setErrorMessage(
+                    'RDU_' . $this->files[$this->input_file_name]['error'],
+                    '',
+                    '',
+                    $this->files[$this->input_file_name]['name'],
+                    $this->files[$this->input_file_name]['size'],
+                    $this->files[$this->input_file_name]['type']
+                );
+                return false;
+            case 4:
+                $this->setErrorMessage(
+                    'RDU_' . $this->files[$this->input_file_name]['error'],
+                    '',
+                    '',
+                    $this->files[$this->input_file_name]['name'],
+                    $this->files[$this->input_file_name]['size'],
+                    $this->files[$this->input_file_name]['type']
+                );
+                return false;
+            case 6:
+                $this->setErrorMessage(
+                    'RDU_' . $this->files[$this->input_file_name]['error'],
+                    '',
+                    '',
+                    $this->files[$this->input_file_name]['name'],
+                    $this->files[$this->input_file_name]['size'],
+                    $this->files[$this->input_file_name]['type']
+                );
+                return false;
+            case 7:
+                $this->setErrorMessage(
+                    'RDU_' . $this->files[$this->input_file_name]['error'],
+                    '',
+                    '',
+                    $this->files[$this->input_file_name]['name'],
+                    $this->files[$this->input_file_name]['size'],
+                    $this->files[$this->input_file_name]['type']
+                );
+                return false;
+            case 8:
+                $this->setErrorMessage(
+                    'RDU_' . $this->files[$this->input_file_name]['error'],
+                    '',
+                    '',
+                    $this->files[$this->input_file_name]['name'],
+                    $this->files[$this->input_file_name]['size'],
+                    $this->files[$this->input_file_name]['type']
+                );
+                return false;
             }
         }
 
         // validate that there is file upload.
-        if (
-            empty($this->files[$this->input_file_name]) || 
-            (
-                is_array($this->files[$this->input_file_name]) && 
-                array_key_exists('name', $this->files[$this->input_file_name]) && 
-                $this->files[$this->input_file_name]['name'] == null
-            ) ||
-            (
-                is_array($this->files[$this->input_file_name]) && 
-                array_key_exists('tmp_name', $this->files[$this->input_file_name]) && 
-                $this->files[$this->input_file_name]['tmp_name'] == null
-            )
+        if (empty($this->files[$this->input_file_name])  
+            || (            is_array($this->files[$this->input_file_name])  
+            && array_key_exists('name', $this->files[$this->input_file_name])  
+            && $this->files[$this->input_file_name]['name'] == null) 
+            || (            is_array($this->files[$this->input_file_name])  
+            && array_key_exists('tmp_name', $this->files[$this->input_file_name])  
+            && $this->files[$this->input_file_name]['tmp_name'] == null)
         ) {
             $this->setErrorMessage(
                 'RDU_4',
@@ -1211,25 +1200,22 @@ class Upload
             return true;
         }
 
-        if (
-            is_array($this->files[$this->input_file_name]) && 
-            array_key_exists('tmp_name', $this->files[$this->input_file_name]) &&
-            is_file($this->files[$this->input_file_name]['tmp_name'])
+        if (is_array($this->files[$this->input_file_name])  
+            && array_key_exists('tmp_name', $this->files[$this->input_file_name]) 
+            && is_file($this->files[$this->input_file_name]['tmp_name'])
         ) {
             $image = getimagesize($this->files[$this->input_file_name]['tmp_name']);
             if ($image === false) {
                 // this uploaded file is NOT an image. It is possible that user upload mixed file types such as text with jpeg.
                 return true;
             } elseif (is_array($image) && count($image) >= 2) {
-                if (
-                    $image[0] <= $this->max_image_dimensions[0] &&
-                    $image[1] <= $this->max_image_dimensions[1]
+                if ($image[0] <= $this->max_image_dimensions[0] 
+                    && $image[1] <= $this->max_image_dimensions[1]
                 ) {
                     // if image dimensions are smaller or equal to max.
                     return true;
-                } elseif (
-                    $image[0] <= 0 ||
-                    $image[1] <= 0
+                } elseif ($image[0] <= 0 
+                    || $image[1] <= 0
                 ) {
                     // Some formats may contain no image or may contain multiple images. 
                     // In these cases, getimagesize() might not be able to properly determine the image size. 
@@ -1287,18 +1273,11 @@ class Upload
             $this->max_file_size = null;
         }
 
-        if (
-            !is_array($this->max_image_dimensions) || 
-            (
-                is_array($this->max_image_dimensions) && 
-                (
-                    count($this->max_image_dimensions) != 2 ||
-                    (
-                        count($this->max_image_dimensions) == 2 &&
-                        count($this->max_image_dimensions) != count($this->max_image_dimensions, COUNT_RECURSIVE)
-                    )
-                )
-            )
+        if (!is_array($this->max_image_dimensions)  
+            || (            is_array($this->max_image_dimensions)  
+            && (            count($this->max_image_dimensions) != 2 
+            || (            count($this->max_image_dimensions) == 2 
+            && count($this->max_image_dimensions) != count($this->max_image_dimensions, COUNT_RECURSIVE)            )            ))
         ) {
             $this->max_image_dimensions = array();
         } else {

@@ -1,10 +1,11 @@
 <?php
 /**
-* Whoops - php errors for cool kids
-* @author Filipe Dobreira <http://github.com/filp>
-* Plaintext handler for command line and logs.
-* @author Pierre-Yves Landuré <https://howto.biapy.com/>
-*/
+ * Whoops - php errors for cool kids
+ *
+ * @author Filipe Dobreira <http://github.com/filp>
+ * Plaintext handler for command line and logs.
+ * @author Pierre-Yves Landuré <https://howto.biapy.com/>
+ */
 
 namespace Whoops\Handler;
 
@@ -13,10 +14,10 @@ use Psr\Log\LoggerInterface;
 use Whoops\Exception\Frame;
 
 /**
-* Handler outputing plaintext error messages. Can be used
-* directly, or will be instantiated automagically by Whoops\Run
-* if passed to Run::pushHandler
-*/
+ * Handler outputing plaintext error messages. Can be used
+ * directly, or will be instantiated automagically by Whoops\Run
+ * if passed to Run::pushHandler
+ */
 class PlainTextHandler extends Handler
 {
     const VAR_DUMP_PREFIX = '   | ';
@@ -58,6 +59,7 @@ class PlainTextHandler extends Handler
 
     /**
      * Constructor.
+     *
      * @throws InvalidArgumentException     If argument is not null or a LoggerInterface
      * @param  \Psr\Log\LoggerInterface|null $logger
      */
@@ -68,13 +70,15 @@ class PlainTextHandler extends Handler
 
     /**
      * Set the output logger interface.
+     *
      * @throws InvalidArgumentException     If argument is not null or a LoggerInterface
      * @param  \Psr\Log\LoggerInterface|null $logger
      */
     public function setLogger($logger = null)
     {
         if (! (is_null($logger)
-            || $logger instanceof LoggerInterface)) {
+            || $logger instanceof LoggerInterface)
+        ) {
             throw new InvalidArgumentException(
                 'Argument to ' . __METHOD__ .
                 " must be a valid Logger Interface (aka. Monolog), " .
@@ -106,7 +110,8 @@ class PlainTextHandler extends Handler
 
     /**
      * Add error trace to output.
-     * @param  bool|null  $addTraceToOutput
+     *
+     * @param  bool|null $addTraceToOutput
      * @return bool|$this
      */
     public function addTraceToOutput($addTraceToOutput = null)
@@ -121,6 +126,7 @@ class PlainTextHandler extends Handler
 
     /**
      * Add previous exceptions to output.
+     *
      * @param  bool|null $addPreviousToOutput
      * @return bool|$this
      */
@@ -137,6 +143,7 @@ class PlainTextHandler extends Handler
     /**
      * Add error trace function arguments to output.
      * Set to True for all frame args, or integer for the n first frame args.
+     *
      * @param  bool|integer|null $addTraceFunctionArgsToOutput
      * @return null|bool|integer
      */
@@ -157,6 +164,7 @@ class PlainTextHandler extends Handler
      * Set the size limit in bytes of frame arguments var_dump output.
      * If the limit is reached, the var_dump output is discarded.
      * Prevent memory limit errors.
+     *
      * @var integer
      */
     public function setTraceFunctionArgsOutputLimit($traceFunctionArgsOutputLimit)
@@ -166,6 +174,7 @@ class PlainTextHandler extends Handler
 
     /**
      * Create plain text response and return it as a string
+     *
      * @return string
      */
     public function generateResponse()
@@ -189,6 +198,7 @@ class PlainTextHandler extends Handler
      * Get the size limit in bytes of frame arguments var_dump output.
      * If the limit is reached, the var_dump output is discarded.
      * Prevent memory limit errors.
+     *
      * @return integer
      */
     public function getTraceFunctionArgsOutputLimit()
@@ -198,6 +208,7 @@ class PlainTextHandler extends Handler
 
     /**
      * Only output to logger.
+     *
      * @param  bool|null $loggerOnly
      * @return null|bool
      */
@@ -212,6 +223,7 @@ class PlainTextHandler extends Handler
 
     /**
      * Test if handler can output to stdout.
+     *
      * @return bool
      */
     private function canOutput()
@@ -221,6 +233,7 @@ class PlainTextHandler extends Handler
 
     /**
      * Get the frame args var_dump.
+     *
      * @param  \Whoops\Exception\Frame $frame [description]
      * @param  integer                 $line  [description]
      * @return string
@@ -228,7 +241,8 @@ class PlainTextHandler extends Handler
     private function getFrameArgsOutput(Frame $frame, $line)
     {
         if ($this->addTraceFunctionArgsToOutput() === false
-            || $this->addTraceFunctionArgsToOutput() < $line) {
+            || $this->addTraceFunctionArgsToOutput() < $line
+        ) {
             return '';
         }
 
@@ -255,7 +269,7 @@ class PlainTextHandler extends Handler
     /**
      * Dump variable.
      *
-     * @param mixed $var
+     * @param  mixed $var
      * @return void
      */
     protected function dump($var)
@@ -269,6 +283,7 @@ class PlainTextHandler extends Handler
 
     /**
      * Get the exception trace as plain text.
+     *
      * @return string
      */
     private function getTraceOutput()
@@ -283,7 +298,9 @@ class PlainTextHandler extends Handler
 
         $line = 1;
         foreach ($frames as $frame) {
-            /** @var Frame $frame */
+            /**
+ * @var Frame $frame 
+*/
             $class = $frame->getClass();
 
             $template = "\n%3d. %s->%s() %s:%d%s";
@@ -310,7 +327,8 @@ class PlainTextHandler extends Handler
 
     /**
      * Get the exception as plain text.
-     * @param \Throwable $exception
+     *
+     * @param  \Throwable $exception
      * @return string
      */
     private function getExceptionOutput($exception)

@@ -51,9 +51,11 @@ class MethodProphecy
     {
         $double = $objectProphecy->reveal();
         if (!method_exists($double, $methodName)) {
-            throw new MethodNotFoundException(sprintf(
-                'Method `%s::%s()` is not defined.', get_class($double), $methodName
-            ), get_class($double), $methodName, $arguments);
+            throw new MethodNotFoundException(
+                sprintf(
+                    'Method `%s::%s()` is not defined.', get_class($double), $methodName
+                ), get_class($double), $methodName, $arguments
+            );
         }
 
         $this->objectProphecy = $objectProphecy;
@@ -61,12 +63,14 @@ class MethodProphecy
 
         $reflectedMethod = new \ReflectionMethod($double, $methodName);
         if ($reflectedMethod->isFinal()) {
-            throw new MethodProphecyException(sprintf(
-                "Can not add prophecy for a method `%s::%s()`\n".
-                "as it is a final method.",
-                get_class($double),
-                $methodName
-            ), $this);
+            throw new MethodProphecyException(
+                sprintf(
+                    "Can not add prophecy for a method `%s::%s()`\n".
+                    "as it is a final method.",
+                    get_class($double),
+                    $methodName
+                ), $this
+            );
         }
 
         if (null !== $arguments) {
@@ -85,13 +89,15 @@ class MethodProphecy
             }
 
             $types = array_map(
-                function(ReflectionType $type) { return $type->getName(); },
+                function (ReflectionType $type) {
+                    return $type->getName(); 
+                },
                 $types
             );
 
             usort(
                 $types,
-                static function(string $type1, string $type2) {
+                static function (string $type1, string $type2) {
 
                     // null is lowest priority
                     if ($type2 == 'null') {
@@ -102,15 +108,14 @@ class MethodProphecy
                     }
 
                     // objects are higher priority than scalars
-                    $isObject = static function($type) {
+                    $isObject = static function ($type) {
                         return class_exists($type) || interface_exists($type);
                     };
 
                     if($isObject($type1) && !$isObject($type2)) {
                         return -1;
                     }
-                    elseif(!$isObject($type1) && $isObject($type2))
-                    {
+                    elseif(!$isObject($type1) && $isObject($type2)) {
                         return 1;
                     }
 
@@ -125,28 +130,39 @@ class MethodProphecy
                 $this->voidReturnType = true;
             }
 
-            $this->will(function () use ($defaultType) {
-                switch ($defaultType) {
-                    case 'void': return;
-                    case 'string': return '';
-                    case 'float':  return 0.0;
-                    case 'int':    return 0;
-                    case 'bool':   return false;
-                    case 'array':  return array();
+            $this->will(
+                function () use ($defaultType) {
+                    switch ($defaultType) {
+                    case 'void': 
+                return;
+                    case 'string': 
+                return '';
+                    case 'float':  
+                return 0.0;
+                    case 'int':    
+                return 0;
+                    case 'bool':   
+                return false;
+                    case 'array':  
+                return array();
 
                     case 'callable':
                     case 'Closure':
-                        return function () {};
+                return function () {
+                };
 
-                    case 'Traversable':
-                    case 'Generator':
-                        return (function () { yield; })();
+                        case 'Traversable':
+                        case 'Generator':
+                return (function () {
+                            yield; 
+                })();
 
                     default:
                         $prophet = new Prophet;
-                        return $prophet->prophesize($defaultType)->reveal();
+                return $prophet->prophesize($defaultType)->reveal();
+                    }
                 }
-            });
+            );
         }
     }
 
@@ -166,11 +182,13 @@ class MethodProphecy
         }
 
         if (!$arguments instanceof Argument\ArgumentsWildcard) {
-            throw new InvalidArgumentException(sprintf(
-                "Either an array or an instance of ArgumentsWildcard expected as\n".
-                'a `MethodProphecy::withArguments()` argument, but got %s.',
-                gettype($arguments)
-            ));
+            throw new InvalidArgumentException(
+                sprintf(
+                    "Either an array or an instance of ArgumentsWildcard expected as\n".
+                    'a `MethodProphecy::withArguments()` argument, but got %s.',
+                    gettype($arguments)
+                )
+            );
         }
 
         $this->argumentsWildcard = $arguments;
@@ -194,10 +212,12 @@ class MethodProphecy
         }
 
         if (!$promise instanceof Promise\PromiseInterface) {
-            throw new InvalidArgumentException(sprintf(
-                'Expected callable or instance of PromiseInterface, but got %s.',
-                gettype($promise)
-            ));
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Expected callable or instance of PromiseInterface, but got %s.',
+                    gettype($promise)
+                )
+            );
         }
 
         $this->bindToObjectProphecy();
@@ -243,13 +263,15 @@ class MethodProphecy
         }
 
         if (!is_array($items)) {
-            throw new InvalidArgumentException(sprintf(
-                'Expected array, but got %s.',
-                gettype($items)
-            ));
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Expected array, but got %s.',
+                    gettype($items)
+                )
+            );
         }
 
-        $generator =  function() use ($items, $return) {
+        $generator =  function () use ($items, $return) {
             yield from $items;
 
             return $return;
@@ -306,10 +328,12 @@ class MethodProphecy
         }
 
         if (!$prediction instanceof Prediction\PredictionInterface) {
-            throw new InvalidArgumentException(sprintf(
-                'Expected callable or instance of PredictionInterface, but got %s.',
-                gettype($prediction)
-            ));
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Expected callable or instance of PredictionInterface, but got %s.',
+                    gettype($prediction)
+                )
+            );
         }
 
         $this->bindToObjectProphecy();
@@ -384,10 +408,12 @@ class MethodProphecy
         }
 
         if (!$prediction instanceof Prediction\PredictionInterface) {
-            throw new InvalidArgumentException(sprintf(
-                'Expected callable or instance of PredictionInterface, but got %s.',
-                gettype($prediction)
-            ));
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Expected callable or instance of PredictionInterface, but got %s.',
+                    gettype($prediction)
+                )
+            );
         }
 
         if (null === $this->promise && !$this->voidReturnType) {
@@ -438,7 +464,7 @@ class MethodProphecy
     /**
      * Checks no calls prediction.
      *
-     * @see \Prophecy\Prediction\NoCallsPrediction
+     * @see        \Prophecy\Prediction\NoCallsPrediction
      * @deprecated
      *
      * @return $this

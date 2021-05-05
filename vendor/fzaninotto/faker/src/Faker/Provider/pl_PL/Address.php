@@ -22,7 +22,7 @@ class Address extends \Faker\Provider\Address
         'wielkopolskie','zachodniopomorskie'
     );
     /**
-     * @var array Countries in Polish
+     * @var  array Countries in Polish
      * @link http://ksng.gugik.gov.pl/english/files/dictionary.pdf
      */
     protected static $country = array(
@@ -51,7 +51,7 @@ class Address extends \Faker\Provider\Address
         'Wyspy Świętego Tomasza i Książęca', 'Zambia', 'Zimbabwe', 'Zjednoczone Emiraty Arabskie'
     );
     /**
-     * @var array 250 Polish cities with biggest number of streets. Extracted from data issued by the official
+     * @var  array 250 Polish cities with biggest number of streets. Extracted from data issued by the official
      * public postal service of Poland.
      * @link http://www.poczta-polska.pl/
      */
@@ -91,7 +91,7 @@ class Address extends \Faker\Provider\Address
         'Żyrardów','Żywiec',
     );
     /**
-     * @var array 549 most common Polish street names. Extracted from data issued by the official public
+     * @var  array 549 most common Polish street names. Extracted from data issued by the official public
      * postal service of Poland.
      * @link http://www.poczta-polska.pl/
      */

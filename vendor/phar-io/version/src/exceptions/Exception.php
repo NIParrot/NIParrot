@@ -11,5 +11,6 @@ namespace PharIo\Version;
 
 use Throwable;
 
-interface Exception extends Throwable {
+interface Exception extends Throwable
+{
 }

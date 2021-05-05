@@ -16,12 +16,14 @@ class CLI_DB
         echo "\e[1;34;40m trying to connction to creat tables \e[0m\n";
         $dns = "mysql:host=" . HOST . ";port=" . PORT . ";dbname=" . DBNAME;
         try {
-            $conn = new PDO($dns, USER, PASS, [
+            $conn = new PDO(
+                $dns, USER, PASS, [
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES => false,
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"
-            ]);
+                ]
+            );
             echo "\e[1;33;40m Connect successfully \e[0m\n";
             return $conn;
         } catch (PDOException $e) {
@@ -62,8 +64,7 @@ class CLI_DB
             exit;
         }
         if (DeleteFlag == true) {
-            $DefaultColumn = '
-            id INT( 11 ) AUTO_INCREMENT PRIMARY KEY,
+            $DefaultColumn = 'id INT( 11 ) AUTO_INCREMENT PRIMARY KEY,
             create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             delete_flag INT( 1 ) DEFAULT 0 NOT NULL,
@@ -72,8 +73,7 @@ class CLI_DB
             update_from VARCHAR( 255 ) NULL
             ';
         } else {
-            $DefaultColumn = '
-            id INT( 11 ) AUTO_INCREMENT PRIMARY KEY,
+            $DefaultColumn = 'id INT( 11 ) AUTO_INCREMENT PRIMARY KEY,
             create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             create_from VARCHAR( 255 ) NULL,
@@ -83,7 +83,7 @@ class CLI_DB
         }
         foreach ($tableArray as $key => $value) {
             $value = $value . $DefaultColumn;
-            $createTable = $conn->prepare("CREATE TABLE IF NOT EXISTS " . DBNAME . '.' . $key . " ($value)COLLATE='utf8_general_ci'");
+            $createTable = $conn->prepare("CREATE TABLE IF NOT EXISTS " . DBNAME . '.' . strtolower($key) . " ($value)COLLATE='utf8_general_ci'");
             $createTable->execute();
             if ($createTable) {
                 echo "Table \e[0;33;40m $key \e[0m - \e[0;32m Created! \e[0m \n";
@@ -111,24 +111,25 @@ class CLI_DB
             $bind = ':' . implode(',:', array_keys($TableArray[0]));
             foreach ($TableArray as $columnAndValue) {
                 foreach ($columnAndValue as $keyn => $valuen) {
-                    $query1 = "SELECT COUNT(" . $keyn . ") FROM $TableName WHERE $keyn='" . $valuen . "'";
-                    $s1 = $conn->prepare($query1);
-                    $s1->execute();
-                    if ($s1->fetchColumn() == 0) {
-                        $sql = "INSERT INTO $TableName (" . implode(',', array_keys($columnAndValue)) . ") VALUES ($bind)";
-                        $stmt = $conn->prepare($sql);
-                        $stmtTrue = $stmt->execute(array_combine(explode(',', $bind), array_values($columnAndValue)));
-                        if ($stmtTrue) {
-                            echo "'$keyn' => '$valuen' done\n";
-                            break;
-                        } else {
-                            echo "some thing went wrong in '$keyn' => '$valuen' \n";
-                            break;
-                        }
+                    $TableName = strtolower($TableName);
+                    // $query1 = "TRUNCATE TABLE $TableName";
+                    // $s1 = $conn->prepare($query1);
+                    // $s1->execute();
+                    // if ($s1->fetchColumn() == 0) {
+                    $sql = "INSERT INTO $TableName (" . implode(',', array_keys($columnAndValue)) . ") VALUES ($bind)";
+                    $stmt = $conn->prepare($sql);
+                    $stmtTrue = $stmt->execute(array_combine(explode(',', $bind), array_values($columnAndValue)));
+                    if ($stmtTrue) {
+                        echo "'$keyn' => '$valuen' done\n";
+                        break;
                     } else {
-                        echo "'$keyn' => '$valuen' alredy exist \n";
+                        echo "some thing went wrong in '$keyn' => '$valuen' \n";
                         break;
                     }
+                    // } else {
+                    //     echo "'$keyn' => '$valuen' alredy exist \n";
+                    //     break;
+                    // }
                 }
             }
         }

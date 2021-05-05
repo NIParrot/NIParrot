@@ -18,7 +18,9 @@ namespace Prophecy\Argument\Token;
  */
 class LogicalNotToken implements TokenInterface
 {
-    /** @var \Prophecy\Argument\Token\TokenInterface  */
+    /**
+     * @var \Prophecy\Argument\Token\TokenInterface  
+     */
     private $token;
 
     /**

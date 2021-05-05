@@ -50,7 +50,7 @@ class Base
     /**
      * Generates a random digit, which cannot be $except
      *
-     * @param int $except
+     * @param  int $except
      * @return int
      */
     public static function randomDigitNot($except)
@@ -67,8 +67,8 @@ class Base
      *
      * The maximum value returned is mt_getrandmax()
      *
-     * @param integer $nbDigits Defaults to a random number between 1 and 9
-     * @param boolean $strict   Whether the returned number should have exactly $nbDigits
+     * @param   integer $nbDigits Defaults to a random number between 1 and 9
+     * @param   boolean $strict   Whether the returned number should have exactly $nbDigits
      * @example 79907610
      *
      * @return integer
@@ -95,9 +95,9 @@ class Base
     /**
      * Return a random float number
      *
-     * @param int       $nbMaxDecimals
-     * @param int|float $min
-     * @param int|float $max
+     * @param   int       $nbMaxDecimals
+     * @param   int|float $min
+     * @param   int|float $max
      * @example 48.8932
      *
      * @return float
@@ -127,8 +127,8 @@ class Base
     /**
      * Returns a random number between $int1 and $int2 (any order)
      *
-     * @param integer $int1 default to 0
-     * @param integer $int2 defaults to 32 bit max integer, ie 2147483647
+     * @param   integer $int1 default to 0
+     * @param   integer $int2 defaults to 32 bit max integer, ie 2147483647
      * @example 79907610
      *
      * @return integer
@@ -173,9 +173,9 @@ class Base
     /**
      * Returns randomly ordered subsequence of $count elements from a provided array
      *
-     * @param  array            $array           Array to take elements from. Defaults to a-c
-     * @param  integer          $count           Number of elements to take.
-     * @param  boolean          $allowDuplicates Allow elements to be picked several times. Defaults to false
+     * @param  array   $array           Array to take elements from. Defaults to a-c
+     * @param  integer $count           Number of elements to take.
+     * @param  boolean $allowDuplicates Allow elements to be picked several times. Defaults to false
      * @throws \LengthException When requesting more elements than provided
      *
      * @return array New array with $count elements from $array
@@ -264,7 +264,7 @@ class Base
      * @see shuffleArray()
      * @see shuffleString()
      *
-     * @param array|string $arg The set to shuffle
+     * @param  array|string $arg The set to shuffle
      * @return array|string The shuffled set
      */
     public static function shuffle($arg = '')
@@ -290,7 +290,7 @@ class Base
      *
      * @example $faker->shuffleArray([1, 2, 3]); // [2, 1, 3]
      *
-     * @param array $array The set to shuffle
+     * @param  array $array The set to shuffle
      * @return array The shuffled set
      */
     public static function shuffleArray($array = array())
@@ -328,8 +328,8 @@ class Base
      *
      * @example $faker->shuffleString('hello, world'); // 'rlo,h eold!lw'
      *
-     * @param string $string The set to shuffle
-     * @param string $encoding The string encoding (defaults to UTF-8)
+     * @param  string $string   The set to shuffle
+     * @param  string $encoding The string encoding (defaults to UTF-8)
      * @return string The shuffled set
      */
     public static function shuffleString($string = '', $encoding = 'UTF-8')
@@ -417,9 +417,11 @@ class Base
      */
     public static function bothify($string = '## ??')
     {
-        $string = self::replaceWildcard($string, '*', function () {
-            return mt_rand(0, 1) ? '#' : '?';
-        });
+        $string = self::replaceWildcard(
+            $string, '*', function () {
+                return mt_rand(0, 1) ? '#' : '?';
+            }
+        );
         return static::lexify(static::numerify($string));
     }
 
@@ -459,7 +461,7 @@ class Base
      *
      * @see https://github.com/icomefromthenet/ReverseRegex for a more robust implementation
      *
-     * @param string $regex A regular expression (delimiters are optional)
+     * @param  string $regex A regular expression (delimiters are optional)
      * @return string
      */
     public static function regexify($regex = '')
@@ -474,31 +476,45 @@ class Base
         $regex = preg_replace('/(?<!\\\)\*/', '{0,' . static::randomDigitNotNull() . '}', $regex);
         $regex = preg_replace('/(?<!\\\)\+/', '{1,' . static::randomDigitNotNull() . '}', $regex);
         // [12]{1,2} becomes [12] or [12][12]
-        $regex = preg_replace_callback('/(\[[^\]]+\])\{(\d+),(\d+)\}/', function ($matches) {
-            return str_repeat($matches[1], Base::randomElement(range($matches[2], $matches[3])));
-        }, $regex);
+        $regex = preg_replace_callback(
+            '/(\[[^\]]+\])\{(\d+),(\d+)\}/', function ($matches) {
+                return str_repeat($matches[1], Base::randomElement(range($matches[2], $matches[3])));
+            }, $regex
+        );
         // (12|34){1,2} becomes (12|34) or (12|34)(12|34)
-        $regex = preg_replace_callback('/(\([^\)]+\))\{(\d+),(\d+)\}/', function ($matches) {
-            return str_repeat($matches[1], Base::randomElement(range($matches[2], $matches[3])));
-        }, $regex);
+        $regex = preg_replace_callback(
+            '/(\([^\)]+\))\{(\d+),(\d+)\}/', function ($matches) {
+                return str_repeat($matches[1], Base::randomElement(range($matches[2], $matches[3])));
+            }, $regex
+        );
         // A{1,2} becomes A or AA or \d{3} becomes \d\d\d
-        $regex = preg_replace_callback('/(\\\?.)\{(\d+),(\d+)\}/', function ($matches) {
-            return str_repeat($matches[1], Base::randomElement(range($matches[2], $matches[3])));
-        }, $regex);
+        $regex = preg_replace_callback(
+            '/(\\\?.)\{(\d+),(\d+)\}/', function ($matches) {
+                return str_repeat($matches[1], Base::randomElement(range($matches[2], $matches[3])));
+            }, $regex
+        );
         // (this|that) becomes 'this' or 'that'
-        $regex = preg_replace_callback('/\((.*?)\)/', function ($matches) {
-            return Base::randomElement(explode('|', str_replace(array('(', ')'), '', $matches[1])));
-        }, $regex);
+        $regex = preg_replace_callback(
+            '/\((.*?)\)/', function ($matches) {
+                return Base::randomElement(explode('|', str_replace(array('(', ')'), '', $matches[1])));
+            }, $regex
+        );
         // All A-F inside of [] become ABCDEF
-        $regex = preg_replace_callback('/\[([^\]]+)\]/', function ($matches) {
-            return '[' . preg_replace_callback('/(\w|\d)\-(\w|\d)/', function ($range) {
-                return implode('', range($range[1], $range[2]));
-            }, $matches[1]) . ']';
-        }, $regex);
+        $regex = preg_replace_callback(
+            '/\[([^\]]+)\]/', function ($matches) {
+                return '[' . preg_replace_callback(
+                    '/(\w|\d)\-(\w|\d)/', function ($range) {
+                        return implode('', range($range[1], $range[2]));
+                    }, $matches[1]
+                ) . ']';
+            }, $regex
+        );
         // All [ABC] become B (or A or C)
-        $regex = preg_replace_callback('/\[([^\]]+)\]/', function ($matches) {
-            return Base::randomElement(str_split($matches[1]));
-        }, $regex);
+        $regex = preg_replace_callback(
+            '/\[([^\]]+)\]/', function ($matches) {
+                return Base::randomElement(str_split($matches[1]));
+            }, $regex
+        );
         // replace \d with number and \w with letter and . with ascii
         $regex = preg_replace_callback('/\\\w/', 'static::randomLetter', $regex);
         $regex = preg_replace_callback('/\\\d/', 'static::randomDigit', $regex);
@@ -536,10 +552,10 @@ class Base
     /**
      * Chainable method for making any formatter optional.
      *
-     * @param float|integer $weight Set the probability of receiving a null value.
-     *                              "0" will always return null, "1" will always return the generator.
-     *                              If $weight is an integer value, then the same system works
-     *                              between 0 (always get false) and 100 (always get true).
+     * @param  float|integer $weight Set the probability of receiving a null value.
+     *                               "0" will always return null, "1" will always return the generator.
+     *                               If $weight is an integer value, then the same system works
+     *                               between 0 (always get false) and 100 (always get true).
      * @return mixed|null
      */
     public function optional($weight = 0.5, $default = null)
@@ -566,9 +582,9 @@ class Base
      * $faker->unique()->randomElement(array(1, 2, 3));
      * </code>
      *
-     * @param boolean $reset      If set to true, resets the list of existing values
-     * @param integer $maxRetries Maximum number of retries to find a unique value,
-     *                                       After which an OverflowException is thrown.
+     * @param  boolean $reset      If set to true, resets the list of existing values
+     * @param  integer $maxRetries Maximum number of retries to find a unique value,
+     *                             After which an OverflowException is thrown.
      * @throws \OverflowException When no unique value can be found by iterating $maxRetries times
      *
      * @return UniqueGenerator A proxy class returning only non-existing values
@@ -598,9 +614,9 @@ class Base
      * print_r($values); // [0, 4, 8, 4, 2, 6, 0, 8, 8, 6]
      * </code>
      *
-     * @param Closure $validator  A function returning true for valid values
-     * @param integer $maxRetries Maximum number of retries to find a unique value,
-     *                            After which an OverflowException is thrown.
+     * @param  Closure $validator  A function returning true for valid values
+     * @param  integer $maxRetries Maximum number of retries to find a unique value,
+     *                             After which an OverflowException is thrown.
      * @throws \OverflowException When no valid value can be found by iterating $maxRetries times
      *
      * @return ValidGenerator A proxy class returning only valid values

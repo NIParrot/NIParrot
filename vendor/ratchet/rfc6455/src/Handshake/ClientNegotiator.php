@@ -5,7 +5,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
 use GuzzleHttp\Psr7\Request;
 
-class ClientNegotiator {
+class ClientNegotiator
+{
     /**
      * @var ResponseVerifier
      */
@@ -16,27 +17,33 @@ class ClientNegotiator {
      */
     private $defaultHeader;
 
-    function __construct() {
+    function __construct()
+    {
         $this->verifier = new ResponseVerifier;
 
-        $this->defaultHeader = new Request('GET', '', [
+        $this->defaultHeader = new Request(
+            'GET', '', [
             'Connection'            => 'Upgrade'
-          , 'Upgrade'               => 'websocket'
-          , 'Sec-WebSocket-Version' => $this->getVersion()
-          , 'User-Agent'            => "Ratchet"
-        ]);
+            , 'Upgrade'               => 'websocket'
+            , 'Sec-WebSocket-Version' => $this->getVersion()
+            , 'User-Agent'            => "Ratchet"
+            ]
+        );
     }
 
-    public function generateRequest(UriInterface $uri) {
+    public function generateRequest(UriInterface $uri)
+    {
         return $this->defaultHeader->withUri($uri)
             ->withHeader("Sec-WebSocket-Key", $this->generateKey());
     }
 
-    public function validateResponse(RequestInterface $request, ResponseInterface $response) {
+    public function validateResponse(RequestInterface $request, ResponseInterface $response)
+    {
         return $this->verifier->verifyAll($request, $response);
     }
 
-    public function generateKey() {
+    public function generateKey()
+    {
         $chars     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwzyz1234567890+/=';
         $charRange = strlen($chars) - 1;
         $key       = '';
@@ -47,7 +54,8 @@ class ClientNegotiator {
         return base64_encode($key);
     }
 
-    public function getVersion() {
+    public function getVersion()
+    {
         return 13;
     }
 }

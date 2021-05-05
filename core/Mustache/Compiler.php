@@ -88,93 +88,93 @@ class Mustache_Compiler
         $level++;
         foreach ($tree as $node) {
             switch ($node[Mustache_Tokenizer::TYPE]) {
-                case Mustache_Tokenizer::T_PRAGMA:
-                    $this->pragmas[$node[Mustache_Tokenizer::NAME]] = true;
-                    break;
+            case Mustache_Tokenizer::T_PRAGMA:
+                $this->pragmas[$node[Mustache_Tokenizer::NAME]] = true;
+                break;
 
-                case Mustache_Tokenizer::T_SECTION:
-                    $code .= $this->section(
-                        $node[Mustache_Tokenizer::NODES],
-                        $node[Mustache_Tokenizer::NAME],
-                        isset($node[Mustache_Tokenizer::FILTERS]) ? $node[Mustache_Tokenizer::FILTERS] : array(),
-                        $node[Mustache_Tokenizer::INDEX],
-                        $node[Mustache_Tokenizer::END],
-                        $node[Mustache_Tokenizer::OTAG],
-                        $node[Mustache_Tokenizer::CTAG],
-                        $level
-                    );
-                    break;
+            case Mustache_Tokenizer::T_SECTION:
+                $code .= $this->section(
+                    $node[Mustache_Tokenizer::NODES],
+                    $node[Mustache_Tokenizer::NAME],
+                    isset($node[Mustache_Tokenizer::FILTERS]) ? $node[Mustache_Tokenizer::FILTERS] : array(),
+                    $node[Mustache_Tokenizer::INDEX],
+                    $node[Mustache_Tokenizer::END],
+                    $node[Mustache_Tokenizer::OTAG],
+                    $node[Mustache_Tokenizer::CTAG],
+                    $level
+                );
+                break;
 
-                case Mustache_Tokenizer::T_INVERTED:
-                    $code .= $this->invertedSection(
-                        $node[Mustache_Tokenizer::NODES],
-                        $node[Mustache_Tokenizer::NAME],
-                        isset($node[Mustache_Tokenizer::FILTERS]) ? $node[Mustache_Tokenizer::FILTERS] : array(),
-                        $level
-                    );
-                    break;
+            case Mustache_Tokenizer::T_INVERTED:
+                $code .= $this->invertedSection(
+                    $node[Mustache_Tokenizer::NODES],
+                    $node[Mustache_Tokenizer::NAME],
+                    isset($node[Mustache_Tokenizer::FILTERS]) ? $node[Mustache_Tokenizer::FILTERS] : array(),
+                    $level
+                );
+                break;
 
-                case Mustache_Tokenizer::T_PARTIAL:
-                    $code .= $this->partial(
-                        $node[Mustache_Tokenizer::NAME],
-                        isset($node[Mustache_Tokenizer::INDENT]) ? $node[Mustache_Tokenizer::INDENT] : '',
-                        $level
-                    );
-                    break;
+            case Mustache_Tokenizer::T_PARTIAL:
+                $code .= $this->partial(
+                    $node[Mustache_Tokenizer::NAME],
+                    isset($node[Mustache_Tokenizer::INDENT]) ? $node[Mustache_Tokenizer::INDENT] : '',
+                    $level
+                );
+                break;
 
-                case Mustache_Tokenizer::T_PARENT:
-                    $code .= $this->parent(
-                        $node[Mustache_Tokenizer::NAME],
-                        isset($node[Mustache_Tokenizer::INDENT]) ? $node[Mustache_Tokenizer::INDENT] : '',
-                        $node[Mustache_Tokenizer::NODES],
-                        $level
-                    );
-                    break;
+            case Mustache_Tokenizer::T_PARENT:
+                $code .= $this->parent(
+                    $node[Mustache_Tokenizer::NAME],
+                    isset($node[Mustache_Tokenizer::INDENT]) ? $node[Mustache_Tokenizer::INDENT] : '',
+                    $node[Mustache_Tokenizer::NODES],
+                    $level
+                );
+                break;
 
-                case Mustache_Tokenizer::T_BLOCK_ARG:
-                    $code .= $this->blockArg(
-                        $node[Mustache_Tokenizer::NODES],
-                        $node[Mustache_Tokenizer::NAME],
-                        $node[Mustache_Tokenizer::INDEX],
-                        $node[Mustache_Tokenizer::END],
-                        $node[Mustache_Tokenizer::OTAG],
-                        $node[Mustache_Tokenizer::CTAG],
-                        $level
-                    );
-                    break;
+            case Mustache_Tokenizer::T_BLOCK_ARG:
+                $code .= $this->blockArg(
+                    $node[Mustache_Tokenizer::NODES],
+                    $node[Mustache_Tokenizer::NAME],
+                    $node[Mustache_Tokenizer::INDEX],
+                    $node[Mustache_Tokenizer::END],
+                    $node[Mustache_Tokenizer::OTAG],
+                    $node[Mustache_Tokenizer::CTAG],
+                    $level
+                );
+                break;
 
-                case Mustache_Tokenizer::T_BLOCK_VAR:
-                    $code .= $this->blockVar(
-                        $node[Mustache_Tokenizer::NODES],
-                        $node[Mustache_Tokenizer::NAME],
-                        $node[Mustache_Tokenizer::INDEX],
-                        $node[Mustache_Tokenizer::END],
-                        $node[Mustache_Tokenizer::OTAG],
-                        $node[Mustache_Tokenizer::CTAG],
-                        $level
-                    );
-                    break;
+            case Mustache_Tokenizer::T_BLOCK_VAR:
+                $code .= $this->blockVar(
+                    $node[Mustache_Tokenizer::NODES],
+                    $node[Mustache_Tokenizer::NAME],
+                    $node[Mustache_Tokenizer::INDEX],
+                    $node[Mustache_Tokenizer::END],
+                    $node[Mustache_Tokenizer::OTAG],
+                    $node[Mustache_Tokenizer::CTAG],
+                    $level
+                );
+                break;
 
-                case Mustache_Tokenizer::T_COMMENT:
-                    break;
+            case Mustache_Tokenizer::T_COMMENT:
+                break;
 
-                case Mustache_Tokenizer::T_ESCAPED:
-                case Mustache_Tokenizer::T_UNESCAPED:
-                case Mustache_Tokenizer::T_UNESCAPED_2:
-                    $code .= $this->variable(
-                        $node[Mustache_Tokenizer::NAME],
-                        isset($node[Mustache_Tokenizer::FILTERS]) ? $node[Mustache_Tokenizer::FILTERS] : array(),
-                        $node[Mustache_Tokenizer::TYPE] === Mustache_Tokenizer::T_ESCAPED,
-                        $level
-                    );
-                    break;
+            case Mustache_Tokenizer::T_ESCAPED:
+            case Mustache_Tokenizer::T_UNESCAPED:
+            case Mustache_Tokenizer::T_UNESCAPED_2:
+                $code .= $this->variable(
+                    $node[Mustache_Tokenizer::NAME],
+                    isset($node[Mustache_Tokenizer::FILTERS]) ? $node[Mustache_Tokenizer::FILTERS] : array(),
+                    $node[Mustache_Tokenizer::TYPE] === Mustache_Tokenizer::T_ESCAPED,
+                    $level
+                );
+                break;
 
-                case Mustache_Tokenizer::T_TEXT:
-                    $code .= $this->text($node[Mustache_Tokenizer::VALUE], $level);
-                    break;
+            case Mustache_Tokenizer::T_TEXT:
+                $code .= $this->text($node[Mustache_Tokenizer::VALUE], $level);
+                break;
 
-                default:
-                    throw new Mustache_Exception_SyntaxException(sprintf('Unknown token type: %s', $node[Mustache_Tokenizer::TYPE]), $node);
+            default:
+                throw new Mustache_Exception_SyntaxException(sprintf('Unknown token type: %s', $node[Mustache_Tokenizer::TYPE]), $node);
             }
         }
 

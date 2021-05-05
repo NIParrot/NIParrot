@@ -1,6 +1,7 @@
 <?php
 /**
  * Whoops - php errors for cool kids
+ *
  * @author Filipe Dobreira <http://github.com/filp>
  */
 
@@ -11,6 +12,7 @@ class Formatter
     /**
      * Returns all basic information about the exception in a simple array
      * for further convertion to other languages
+     *
      * @param  Inspector $inspector
      * @param  bool      $shouldAddTrace
      * @return array
@@ -30,7 +32,9 @@ class Formatter
             $frameData = [];
 
             foreach ($frames as $frame) {
-                /** @var Frame $frame */
+                /**
+ * @var Frame $frame 
+*/
                 $frameData[] = [
                     'file'     => $frame->getFile(),
                     'line'     => $frame->getLine(),

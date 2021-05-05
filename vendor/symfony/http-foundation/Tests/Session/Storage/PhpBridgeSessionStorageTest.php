@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\PhpBridgeSessionStorage;
  * These tests require separate processes.
  *
  * @runTestsInSeparateProcesses
- * @preserveGlobalState disabled
+ * @preserveGlobalState         disabled
  */
 class PhpBridgeSessionStorageTest extends TestCase
 {

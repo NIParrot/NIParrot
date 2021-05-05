@@ -50,10 +50,12 @@ class ClassCreator
 
         if (!class_exists($classname, false)) {
             if (count($class->getInterfaces())) {
-                throw new ClassCreatorException(sprintf(
-                    'Could not double `%s` and implement interfaces: [%s].',
-                    $class->getParentClass(), implode(', ', $class->getInterfaces())
-                ), $class);
+                throw new ClassCreatorException(
+                    sprintf(
+                        'Could not double `%s` and implement interfaces: [%s].',
+                        $class->getParentClass(), implode(', ', $class->getInterfaces())
+                    ), $class
+                );
             }
 
             throw new ClassCreatorException(

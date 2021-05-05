@@ -253,14 +253,16 @@ class NativeSessionStorage implements SessionStorageInterface
         }
 
         // Register error handler to add information about the current save handler
-        $previousHandler = set_error_handler(function ($type, $msg, $file, $line) use (&$previousHandler) {
-            if (\E_WARNING === $type && 0 === strpos($msg, 'session_write_close():')) {
-                $handler = $this->saveHandler instanceof SessionHandlerProxy ? $this->saveHandler->getHandler() : $this->saveHandler;
-                $msg = sprintf('session_write_close(): Failed to write session data with "%s" handler', \get_class($handler));
-            }
+        $previousHandler = set_error_handler(
+            function ($type, $msg, $file, $line) use (&$previousHandler) {
+                if (\E_WARNING === $type && 0 === strpos($msg, 'session_write_close():')) {
+                    $handler = $this->saveHandler instanceof SessionHandlerProxy ? $this->saveHandler->getHandler() : $this->saveHandler;
+                    $msg = sprintf('session_write_close(): Failed to write session data with "%s" handler', \get_class($handler));
+                }
 
-            return $previousHandler ? $previousHandler($type, $msg, $file, $line) : false;
-        });
+                return $previousHandler ? $previousHandler($type, $msg, $file, $line) : false;
+            }
+        );
 
         try {
             session_write_close();
@@ -367,7 +369,8 @@ class NativeSessionStorage implements SessionStorageInterface
             return;
         }
 
-        $validOptions = array_flip([
+        $validOptions = array_flip(
+            [
             'cache_expire', 'cache_limiter', 'cookie_domain', 'cookie_httponly',
             'cookie_lifetime', 'cookie_path', 'cookie_secure', 'cookie_samesite',
             'entropy_file', 'entropy_length', 'gc_divisor',
@@ -378,7 +381,8 @@ class NativeSessionStorage implements SessionStorageInterface
             'upload_progress.cleanup', 'upload_progress.prefix', 'upload_progress.name',
             'upload_progress.freq', 'upload_progress.min_freq', 'url_rewriter.tags',
             'sid_length', 'sid_bits_per_character', 'trans_sid_hosts', 'trans_sid_tags',
-        ]);
+            ]
+        );
 
         foreach ($options as $key => $value) {
             if (isset($validOptions[$key])) {
@@ -415,9 +419,10 @@ class NativeSessionStorage implements SessionStorageInterface
      */
     public function setSaveHandler($saveHandler = null)
     {
-        if (!$saveHandler instanceof AbstractProxy &&
-            !$saveHandler instanceof \SessionHandlerInterface &&
-            null !== $saveHandler) {
+        if (!$saveHandler instanceof AbstractProxy 
+            && !$saveHandler instanceof \SessionHandlerInterface 
+            && null !== $saveHandler
+        ) {
             throw new \InvalidArgumentException('Must be instance of AbstractProxy; implement \SessionHandlerInterface; or be null.');
         }
 

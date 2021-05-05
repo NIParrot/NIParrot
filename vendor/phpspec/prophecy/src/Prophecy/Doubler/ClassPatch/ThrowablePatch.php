@@ -10,7 +10,7 @@ class ThrowablePatch implements ClassPatchInterface
     /**
      * Checks if patch supports specific class node.
      *
-     * @param ClassNode $node
+     * @param  ClassNode $node
      * @return bool
      */
     public function supports(ClassNode $node)
@@ -19,7 +19,7 @@ class ThrowablePatch implements ClassPatchInterface
     }
 
     /**
-     * @param ClassNode $node
+     * @param  ClassNode $node
      * @return bool
      */
     private function implementsAThrowableInterface(ClassNode $node)
@@ -34,7 +34,7 @@ class ThrowablePatch implements ClassPatchInterface
     }
 
     /**
-     * @param ClassNode $node
+     * @param  ClassNode $node
      * @return bool
      */
     private function doesNotExtendAThrowableClass(ClassNode $node)

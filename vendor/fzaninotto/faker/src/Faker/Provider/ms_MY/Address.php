@@ -597,7 +597,7 @@ class Address extends \Faker\Provider\Address
      * Return a postcode based on state
      *
      * @example '55100'
-     * @link https://en.wikipedia.org/wiki/Postal_codes_in_Malaysia#States
+     * @link    https://en.wikipedia.org/wiki/Postal_codes_in_Malaysia#States
      *
      * @param null|string $state 'state' or null
      *
@@ -686,7 +686,7 @@ class Address extends \Faker\Provider\Address
      * @example 'Ampang'
      *
      * @return @string
-    */
+     */
     public function city()
     {
         $state = static::randomElement(array_keys(static::$towns));
@@ -699,7 +699,7 @@ class Address extends \Faker\Provider\Address
      * @example 'Johor'
      *
      * @return @string
-    */
+     */
     public function state()
     {
         $state = static::randomElement(array_keys(static::$states));

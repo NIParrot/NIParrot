@@ -108,12 +108,12 @@ final class SecureServer extends EventEmitter implements ServerInterface
      * meet this requirement, the `SecureServer` will emit an `error` event and
      * then close the underlying connection.
      *
-     * @param ServerInterface|TcpServer $tcp
-     * @param LoopInterface $loop
-     * @param array $context
+     * @param  ServerInterface|TcpServer $tcp
+     * @param  LoopInterface             $loop
+     * @param  array                     $context
      * @throws BadMethodCallException for legacy HHVM < 3.8 due to lack of support
-     * @see TcpServer
-     * @link https://www.php.net/manual/en/context.ssl.php for TLS context options
+     * @see    TcpServer
+     * @link   https://www.php.net/manual/en/context.ssl.php for TLS context options
      */
     public function __construct(ServerInterface $tcp, LoopInterface $loop, array $context)
     {
@@ -131,12 +131,16 @@ final class SecureServer extends EventEmitter implements ServerInterface
         $this->context = $context;
 
         $that = $this;
-        $this->tcp->on('connection', function ($connection) use ($that) {
-            $that->handleConnection($connection);
-        });
-        $this->tcp->on('error', function ($error) use ($that) {
-            $that->emit('error', array($error));
-        });
+        $this->tcp->on(
+            'connection', function ($connection) use ($that) {
+                $that->handleConnection($connection);
+            }
+        );
+        $this->tcp->on(
+            'error', function ($error) use ($that) {
+                $that->emit('error', array($error));
+            }
+        );
     }
 
     public function getAddress()
@@ -146,7 +150,7 @@ final class SecureServer extends EventEmitter implements ServerInterface
             return null;
         }
 
-        return \str_replace('tcp://' , 'tls://', $address);
+        return \str_replace('tcp://', 'tls://', $address);
     }
 
     public function pause()
@@ -164,7 +168,9 @@ final class SecureServer extends EventEmitter implements ServerInterface
         return $this->tcp->close();
     }
 
-    /** @internal */
+    /**
+     * @internal 
+     */
     public function handleConnection(ConnectionInterface $connection)
     {
         if (!$connection instanceof Connection) {

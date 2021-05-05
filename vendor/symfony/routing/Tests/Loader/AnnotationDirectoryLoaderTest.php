@@ -34,38 +34,36 @@ class AnnotationDirectoryLoaderTest extends AbstractAnnotationLoaderTest
         $this->reader
             ->expects($this->any())
             ->method('getMethodAnnotations')
-            ->willReturn([])
-        ;
+            ->willReturn([]);
 
         $this->reader
             ->expects($this->any())
             ->method('getClassAnnotations')
-            ->willReturn([])
-        ;
+            ->willReturn([]);
 
         $this->loader->load(__DIR__.'/../Fixtures/AnnotatedClasses');
     }
 
     public function testLoadIgnoresHiddenDirectories()
     {
-        $this->expectAnnotationsToBeReadFrom([
+        $this->expectAnnotationsToBeReadFrom(
+            [
             'Symfony\Component\Routing\Tests\Fixtures\AnnotatedClasses\BarClass',
             'Symfony\Component\Routing\Tests\Fixtures\AnnotatedClasses\BazClass',
             'Symfony\Component\Routing\Tests\Fixtures\AnnotatedClasses\FooClass',
             'Symfony\Component\Routing\Tests\Fixtures\AnnotatedClasses\EncodingClass',
-        ]);
+            ]
+        );
 
         $this->reader
             ->expects($this->any())
             ->method('getMethodAnnotations')
-            ->willReturn([])
-        ;
+            ->willReturn([]);
 
         $this->reader
             ->expects($this->any())
             ->method('getClassAnnotations')
-            ->willReturn([])
-        ;
+            ->willReturn([]);
 
         $this->loader->load(__DIR__.'/../Fixtures/AnnotatedClasses');
     }
@@ -93,8 +91,7 @@ class AnnotationDirectoryLoaderTest extends AbstractAnnotationLoaderTest
         $this->reader
             ->expects($this->any())
             ->method('getMethodAnnotations')
-            ->willReturn([])
-        ;
+            ->willReturn([]);
 
         $this->loader->load(__DIR__.'/../Fixtures/AnnotatedClasses/FooClass.php');
     }
@@ -103,8 +100,12 @@ class AnnotationDirectoryLoaderTest extends AbstractAnnotationLoaderTest
     {
         $this->reader->expects($this->exactly(\count($classes)))
             ->method('getClassAnnotation')
-            ->with($this->callback(function (\ReflectionClass $class) use ($classes) {
-                return \in_array($class->getName(), $classes);
-            }));
+            ->with(
+                $this->callback(
+                    function (\ReflectionClass $class) use ($classes) {
+                        return \in_array($class->getName(), $classes);
+                    }
+                )
+            );
     }
 }

@@ -34,7 +34,8 @@ REGEX;
         return $tokens;
     }
 
-    public function preprocessCode(string $code, array &$patches): string {
+    public function preprocessCode(string $code, array &$patches): string
+    {
         if (!preg_match_all(self::FLEXIBLE_DOC_STRING_REGEX, $code, $matches, PREG_SET_ORDER|PREG_OFFSET_CAPTURE)) {
             // No heredoc/nowdoc found
             return $code;

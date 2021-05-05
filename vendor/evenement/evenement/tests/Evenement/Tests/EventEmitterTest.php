@@ -26,7 +26,10 @@ class EventEmitterTest extends TestCase
 
     public function testAddListenerWithLambda()
     {
-        $this->emitter->on('foo', function () {});
+        $this->emitter->on(
+            'foo', function () {
+            }
+        );
     }
 
     public function testAddListenerWithMethod()
@@ -54,9 +57,11 @@ class EventEmitterTest extends TestCase
     {
         $listenerCalled = 0;
 
-        $this->emitter->once('foo', function () use (&$listenerCalled) {
-            $listenerCalled++;
-        });
+        $this->emitter->once(
+            'foo', function () use (&$listenerCalled) {
+                $listenerCalled++;
+            }
+        );
 
         $this->assertSame(0, $listenerCalled);
 
@@ -73,9 +78,11 @@ class EventEmitterTest extends TestCase
     {
         $capturedArgs = [];
 
-        $this->emitter->once('foo', function ($a, $b) use (&$capturedArgs) {
-            $capturedArgs = array($a, $b);
-        });
+        $this->emitter->once(
+            'foo', function ($a, $b) use (&$capturedArgs) {
+                $capturedArgs = array($a, $b);
+            }
+        );
 
         $this->emitter->emit('foo', array('a', 'b'));
 
@@ -86,9 +93,11 @@ class EventEmitterTest extends TestCase
     {
         $listenerCalled = false;
 
-        $this->emitter->on('foo', function () use (&$listenerCalled) {
-            $listenerCalled = true;
-        });
+        $this->emitter->on(
+            'foo', function () use (&$listenerCalled) {
+                $listenerCalled = true;
+            }
+        );
 
         $this->assertSame(false, $listenerCalled);
         $this->emitter->emit('foo');
@@ -101,11 +110,13 @@ class EventEmitterTest extends TestCase
 
         $listenerCalled = false;
 
-        $this->emitter->on('foo', function ($value) use (&$listenerCalled, $test) {
-            $listenerCalled = true;
+        $this->emitter->on(
+            'foo', function ($value) use (&$listenerCalled, $test) {
+                $listenerCalled = true;
 
-            $test->assertSame('bar', $value);
-        });
+                $test->assertSame('bar', $value);
+            }
+        );
 
         $this->assertSame(false, $listenerCalled);
         $this->emitter->emit('foo', ['bar']);
@@ -118,12 +129,14 @@ class EventEmitterTest extends TestCase
 
         $listenerCalled = false;
 
-        $this->emitter->on('foo', function ($arg1, $arg2) use (&$listenerCalled, $test) {
-            $listenerCalled = true;
+        $this->emitter->on(
+            'foo', function ($arg1, $arg2) use (&$listenerCalled, $test) {
+                $listenerCalled = true;
 
-            $test->assertSame('bar', $arg1);
-            $test->assertSame('baz', $arg2);
-        });
+                $test->assertSame('bar', $arg1);
+                $test->assertSame('baz', $arg2);
+            }
+        );
 
         $this->assertSame(false, $listenerCalled);
         $this->emitter->emit('foo', ['bar', 'baz']);
@@ -141,13 +154,17 @@ class EventEmitterTest extends TestCase
     {
         $listenersCalled = 0;
 
-        $this->emitter->on('foo', function () use (&$listenersCalled) {
-            $listenersCalled++;
-        });
+        $this->emitter->on(
+            'foo', function () use (&$listenersCalled) {
+                $listenersCalled++;
+            }
+        );
 
-        $this->emitter->on('foo', function () use (&$listenersCalled) {
-            $listenersCalled++;
-        });
+        $this->emitter->on(
+            'foo', function () use (&$listenersCalled) {
+                $listenersCalled++;
+            }
+        );
 
         $this->assertSame(0, $listenersCalled);
         $this->emitter->emit('foo');
@@ -190,9 +207,11 @@ class EventEmitterTest extends TestCase
     {
         $listenersCalled = 0;
 
-        $this->emitter->on('foo', function () use (&$listenersCalled) {
-            $listenersCalled++;
-        });
+        $this->emitter->on(
+            'foo', function () use (&$listenersCalled) {
+                $listenersCalled++;
+            }
+        );
 
         $this->emitter->removeAllListeners('foo');
 
@@ -205,9 +224,11 @@ class EventEmitterTest extends TestCase
     {
         $listenersCalled = 0;
 
-        $this->emitter->on('foo', function () use (&$listenersCalled) {
-            $listenersCalled++;
-        });
+        $this->emitter->on(
+            'foo', function () use (&$listenersCalled) {
+                $listenersCalled++;
+            }
+        );
 
         $this->emitter->removeAllListeners('bar');
 
@@ -220,13 +241,17 @@ class EventEmitterTest extends TestCase
     {
         $listenersCalled = 0;
 
-        $this->emitter->on('foo', function () use (&$listenersCalled) {
-            $listenersCalled++;
-        });
+        $this->emitter->on(
+            'foo', function () use (&$listenersCalled) {
+                $listenersCalled++;
+            }
+        );
 
-        $this->emitter->on('bar', function () use (&$listenersCalled) {
-            $listenersCalled++;
-        });
+        $this->emitter->on(
+            'bar', function () use (&$listenersCalled) {
+                $listenersCalled++;
+            }
+        );
 
         $this->emitter->removeAllListeners();
 
@@ -240,9 +265,11 @@ class EventEmitterTest extends TestCase
     {
         $calledWith = null;
 
-        $this->emitter->on('foo', function ($data) use (&$calledWith) {
-            $calledWith = $data;
-        });
+        $this->emitter->on(
+            'foo', function ($data) use (&$calledWith) {
+                $calledWith = $data;
+            }
+        );
 
         $this->emitter->emit('foo', ['bar']);
 
@@ -292,12 +319,18 @@ class EventEmitterTest extends TestCase
 
     public function testListeners()
     {
-        $onA = function () {};
-        $onB = function () {};
-        $onC = function () {};
-        $onceA = function () {};
-        $onceB = function () {};
-        $onceC = function () {};
+        $onA = function () {
+        };
+        $onB = function () {
+        };
+        $onC = function () {
+        };
+        $onceA = function () {
+        };
+        $onceB = function () {
+        };
+        $onceC = function () {
+        };
 
         self::assertCount(0, $this->emitter->listeners('event'));
         $this->emitter->on('event', $onA);
@@ -362,7 +395,10 @@ class EventEmitterTest extends TestCase
         self::expectException(InvalidArgumentException::class);
         self::expectExceptionMessage('event name must not be null');
 
-        $this->emitter->on(null, function () {});
+        $this->emitter->on(
+            null, function () {
+            }
+        );
     }
 
     public function testEventNameMustBeStringOnce()
@@ -370,7 +406,10 @@ class EventEmitterTest extends TestCase
         self::expectException(InvalidArgumentException::class);
         self::expectExceptionMessage('event name must not be null');
 
-        $this->emitter->once(null, function () {});
+        $this->emitter->once(
+            null, function () {
+            }
+        );
     }
 
     public function testEventNameMustBeStringRemoveListener()
@@ -378,7 +417,10 @@ class EventEmitterTest extends TestCase
         self::expectException(InvalidArgumentException::class);
         self::expectExceptionMessage('event name must not be null');
 
-        $this->emitter->removeListener(null, function () {});
+        $this->emitter->removeListener(
+            null, function () {
+            }
+        );
     }
 
     public function testEventNameMustBeStringEmit()
@@ -391,10 +433,14 @@ class EventEmitterTest extends TestCase
 
     public function testListenersGetAll()
     {
-        $a = function () {};
-        $b = function () {};
-        $c = function () {};
-        $d = function () {};
+        $a = function () {
+        };
+        $b = function () {
+        };
+        $c = function () {
+        };
+        $d = function () {
+        };
 
         $this->emitter->once('event2', $c);
         $this->emitter->on('event', $a);
@@ -423,13 +469,17 @@ class EventEmitterTest extends TestCase
         $first = 0;
         $second = 0;
 
-        $this->emitter->once('event', function () use (&$first, &$second) {
-            $first++;
-            $this->emitter->once('event', function () use (&$second) {
-                $second++;
-            });
-            $this->emitter->emit('event');
-        });
+        $this->emitter->once(
+            'event', function () use (&$first, &$second) {
+                $first++;
+                $this->emitter->once(
+                    'event', function () use (&$second) {
+                        $second++;
+                    }
+                );
+                $this->emitter->emit('event');
+            }
+        );
         $this->emitter->emit('event');
 
         self::assertSame(1, $first);

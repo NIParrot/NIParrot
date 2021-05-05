@@ -46,10 +46,10 @@ interface LoopInterface
      * The execution order of listeners when multiple streams become ready at
      * the same time is not guaranteed.
      *
-     * @param resource $stream   The PHP stream resource to check.
-     * @param callable $listener Invoked when the stream is ready.
+     * @param  resource $stream   The PHP stream resource to check.
+     * @param  callable $listener Invoked when the stream is ready.
      * @throws \Exception if the given resource type is not supported by this loop implementation
-     * @see self::removeReadStream()
+     * @see    self::removeReadStream()
      */
     public function addReadStream($stream, $listener);
 
@@ -103,10 +103,10 @@ interface LoopInterface
      * As such, it's recommended to use `stream_set_read_buffer($stream, 0);`
      * to disable PHP's internal read buffer in this case.
      *
-     * @param resource $stream   The PHP stream resource to check.
-     * @param callable $listener Invoked when the stream is ready.
+     * @param  resource $stream   The PHP stream resource to check.
+     * @param  callable $listener Invoked when the stream is ready.
      * @throws \Exception if the given resource type is not supported by this loop implementation
-     * @see self::removeWriteStream()
+     * @see    self::removeWriteStream()
      */
     public function addWriteStream($stream, $listener);
 
@@ -382,7 +382,7 @@ interface LoopInterface
      * **Note: A listener can only be added once to the same signal, any
      * attempts to add it more then once will be ignored.**
      *
-     * @param int $signal
+     * @param int      $signal
      * @param callable $listener
      *
      * @throws \BadMethodCallException when signals aren't supported on this
@@ -401,7 +401,7 @@ interface LoopInterface
      *
      * Any attempts to remove listeners that aren't registered will be ignored.
      *
-     * @param int $signal
+     * @param int      $signal
      * @param callable $listener
      *
      * @return void

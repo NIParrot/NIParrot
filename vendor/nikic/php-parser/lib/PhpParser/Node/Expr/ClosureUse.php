@@ -6,9 +6,13 @@ use PhpParser\Node\Expr;
 
 class ClosureUse extends Expr
 {
-    /** @var Expr\Variable Variable to use */
+    /**
+     * @var Expr\Variable Variable to use 
+     */
     public $var;
-    /** @var bool Whether to use by reference */
+    /**
+     * @var bool Whether to use by reference 
+     */
     public $byRef;
 
     /**
@@ -18,17 +22,20 @@ class ClosureUse extends Expr
      * @param bool          $byRef      Whether to use by reference
      * @param array         $attributes Additional attributes
      */
-    public function __construct(Expr\Variable $var, bool $byRef = false, array $attributes = []) {
+    public function __construct(Expr\Variable $var, bool $byRef = false, array $attributes = [])
+    {
         $this->attributes = $attributes;
         $this->var = $var;
         $this->byRef = $byRef;
     }
 
-    public function getSubNodeNames() : array {
+    public function getSubNodeNames() : array
+    {
         return ['var', 'byRef'];
     }
     
-    public function getType() : string {
+    public function getType() : string
+    {
         return 'Expr_ClosureUse';
     }
 }

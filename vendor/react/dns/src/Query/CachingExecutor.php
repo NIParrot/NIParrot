@@ -32,40 +32,44 @@ final class CachingExecutor implements ExecutorInterface
         $executor = $this->executor;
 
         $pending = $cache->get($id);
-        return new Promise(function ($resolve, $reject) use ($query, $id, $cache, $executor, &$pending, $that) {
-            $pending->then(
-                function ($message) use ($query, $id, $cache, $executor, &$pending, $that) {
-                    // return cached response message on cache hit
-                    if ($message !== null) {
-                        return $message;
-                    }
-
-                    // perform DNS lookup if not already cached
-                    return $pending = $executor->query($query)->then(
-                        function (Message $message) use ($cache, $id, $that) {
-                            // DNS response message received => store in cache when not truncated and return
-                            if (!$message->tc) {
-                                $cache->set($id, $message, $that->ttl($message));
-                            }
-
+        return new Promise(
+            function ($resolve, $reject) use ($query, $id, $cache, $executor, &$pending, $that) {
+                $pending->then(
+                    function ($message) use ($query, $id, $cache, $executor, &$pending, $that) {
+                        // return cached response message on cache hit
+                        if ($message !== null) {
                             return $message;
                         }
-                    );
-                }
-            )->then($resolve, function ($e) use ($reject, &$pending) {
-                $reject($e);
+
+                        // perform DNS lookup if not already cached
+                        return $pending = $executor->query($query)->then(
+                            function (Message $message) use ($cache, $id, $that) {
+                                // DNS response message received => store in cache when not truncated and return
+                                if (!$message->tc) {
+                                    $cache->set($id, $message, $that->ttl($message));
+                                }
+
+                                return $message;
+                            }
+                        );
+                    }
+                )->then(
+                    $resolve, function ($e) use ($reject, &$pending) {
+                        $reject($e);
+                        $pending = null;
+                    }
+                );
+            }, function ($_, $reject) use (&$pending, $query) {
+                $reject(new \RuntimeException('DNS query for ' . $query->describe() . ' has been cancelled'));
+                $pending->cancel();
                 $pending = null;
-            });
-        }, function ($_, $reject) use (&$pending, $query) {
-            $reject(new \RuntimeException('DNS query for ' . $query->describe() . ' has been cancelled'));
-            $pending->cancel();
-            $pending = null;
-        });
+            }
+        );
     }
 
     /**
-     * @param Message $message
-     * @return int
+     * @param    Message $message
+     * @return   int
      * @internal
      */
     public function ttl(Message $message)

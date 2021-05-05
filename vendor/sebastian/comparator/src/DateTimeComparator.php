@@ -52,8 +52,12 @@ class DateTimeComparator extends ObjectComparator
      */
     public function assertEquals($expected, $actual, $delta = 0.0, $canonicalize = false, $ignoreCase = false, array &$processed = [])/*: void*/
     {
-        /** @var DateTimeInterface $expected */
-        /** @var DateTimeInterface $actual */
+        /**
+ * @var DateTimeInterface $expected 
+*/
+        /**
+ * @var DateTimeInterface $actual 
+*/
         $absDelta = abs($delta);
         $delta    = new DateInterval(sprintf('PT%dS', $absDelta));
         $delta->f = $absDelta - floor($absDelta);

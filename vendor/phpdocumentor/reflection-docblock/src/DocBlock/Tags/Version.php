@@ -24,7 +24,9 @@ use function preg_match;
  */
 final class Version extends BaseTag implements Factory\StaticMethod
 {
-    /** @var string */
+    /**
+     * @var string 
+     */
     protected $name = 'version';
 
     /**
@@ -43,7 +45,9 @@ final class Version extends BaseTag implements Factory\StaticMethod
         [^\s\:]+\:\s*\$[^\$]+\$
     )';
 
-    /** @var string|null The version vector. */
+    /**
+     * @var string|null The version vector. 
+     */
     private $version;
 
     public function __construct(?string $version = null, ?Description $description = null)

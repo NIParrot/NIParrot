@@ -1,7 +1,8 @@
 <?php
 namespace Ratchet\RFC6455\Messaging;
 
-class MessageBuffer {
+class MessageBuffer
+{
     /**
      * @var \Ratchet\RFC6455\Messaging\CloseFrameChecker
      */
@@ -64,12 +65,13 @@ class MessageBuffer {
         $this->closeFrameChecker = $frameChecker;
         $this->checkForMask = (bool)$expectMask;
 
-        $this->exceptionFactory ?: $this->exceptionFactory = function($msg) {
+        $this->exceptionFactory ?: $this->exceptionFactory = function ($msg) {
             return new \UnderflowException($msg);
         };
 
         $this->onMessage = $onMessage;
-        $this->onControl = $onControl ?: function() {};
+        $this->onControl = $onControl ?: function () {
+        };
 
         $this->leftovers = '';
 
@@ -93,7 +95,8 @@ class MessageBuffer {
         $this->maxMessagePayloadSize = $maxMessagePayloadSize;
     }
 
-    public function onData($data) {
+    public function onData($data)
+    {
         $data = $this->leftovers . $data;
         $dataLen = strlen($data);
 
@@ -134,7 +137,8 @@ class MessageBuffer {
             }
 
             if (!$closeFrame && $this->maxMessagePayloadSize > 0
-                && $payload_length + ($this->messageBuffer ? $this->messageBuffer->getPayloadLength() : 0) > $this->maxMessagePayloadSize) {
+                && $payload_length + ($this->messageBuffer ? $this->messageBuffer->getPayloadLength() : 0) > $this->maxMessagePayloadSize
+            ) {
                 $closeFrame = $this->newCloseFrame(Frame::CLOSE_TOO_BIG, 'Maximum message size exceeded');
             }
 
@@ -158,10 +162,11 @@ class MessageBuffer {
     }
 
     /**
-     * @param string $data
+     * @param  string $data
      * @return null
      */
-    private function processData($data) {
+    private function processData($data)
+    {
         $this->messageBuffer ?: $this->messageBuffer = $this->newMessage();
         $this->frameBuffer   ?: $this->frameBuffer   = $this->newFrame();
 
@@ -204,13 +209,15 @@ class MessageBuffer {
 
     /**
      * Check a frame to be added to the current message buffer
-     * @param \Ratchet\RFC6455\Messaging\FrameInterface|FrameInterface $frame
+     *
+     * @param  \Ratchet\RFC6455\Messaging\FrameInterface|FrameInterface $frame
      * @return \Ratchet\RFC6455\Messaging\FrameInterface|FrameInterface
      */
-    public function frameCheck(FrameInterface $frame) {
-        if (false !== $frame->getRsv1() ||
-            false !== $frame->getRsv2() ||
-            false !== $frame->getRsv3()
+    public function frameCheck(FrameInterface $frame)
+    {
+        if (false !== $frame->getRsv1() 
+            || false !== $frame->getRsv2() 
+            || false !== $frame->getRsv3()
         ) {
             return $this->newCloseFrame(Frame::CLOSE_PROTOCOL, 'Ratchet detected an invalid reserve code');
         }
@@ -227,39 +234,39 @@ class MessageBuffer {
             }
 
             switch ($opcode) {
-                case Frame::OP_CLOSE:
-                    $closeCode = 0;
+            case Frame::OP_CLOSE:
+                $closeCode = 0;
 
-                    $bin = $frame->getPayload();
+                $bin = $frame->getPayload();
 
-                    if (empty($bin)) {
-                        return $this->newCloseFrame(Frame::CLOSE_NORMAL);
-                    }
+                if (empty($bin)) {
+                    return $this->newCloseFrame(Frame::CLOSE_NORMAL);
+                }
 
-                    if (strlen($bin) === 1) {
-                        return $this->newCloseFrame(Frame::CLOSE_PROTOCOL, 'Ratchet detected an invalid close code');
-                    }
+                if (strlen($bin) === 1) {
+                    return $this->newCloseFrame(Frame::CLOSE_PROTOCOL, 'Ratchet detected an invalid close code');
+                }
 
-                    if (strlen($bin) >= 2) {
-                        list($closeCode) = array_merge(unpack('n*', substr($bin, 0, 2)));
-                    }
+                if (strlen($bin) >= 2) {
+                    list($closeCode) = array_merge(unpack('n*', substr($bin, 0, 2)));
+                }
 
-                    $checker = $this->closeFrameChecker;
-                    if (!$checker($closeCode)) {
-                        return $this->newCloseFrame(Frame::CLOSE_PROTOCOL, 'Ratchet detected an invalid close code');
-                    }
+                $checker = $this->closeFrameChecker;
+                if (!$checker($closeCode)) {
+                    return $this->newCloseFrame(Frame::CLOSE_PROTOCOL, 'Ratchet detected an invalid close code');
+                }
 
-                    if (!$this->checkUtf8(substr($bin, 2))) {
-                        return $this->newCloseFrame(Frame::CLOSE_BAD_PAYLOAD, 'Ratchet detected an invalid UTF-8 payload in the close reason');
-                    }
+                if (!$this->checkUtf8(substr($bin, 2))) {
+                    return $this->newCloseFrame(Frame::CLOSE_BAD_PAYLOAD, 'Ratchet detected an invalid UTF-8 payload in the close reason');
+                }
 
-                    return $frame;
+                return $frame;
                     break;
-                case Frame::OP_PING:
-                case Frame::OP_PONG:
-                    break;
-                default:
-                    return $this->newCloseFrame(Frame::CLOSE_PROTOCOL, 'Ratchet detected an invalid OP code');
+            case Frame::OP_PING:
+            case Frame::OP_PONG:
+                break;
+            default:
+                return $this->newCloseFrame(Frame::CLOSE_PROTOCOL, 'Ratchet detected an invalid OP code');
                     break;
             }
 
@@ -279,10 +286,12 @@ class MessageBuffer {
 
     /**
      * Determine if a message is valid
-     * @param \Ratchet\RFC6455\Messaging\MessageInterface
+     *
+     * @param  \Ratchet\RFC6455\Messaging\MessageInterface
      * @return bool|int true if valid - false if incomplete - int of recommended close code
      */
-    public function checkMessage(MessageInterface $message) {
+    public function checkMessage(MessageInterface $message)
+    {
         if (!$message->isBinary()) {
             if (!$this->checkUtf8($message->getPayload())) {
                 return Frame::CLOSE_BAD_PAYLOAD;
@@ -292,7 +301,8 @@ class MessageBuffer {
         return true;
     }
 
-    private function checkUtf8($string) {
+    private function checkUtf8($string)
+    {
         if (extension_loaded('mbstring')) {
             return mb_check_encoding($string, 'UTF-8');
         }
@@ -303,21 +313,24 @@ class MessageBuffer {
     /**
      * @return \Ratchet\RFC6455\Messaging\MessageInterface
      */
-    public function newMessage() {
+    public function newMessage()
+    {
         return new Message;
     }
 
     /**
-     * @param string|null $payload
-     * @param bool|null   $final
-     * @param int|null    $opcode
+     * @param  string|null $payload
+     * @param  bool|null   $final
+     * @param  int|null    $opcode
      * @return \Ratchet\RFC6455\Messaging\FrameInterface
      */
-    public function newFrame($payload = null, $final = null, $opcode = null) {
+    public function newFrame($payload = null, $final = null, $opcode = null)
+    {
         return new Frame($payload, $final, $opcode, $this->exceptionFactory);
     }
 
-    public function newCloseFrame($code, $reason = '') {
+    public function newCloseFrame($code, $reason = '')
+    {
         return $this->newFrame(pack('n', $code) . $reason, true, Frame::OP_CLOSE);
     }
 
@@ -325,10 +338,11 @@ class MessageBuffer {
      * This is a separate function for testing purposes
      * $memory_limit is only used for testing
      *
-     * @param null|string $memory_limit
+     * @param  null|string $memory_limit
      * @return int
      */
-    private static function getMemoryLimit($memory_limit = null) {
+    private static function getMemoryLimit($memory_limit = null)
+    {
         $memory_limit = $memory_limit === null ? \trim(\ini_get('memory_limit')) : $memory_limit;
         $memory_limit_bytes = 0;
         if ($memory_limit !== '') {

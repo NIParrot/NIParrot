@@ -114,21 +114,21 @@ abstract class Mustache_Template
     protected function isIterable($value)
     {
         switch (gettype($value)) {
-            case 'object':
-                return $value instanceof Traversable;
+        case 'object':
+            return $value instanceof Traversable;
 
-            case 'array':
-                $i = 0;
-                foreach ($value as $k => $v) {
-                    if ($k !== $i++) {
-                        return false;
-                    }
+        case 'array':
+            $i = 0;
+            foreach ($value as $k => $v) {
+                if ($k !== $i++) {
+                    return false;
                 }
+            }
 
-                return true;
+            return true;
 
-            default:
-                return false;
+        default:
+            return false;
         }
     }
 

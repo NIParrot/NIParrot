@@ -1,8 +1,6 @@
 <?php
 class NI_Api
 {
-    // public static $url;
-    // public static $method;
     public static $data = [];
 
     public static $response = [];
@@ -10,10 +8,8 @@ class NI_Api
 
     public static function run($action)
     {
-        // self::$url =$action;
-        // self::$method = $method;
         self::$data = self::CatchAndHandelRequestData();
-        // self::HandelMethod();
+
         NI_Api_route::run($action);
         NI_Api::Api_Handeler();
     }
@@ -38,7 +34,9 @@ class NI_Api
             if (empty($_POST) && empty($_FILES)) {
                 return null;
             }
-            return [$_POST, $_FILES];
+            return array_merge($_POST, $_FILES);
+        } else {
+            return json_decode(file_get_contents("php://input"));
         }
     }
 
@@ -92,7 +90,8 @@ class NI_Api
         header("Content-Type: application/json; charset=UTF-8");
         header("Access-Control-Allow-Methods: *");
         header("Access-Control-Max-Age: 3600");
-        header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+        header("Access-Control-Allow-Headers: Origin, Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, Accept");
+        // header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
         $json_response = is_object(self::$response['data']) ? self::$response['data'] : json_encode(self::$response['data']);
         echo($json_response);
         exit;

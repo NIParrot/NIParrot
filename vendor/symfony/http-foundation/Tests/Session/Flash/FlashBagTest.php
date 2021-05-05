@@ -98,7 +98,8 @@ class FlashBagTest extends TestCase
     {
         $this->bag->set('notice', 'Foo');
         $this->bag->set('error', 'Bar');
-        $this->assertEquals([
+        $this->assertEquals(
+            [
             'notice' => ['Foo'],
             'error' => ['Bar'], ], $this->bag->all()
         );
@@ -141,14 +142,16 @@ class FlashBagTest extends TestCase
     {
         $this->bag->set('notice', 'Foo');
         $this->bag->set('error', 'Bar');
-        $this->assertEquals([
+        $this->assertEquals(
+            [
             'notice' => ['Foo'],
             'error' => ['Bar'],
             ], $this->bag->peekAll()
         );
         $this->assertTrue($this->bag->has('notice'));
         $this->assertTrue($this->bag->has('error'));
-        $this->assertEquals([
+        $this->assertEquals(
+            [
             'notice' => ['Foo'],
             'error' => ['Bar'],
             ], $this->bag->peekAll()

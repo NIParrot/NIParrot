@@ -59,10 +59,12 @@ class ResponseHeaderBagTest extends TestCase
         $bag = new ResponseHeaderBag(['Expires' => 'Wed, 16 Feb 2011 14:17:43 GMT']);
         $this->assertEquals('private, must-revalidate', $bag->get('Cache-Control'));
 
-        $bag = new ResponseHeaderBag([
+        $bag = new ResponseHeaderBag(
+            [
             'Expires' => 'Wed, 16 Feb 2011 14:17:43 GMT',
             'Cache-Control' => 'max-age=3600',
-        ]);
+            ]
+        );
         $this->assertEquals('max-age=3600, private', $bag->get('Cache-Control'));
 
         $bag = new ResponseHeaderBag(['Last-Modified' => 'abcde']);
@@ -169,12 +171,14 @@ class ResponseHeaderBagTest extends TestCase
 
         $this->assertCount(4, $bag->getCookies());
         $this->assertEquals('foo=bar; path=/path/foo; domain=foo.bar; httponly', $bag->get('set-cookie'));
-        $this->assertEquals([
+        $this->assertEquals(
+            [
             'foo=bar; path=/path/foo; domain=foo.bar; httponly',
             'foo=bar; path=/path/bar; domain=foo.bar; httponly',
             'foo=bar; path=/path/bar; domain=bar.foo; httponly',
             'foo=bar; path=/; httponly',
-        ], $bag->get('set-cookie', null, false));
+            ], $bag->get('set-cookie', null, false)
+        );
 
         $this->assertSetCookieHeader('foo=bar; path=/path/foo; domain=foo.bar; httponly', $bag);
         $this->assertSetCookieHeader('foo=bar; path=/path/bar; domain=foo.bar; httponly', $bag);
@@ -239,10 +243,12 @@ class ResponseHeaderBagTest extends TestCase
         $this->assertEquals([new Cookie('foo', 'bar', 0, '/', null, false, false, true)], $bag->getCookies());
 
         $bag->set('set-cookie', 'foo2=bar2', false);
-        $this->assertEquals([
+        $this->assertEquals(
+            [
             new Cookie('foo', 'bar', 0, '/', null, false, false, true),
             new Cookie('foo2', 'bar2', 0, '/', null, false, false, true),
-        ], $bag->getCookies());
+            ], $bag->getCookies()
+        );
 
         $bag->remove('set-cookie');
         $this->assertEquals([], $bag->getCookies());

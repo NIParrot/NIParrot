@@ -9,23 +9,31 @@
  */
 namespace PharIo\Manifest;
 
-class License {
-    /** @var string */
+class License
+{
+    /**
+     * @var string 
+     */
     private $name;
 
-    /** @var Url */
+    /**
+     * @var Url 
+     */
     private $url;
 
-    public function __construct(string $name, Url $url) {
+    public function __construct(string $name, Url $url)
+    {
         $this->name = $name;
         $this->url  = $url;
     }
 
-    public function getName(): string {
+    public function getName(): string
+    {
         return $this->name;
     }
 
-    public function getUrl(): Url {
+    public function getUrl(): Url
+    {
         return $this->url;
     }
 }

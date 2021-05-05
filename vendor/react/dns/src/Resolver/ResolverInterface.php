@@ -38,7 +38,7 @@ interface ResolverInterface
      * $promise->cancel();
      * ```
      *
-     * @param string $domain
+     * @param  string $domain
      * @return \React\Promise\PromiseInterface<string,\Exception>
      *     resolves with a single IP address on success or rejects with an Exception on error.
      */
@@ -86,7 +86,7 @@ interface ResolverInterface
      * $promise->cancel();
      * ```
      *
-     * @param string $domain
+     * @param  string $domain
      * @return \React\Promise\PromiseInterface<array,\Exception>
      *     Resolves with all record values on success or rejects with an Exception on error.
      */

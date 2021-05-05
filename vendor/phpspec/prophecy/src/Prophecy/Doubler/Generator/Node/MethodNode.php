@@ -27,7 +27,9 @@ class MethodNode
     private $static = false;
     private $returnsReference = false;
 
-    /** @var ReturnTypeNode */
+    /**
+     * @var ReturnTypeNode 
+     */
     private $returnTypeNode;
 
     /**
@@ -59,9 +61,11 @@ class MethodNode
         $visibility = strtolower($visibility);
 
         if (!in_array($visibility, array('public', 'private', 'protected'))) {
-            throw new InvalidArgumentException(sprintf(
-                '`%s` method visibility is not supported.', $visibility
-            ));
+            throw new InvalidArgumentException(
+                sprintf(
+                    '`%s` method visibility is not supported.', $visibility
+                )
+            );
         }
 
         $this->visibility = $visibility;
@@ -107,7 +111,7 @@ class MethodNode
 
     /**
      * @deprecated use getReturnTypeNode instead
-     * @return bool
+     * @return     bool
      */
     public function hasReturnType()
     {
@@ -121,7 +125,7 @@ class MethodNode
 
     /**
      * @deprecated use setReturnTypeNode instead
-     * @param string $type
+     * @param      string $type
      */
     public function setReturnType($type = null)
     {
@@ -130,7 +134,7 @@ class MethodNode
 
     /**
      * @deprecated use setReturnTypeNode instead
-     * @param bool $bool
+     * @param      bool $bool
      */
     public function setNullableReturnType($bool = true)
     {
@@ -144,12 +148,11 @@ class MethodNode
 
     /**
      * @deprecated use getReturnTypeNode instead
-     * @return string|null
+     * @return     string|null
      */
     public function getReturnType()
     {
-        if ($types = $this->returnTypeNode->getNonNullTypes())
-        {
+        if ($types = $this->returnTypeNode->getNonNullTypes()) {
             return $types[0];
         }
 
@@ -163,7 +166,7 @@ class MethodNode
 
     /**
      * @deprecated use getReturnTypeNode instead
-     * @return bool
+     * @return     bool
      */
     public function hasNullableReturnType()
     {
@@ -180,8 +183,7 @@ class MethodNode
 
     public function getCode()
     {
-        if ($this->returnsReference)
-        {
+        if ($this->returnsReference) {
             return "throw new \Prophecy\Exception\Doubler\ReturnByReferenceException('Returning by reference not supported', get_class(\$this), '{$this->name}');";
         }
 
@@ -191,7 +193,8 @@ class MethodNode
     public function useParentCode()
     {
         $this->code = sprintf(
-            'return parent::%s(%s);', $this->getName(), implode(', ',
+            'return parent::%s(%s);', $this->getName(), implode(
+                ', ',
                 array_map(array($this, 'generateArgument'), $this->arguments)
             )
         );

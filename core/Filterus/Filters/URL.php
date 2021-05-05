@@ -2,14 +2,16 @@
 
 namespace Filterus\Filters;
 
-class URL extends \Filterus\Filter {
+class URL extends \Filterus\Filter
+{
     
     protected $defaultOptions = array(
         'path' => false,
         'query' => false,
     );
 
-    public function filter($var) {
+    public function filter($var)
+    {
         $flags = 0;
         if ($this->options['path']) {
             $flags |= FILTER_FLAG_PATH_REQUIRED;

@@ -451,9 +451,10 @@ final class CodeCoverage
             return;
         }
 
-        if ($this->checkForUnintentionallyCoveredCode &&
-            (!$this->currentId instanceof TestCase ||
-            (!$this->currentId->isMedium() && !$this->currentId->isLarge()))) {
+        if ($this->checkForUnintentionallyCoveredCode 
+            && (!$this->currentId instanceof TestCase 
+            || (!$this->currentId->isMedium() && !$this->currentId->isLarge()))
+        ) {
             $this->performUnintentionallyCoveredCodeCheck($rawData, $linesToBeCovered, $linesToBeUsed);
         }
 

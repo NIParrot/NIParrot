@@ -1,7 +1,8 @@
 <?php
 namespace Ratchet\RFC6455\Messaging;
 
-class Message implements \IteratorAggregate, MessageInterface {
+class Message implements \IteratorAggregate, MessageInterface
+{
     /**
      * @var \SplDoublyLinkedList
      */
@@ -12,26 +13,30 @@ class Message implements \IteratorAggregate, MessageInterface {
      */
     private $len;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->_frames = new \SplDoublyLinkedList;
         $this->len = 0;
     }
 
-    public function getIterator() {
+    public function getIterator()
+    {
         return $this->_frames;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function count() {
+    public function count()
+    {
         return count($this->_frames);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isCoalesced() {
+    public function isCoalesced()
+    {
         if (count($this->_frames) == 0) {
             return false;
         }
@@ -44,7 +49,8 @@ class Message implements \IteratorAggregate, MessageInterface {
     /**
      * {@inheritdoc}
      */
-    public function addFrame(FrameInterface $fragment) {
+    public function addFrame(FrameInterface $fragment)
+    {
         $this->len += $fragment->getPayloadLength();
         $this->_frames->push($fragment);
 
@@ -54,7 +60,8 @@ class Message implements \IteratorAggregate, MessageInterface {
     /**
      * {@inheritdoc}
      */
-    public function getOpcode() {
+    public function getOpcode()
+    {
         if (count($this->_frames) == 0) {
             throw new \UnderflowException('No frames have been added to this message');
         }
@@ -65,14 +72,16 @@ class Message implements \IteratorAggregate, MessageInterface {
     /**
      * {@inheritdoc}
      */
-    public function getPayloadLength() {
+    public function getPayloadLength()
+    {
         return $this->len;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPayload() {
+    public function getPayload()
+    {
         if (!$this->isCoalesced()) {
             throw new \UnderflowException('Message has not been put back together yet');
         }
@@ -83,7 +92,8 @@ class Message implements \IteratorAggregate, MessageInterface {
     /**
      * {@inheritdoc}
      */
-    public function getContents() {
+    public function getContents()
+    {
         if (!$this->isCoalesced()) {
             throw new \UnderflowException("Message has not been put back together yet");
         }
@@ -97,7 +107,8 @@ class Message implements \IteratorAggregate, MessageInterface {
         return $buffer;
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         $buffer = '';
 
         foreach ($this->_frames as $frame) {
@@ -110,7 +121,8 @@ class Message implements \IteratorAggregate, MessageInterface {
     /**
      * @return boolean
      */
-    public function isBinary() {
+    public function isBinary()
+    {
         if ($this->_frames->isEmpty()) {
             throw new \UnderflowException('Not enough data has been received to determine if message is binary');
         }

@@ -29,7 +29,7 @@ class ScalarComparator extends Comparator
      *
      * @return bool
      *
-     * @since  Method available since Release 3.6.0
+     * @since Method available since Release 3.6.0
      */
     public function accepts($expected, $actual)
     {

@@ -12,7 +12,7 @@ namespace PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report;
 use PHPUnit\TextUI\XmlConfiguration\File;
 
 /**
- * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ * @internal        This class is not covered by the backward compatibility promise for PHPUnit
  * @psalm-immutable
  */
 final class Cobertura

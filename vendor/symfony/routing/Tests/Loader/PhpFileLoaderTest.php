@@ -92,24 +92,29 @@ class PhpFileLoaderTest extends TestCase
 
         $expectedCollection = new RouteCollection();
 
-        $expectedCollection->add('foo', (new Route('/foo'))
-            ->setOptions(['utf8' => true])
-            ->setCondition('abc')
+        $expectedCollection->add(
+            'foo', (new Route('/foo'))
+                ->setOptions(['utf8' => true])
+                ->setCondition('abc')
         );
-        $expectedCollection->add('buz', (new Route('/zub'))
+        $expectedCollection->add(
+            'buz', (new Route('/zub'))
             ->setDefaults(['_controller' => 'foo:act'])
         );
-        $expectedCollection->add('c_bar', (new Route('/sub/pub/bar'))
+        $expectedCollection->add(
+            'c_bar', (new Route('/sub/pub/bar'))
             ->setRequirements(['id' => '\d+'])
         );
-        $expectedCollection->add('c_pub_buz', (new Route('/sub/pub/buz'))
-            ->setHost('host')
-            ->setRequirements(['id' => '\d+'])
+        $expectedCollection->add(
+            'c_pub_buz', (new Route('/sub/pub/buz'))
+                ->setHost('host')
+                ->setRequirements(['id' => '\d+'])
         );
-        $expectedCollection->add('ouf', (new Route('/ouf'))
-            ->setSchemes(['https'])
-            ->setMethods(['GET'])
-            ->setDefaults(['id' => 0])
+        $expectedCollection->add(
+            'ouf', (new Route('/ouf'))
+                ->setSchemes(['https'])
+                ->setMethods(['GET'])
+                ->setDefaults(['id' => 0])
         );
 
         $expectedCollection->addResource(new FileResource(realpath(__DIR__.'/../Fixtures/php_dsl_sub.php')));

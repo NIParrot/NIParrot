@@ -103,7 +103,7 @@ final class ExtLibevLoop implements LoopInterface
 
     public function addTimer($interval, $callback)
     {
-        $timer = new Timer( $interval, $callback, false);
+        $timer = new Timer($interval, $callback, false);
 
         $that = $this;
         $timers = $this->timerEvents;
@@ -156,9 +156,11 @@ final class ExtLibevLoop implements LoopInterface
 
         if (!isset($this->signalEvents[$signal])) {
             $signals = $this->signals;
-            $this->signalEvents[$signal] = new SignalEvent(function () use ($signals, $signal) {
-                $signals->call($signal);
-            }, $signal);
+            $this->signalEvents[$signal] = new SignalEvent(
+                function () use ($signals, $signal) {
+                    $signals->call($signal);
+                }, $signal
+            );
             $this->loop->add($this->signalEvents[$signal]);
         }
     }

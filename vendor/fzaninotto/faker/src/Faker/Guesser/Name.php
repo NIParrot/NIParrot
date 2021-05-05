@@ -17,8 +17,8 @@ class Name
     }
 
     /**
-     * @param string $name
-     * @param int|null $size Length of field, if known
+     * @param  string   $name
+     * @param  int|null $size Length of field, if known
      * @return callable
      */
     public function guessFormat($name, $size = null)
@@ -36,10 +36,10 @@ class Name
             };
         }
         switch (str_replace('_', '', $name)) {
-            case 'firstname':
-                return function () use ($generator) {
+        case 'firstname':
+            return function () use ($generator) {
                     return $generator->firstName;
-                };
+            };
             case 'lastname':
                 return function () use ($generator) {
                     return $generator->lastName;
@@ -95,10 +95,10 @@ class Name
                 };
             case 'country':
                 switch ($size) {
-                    case 2:
-                        return function () use ($generator) {
+                case 2:
+                    return function () use ($generator) {
                             return $generator->countryCode;
-                        };
+                    };
                     case 3:
                         return function () use ($generator) {
                             return $generator->countryISOAlpha3;

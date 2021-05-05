@@ -2,14 +2,16 @@
 
 namespace Filterus\Filters;
 
-class Floats extends \Filterus\Filter {
+class Floats extends \Filterus\Filter
+{
     
     protected $defaultOptions = array(
         'min' => null,
         'max' => null,
     );
 
-    public function filter($var) {
+    public function filter($var)
+    {
         if (!is_numeric($var)) {
             return null;
         }
@@ -22,7 +24,8 @@ class Floats extends \Filterus\Filter {
         return $var;
     }
 
-    public function validate($var) {
+    public function validate($var)
+    {
         if (!is_numeric($var)) {
             return false;
         }

@@ -13,10 +13,14 @@ class LimitStream implements StreamInterface
 {
     use StreamDecoratorTrait;
 
-    /** @var int Offset to start reading from */
+    /**
+     * @var int Offset to start reading from 
+     */
     private $offset;
 
-    /** @var int Limit the number of bytes that can be read */
+    /**
+     * @var int Limit the number of bytes that can be read 
+     */
     private $limit;
 
     /**
@@ -73,11 +77,13 @@ class LimitStream implements StreamInterface
     public function seek($offset, $whence = SEEK_SET)
     {
         if ($whence !== SEEK_SET || $offset < 0) {
-            throw new \RuntimeException(sprintf(
-                'Cannot seek to offset %s with whence %s',
-                $offset,
-                $whence
-            ));
+            throw new \RuntimeException(
+                sprintf(
+                    'Cannot seek to offset %s with whence %s',
+                    $offset,
+                    $whence
+                )
+            );
         }
 
         $offset += $this->offset;

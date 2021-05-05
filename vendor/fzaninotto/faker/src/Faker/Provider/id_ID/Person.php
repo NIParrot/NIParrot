@@ -232,9 +232,10 @@ class Person extends \Faker\Provider\Person
     );
 
      /**
-     * For academic title
-     * @link http://id.wikipedia.org/wiki/Gelar_akademik
-     */
+      * For academic title
+      *
+      * @link http://id.wikipedia.org/wiki/Gelar_akademik
+      */
     private static $suffix = array('S.Ked', 'S.Gz', 'S.Pt', 'S.IP', 'S.E.I',
         'S.E.', 'S.Kom', 'S.H.', 'S.T.', 'S.Pd', 'S.Psi', 'S.I.Kom',
         'S.Sos', 'S.Farm', 'M.M.', 'M.Kom.', 'M.TI.', 'M.Pd', 'M.Farm', 'M.Ak', );
@@ -297,13 +298,13 @@ class Person extends \Faker\Provider\Person
      *
      * @link https://en.wikipedia.org/wiki/National_identification_number#Indonesia
      *
-     * @param null|string $gender
-     * @param null|\DateTime $birthDate
+     * @param  null|string    $gender
+     * @param  null|\DateTime $birthDate
      * @return string
      */
     public function nik($gender = null, $birthDate = null)
     {
-        # generate first numbers (region data)
+        // generate first numbers (region data)
         $nik = $this->birthPlaceCode();
         $nik .= $this->generator->numerify('##');
 
@@ -315,7 +316,7 @@ class Person extends \Faker\Provider\Person
             $gender = $this->generator->randomElement(array(self::GENDER_MALE, self::GENDER_FEMALE));
         }
 
-        # if gender is female, add 40 to days
+        // if gender is female, add 40 to days
         if ($gender == self::GENDER_FEMALE) {
             $nik .= $birthDate->format('d') + 40;
         } else {
@@ -324,7 +325,7 @@ class Person extends \Faker\Provider\Person
 
         $nik .= $birthDate->format('my');
 
-        # add last random digits
+        // add last random digits
         $nik .= $this->generator->numerify('####');
 
         return $nik;

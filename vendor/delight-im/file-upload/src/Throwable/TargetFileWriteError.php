@@ -8,4 +8,6 @@
 
 namespace Delight\FileUpload\Throwable;
 
-class TargetFileWriteError extends FileWriteError {}
+class TargetFileWriteError extends FileWriteError
+{
+}

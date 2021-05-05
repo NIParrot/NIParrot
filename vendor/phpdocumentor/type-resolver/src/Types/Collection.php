@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Reflection\Types;
@@ -31,7 +31,9 @@ use phpDocumentor\Reflection\Type;
  */
 final class Collection extends AbstractList
 {
-    /** @var Fqsen|null */
+    /**
+     * @var Fqsen|null 
+     */
     private $fqsen;
 
     /**

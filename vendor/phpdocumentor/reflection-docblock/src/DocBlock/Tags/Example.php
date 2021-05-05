@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Reflection\DocBlock\Tags;
@@ -27,7 +27,9 @@ use function trim;
  */
 final class Example implements Tag, Factory\StaticMethod
 {
-    /** @var string Path to a file to use as an example. May also be an absolute URI. */
+    /**
+     * @var string Path to a file to use as an example. May also be an absolute URI. 
+     */
     private $filePath;
 
     /**
@@ -36,13 +38,19 @@ final class Example implements Tag, Factory\StaticMethod
      */
     private $isURI;
 
-    /** @var int */
+    /**
+     * @var int 
+     */
     private $startingLine;
 
-    /** @var int */
+    /**
+     * @var int 
+     */
     private $lineCount;
 
-    /** @var string|null */
+    /**
+     * @var string|null 
+     */
     private $content;
 
     public function __construct(

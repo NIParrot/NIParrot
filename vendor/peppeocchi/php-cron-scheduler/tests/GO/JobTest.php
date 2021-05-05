@@ -10,9 +10,11 @@ class JobTest extends TestCase
         $job1 = new Job('ls');
         $this->assertTrue(is_string($job1->getId()));
 
-        $job2 = new Job(function () {
-            return true;
-        });
+        $job2 = new Job(
+            function () {
+                return true;
+            }
+        );
         $this->assertTrue(is_string($job2->getId()));
 
         $job3 = new Job(['MyClass', 'myMethod']);
@@ -62,9 +64,11 @@ class JobTest extends TestCase
         $job = new Job('ls');
         $this->assertTrue($job->canRunInBackground());
 
-        $job2 = new Job(function () {
-            return "I can't run in background";
-        });
+        $job2 = new Job(
+            function () {
+                return "I can't run in background";
+            }
+        );
         $this->assertFalse($job2->canRunInBackground());
     }
 
@@ -90,10 +94,12 @@ class JobTest extends TestCase
 
     public function testShouldCompileWithArguments()
     {
-        $job = new Job('ls', [
+        $job = new Job(
+            'ls', [
             '-l' => null,
             '-arg' => 'value',
-        ]);
+            ]
+        );
 
         $this->assertEquals("ls '-l' '-arg' 'value'", $job->inForeground()->compile());
     }
@@ -154,9 +160,13 @@ class JobTest extends TestCase
     public function testShouldAcceptEmailConfigurationAndItShouldBeChainable()
     {
         $job = new Job('ls');
-        $this->assertInstanceOf(Job::class, $job->configure([
-            'email' => [],
-        ]));
+        $this->assertInstanceOf(
+            Job::class, $job->configure(
+                [
+                'email' => [],
+                ]
+            )
+        );
     }
 
     /**
@@ -165,9 +175,11 @@ class JobTest extends TestCase
     public function testShouldFailIfEmailConfigurationIsNotArray()
     {
         $job = new Job('ls');
-        $job->configure([
+        $job->configure(
+            [
             'email' => 123,
-        ]);
+            ]
+        );
     }
 
     public function testShouldCreateLockFileIfOnlyOne()
@@ -208,9 +220,11 @@ class JobTest extends TestCase
 
     public function testShouldRemoveLockFileAfterRunningClosures()
     {
-        $job = new Job(function () {
-            sleep(3);
-        });
+        $job = new Job(
+            function () {
+                sleep(3);
+            }
+        );
 
         // Default temp dir
         $tmpDir = __DIR__ . '/../tmp';
@@ -290,9 +304,11 @@ class JobTest extends TestCase
 
         $tmpDir = __DIR__ . '/../tmp';
 
-        $job->onlyOne($tmpDir, function ($lastExecution) {
-            return time() - $lastExecution > 2;
-        })->run();
+        $job->onlyOne(
+            $tmpDir, function ($lastExecution) {
+                return time() - $lastExecution > 2;
+            }
+        )->run();
 
         // The job should not run as it is overlapping
         $this->assertFalse($job->run());
@@ -311,9 +327,11 @@ class JobTest extends TestCase
 
         $tmpDir = __DIR__ . '/../tmp';
 
-        $job->configure([
+        $job->configure(
+            [
             'tempDir' => $tmpDir,
-        ])->onlyOne()->run();
+            ]
+        )->onlyOne()->run();
 
         sleep(1);
 
@@ -324,35 +342,51 @@ class JobTest extends TestCase
     {
         $job = new Job('ls');
 
-        $this->assertInstanceOf(Job::class, $job->when(function () {
-            return true;
-        }));
+        $this->assertInstanceOf(
+            Job::class, $job->when(
+                function () {
+                    return true;
+                }
+            )
+        );
     }
 
     public function testShouldNotRunIfTruthTestFails()
     {
         $job = new Job('ls');
 
-        $this->assertFalse($job->when(function () {
-            return false;
-        })->run());
+        $this->assertFalse(
+            $job->when(
+                function () {
+                    return false;
+                }
+            )->run()
+        );
 
-        $this->assertTrue($job->when(function () {
-            return true;
-        })->run());
+        $this->assertTrue(
+            $job->when(
+                function () {
+                    return true;
+                }
+            )->run()
+        );
     }
 
     public function testShouldReturnOutputOfJobExecution()
     {
-        $job1 = new Job(function () {
-            echo 'hi';
-        });
+        $job1 = new Job(
+            function () {
+                echo 'hi';
+            }
+        );
         $job1->run();
         $this->assertEquals('hi', $job1->getOutput());
 
-        $job2 = new Job(function () {
-            return 'hello';
-        });
+        $job2 = new Job(
+            function () {
+                return 'hello';
+            }
+        );
         $job2->run();
         $this->assertEquals('hello', $job2->getOutput());
 
@@ -364,17 +398,21 @@ class JobTest extends TestCase
 
     public function testShouldRunCallbackBeforeJobExecution()
     {
-        $job = new Job(function () {
-            return 'Job for testing before function';
-        });
+        $job = new Job(
+            function () {
+                return 'Job for testing before function';
+            }
+        );
 
         $callbackWasExecuted = false;
         $outputWasSet = false;
 
-        $job->before(function () use ($job, &$callbackWasExecuted, &$outputWasSet) {
-            $callbackWasExecuted = true;
-            $outputWasSet = ! is_null($job->getOutput());
-        })->run();
+        $job->before(
+            function () use ($job, &$callbackWasExecuted, &$outputWasSet) {
+                $callbackWasExecuted = true;
+                $outputWasSet = ! is_null($job->getOutput());
+            }
+        )->run();
 
         $this->assertTrue($callbackWasExecuted);
         $this->assertFalse($outputWasSet);
@@ -382,17 +420,21 @@ class JobTest extends TestCase
 
     public function testShouldRunCallbackAfterJobExecution()
     {
-        $job = new Job(function () {
-            $visitors = 1000;
+        $job = new Job(
+            function () {
+                $visitors = 1000;
 
-            return 'Daily visitors: ' . $visitors;
-        });
+                return 'Daily visitors: ' . $visitors;
+            }
+        );
 
         $jobResult = null;
 
-        $job->then(function ($output) use (&$jobResult) {
-            $jobResult = $output;
-        })->run();
+        $job->then(
+            function ($output) use (&$jobResult) {
+                $jobResult = $output;
+            }
+        )->run();
 
         $this->assertEquals($jobResult, $job->getOutput());
 
@@ -401,19 +443,25 @@ class JobTest extends TestCase
 
         $job2Result = null;
 
-        $job2->then(function ($output) use (&$job2Result) {
-            $job2Result = $output;
-        }, true)->run();
+        $job2->then(
+            function ($output) use (&$job2Result) {
+                $job2Result = $output;
+            }, true
+        )->run();
 
         // Commands in background should return an empty string
         $this->assertTrue(empty($job2Result));
 
         $job2Result = null;
-        $job2->then(function ($output) use (&$job2Result) {
-            $job2Result = $output;
-        })->inForeground()->run();
-        $this->assertTrue(! empty($job2Result) &&
-            $job2Result === $job2->getOutput());
+        $job2->then(
+            function ($output) use (&$job2Result) {
+                $job2Result = $output;
+            }
+        )->inForeground()->run();
+        $this->assertTrue(
+            ! empty($job2Result) &&
+            $job2Result === $job2->getOutput()
+        );
     }
 
     public function testThenMethodShouldPassReturnCode()
@@ -425,9 +473,11 @@ class JobTest extends TestCase
             $job = new Job($command);
             $testReturnCode = null;
 
-            $job->then(function ($output, $returnCode) use (&$testReturnCode, &$testOutput) {
-                $testReturnCode = $returnCode;
-            })->run();
+            $job->then(
+                function ($output, $returnCode) use (&$testReturnCode, &$testOutput) {
+                    $testReturnCode = $returnCode;
+                }
+            )->run();
 
             return $testReturnCode;
         };
@@ -440,18 +490,24 @@ class JobTest extends TestCase
     {
         $job = new Job('ls');
 
-        $this->assertInstanceOf(Job::class, $job->then(function () {
-            return true;
-        }));
+        $this->assertInstanceOf(
+            Job::class, $job->then(
+                function () {
+                    return true;
+                }
+            )
+        );
     }
 
     public function testShouldDefaultExecutionInForegroundIfMethodThenIsDefined()
     {
         $job = new Job('ls');
 
-        $job->then(function () {
-            return true;
-        });
+        $job->then(
+            function () {
+                return true;
+            }
+        );
 
         $this->assertFalse($job->canRunInBackground());
     }
@@ -463,9 +519,11 @@ class JobTest extends TestCase
 
         $job = new Job('ls');
 
-        $job->then(function () {
-            return true;
-        }, true);
+        $job->then(
+            function () {
+                return true;
+            }, true
+        );
 
         $this->assertTrue($job->canRunInBackground());
     }

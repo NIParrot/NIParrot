@@ -17,8 +17,9 @@ class Populator
 
     /**
      * Populator constructor.
+     *
      * @param \Faker\Generator $generator
-     * @param Locator|null $locator
+     * @param Locator|null     $locator
      */
     public function __construct(\Faker\Generator $generator, Locator $locator = null)
     {
@@ -29,11 +30,11 @@ class Populator
     /**
      * Add an order for the generation of $number records for $entity.
      *
-     * @param $entityName string Name of Entity object to generate
-     * @param $number int The number of entities to populate
+     * @param $entityName             string Name of Entity object to generate
+     * @param $number                 int The number of entities to populate
      * @param $customColumnFormatters array
-     * @param $customModifiers array
-     * @param $useExistingData bool Should we use existing rows (e.g. roles) to populate relations?
+     * @param $customModifiers        array
+     * @param $useExistingData        bool Should we use existing rows (e.g. roles) to populate relations?
      */
     public function addEntity(
         $entityName,

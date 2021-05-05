@@ -67,86 +67,96 @@ final class HappyEyeBallsConnectionBuilder
     {
         $timer = null;
         $that = $this;
-        return new Promise\Promise(function ($resolve, $reject) use ($that, &$timer) {
-            $lookupResolve = function ($type) use ($that, $resolve, $reject) {
-                return function (array $ips) use ($that, $type, $resolve, $reject) {
-                    unset($that->resolverPromises[$type]);
-                    $that->resolved[$type] = true;
+        return new Promise\Promise(
+            function ($resolve, $reject) use ($that, &$timer) {
+                $lookupResolve = function ($type) use ($that, $resolve, $reject) {
+                    return function (array $ips) use ($that, $type, $resolve, $reject) {
+                        unset($that->resolverPromises[$type]);
+                        $that->resolved[$type] = true;
 
-                    $that->mixIpsIntoConnectQueue($ips);
+                        $that->mixIpsIntoConnectQueue($ips);
 
-                    // start next connection attempt if not already awaiting next
-                    if ($that->nextAttemptTimer === null && $that->connectQueue) {
-                        $that->check($resolve, $reject);
-                    }
+                        // start next connection attempt if not already awaiting next
+                        if ($that->nextAttemptTimer === null && $that->connectQueue) {
+                            $that->check($resolve, $reject);
+                        }
+                    };
                 };
-            };
 
-            $that->resolverPromises[Message::TYPE_AAAA] = $that->resolve(Message::TYPE_AAAA, $reject)->then($lookupResolve(Message::TYPE_AAAA));
-            $that->resolverPromises[Message::TYPE_A] = $that->resolve(Message::TYPE_A, $reject)->then(function (array $ips) use ($that, &$timer) {
-                // happy path: IPv6 has resolved already, continue with IPv4 addresses
-                if ($that->resolved[Message::TYPE_AAAA] === true) {
-                    return $ips;
-                }
+                $that->resolverPromises[Message::TYPE_AAAA] = $that->resolve(Message::TYPE_AAAA, $reject)->then($lookupResolve(Message::TYPE_AAAA));
+                $that->resolverPromises[Message::TYPE_A] = $that->resolve(Message::TYPE_A, $reject)->then(
+                    function (array $ips) use ($that, &$timer) {
+                        // happy path: IPv6 has resolved already, continue with IPv4 addresses
+                        if ($that->resolved[Message::TYPE_AAAA] === true) {
+                            return $ips;
+                        }
 
-                // Otherwise delay processing IPv4 lookup until short timer passes or IPv6 resolves in the meantime
-                $deferred = new Promise\Deferred();
-                $timer = $that->loop->addTimer($that::RESOLUTION_DELAY, function () use ($deferred, $ips) {
-                    $deferred->resolve($ips);
-                });
+                        // Otherwise delay processing IPv4 lookup until short timer passes or IPv6 resolves in the meantime
+                        $deferred = new Promise\Deferred();
+                        $timer = $that->loop->addTimer(
+                            $that::RESOLUTION_DELAY, function () use ($deferred, $ips) {
+                                $deferred->resolve($ips);
+                            }
+                        );
 
-                $that->resolverPromises[Message::TYPE_AAAA]->then(function () use ($that, $timer, $deferred, $ips) {
+                        $that->resolverPromises[Message::TYPE_AAAA]->then(
+                            function () use ($that, $timer, $deferred, $ips) {
+                                $that->loop->cancelTimer($timer);
+                                $deferred->resolve($ips);
+                            }
+                        );
+
+                        return $deferred->promise();
+                    }
+                )->then($lookupResolve(Message::TYPE_A));
+            }, function ($_, $reject) use ($that, &$timer) {
+                $reject(new \RuntimeException('Connection to ' . $that->uri . ' cancelled' . (!$that->connectionPromises ? ' during DNS lookup' : '')));
+                $_ = $reject = null;
+
+                $that->cleanUp();
+                if ($timer instanceof TimerInterface) {
                     $that->loop->cancelTimer($timer);
-                    $deferred->resolve($ips);
-                });
-
-                return $deferred->promise();
-            })->then($lookupResolve(Message::TYPE_A));
-        }, function ($_, $reject) use ($that, &$timer) {
-            $reject(new \RuntimeException('Connection to ' . $that->uri . ' cancelled' . (!$that->connectionPromises ? ' during DNS lookup' : '')));
-            $_ = $reject = null;
-
-            $that->cleanUp();
-            if ($timer instanceof TimerInterface) {
-                $that->loop->cancelTimer($timer);
+                }
             }
-        });
+        );
     }
 
     /**
      * @internal
-     * @param int      $type   DNS query type
-     * @param callable $reject
-     * @return \React\Promise\PromiseInterface<string[],\Exception> Returns a promise
+     * @param    int      $type   DNS query type
+     * @param    callable $reject
+     * @return   \React\Promise\PromiseInterface<string[],\Exception> Returns a promise
      *     that resolves list of IP addresses on success or rejects with an \Exception on error.
      */
     public function resolve($type, $reject)
     {
         $that = $this;
-        return $that->resolver->resolveAll($that->host, $type)->then(null, function (\Exception $e) use ($type, $reject, $that) {
-            unset($that->resolverPromises[$type]);
-            $that->resolved[$type] = true;
+        return $that->resolver->resolveAll($that->host, $type)->then(
+            null, function (\Exception $e) use ($type, $reject, $that) {
+                unset($that->resolverPromises[$type]);
+                $that->resolved[$type] = true;
 
-            if ($type === Message::TYPE_A) {
-                $that->lastError4 = $e->getMessage();
-                $that->lastErrorFamily = 4;
-            } else {
-                $that->lastError6 = $e->getMessage();
-                $that->lastErrorFamily = 6;
+                if ($type === Message::TYPE_A) {
+                    $that->lastError4 = $e->getMessage();
+                    $that->lastErrorFamily = 4;
+                } else {
+                    $that->lastError6 = $e->getMessage();
+                    $that->lastErrorFamily = 6;
+                }
+
+                // cancel next attempt timer when there are no more IPs to connect to anymore
+                if ($that->nextAttemptTimer !== null && !$that->connectQueue) {
+                    $that->loop->cancelTimer($that->nextAttemptTimer);
+                    $that->nextAttemptTimer = null;
+                }
+
+                if ($that->hasBeenResolved() && $that->ipsCount === 0) {
+                    $reject(new \RuntimeException($that->error()));
+                }
+
+                throw $e;
             }
-
-            // cancel next attempt timer when there are no more IPs to connect to anymore
-            if ($that->nextAttemptTimer !== null && !$that->connectQueue) {
-                $that->loop->cancelTimer($that->nextAttemptTimer);
-                $that->nextAttemptTimer = null;
-            }
-
-            if ($that->hasBeenResolved() && $that->ipsCount === 0) {
-                $reject(new \RuntimeException($that->error()));
-            }
-
-            throw $e;
-        });
+        );
     }
 
     /**
@@ -162,56 +172,60 @@ final class HappyEyeBallsConnectionBuilder
         $index = \key($this->connectionPromises);
 
         $that = $this;
-        $that->connectionPromises[$index]->then(function ($connection) use ($that, $index, $resolve) {
-            unset($that->connectionPromises[$index]);
+        $that->connectionPromises[$index]->then(
+            function ($connection) use ($that, $index, $resolve) {
+                unset($that->connectionPromises[$index]);
 
-            $that->cleanUp();
-
-            $resolve($connection);
-        }, function (\Exception $e) use ($that, $index, $ip, $resolve, $reject) {
-            unset($that->connectionPromises[$index]);
-
-            $that->failureCount++;
-
-            if (\strpos($ip, ':') === false) {
-                $that->lastError4 = $e->getMessage();
-                $that->lastErrorFamily = 4;
-            } else {
-                $that->lastError6 = $e->getMessage();
-                $that->lastErrorFamily = 6;
-            }
-
-            // start next connection attempt immediately on error
-            if ($that->connectQueue) {
-                if ($that->nextAttemptTimer !== null) {
-                    $that->loop->cancelTimer($that->nextAttemptTimer);
-                    $that->nextAttemptTimer = null;
-                }
-
-                $that->check($resolve, $reject);
-            }
-
-            if ($that->hasBeenResolved() === false) {
-                return;
-            }
-
-            if ($that->ipsCount === $that->failureCount) {
                 $that->cleanUp();
 
-                $reject(new \RuntimeException($that->error()));
+                $resolve($connection);
+            }, function (\Exception $e) use ($that, $index, $ip, $resolve, $reject) {
+                unset($that->connectionPromises[$index]);
+
+                $that->failureCount++;
+
+                if (\strpos($ip, ':') === false) {
+                    $that->lastError4 = $e->getMessage();
+                    $that->lastErrorFamily = 4;
+                } else {
+                    $that->lastError6 = $e->getMessage();
+                    $that->lastErrorFamily = 6;
+                }
+
+                // start next connection attempt immediately on error
+                if ($that->connectQueue) {
+                    if ($that->nextAttemptTimer !== null) {
+                        $that->loop->cancelTimer($that->nextAttemptTimer);
+                        $that->nextAttemptTimer = null;
+                    }
+
+                    $that->check($resolve, $reject);
+                }
+
+                if ($that->hasBeenResolved() === false) {
+                    return;
+                }
+
+                if ($that->ipsCount === $that->failureCount) {
+                    $that->cleanUp();
+
+                    $reject(new \RuntimeException($that->error()));
+                }
             }
-        });
+        );
 
         // Allow next connection attempt in 100ms: https://tools.ietf.org/html/rfc8305#section-5
         // Only start timer when more IPs are queued or when DNS query is still pending (might add more IPs)
         if ($this->nextAttemptTimer === null && (\count($this->connectQueue) > 0 || $this->resolved[Message::TYPE_A] === false || $this->resolved[Message::TYPE_AAAA] === false)) {
-            $this->nextAttemptTimer = $this->loop->addTimer(self::CONNECTION_ATTEMPT_DELAY, function () use ($that, $resolve, $reject) {
-                $that->nextAttemptTimer = null;
+            $this->nextAttemptTimer = $this->loop->addTimer(
+                self::CONNECTION_ATTEMPT_DELAY, function () use ($that, $resolve, $reject) {
+                    $that->nextAttemptTimer = null;
 
-                if ($that->connectQueue) {
-                    $that->check($resolve, $reject);
+                    if ($that->connectQueue) {
+                        $that->check($resolve, $reject);
+                    }
                 }
-            });
+            );
         }
     }
 
@@ -331,7 +345,7 @@ final class HappyEyeBallsConnectionBuilder
 
     /**
      * @internal
-     * @return string
+     * @return   string
      */
     public function error()
     {

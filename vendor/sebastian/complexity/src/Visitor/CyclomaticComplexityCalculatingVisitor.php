@@ -36,19 +36,19 @@ final class CyclomaticComplexityCalculatingVisitor extends NodeVisitorAbstract
     {
         /* @noinspection GetClassMissUseInspection */
         switch (get_class($node)) {
-            case BooleanAnd::class:
-            case BooleanOr::class:
-            case Case_::class:
-            case Catch_::class:
-            case ElseIf_::class:
-            case For_::class:
-            case Foreach_::class:
-            case If_::class:
-            case LogicalAnd::class:
-            case LogicalOr::class:
-            case Ternary::class:
-            case While_::class:
-                $this->cyclomaticComplexity++;
+        case BooleanAnd::class:
+        case BooleanOr::class:
+        case Case_::class:
+        case Catch_::class:
+        case ElseIf_::class:
+        case For_::class:
+        case Foreach_::class:
+        case If_::class:
+        case LogicalAnd::class:
+        case LogicalOr::class:
+        case Ternary::class:
+        case While_::class:
+            $this->cyclomaticComplexity++;
         }
     }
 

@@ -27,19 +27,29 @@ use function wordwrap;
  */
 class Serializer
 {
-    /** @var string The string to indent the comment with. */
+    /**
+     * @var string The string to indent the comment with. 
+     */
     protected $indentString = ' ';
 
-    /** @var int The number of times the indent string is repeated. */
+    /**
+     * @var int The number of times the indent string is repeated. 
+     */
     protected $indent = 0;
 
-    /** @var bool Whether to indent the first line with the given indent amount and string. */
+    /**
+     * @var bool Whether to indent the first line with the given indent amount and string. 
+     */
     protected $isFirstLineIndented = true;
 
-    /** @var int|null The max length of a line. */
+    /**
+     * @var int|null The max length of a line. 
+     */
     protected $lineLength;
 
-    /** @var Formatter A custom tag formatter. */
+    /**
+     * @var Formatter A custom tag formatter. 
+     */
     protected $tagFormatter;
 
     /**

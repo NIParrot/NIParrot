@@ -76,15 +76,19 @@ final class DuplexResourceStream extends EventEmitter implements DuplexStreamInt
 
         $that = $this;
 
-        $this->buffer->on('error', function ($error) use ($that) {
-            $that->emit('error', array($error));
-        });
+        $this->buffer->on(
+            'error', function ($error) use ($that) {
+                $that->emit('error', array($error));
+            }
+        );
 
         $this->buffer->on('close', array($this, 'close'));
 
-        $this->buffer->on('drain', function () use ($that) {
-            $that->emit('drain');
-        });
+        $this->buffer->on(
+            'drain', function () use ($that) {
+                $that->emit('drain');
+            }
+        );
 
         $this->resume();
     }
@@ -165,19 +169,23 @@ final class DuplexResourceStream extends EventEmitter implements DuplexStreamInt
         return Util::pipe($this, $dest, $options);
     }
 
-    /** @internal */
+    /**
+     * @internal 
+     */
     public function handleData($stream)
     {
         $error = null;
-        \set_error_handler(function ($errno, $errstr, $errfile, $errline) use (&$error) {
-            $error = new \ErrorException(
-                $errstr,
-                0,
-                $errno,
-                $errfile,
-                $errline
-            );
-        });
+        \set_error_handler(
+            function ($errno, $errstr, $errfile, $errline) use (&$error) {
+                $error = new \ErrorException(
+                    $errstr,
+                    0,
+                    $errno,
+                    $errfile,
+                    $errline
+                );
+            }
+        );
 
         $data = \stream_get_contents($stream, $this->bufferSize);
 
@@ -204,9 +212,9 @@ final class DuplexResourceStream extends EventEmitter implements DuplexStreamInt
      * This works around a legacy PHP bug (#61019) that was fixed in PHP 5.4.28+
      * and PHP 5.5.12+ and newer.
      *
-     * @param resource $resource
+     * @param  resource $resource
      * @return bool
-     * @link https://github.com/reactphp/child-process/issues/40
+     * @link   https://github.com/reactphp/child-process/issues/40
      *
      * @codeCoverageIgnore
      */

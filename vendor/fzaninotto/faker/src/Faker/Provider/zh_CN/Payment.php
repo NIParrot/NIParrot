@@ -32,7 +32,7 @@ class Payment extends \Faker\Provider\Payment
 
     /**
      * @example '中国建设银行'
-     * @return string
+     * @return  string
      */
     public static function bank()
     {

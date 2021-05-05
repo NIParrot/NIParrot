@@ -42,11 +42,13 @@ class JobOutputFilesTest extends TestCase
         $this->assertFalse(file_exists($outputFile1));
         $this->assertFalse(file_exists($outputFile2));
         $this->assertFalse(file_exists($outputFile3));
-        $job->output([
+        $job->output(
+            [
             $outputFile1,
             $outputFile2,
             $outputFile3,
-        ])->run();
+            ]
+        )->run();
 
         sleep(2);
         $this->assertTrue(file_exists($outputFile1));
@@ -64,11 +66,13 @@ class JobOutputFilesTest extends TestCase
 
     public function testShouldWriteFunctionOutputToSingleFile()
     {
-        $job = new Job(function () {
-            echo 'Hello ';
+        $job = new Job(
+            function () {
+                echo 'Hello ';
 
-            return 'World!';
-        });
+                return 'World!';
+            }
+        );
         $outputFile = __DIR__ . '/../tmp/output.log';
 
         @unlink($outputFile);
@@ -87,9 +91,11 @@ class JobOutputFilesTest extends TestCase
 
     public function testShouldWriteFunctionOutputToMultipleFiles()
     {
-        $job = new Job(function () {
-            echo 'Hello';
-        });
+        $job = new Job(
+            function () {
+                echo 'Hello';
+            }
+        );
         $outputFile1 = __DIR__ . '/../tmp/output1.log';
         $outputFile2 = __DIR__ . '/../tmp/output2.log';
         $outputFile3 = __DIR__ . '/../tmp/output3.log';
@@ -102,11 +108,13 @@ class JobOutputFilesTest extends TestCase
         $this->assertFalse(file_exists($outputFile1));
         $this->assertFalse(file_exists($outputFile2));
         $this->assertFalse(file_exists($outputFile3));
-        $job->output([
+        $job->output(
+            [
             $outputFile1,
             $outputFile2,
             $outputFile3,
-        ])->run();
+            ]
+        )->run();
 
         sleep(2);
         $this->assertTrue(file_exists($outputFile1));
@@ -124,9 +132,11 @@ class JobOutputFilesTest extends TestCase
 
     public function testShouldWriteFunctionReturnToSingleFile()
     {
-        $job = new Job(function () {
-            return 'Hello World!';
-        });
+        $job = new Job(
+            function () {
+                return 'Hello World!';
+            }
+        );
         $outputFile = __DIR__ . '/../tmp/output1.log';
 
         // Test fist that the file doesn't exist yet
@@ -143,9 +153,11 @@ class JobOutputFilesTest extends TestCase
 
     public function testShouldWriteFunctionReturnToMultipleFiles()
     {
-        $job = new Job(function () {
-            return ['Hello ', 'World!'];
-        });
+        $job = new Job(
+            function () {
+                return ['Hello ', 'World!'];
+            }
+        );
         $outputFile1 = __DIR__ . '/../tmp/output1.log';
         $outputFile2 = __DIR__ . '/../tmp/output2.log';
         $outputFile3 = __DIR__ . '/../tmp/output3.log';
@@ -158,11 +170,13 @@ class JobOutputFilesTest extends TestCase
         $this->assertFalse(file_exists($outputFile1));
         $this->assertFalse(file_exists($outputFile2));
         $this->assertFalse(file_exists($outputFile3));
-        $job->output([
+        $job->output(
+            [
             $outputFile1,
             $outputFile2,
             $outputFile3,
-        ])->run();
+            ]
+        )->run();
 
         sleep(2);
         $this->assertTrue(file_exists($outputFile1));
@@ -180,11 +194,13 @@ class JobOutputFilesTest extends TestCase
 
     public function testShouldWriteFunctionOutputAndReturnToFile()
     {
-        $job = new Job(function () {
-            echo 'Hello ';
+        $job = new Job(
+            function () {
+                echo 'Hello ';
 
-            return 'World!';
-        });
+                return 'World!';
+            }
+        );
         $outputFile = __DIR__ . '/../tmp/output1.log';
 
         // Test fist that the file doesn't exist yet

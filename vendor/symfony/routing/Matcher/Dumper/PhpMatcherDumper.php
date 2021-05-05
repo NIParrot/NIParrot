@@ -46,10 +46,12 @@ class PhpMatcherDumper extends MatcherDumper
      */
     public function dump(array $options = [])
     {
-        $options = array_replace([
+        $options = array_replace(
+            [
             'class' => 'ProjectUrlMatcher',
             'base_class' => 'Symfony\\Component\\Routing\\Matcher\\UrlMatcher',
-        ], $options);
+            ], $options
+        );
 
         // trailing slash support is only enabled if we know how to redirect the user
         $interfaces = class_implements($options['base_class']);

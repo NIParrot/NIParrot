@@ -14,7 +14,8 @@ class MessageBufferTest extends \PHPUnit_Framework_TestCase
      * This is to test that MessageBuffer can handle a large receive
      * buffer with many many frames without blowing the stack (pre-v0.4 issue)
      */
-    public function testProcessingLotsOfFramesInASingleChunk() {
+    public function testProcessingLotsOfFramesInASingleChunk()
+    {
         $frame = new Frame('a', true, Frame::OP_TEXT);
 
         $frameRaw = $frame->getContents();
@@ -38,7 +39,8 @@ class MessageBufferTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1000, $messageCount);
     }
 
-    public function testProcessingMessagesAsynchronouslyWhileBlockingInMessageHandler() {
+    public function testProcessingMessagesAsynchronouslyWhileBlockingInMessageHandler()
+    {
         $loop = Factory::create();
 
         $frameA = new Frame('a', true, Frame::OP_TEXT);
@@ -60,17 +62,20 @@ class MessageBufferTest extends \PHPUnit_Framework_TestCase
             false
         );
 
-        $loop->addPeriodicTimer(0.1, function () use ($messageBuffer, $frameB, $loop) {
-            $loop->stop();
-            $messageBuffer->onData($frameB->getContents());
-        });
+        $loop->addPeriodicTimer(
+            0.1, function () use ($messageBuffer, $frameB, $loop) {
+                $loop->stop();
+                $messageBuffer->onData($frameB->getContents());
+            }
+        );
 
         $messageBuffer->onData($frameA->getContents());
 
         $this->assertTrue($bReceived);
     }
 
-    public function testInvalidFrameLength() {
+    public function testInvalidFrameLength()
+    {
         $frame = new Frame(str_repeat('a', 200), true, Frame::OP_TEXT);
 
         $frameRaw = $frame->getContents();
@@ -86,7 +91,9 @@ class MessageBufferTest extends \PHPUnit_Framework_TestCase
         $frameRaw[8] = "\xff";
         $frameRaw[9] = "\xff";
 
-        /** @var Frame $controlFrame */
+        /**
+ * @var Frame $controlFrame 
+*/
         $controlFrame = null;
         $messageCount = 0;
 
@@ -114,7 +121,8 @@ class MessageBufferTest extends \PHPUnit_Framework_TestCase
 
     }
 
-    public function testFrameLengthTooBig() {
+    public function testFrameLengthTooBig()
+    {
         $frame = new Frame(str_repeat('a', 200), true, Frame::OP_TEXT);
 
         $frameRaw = $frame->getContents();
@@ -130,7 +138,9 @@ class MessageBufferTest extends \PHPUnit_Framework_TestCase
         $frameRaw[8] = "\xff";
         $frameRaw[9] = "\xff";
 
-        /** @var Frame $controlFrame */
+        /**
+ * @var Frame $controlFrame 
+*/
         $controlFrame = null;
         $messageCount = 0;
 
@@ -157,12 +167,15 @@ class MessageBufferTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([Frame::CLOSE_TOO_BIG], array_merge(unpack('n*', substr($controlFrame->getPayload(), 0, 2))));
     }
 
-    public function testFrameLengthBiggerThanMaxMessagePayload() {
+    public function testFrameLengthBiggerThanMaxMessagePayload()
+    {
         $frame = new Frame(str_repeat('a', 200), true, Frame::OP_TEXT);
 
         $frameRaw = $frame->getContents();
 
-        /** @var Frame $controlFrame */
+        /**
+ * @var Frame $controlFrame 
+*/
         $controlFrame = null;
         $messageCount = 0;
 
@@ -189,13 +202,16 @@ class MessageBufferTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([Frame::CLOSE_TOO_BIG], array_merge(unpack('n*', substr($controlFrame->getPayload(), 0, 2))));
     }
 
-    public function testSecondFrameLengthPushesPastMaxMessagePayload() {
+    public function testSecondFrameLengthPushesPastMaxMessagePayload()
+    {
         $frame = new Frame(str_repeat('a', 200), false, Frame::OP_TEXT);
         $firstFrameRaw = $frame->getContents();
         $frame = new Frame(str_repeat('b', 200), true, Frame::OP_TEXT);
         $secondFrameRaw = $frame->getContents();
 
-        /** @var Frame $controlFrame */
+        /**
+ * @var Frame $controlFrame 
+*/
         $controlFrame = null;
         $messageCount = 0;
 
@@ -255,9 +271,10 @@ class MessageBufferTest extends \PHPUnit_Framework_TestCase
      * @dataProvider phpConfigurationProvider
      *
      * @param string $phpConfigurationValue
-     * @param int $expectedLimit
+     * @param int    $expectedLimit
      */
-    public function testMemoryLimits($phpConfigurationValue, $expectedLimit) {
+    public function testMemoryLimits($phpConfigurationValue, $expectedLimit)
+    {
         $method = new \ReflectionMethod('Ratchet\RFC6455\Messaging\MessageBuffer', 'getMemoryLimit');
         $method->setAccessible(true);
         $actualLimit = $method->invoke(null, $phpConfigurationValue);
@@ -265,7 +282,8 @@ class MessageBufferTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expectedLimit, $actualLimit);
     }
 
-    public function phpConfigurationProvider() {
+    public function phpConfigurationProvider()
+    {
         return [
             'without unit type, just bytes' => ['500', 500],
             '1 GB with big "G"' => ['1G', 1 * 1024 * 1024 * 1024],
@@ -283,11 +301,14 @@ class MessageBufferTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testInvalidMaxFramePayloadSizes() {
+    public function testInvalidMaxFramePayloadSizes()
+    {
         $messageBuffer = new MessageBuffer(
             new CloseFrameChecker(),
-            function (Message $message) {},
-            function (Frame $frame) {},
+            function (Message $message) {
+            },
+            function (Frame $frame) {
+            },
             false,
             null,
             0,
@@ -298,11 +319,14 @@ class MessageBufferTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testInvalidMaxMessagePayloadSizes() {
+    public function testInvalidMaxMessagePayloadSizes()
+    {
         $messageBuffer = new MessageBuffer(
             new CloseFrameChecker(),
-            function (Message $message) {},
-            function (Frame $frame) {},
+            function (Message $message) {
+            },
+            function (Frame $frame) {
+            },
             false,
             null,
             0x8000000000000000,
@@ -314,17 +338,20 @@ class MessageBufferTest extends \PHPUnit_Framework_TestCase
      * @dataProvider phpConfigurationProvider
      *
      * @param string $phpConfigurationValue
-     * @param int $expectedLimit
+     * @param int    $expectedLimit
      *
      * @runInSeparateProcess
-     * @requires PHP 7.0
+     * @requires             PHP 7.0
      */
-    public function testIniSizes($phpConfigurationValue, $expectedLimit) {
+    public function testIniSizes($phpConfigurationValue, $expectedLimit)
+    {
         ini_set('memory_limit', $phpConfigurationValue);
         $messageBuffer = new MessageBuffer(
             new CloseFrameChecker(),
-            function (Message $message) {},
-            function (Frame $frame) {},
+            function (Message $message) {
+            },
+            function (Frame $frame) {
+            },
             false,
             null
         );
@@ -344,14 +371,17 @@ class MessageBufferTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @runInSeparateProcess
-     * @requires PHP 7.0
+     * @requires             PHP 7.0
      */
-    public function testInvalidIniSize() {
+    public function testInvalidIniSize()
+    {
         ini_set('memory_limit', 'lots of memory');
         $messageBuffer = new MessageBuffer(
             new CloseFrameChecker(),
-            function (Message $message) {},
-            function (Frame $frame) {},
+            function (Message $message) {
+            },
+            function (Frame $frame) {
+            },
             false,
             null
         );

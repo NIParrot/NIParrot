@@ -9,7 +9,8 @@ class NI_Controller
     /**
      * Run Controller depend on passed param
      *
-     * @param [string] $Controller
+     * @param  [string] $Controller
+     * @param  [array] $middleware
      * @return void
      */
     public static function run(string $Controller, array $middleware = null)

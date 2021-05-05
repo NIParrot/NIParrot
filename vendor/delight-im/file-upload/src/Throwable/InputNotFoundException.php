@@ -8,4 +8,6 @@
 
 namespace Delight\FileUpload\Throwable;
 
-class InputNotFoundException extends Exception {}
+class InputNotFoundException extends Exception
+{
+}

@@ -2,7 +2,8 @@
 
 namespace Filterus\Filters;
 
-class Alnum extends Regex {
+class Alnum extends Regex
+{
     
     protected $defaultOptions = array(
         'min' => 0,

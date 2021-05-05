@@ -28,14 +28,16 @@ class InvalidArgumentException extends BaseInvalidArgumentException implements E
     }
 
     /**
-     * @template T of object
+     * @template      T of object
      * @phpstan-param ReflectionClass<T> $reflectionClass
      */
     public static function fromAbstractClass(ReflectionClass $reflectionClass): self
     {
-        return new self(sprintf(
-            'The provided class "%s" is abstract, and can not be instantiated',
-            $reflectionClass->getName()
-        ));
+        return new self(
+            sprintf(
+                'The provided class "%s" is abstract, and can not be instantiated',
+                $reflectionClass->getName()
+            )
+        );
     }
 }

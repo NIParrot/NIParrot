@@ -90,7 +90,11 @@ class CallCenter
         }
 
         // Sort matches by their score value
-        @usort($matches, function ($match1, $match2) { return $match2[0] - $match1[0]; });
+        @usort(
+            $matches, function ($match1, $match2) {
+                return $match2[0] - $match1[0]; 
+            }
+        );
 
         $score = $matches[0][0];
         // If Highest rated method prophecy has a promise - execute it or return null instead
@@ -137,11 +141,12 @@ class CallCenter
         $methodName = strtolower($methodName);
 
         return array_values(
-            array_filter($this->recordedCalls, function (Call $call) use ($methodName, $wildcard) {
-                return $methodName === strtolower($call->getMethodName())
-                    && 0 < $call->getScore($wildcard)
-                ;
-            })
+            array_filter(
+                $this->recordedCalls, function (Call $call) use ($methodName, $wildcard) {
+                    return $methodName === strtolower($call->getMethodName())
+                    && 0 < $call->getScore($wildcard);
+                }
+            )
         );
     }
 
@@ -150,7 +155,9 @@ class CallCenter
      */
     public function checkUnexpectedCalls()
     {
-        /** @var Call $call */
+        /**
+ * @var Call $call 
+*/
         foreach ($this->unexpectedCalls as $call) {
             $prophecy = $this->unexpectedCalls[$call];
 
@@ -162,8 +169,8 @@ class CallCenter
     }
 
     private function createUnexpectedCallException(ObjectProphecy $prophecy, $methodName,
-                                                   array $arguments)
-    {
+        array $arguments
+    ) {
         $classname = get_class($prophecy->reveal());
         $indentationLength = 8; // looks good
         $argstring = implode(
@@ -200,11 +207,9 @@ class CallCenter
                 "    )\n".
                 "expected calls were:\n".
                 "%s",
-
                 $classname, $methodName, $argstring, implode("\n", $expected)
             ),
             $prophecy, $methodName, $arguments
-
         );
     }
 
@@ -221,8 +226,8 @@ class CallCenter
 
     /**
      * @param ObjectProphecy $prophecy
-     * @param string $methodName
-     * @param array $arguments
+     * @param string         $methodName
+     * @param array          $arguments
      *
      * @return array
      */

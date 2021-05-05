@@ -245,9 +245,11 @@ class UrlGenerator implements UrlGeneratorInterface, ConfigurableRequirementsInt
         }
 
         // add a query string if needed
-        $extra = array_udiff_assoc(array_diff_key($parameters, $variables), $defaults, function ($a, $b) {
-            return $a == $b ? 0 : 1;
-        });
+        $extra = array_udiff_assoc(
+            array_diff_key($parameters, $variables), $defaults, function ($a, $b) {
+                return $a == $b ? 0 : 1;
+            }
+        );
 
         // extract fragment
         $fragment = '';

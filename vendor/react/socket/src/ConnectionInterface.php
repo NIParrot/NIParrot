@@ -113,7 +113,7 @@ interface ConnectionInterface extends DuplexStreamInterface
      * used for this connection.
      *
      * @return ?string local address (URI) or null if unknown
-     * @see self::getRemoteAddress()
+     * @see    self::getRemoteAddress()
      */
     public function getLocalAddress();
 }

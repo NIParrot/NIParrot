@@ -60,8 +60,9 @@ final class Xdebug3Driver extends Driver
             $mode = ini_get('xdebug.mode');
         }
 
-        if ($mode === false ||
-            !in_array('coverage', explode(',', $mode), true)) {
+        if ($mode === false 
+            || !in_array('coverage', explode(',', $mode), true)
+        ) {
             throw new Xdebug3NotEnabledException;
         }
 

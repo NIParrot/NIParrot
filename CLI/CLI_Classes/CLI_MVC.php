@@ -1,4 +1,6 @@
 <?php
+// phpcs:disable
+
 class CLI_MVC
 {
     public static function makeParisModel()
@@ -16,7 +18,7 @@ class CLI_MVC
 namespace ParisModel; 
     class ' . $tableClass . " extends \Model
     {
-        public static \$_table = '$table';
+        public static \$_table = '" . strtolower($table) . "';
     }";
 
             $msg = fwrite($mymodel, $code) ? "\e[1;33;40m Model $tableClass create successfully \e[0m\n" : "\e[1;33;40m Model $table create Error [*_*] \e[0m\n";

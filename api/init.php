@@ -1,10 +1,10 @@
 <?php
 
-require_once '../config.php';
-require_once '../init.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . '../config.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . '../init.php';
 $API_core_filepath = call_app_resources(ROOT . SEP . 'api' . SEP . 'core');
 $API_route_filepath = call_app_resources(ROOT . SEP . 'api' . SEP . 'routes');
-$api_Controller = call_app_resources(ROOT.SEP.'api'.SEP.'Controller'.SEP);
+$api_Controller = call_app_resources(ROOT . SEP . 'api' . SEP . 'Controller' . SEP);
 $all_api_files = [...$API_core_filepath, ...$API_route_filepath, ...$api_Controller];
 array_map(static function ($file) {
     if (file_exists($file)) {

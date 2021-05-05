@@ -68,9 +68,11 @@ class SchedulerTest extends TestCase
     public function testShouldThrowExceptionIfScriptIsNotAString()
     {
         $scheduler = new Scheduler();
-        $scheduler->php(function () {
-            return false;
-        });
+        $scheduler->php(
+            function () {
+                return false;
+            }
+        );
 
         $scheduler->run();
     }
@@ -103,9 +105,11 @@ class SchedulerTest extends TestCase
 
         $this->assertEquals(count($scheduler->getQueuedJobs()), 0);
 
-        $scheduler->call(function () {
-            return true;
-        });
+        $scheduler->call(
+            function () {
+                return true;
+            }
+        );
 
         $this->assertEquals(count($scheduler->getQueuedJobs()), 1);
     }
@@ -114,9 +118,11 @@ class SchedulerTest extends TestCase
     {
         $scheduler = new Scheduler();
 
-        $scheduler->call(function () {
-            return true;
-        });
+        $scheduler->call(
+            function () {
+                return true;
+            }
+        );
 
         $this->assertEquals(count($scheduler->getQueuedJobs()), 1);
         $this->assertEquals(count($scheduler->getExecutedJobs()), 0);
@@ -131,11 +137,13 @@ class SchedulerTest extends TestCase
         $scheduler = new Scheduler();
 
         $outputFile = __DIR__ . '/../tmp/output.txt';
-        $scheduler->call(function ($phrase) {
-            return $phrase;
-        }, [
+        $scheduler->call(
+            function ($phrase) {
+                return $phrase;
+            }, [
             'Hello World!',
-        ])->output($outputFile);
+            ]
+        )->output($outputFile);
 
         @unlink($outputFile);
 
@@ -154,9 +162,11 @@ class SchedulerTest extends TestCase
         $scheduler = new Scheduler();
 
         $exception = new \Exception('Something failed');
-        $scheduler->call(function () use ($exception) {
-            throw $exception;
-        });
+        $scheduler->call(
+            function () use ($exception) {
+                throw $exception;
+            }
+        );
 
         $this->assertEquals(count($scheduler->getFailedJobs()), 0);
 
@@ -174,13 +184,17 @@ class SchedulerTest extends TestCase
     {
         $scheduler = new Scheduler();
 
-        $scheduler->call(function () {
-            throw new \Exception('Something failed');
-        });
+        $scheduler->call(
+            function () {
+                throw new \Exception('Something failed');
+            }
+        );
 
-        $scheduler->call(function () {
-            return true;
-        });
+        $scheduler->call(
+            function () {
+                return true;
+            }
+        );
 
         $scheduler->run();
 
@@ -226,11 +240,13 @@ class SchedulerTest extends TestCase
     {
         $scheduler = new Scheduler();
 
-        $scheduler->call(function ($phrase) {
-            return $phrase;
-        }, [
+        $scheduler->call(
+            function ($phrase) {
+                return $phrase;
+            }, [
             'Hello World!',
-        ]);
+            ]
+        );
 
         $scheduler->run();
 
@@ -242,15 +258,19 @@ class SchedulerTest extends TestCase
     {
         $scheduler = new Scheduler();
 
-        $scheduler->call(function ($phrase) {
-            return $phrase;
-        }, [
+        $scheduler->call(
+            function ($phrase) {
+                return $phrase;
+            }, [
             'Hello World!',
-        ]);
+            ]
+        );
 
-        $scheduler->call(function () {
-            return true;
-        });
+        $scheduler->call(
+            function () {
+                return true;
+            }
+        );
 
         $scheduler->run();
 
@@ -261,15 +281,19 @@ class SchedulerTest extends TestCase
     {
         $scheduler = new Scheduler();
 
-        $scheduler->call(function ($phrase) {
-            return $phrase;
-        }, [
+        $scheduler->call(
+            function ($phrase) {
+                return $phrase;
+            }, [
             'Hello World!',
-        ]);
+            ]
+        );
 
-        $scheduler->call(function () {
-            return true;
-        });
+        $scheduler->call(
+            function () {
+                return true;
+            }
+        );
 
         $scheduler->run();
 
@@ -284,15 +308,19 @@ class SchedulerTest extends TestCase
     {
         $scheduler = new Scheduler();
 
-        $scheduler->call(function ($phrase) {
-            return $phrase;
-        }, [
+        $scheduler->call(
+            function ($phrase) {
+                return $phrase;
+            }, [
             'Hello World!',
-        ]);
+            ]
+        );
 
-        $scheduler->call(function () {
-            return true;
-        });
+        $scheduler->call(
+            function () {
+                return true;
+            }
+        );
 
         $scheduler->run();
 
@@ -303,9 +331,11 @@ class SchedulerTest extends TestCase
     {
         $scheduler = new Scheduler();
 
-        $scheduler->php(__DIR__ . '/../async_job.php', null, null, 'async_foreground')->then(function () {
-            return true;
-        });
+        $scheduler->php(__DIR__ . '/../async_job.php', null, null, 'async_foreground')->then(
+            function () {
+                return true;
+            }
+        );
 
         $scheduler->php(__DIR__ . '/../async_job.php', null, null, 'async_background');
 
@@ -319,9 +349,11 @@ class SchedulerTest extends TestCase
     {
         $scheduler = new Scheduler();
 
-        $scheduler->call(function () {
-            return true;
-        });
+        $scheduler->call(
+            function () {
+                return true;
+            }
+        );
 
         $scheduler->run();
 
@@ -337,9 +369,11 @@ class SchedulerTest extends TestCase
     {
         $scheduler = new Scheduler();
 
-        $scheduler->call(function () {
-            return true;
-        });
+        $scheduler->call(
+            function () {
+                return true;
+            }
+        );
 
         $this->assertCount(1, $scheduler->getQueuedJobs(), 'Number of queued jobs');
 
@@ -353,14 +387,18 @@ class SchedulerTest extends TestCase
         $scheduler = new Scheduler();
         $currentTime = date('H:i');
 
-        $scheduler->call(function () {
-            $s = (int) date('s');
-            sleep(60 - $s + 1);
-        })->daily($currentTime);
+        $scheduler->call(
+            function () {
+                $s = (int) date('s');
+                sleep(60 - $s + 1);
+            }
+        )->daily($currentTime);
 
-        $scheduler->call(function () {
-            // do nothing
-        })->daily($currentTime);
+        $scheduler->call(
+            function () {
+                // do nothing
+            }
+        )->daily($currentTime);
 
         $executed = $scheduler->run();
 
@@ -372,9 +410,11 @@ class SchedulerTest extends TestCase
         $scheduler = new Scheduler();
         $runTime = new DateTime('2017-09-13 00:00:00');
 
-        $scheduler->call(function () {
-            // do nothing
-        })->daily('00:00');
+        $scheduler->call(
+            function () {
+                // do nothing
+            }
+        )->daily('00:00');
 
         $executed = $scheduler->run($runTime);
 

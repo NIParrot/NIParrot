@@ -69,8 +69,9 @@ final class CodeExporter
 
     private function exportVariable($variable): string
     {
-        if (is_scalar($variable) || null === $variable ||
-            (is_array($variable) && $this->arrayOnlyContainsScalars($variable))) {
+        if (is_scalar($variable) || null === $variable 
+            || (is_array($variable) && $this->arrayOnlyContainsScalars($variable))
+        ) {
             return var_export($variable, true);
         }
 

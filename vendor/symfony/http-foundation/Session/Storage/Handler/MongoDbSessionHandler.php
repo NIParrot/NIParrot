@@ -83,12 +83,14 @@ class MongoDbSessionHandler extends AbstractSessionHandler
 
         $this->mongo = $mongo;
 
-        $this->options = array_merge([
+        $this->options = array_merge(
+            [
             'id_field' => '_id',
             'data_field' => 'data',
             'time_field' => 'time',
             'expiry_field' => 'expires_at',
-        ], $options);
+            ], $options
+        );
     }
 
     /**
@@ -106,9 +108,11 @@ class MongoDbSessionHandler extends AbstractSessionHandler
     {
         $methodName = $this->mongo instanceof \MongoDB\Client ? 'deleteOne' : 'remove';
 
-        $this->getCollection()->$methodName([
+        $this->getCollection()->$methodName(
+            [
             $this->options['id_field'] => $sessionId,
-        ]);
+            ]
+        );
 
         return true;
     }
@@ -120,9 +124,11 @@ class MongoDbSessionHandler extends AbstractSessionHandler
     {
         $methodName = $this->mongo instanceof \MongoDB\Client ? 'deleteMany' : 'remove';
 
-        $this->getCollection()->$methodName([
+        $this->getCollection()->$methodName(
+            [
             $this->options['expiry_field'] => ['$lt' => $this->createDateTime()],
-        ]);
+            ]
+        );
 
         return true;
     }
@@ -191,10 +197,12 @@ class MongoDbSessionHandler extends AbstractSessionHandler
      */
     protected function doRead($sessionId)
     {
-        $dbData = $this->getCollection()->findOne([
+        $dbData = $this->getCollection()->findOne(
+            [
             $this->options['id_field'] => $sessionId,
             $this->options['expiry_field'] => ['$gte' => $this->createDateTime()],
-        ]);
+            ]
+        );
 
         if (null === $dbData) {
             return '';

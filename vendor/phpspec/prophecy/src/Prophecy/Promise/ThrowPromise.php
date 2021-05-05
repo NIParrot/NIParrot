@@ -42,16 +42,20 @@ class ThrowPromise implements PromiseInterface
     {
         if (is_string($exception)) {
             if ((!class_exists($exception) && !interface_exists($exception)) || !$this->isAValidThrowable($exception)) {
-                throw new InvalidArgumentException(sprintf(
-                    'Exception / Throwable class or instance expected as argument to ThrowPromise, but got %s.',
-                    $exception
-                ));
+                throw new InvalidArgumentException(
+                    sprintf(
+                        'Exception / Throwable class or instance expected as argument to ThrowPromise, but got %s.',
+                        $exception
+                    )
+                );
             }
         } elseif (!$exception instanceof \Exception && !$exception instanceof \Throwable) {
-            throw new InvalidArgumentException(sprintf(
-                'Exception / Throwable class or instance expected as argument to ThrowPromise, but got %s.',
-                is_object($exception) ? get_class($exception) : gettype($exception)
-            ));
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Exception / Throwable class or instance expected as argument to ThrowPromise, but got %s.',
+                    is_object($exception) ? get_class($exception) : gettype($exception)
+                )
+            );
         }
 
         $this->exception = $exception;

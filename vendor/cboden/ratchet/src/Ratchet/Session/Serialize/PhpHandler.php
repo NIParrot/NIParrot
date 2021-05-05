@@ -1,12 +1,14 @@
 <?php
 namespace Ratchet\Session\Serialize;
 
-class PhpHandler implements HandlerInterface {
+class PhpHandler implements HandlerInterface
+{
     /**
      * Simply reverse behaviour of unserialize method.
      * {@inheritdoc}
      */
-    function serialize(array $data) {
+    function serialize(array $data)
+    {
         $preSerialized = array();
         $serialized = '';
 
@@ -22,10 +24,12 @@ class PhpHandler implements HandlerInterface {
 
     /**
      * {@inheritdoc}
-     * @link http://ca2.php.net/manual/en/function.session-decode.php#108037 Code from this comment on php.net
+     *
+     * @link   http://ca2.php.net/manual/en/function.session-decode.php#108037 Code from this comment on php.net
      * @throws \UnexpectedValueException If there is a problem parsing the data
      */
-    public function unserialize($raw) {
+    public function unserialize($raw)
+    {
         $returnData = array();
         $offset     = 0;
 

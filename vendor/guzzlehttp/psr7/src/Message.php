@@ -18,8 +18,10 @@ final class Message
     public static function toString(MessageInterface $message)
     {
         if ($message instanceof RequestInterface) {
-            $msg = trim($message->getMethod() . ' '
-                    . $message->getRequestTarget())
+            $msg = trim(
+                $message->getMethod() . ' '
+                . $message->getRequestTarget()
+            )
                 . ' HTTP/' . $message->getProtocolVersion();
             if (!$message->hasHeader('host')) {
                 $msg .= "\r\nHost: " . $message->getUri()->getHost();
@@ -144,7 +146,9 @@ final class Message
             $rawHeaders = preg_replace(Rfc7230::HEADER_FOLD_REGEX, ' ', $rawHeaders);
         }
 
-        /** @var array[] $headerLines */
+        /**
+ * @var array[] $headerLines 
+*/
         $count = preg_match_all(Rfc7230::HEADER_REGEX, $rawHeaders, $headerLines, PREG_SET_ORDER);
 
         // If these aren't the same, then one line didn't match and there's an invalid header.
@@ -180,9 +184,11 @@ final class Message
      */
     public static function parseRequestUri($path, array $headers)
     {
-        $hostKey = array_filter(array_keys($headers), function ($k) {
-            return strtolower($k) === 'host';
-        });
+        $hostKey = array_filter(
+            array_keys($headers), function ($k) {
+                return strtolower($k) === 'host';
+            }
+        );
 
         // If no host is found, then a full URI cannot be constructed.
         if (!$hostKey) {

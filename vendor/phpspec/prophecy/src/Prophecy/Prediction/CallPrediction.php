@@ -59,28 +59,30 @@ class CallPrediction implements PredictionInterface
         );
 
         if (count($methodCalls)) {
-            throw new NoCallsException(sprintf(
-                "No calls have been made that match:\n".
-                "  %s->%s(%s)\n".
-                "but expected at least one.\n".
-                "Recorded `%s(...)` calls:\n%s",
-
-                get_class($object->reveal()),
-                $method->getMethodName(),
-                $method->getArgumentsWildcard(),
-                $method->getMethodName(),
-                $this->util->stringifyCalls($methodCalls)
-            ), $method);
+            throw new NoCallsException(
+                sprintf(
+                    "No calls have been made that match:\n".
+                    "  %s->%s(%s)\n".
+                    "but expected at least one.\n".
+                    "Recorded `%s(...)` calls:\n%s",
+                    get_class($object->reveal()),
+                    $method->getMethodName(),
+                    $method->getArgumentsWildcard(),
+                    $method->getMethodName(),
+                    $this->util->stringifyCalls($methodCalls)
+                ), $method
+            );
         }
 
-        throw new NoCallsException(sprintf(
-            "No calls have been made that match:\n".
-            "  %s->%s(%s)\n".
-            "but expected at least one.",
-
-            get_class($object->reveal()),
-            $method->getMethodName(),
-            $method->getArgumentsWildcard()
-        ), $method);
+        throw new NoCallsException(
+            sprintf(
+                "No calls have been made that match:\n".
+                "  %s->%s(%s)\n".
+                "but expected at least one.",
+                get_class($object->reveal()),
+                $method->getMethodName(),
+                $method->getArgumentsWildcard()
+            ), $method
+        );
     }
 }

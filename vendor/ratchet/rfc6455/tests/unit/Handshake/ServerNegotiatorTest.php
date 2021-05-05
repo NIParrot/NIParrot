@@ -7,7 +7,8 @@ use Ratchet\RFC6455\Handshake\ServerNegotiator;
 
 class ServerNegotiatorTest extends \PHPUnit_Framework_TestCase
 {
-    public function testNoUpgradeRequested() {
+    public function testNoUpgradeRequested()
+    {
         $negotiator = new ServerNegotiator(new RequestVerifier());
 
         $requestText = 'GET / HTTP/1.1
@@ -35,7 +36,8 @@ Accept-Language: en-US,en;q=0.8
         $this->assertEquals('13', $response->getHeaderLine('Sec-WebSocket-Version'));
     }
 
-    public function testNoConnectionUpgradeRequested() {
+    public function testNoConnectionUpgradeRequested()
+    {
         $negotiator = new ServerNegotiator(new RequestVerifier());
 
         $requestText = 'GET / HTTP/1.1
@@ -61,7 +63,8 @@ Accept-Language: en-US,en;q=0.8
         $this->assertEquals('Connection Upgrade MUST be requested', $response->getReasonPhrase());
     }
 
-    public function testInvalidSecWebsocketKey() {
+    public function testInvalidSecWebsocketKey()
+    {
         $negotiator = new ServerNegotiator(new RequestVerifier());
 
         $requestText = 'GET / HTTP/1.1
@@ -88,7 +91,8 @@ Accept-Language: en-US,en;q=0.8
         $this->assertEquals('Invalid Sec-WebSocket-Key', $response->getReasonPhrase());
     }
 
-    public function testInvalidSecWebsocketVersion() {
+    public function testInvalidSecWebsocketVersion()
+    {
         $negotiator = new ServerNegotiator(new RequestVerifier());
 
         $requestText = 'GET / HTTP/1.1
@@ -118,7 +122,8 @@ Accept-Language: en-US,en;q=0.8
         $this->assertEquals('13', $response->getHeaderLine('Sec-WebSocket-Version'));
     }
 
-    public function testBadSubprotocolResponse() {
+    public function testBadSubprotocolResponse()
+    {
         $negotiator = new ServerNegotiator(new RequestVerifier());
         $negotiator->setStrictSubProtocolCheck(true);
         $negotiator->setSupportedSubProtocols([]);
@@ -152,7 +157,8 @@ Accept-Language: en-US,en;q=0.8
         $this->assertEquals('13', $response->getHeaderLine('Sec-WebSocket-Version'));
     }
 
-    public function testNonStrictSubprotocolDoesNotIncludeHeaderWhenNoneAgreedOn() {
+    public function testNonStrictSubprotocolDoesNotIncludeHeaderWhenNoneAgreedOn()
+    {
         $negotiator = new ServerNegotiator(new RequestVerifier());
         $negotiator->setStrictSubProtocolCheck(false);
         $negotiator->setSupportedSubProtocols(['someproto']);

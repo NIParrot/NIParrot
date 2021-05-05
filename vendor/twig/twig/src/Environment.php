@@ -99,7 +99,8 @@ class Environment
     {
         $this->setLoader($loader);
 
-        $options = array_merge([
+        $options = array_merge(
+            [
             'debug' => false,
             'charset' => 'UTF-8',
             'strict_variables' => false,
@@ -107,7 +108,8 @@ class Environment
             'cache' => false,
             'auto_reload' => null,
             'optimizations' => -1,
-        ], $options);
+            ], $options
+        );
 
         $this->debug = (bool) $options['debug'];
         $this->setCharset($options['charset'] ?? 'UTF-8');
@@ -389,10 +391,12 @@ class Environment
             $name = sprintf('__string_template__%s', $hash);
         }
 
-        $loader = new ChainLoader([
+        $loader = new ChainLoader(
+            [
             new ArrayLoader([$name => $template]),
             $current = $this->getLoader(),
-        ]);
+            ]
+        );
 
         $this->setLoader($loader);
         try {
@@ -802,13 +806,15 @@ class Environment
 
     private function updateOptionsHash(): void
     {
-        $this->optionsHash = implode(':', [
+        $this->optionsHash = implode(
+            ':', [
             $this->extensionSet->getSignature(),
             PHP_MAJOR_VERSION,
             PHP_MINOR_VERSION,
             self::VERSION,
             (int) $this->debug,
             (int) $this->strictVariables,
-        ]);
+            ]
+        );
     }
 }

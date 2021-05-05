@@ -138,12 +138,14 @@ class ObjectProphecy implements ProphecyInterface
     {
         $argumentsWildcard = $methodProphecy->getArgumentsWildcard();
         if (null === $argumentsWildcard) {
-            throw new MethodProphecyException(sprintf(
-                "Can not add prophecy for a method `%s::%s()`\n".
-                "as you did not specify arguments wildcard for it.",
-                get_class($this->reveal()),
-                $methodProphecy->getMethodName()
-            ), $methodProphecy);
+            throw new MethodProphecyException(
+                sprintf(
+                    "Can not add prophecy for a method `%s::%s()`\n".
+                    "as you did not specify arguments wildcard for it.",
+                    get_class($this->reveal()),
+                    $methodProphecy->getMethodName()
+                ), $methodProphecy
+            );
         }
 
         $methodName = strtolower($methodProphecy->getMethodName());
@@ -255,7 +257,8 @@ class ObjectProphecy implements ProphecyInterface
             try {
                 $comparator->assertEquals($argumentsWildcard, $arguments);
                 return $prophecy;
-            } catch (ComparisonFailure $failure) {}
+            } catch (ComparisonFailure $failure) {
+            }
         }
 
         return new MethodProphecy($this, $methodName, $arguments);

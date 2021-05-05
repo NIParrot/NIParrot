@@ -18,7 +18,7 @@ class ColumnTypeGuesser
     }
 
     /**
-     * @param ColumnMap $column
+     * @param  ColumnMap $column
      * @return \Closure|null
      */
     public function guessFormat(ColumnMap $column)
@@ -37,11 +37,11 @@ class ColumnTypeGuesser
         }
         $type = $column->getType();
         switch ($type) {
-            case PropelColumnTypes::BOOLEAN:
-            case PropelColumnTypes::BOOLEAN_EMU:
-                return function () use ($generator) {
+        case PropelColumnTypes::BOOLEAN:
+        case PropelColumnTypes::BOOLEAN_EMU:
+            return function () use ($generator) {
                     return $generator->boolean;
-                };
+            };
             case PropelColumnTypes::NUMERIC:
             case PropelColumnTypes::DECIMAL:
                 $size = $column->getSize();
@@ -100,7 +100,7 @@ class ColumnTypeGuesser
             case PropelColumnTypes::OBJECT:
             case PropelColumnTypes::PHP_ARRAY:
             default:
-            // no smart way to guess what the user expects here
+                // no smart way to guess what the user expects here
                 return null;
         }
     }

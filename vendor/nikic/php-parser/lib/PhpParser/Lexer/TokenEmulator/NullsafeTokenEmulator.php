@@ -23,9 +23,11 @@ final class NullsafeTokenEmulator extends TokenEmulator
         $line = 1;
         for ($i = 0, $c = count($tokens); $i < $c; ++$i) {
             if ($tokens[$i] === '?' && isset($tokens[$i + 1]) && $tokens[$i + 1][0] === \T_OBJECT_OPERATOR) {
-                array_splice($tokens, $i, 2, [
+                array_splice(
+                    $tokens, $i, 2, [
                     [\T_NULLSAFE_OBJECT_OPERATOR, '?->', $line]
-                ]);
+                    ]
+                );
                 $c--;
                 continue;
             }

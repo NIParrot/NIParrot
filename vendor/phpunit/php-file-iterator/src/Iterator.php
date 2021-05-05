@@ -105,9 +105,10 @@ class Iterator extends FilterIterator
         $matched = false;
 
         foreach ($subStrings as $string) {
-            if (($type === self::PREFIX && strpos($filename, $string) === 0) ||
-                ($type === self::SUFFIX &&
-                 substr($filename, -1 * strlen($string)) === $string)) {
+            if (($type === self::PREFIX && strpos($filename, $string) === 0) 
+                || ($type === self::SUFFIX 
+                && substr($filename, -1 * strlen($string)) === $string)
+            ) {
                 $matched = true;
 
                 break;

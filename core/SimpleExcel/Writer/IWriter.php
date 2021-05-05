@@ -9,7 +9,9 @@ namespace SimpleExcel\Writer;
  * @package SimpleExcel
  */
 
-/** define writer interface */
+/**
+ * define writer interface 
+ */
 interface IWriter
 {
     public function addRow($values);

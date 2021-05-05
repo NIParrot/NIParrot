@@ -12,7 +12,9 @@ class Response implements ResponseInterface
 {
     use MessageTrait;
 
-    /** @var array Map of standard HTTP status code/reason phrases */
+    /**
+     * @var array Map of standard HTTP status code/reason phrases 
+     */
     private static $phrases = [
         100 => 'Continue',
         101 => 'Switching Protocols',
@@ -74,10 +76,14 @@ class Response implements ResponseInterface
         511 => 'Network Authentication Required',
     ];
 
-    /** @var string */
+    /**
+     * @var string 
+     */
     private $reasonPhrase = '';
 
-    /** @var int */
+    /**
+     * @var int 
+     */
     private $statusCode = 200;
 
     /**

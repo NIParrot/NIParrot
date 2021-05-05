@@ -216,7 +216,7 @@ interface WritableStreamInterface extends EventEmitterInterface
      * dozens of kilobytes. You may want to apply a higher-level protocol to
      * these low-level data chunks in order to achieve proper message framing.
      *
-     * @param mixed|string $data
+     * @param  mixed|string $data
      * @return bool
      */
     public function write($data);
@@ -289,7 +289,7 @@ interface WritableStreamInterface extends EventEmitterInterface
      *
      * Note that this method should not be confused with the `close()` method.
      *
-     * @param mixed|string|null $data
+     * @param  mixed|string|null $data
      * @return void
      */
     public function end($data = null);
@@ -341,7 +341,7 @@ interface WritableStreamInterface extends EventEmitterInterface
      * non-writable AND non-readable mode, see also `isReadable()`.
      *
      * @return void
-     * @see ReadableStreamInterface::close()
+     * @see    ReadableStreamInterface::close()
      */
     public function close();
 }

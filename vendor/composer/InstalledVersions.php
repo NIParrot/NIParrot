@@ -23,8 +23,8 @@ use Composer\Semver\VersionParser;
 class InstalledVersions
 {
     private static $installed = array (
-  'root' => 
-  array (
+    'root' => 
+    array (
     'pretty_version' => 'dev-master',
     'version' => 'dev-master',
     'aliases' => 
@@ -32,9 +32,9 @@ class InstalledVersions
     ),
     'reference' => '1ea857eac5c78e0ad801d93526c7c041654b0712',
     'name' => '__root__',
-  ),
-  'versions' => 
-  array (
+    ),
+    'versions' => 
+    array (
     '__root__' => 
     array (
       'pretty_version' => 'dev-master',
@@ -584,15 +584,15 @@ class InstalledVersions
       ),
       'reference' => '6964c76c7804814a842473e0c8fd15bab0f18e25',
     ),
-  ),
-);
+    ),
+    );
     private static $canGetVendors;
     private static $installedByVendor = array();
 
     /**
      * Returns a list of all package names which are present, either by being installed, replaced or provided
      *
-     * @return string[]
+     * @return       string[]
      * @psalm-return list<string>
      */
     public static function getInstalledPackages()
@@ -687,7 +687,7 @@ class InstalledVersions
     }
 
     /**
-     * @param  string      $packageName
+     * @param  string $packageName
      * @return string|null If the package is being replaced or provided but is not really installed, null will be returned as version, use satisfies or getVersionRanges if you need to know if a given version is present
      */
     public static function getVersion($packageName)
@@ -708,7 +708,7 @@ class InstalledVersions
     }
 
     /**
-     * @param  string      $packageName
+     * @param  string $packageName
      * @return string|null If the package is being replaced or provided but is not really installed, null will be returned as version, use satisfies or getVersionRanges if you need to know if a given version is present
      */
     public static function getPrettyVersion($packageName)
@@ -729,7 +729,7 @@ class InstalledVersions
     }
 
     /**
-     * @param  string      $packageName
+     * @param  string $packageName
      * @return string|null If the package is being replaced or provided but is not really installed, null will be returned as reference
      */
     public static function getReference($packageName)
@@ -750,7 +750,7 @@ class InstalledVersions
     }
 
     /**
-     * @return array
+     * @return       array
      * @psalm-return array{name: string, version: string, reference: string, pretty_version: string, aliases: string[]}
      */
     public static function getRootPackage()
@@ -763,7 +763,7 @@ class InstalledVersions
     /**
      * Returns the raw installed.php data for custom implementations
      *
-     * @return array[]
+     * @return       array[]
      * @psalm-return array{root: array{name: string, version: string, reference: string, pretty_version: string, aliases: string[]}, versions: list<string, array{pretty_version: ?string, version: ?string, aliases: ?string[], reference: ?string, replaced: ?string[], provided: ?string[]}>}
      */
     public static function getRawData()
@@ -812,7 +812,7 @@ class InstalledVersions
                 if (isset(self::$installedByVendor[$vendorDir])) {
                     $installed[] = self::$installedByVendor[$vendorDir];
                 } elseif (is_file($vendorDir.'/composer/installed.php')) {
-                    $installed[] = self::$installedByVendor[$vendorDir] = require $vendorDir.'/composer/installed.php';
+                    $installed[] = self::$installedByVendor[$vendorDir] = include $vendorDir.'/composer/installed.php';
                 }
             }
         }

@@ -9,12 +9,15 @@
  */
 namespace PharIo\Version;
 
-class AnyVersionConstraint implements VersionConstraint {
-    public function complies(Version $version): bool {
+class AnyVersionConstraint implements VersionConstraint
+{
+    public function complies(Version $version): bool
+    {
         return true;
     }
 
-    public function asString(): string {
+    public function asString(): string
+    {
         return '*';
     }
 }

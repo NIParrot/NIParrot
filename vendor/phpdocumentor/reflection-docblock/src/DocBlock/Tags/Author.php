@@ -24,13 +24,19 @@ use const FILTER_VALIDATE_EMAIL;
  */
 final class Author extends BaseTag implements Factory\StaticMethod
 {
-    /** @var string register that this is the author tag. */
+    /**
+     * @var string register that this is the author tag. 
+     */
     protected $name = 'author';
 
-    /** @var string The name of the author */
+    /**
+     * @var string The name of the author 
+     */
     private $authorName;
 
-    /** @var string The email of the author */
+    /**
+     * @var string The email of the author 
+     */
     private $authorEmail;
 
     /**

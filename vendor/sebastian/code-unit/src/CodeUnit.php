@@ -31,7 +31,7 @@ abstract class CodeUnit
     private $sourceFileName;
 
     /**
-     * @var array
+     * @var       array
      * @psalm-var list<int>
      */
     private $sourceLines;

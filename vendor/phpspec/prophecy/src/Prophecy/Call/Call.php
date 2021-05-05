@@ -40,8 +40,8 @@ class Call
      * @param null|int    $line
      */
     public function __construct($methodName, array $arguments, $returnValue,
-                                Exception $exception = null, $file, $line)
-    {
+        Exception $exception = null, $file, $line
+    ) {
         $this->methodName  = $methodName;
         $this->arguments   = $arguments;
         $this->returnValue = $returnValue;
@@ -132,7 +132,7 @@ class Call
      * Adds the wildcard match score for the provided wildcard.
      *
      * @param ArgumentsWildcard $wildcard
-     * @param false|int $score
+     * @param false|int         $score
      *
      * @return $this
      */

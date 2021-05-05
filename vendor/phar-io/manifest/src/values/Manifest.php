@@ -11,26 +11,40 @@ namespace PharIo\Manifest;
 
 use PharIo\Version\Version;
 
-class Manifest {
-    /** @var ApplicationName */
+class Manifest
+{
+    /**
+     * @var ApplicationName 
+     */
     private $name;
 
-    /** @var Version */
+    /**
+     * @var Version 
+     */
     private $version;
 
-    /** @var Type */
+    /**
+     * @var Type 
+     */
     private $type;
 
-    /** @var CopyrightInformation */
+    /**
+     * @var CopyrightInformation 
+     */
     private $copyrightInformation;
 
-    /** @var RequirementCollection */
+    /**
+     * @var RequirementCollection 
+     */
     private $requirements;
 
-    /** @var BundledComponentCollection */
+    /**
+     * @var BundledComponentCollection 
+     */
     private $bundledComponents;
 
-    public function __construct(ApplicationName $name, Version $version, Type $type, CopyrightInformation $copyrightInformation, RequirementCollection $requirements, BundledComponentCollection $bundledComponents) {
+    public function __construct(ApplicationName $name, Version $version, Type $type, CopyrightInformation $copyrightInformation, RequirementCollection $requirements, BundledComponentCollection $bundledComponents)
+    {
         $this->name                 = $name;
         $this->version              = $version;
         $this->type                 = $type;
@@ -39,48 +53,60 @@ class Manifest {
         $this->bundledComponents    = $bundledComponents;
     }
 
-    public function getName(): ApplicationName {
+    public function getName(): ApplicationName
+    {
         return $this->name;
     }
 
-    public function getVersion(): Version {
+    public function getVersion(): Version
+    {
         return $this->version;
     }
 
-    public function getType(): Type {
+    public function getType(): Type
+    {
         return $this->type;
     }
 
-    public function getCopyrightInformation(): CopyrightInformation {
+    public function getCopyrightInformation(): CopyrightInformation
+    {
         return $this->copyrightInformation;
     }
 
-    public function getRequirements(): RequirementCollection {
+    public function getRequirements(): RequirementCollection
+    {
         return $this->requirements;
     }
 
-    public function getBundledComponents(): BundledComponentCollection {
+    public function getBundledComponents(): BundledComponentCollection
+    {
         return $this->bundledComponents;
     }
 
-    public function isApplication(): bool {
+    public function isApplication(): bool
+    {
         return $this->type->isApplication();
     }
 
-    public function isLibrary(): bool {
+    public function isLibrary(): bool
+    {
         return $this->type->isLibrary();
     }
 
-    public function isExtension(): bool {
+    public function isExtension(): bool
+    {
         return $this->type->isExtension();
     }
 
-    public function isExtensionFor(ApplicationName $application, Version $version = null): bool {
+    public function isExtensionFor(ApplicationName $application, Version $version = null): bool
+    {
         if (!$this->isExtension()) {
             return false;
         }
 
-        /** @var Extension $type */
+        /**
+ * @var Extension $type 
+*/
         $type = $this->type;
 
         if ($version !== null) {

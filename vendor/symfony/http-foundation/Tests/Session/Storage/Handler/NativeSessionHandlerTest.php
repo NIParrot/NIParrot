@@ -20,8 +20,8 @@ use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeSessionHandle
  * @author Drak <drak@zikula.org>
  *
  * @runTestsInSeparateProcesses
- * @preserveGlobalState disabled
- * @group legacy
+ * @preserveGlobalState         disabled
+ * @group                       legacy
  */
 class NativeSessionHandlerTest extends TestCase
 {

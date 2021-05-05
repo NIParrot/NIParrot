@@ -11,16 +11,16 @@ class NI_template
     public static function css_lang()
     {
         switch (self::$lang_code) {
-            case 'ar':
-                self::$kit = 'uikit-rtl';
-                self::$bootstrap = 'bootstrap-rtl';
-                self::$lang_dir = 'rtl';
-                break;
-            default:
-                self::$kit = 'uikit';
-                self::$bootstrap = 'bootstrap';
-                self::$lang_dir = 'ltr';
-                break;
+        case 'ar':
+            self::$kit = 'uikit-rtl';
+            self::$bootstrap = 'bootstrap-rtl';
+            self::$lang_dir = 'rtl';
+            break;
+        default:
+            self::$kit = 'uikit';
+            self::$bootstrap = 'bootstrap';
+            self::$lang_dir = 'ltr';
+            break;
         }
     }
 
@@ -81,27 +81,27 @@ class NI_template
             <link rel="stylesheet" href="/engien/static/css/all.css">
             ';
         switch (FrontFrame) {
-            case 'UIkit':
-                echo '
+        case 'UIkit':
+            echo '
                 <link rel="stylesheet" href="/engien/static/css/'.self::$kit.'.min.css">
                 <script src="/engien/static/js/uikit.min.js"></script>
                 <script src="/engien/static/js/uikit-icons.min.js"></script>
                 ';
-                break;
-            case 'Bootstrap':
-                echo '
+            break;
+        case 'Bootstrap':
+            echo '
                 <link rel="stylesheet" href="/engien/static/css/'.self::$bootstrap.'.min.css">
                 ';
-                break;
-            case 'all':
-                echo '
+            break;
+        case 'all':
+            echo '
                 <link rel="stylesheet" href="/engien/static/css/'.self::$kit.'.min.css">
                 <link rel="stylesheet" href="/engien/static/css/'.self::$bootstrap.'.min.css">
                 <script src="/engien/static/js/uikit.min.js"></script>
                 <script src="/engien/static/js/uikit-icons.min.js"></script>
                 ';
-                break;
-            default:
+            break;
+        default:
         }
     }
 
@@ -109,7 +109,7 @@ class NI_template
     {
         $lang_file = ROOT.SEP.'engien'.SEP.'lang'.SEP.self::$lang_code.'.php';
         if (file_exists($lang_file)) {
-            require_once $lang_file;
+            include_once $lang_file;
         }
     }
 

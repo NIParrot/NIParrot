@@ -41,31 +41,35 @@ final class SecureConnector implements ConnectorInterface
 
         $encryption = $this->streamEncryption;
         $connected = false;
-        $promise = $this->connector->connect($uri)->then(function (ConnectionInterface $connection) use ($context, $encryption, $uri, &$promise, &$connected) {
-            // (unencrypted) TCP/IP connection succeeded
-            $connected = true;
+        $promise = $this->connector->connect($uri)->then(
+            function (ConnectionInterface $connection) use ($context, $encryption, $uri, &$promise, &$connected) {
+                // (unencrypted) TCP/IP connection succeeded
+                $connected = true;
 
-            if (!$connection instanceof Connection) {
-                $connection->close();
-                throw new \UnexpectedValueException('Base connector does not use internal Connection class exposing stream resource');
-            }
+                if (!$connection instanceof Connection) {
+                    $connection->close();
+                    throw new \UnexpectedValueException('Base connector does not use internal Connection class exposing stream resource');
+                }
 
-            // set required SSL/TLS context options
-            foreach ($context as $name => $value) {
-                \stream_context_set_option($connection->stream, 'ssl', $name, $value);
-            }
+                // set required SSL/TLS context options
+                foreach ($context as $name => $value) {
+                    \stream_context_set_option($connection->stream, 'ssl', $name, $value);
+                }
 
-            // try to enable encryption
-            return $promise = $encryption->enable($connection)->then(null, function ($error) use ($connection, $uri) {
-                // establishing encryption failed => close invalid connection and return error
-                $connection->close();
+                // try to enable encryption
+                return $promise = $encryption->enable($connection)->then(
+                    null, function ($error) use ($connection, $uri) {
+                        // establishing encryption failed => close invalid connection and return error
+                        $connection->close();
 
-                throw new \RuntimeException(
-                    'Connection to ' . $uri . ' failed during TLS handshake: ' . $error->getMessage(),
-                    $error->getCode()
+                        throw new \RuntimeException(
+                            'Connection to ' . $uri . ' failed during TLS handshake: ' . $error->getMessage(),
+                            $error->getCode()
+                        );
+                    }
                 );
-            });
-        });
+            }
+        );
 
         return new \React\Promise\Promise(
             function ($resolve, $reject) use ($promise) {

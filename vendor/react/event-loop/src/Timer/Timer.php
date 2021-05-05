@@ -9,7 +9,7 @@ use React\EventLoop\TimerInterface;
  *
  * This class should only be used internally, see TimerInterface instead.
  *
- * @see TimerInterface
+ * @see      TimerInterface
  * @internal
  */
 final class Timer implements TimerInterface
@@ -23,9 +23,9 @@ final class Timer implements TimerInterface
     /**
      * Constructor initializes the fields of the Timer
      *
-     * @param float         $interval The interval after which this timer will execute, in seconds
-     * @param callable      $callback The callback that will be executed when this timer elapses
-     * @param bool          $periodic Whether the time is periodic
+     * @param float    $interval The interval after which this timer will execute, in seconds
+     * @param callable $callback The callback that will be executed when this timer elapses
+     * @param bool     $periodic Whether the time is periodic
      */
     public function __construct($interval, $callback, $periodic = false)
     {

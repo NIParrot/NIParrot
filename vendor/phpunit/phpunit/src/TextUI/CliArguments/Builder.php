@@ -238,539 +238,539 @@ final class Builder
 
         foreach ($options[0] as $option) {
             switch ($option[0]) {
-                case '--colors':
-                    $colors = $option[1] ?: DefaultResultPrinter::COLOR_AUTO;
+            case '--colors':
+                $colors = $option[1] ?: DefaultResultPrinter::COLOR_AUTO;
 
-                    break;
+                break;
 
-                case '--bootstrap':
-                    $bootstrap = $option[1];
+            case '--bootstrap':
+                $bootstrap = $option[1];
 
-                    break;
+                break;
 
-                case '--cache-result':
-                    $cacheResult = true;
+            case '--cache-result':
+                $cacheResult = true;
 
-                    break;
+                break;
 
-                case '--do-not-cache-result':
-                    $cacheResult = false;
+            case '--do-not-cache-result':
+                $cacheResult = false;
 
-                    break;
+                break;
 
-                case '--cache-result-file':
-                    $cacheResultFile = $option[1];
+            case '--cache-result-file':
+                $cacheResultFile = $option[1];
 
-                    break;
+                break;
 
-                case '--columns':
-                    if (is_numeric($option[1])) {
-                        $columns = (int) $option[1];
-                    } elseif ($option[1] === 'max') {
-                        $columns = 'max';
+            case '--columns':
+                if (is_numeric($option[1])) {
+                    $columns = (int) $option[1];
+                } elseif ($option[1] === 'max') {
+                    $columns = 'max';
+                }
+
+                break;
+
+            case 'c':
+            case '--configuration':
+                $configuration = $option[1];
+
+                break;
+
+            case '--coverage-cache':
+                $coverageCacheDirectory = $option[1];
+
+                break;
+
+            case '--warm-coverage-cache':
+                $warmCoverageCache = true;
+
+                break;
+
+            case '--coverage-clover':
+                $coverageClover = $option[1];
+
+                break;
+
+            case '--coverage-cobertura':
+                $coverageCobertura = $option[1];
+
+                break;
+
+            case '--coverage-crap4j':
+                $coverageCrap4J = $option[1];
+
+                break;
+
+            case '--coverage-html':
+                $coverageHtml = $option[1];
+
+                break;
+
+            case '--coverage-php':
+                $coveragePhp = $option[1];
+
+                break;
+
+            case '--coverage-text':
+                if ($option[1] === null) {
+                    $option[1] = 'php://stdout';
+                }
+
+                $coverageText                   = $option[1];
+                $coverageTextShowUncoveredFiles = false;
+                $coverageTextShowOnlySummary    = false;
+
+                break;
+
+            case '--coverage-xml':
+                $coverageXml = $option[1];
+
+                break;
+
+            case '--path-coverage':
+                $pathCoverage = true;
+
+                break;
+
+            case 'd':
+                $tmp = explode('=', $option[1]);
+
+                if (isset($tmp[0])) {
+                    if (isset($tmp[1])) {
+                        $iniSettings[$tmp[0]] = $tmp[1];
+                    } else {
+                        $iniSettings[$tmp[0]] = '1';
+                    }
+                }
+
+                break;
+
+            case '--debug':
+                $debug = true;
+
+                break;
+
+            case 'h':
+            case '--help':
+                $help = true;
+
+                break;
+
+            case '--filter':
+                $filter = $option[1];
+
+                break;
+
+            case '--testsuite':
+                $testSuite = $option[1];
+
+                break;
+
+            case '--generate-configuration':
+                $generateConfiguration = true;
+
+                break;
+
+            case '--migrate-configuration':
+                $migrateConfiguration = true;
+
+                break;
+
+            case '--group':
+                $groups = explode(',', $option[1]);
+
+                break;
+
+            case '--exclude-group':
+                $excludeGroups = explode(',', $option[1]);
+
+                break;
+
+            case '--covers':
+                $testsCovering = array_map('strtolower', explode(',', $option[1]));
+
+                break;
+
+            case '--uses':
+                $testsUsing = array_map('strtolower', explode(',', $option[1]));
+
+                break;
+
+            case '--test-suffix':
+                $testSuffixes = explode(',', $option[1]);
+
+                break;
+
+            case '--include-path':
+                $includePath = $option[1];
+
+                break;
+
+            case '--list-groups':
+                $listGroups = true;
+
+                break;
+
+            case '--list-suites':
+                $listSuites = true;
+
+                break;
+
+            case '--list-tests':
+                $listTests = true;
+
+                break;
+
+            case '--list-tests-xml':
+                $listTestsXml = $option[1];
+
+                break;
+
+            case '--printer':
+                $printer = $option[1];
+
+                break;
+
+            case '--loader':
+                $loader = $option[1];
+
+                break;
+
+            case '--log-junit':
+                $junitLogfile = $option[1];
+
+                break;
+
+            case '--log-teamcity':
+                $teamcityLogfile = $option[1];
+
+                break;
+
+            case '--order-by':
+                foreach (explode(',', $option[1]) as $order) {
+                    switch ($order) {
+                    case 'default':
+                        $executionOrder        = TestSuiteSorter::ORDER_DEFAULT;
+                        $executionOrderDefects = TestSuiteSorter::ORDER_DEFAULT;
+                        $resolveDependencies   = true;
+
+                        break;
+
+                    case 'defects':
+                        $executionOrderDefects = TestSuiteSorter::ORDER_DEFECTS_FIRST;
+
+                        break;
+
+                    case 'depends':
+                        $resolveDependencies = true;
+
+                        break;
+
+                    case 'duration':
+                        $executionOrder = TestSuiteSorter::ORDER_DURATION;
+
+                        break;
+
+                    case 'no-depends':
+                        $resolveDependencies = false;
+
+                        break;
+
+                    case 'random':
+                        $executionOrder = TestSuiteSorter::ORDER_RANDOMIZED;
+
+                        break;
+
+                    case 'reverse':
+                        $executionOrder = TestSuiteSorter::ORDER_REVERSED;
+
+                        break;
+
+                    case 'size':
+                        $executionOrder = TestSuiteSorter::ORDER_SIZE;
+
+                        break;
+
+                    default:
+                        $unrecognizedOrderBy = $order;
+                    }
+                }
+
+                break;
+
+            case '--process-isolation':
+                $processIsolation = true;
+
+                break;
+
+            case '--repeat':
+                $repeat = (int) $option[1];
+
+                break;
+
+            case '--stderr':
+                $stderr = true;
+
+                break;
+
+            case '--stop-on-defect':
+                $stopOnDefect = true;
+
+                break;
+
+            case '--stop-on-error':
+                $stopOnError = true;
+
+                break;
+
+            case '--stop-on-failure':
+                $stopOnFailure = true;
+
+                break;
+
+            case '--stop-on-warning':
+                $stopOnWarning = true;
+
+                break;
+
+            case '--stop-on-incomplete':
+                $stopOnIncomplete = true;
+
+                break;
+
+            case '--stop-on-risky':
+                $stopOnRisky = true;
+
+                break;
+
+            case '--stop-on-skipped':
+                $stopOnSkipped = true;
+
+                break;
+
+            case '--fail-on-empty-test-suite':
+                $failOnEmptyTestSuite = true;
+
+                break;
+
+            case '--fail-on-incomplete':
+                $failOnIncomplete = true;
+
+                break;
+
+            case '--fail-on-risky':
+                $failOnRisky = true;
+
+                break;
+
+            case '--fail-on-skipped':
+                $failOnSkipped = true;
+
+                break;
+
+            case '--fail-on-warning':
+                $failOnWarning = true;
+
+                break;
+
+            case '--teamcity':
+                $printer = TeamCity::class;
+
+                break;
+
+            case '--testdox':
+                $printer = CliTestDoxPrinter::class;
+
+                break;
+
+            case '--testdox-group':
+                $testdoxGroups = explode(',', $option[1]);
+
+                break;
+
+            case '--testdox-exclude-group':
+                $testdoxExcludeGroups = explode(',', $option[1]);
+
+                break;
+
+            case '--testdox-html':
+                $testdoxHtmlFile = $option[1];
+
+                break;
+
+            case '--testdox-text':
+                $testdoxTextFile = $option[1];
+
+                break;
+
+            case '--testdox-xml':
+                $testdoxXmlFile = $option[1];
+
+                break;
+
+            case '--no-configuration':
+                $useDefaultConfiguration = false;
+
+                break;
+
+            case '--extensions':
+                foreach (explode(',', $option[1]) as $extensionClass) {
+                    if (!class_exists($extensionClass)) {
+                        $unavailableExtensions[] = $extensionClass;
+
+                        continue;
                     }
 
-                    break;
+                    $extensions[] = new Extension($extensionClass, '', []);
+                }
 
-                case 'c':
-                case '--configuration':
-                    $configuration = $option[1];
+                break;
 
-                    break;
+            case '--no-extensions':
+                $noExtensions = true;
 
-                case '--coverage-cache':
-                    $coverageCacheDirectory = $option[1];
+                break;
 
-                    break;
+            case '--no-coverage':
+                $noCoverage = true;
 
-                case '--warm-coverage-cache':
-                    $warmCoverageCache = true;
+                break;
 
-                    break;
+            case '--no-logging':
+                $noLogging = true;
 
-                case '--coverage-clover':
-                    $coverageClover = $option[1];
+                break;
 
-                    break;
+            case '--no-interaction':
+                $noInteraction = true;
 
-                case '--coverage-cobertura':
-                    $coverageCobertura = $option[1];
+                break;
 
-                    break;
+            case '--globals-backup':
+                $backupGlobals = true;
 
-                case '--coverage-crap4j':
-                    $coverageCrap4J = $option[1];
+                break;
 
-                    break;
+            case '--static-backup':
+                $backupStaticAttributes = true;
 
-                case '--coverage-html':
-                    $coverageHtml = $option[1];
+                break;
 
-                    break;
+            case 'v':
+            case '--verbose':
+                $verbose = true;
 
-                case '--coverage-php':
-                    $coveragePhp = $option[1];
+                break;
 
-                    break;
+            case '--atleast-version':
+                $atLeastVersion = $option[1];
 
-                case '--coverage-text':
-                    if ($option[1] === null) {
-                        $option[1] = 'php://stdout';
-                    }
+                break;
 
-                    $coverageText                   = $option[1];
-                    $coverageTextShowUncoveredFiles = false;
-                    $coverageTextShowOnlySummary    = false;
+            case '--version':
+                $version = true;
 
-                    break;
+                break;
 
-                case '--coverage-xml':
-                    $coverageXml = $option[1];
+            case '--dont-report-useless-tests':
+                $reportUselessTests = false;
 
-                    break;
+                break;
 
-                case '--path-coverage':
-                    $pathCoverage = true;
+            case '--strict-coverage':
+                $strictCoverage = true;
 
-                    break;
+                break;
 
-                case 'd':
-                    $tmp = explode('=', $option[1]);
+            case '--disable-coverage-ignore':
+                $disableCodeCoverageIgnore = true;
 
-                    if (isset($tmp[0])) {
-                        if (isset($tmp[1])) {
-                            $iniSettings[$tmp[0]] = $tmp[1];
-                        } else {
-                            $iniSettings[$tmp[0]] = '1';
-                        }
-                    }
+                break;
 
-                    break;
+            case '--strict-global-state':
+                $beStrictAboutChangesToGlobalState = true;
 
-                case '--debug':
-                    $debug = true;
+                break;
 
-                    break;
+            case '--disallow-test-output':
+                $disallowTestOutput = true;
 
-                case 'h':
-                case '--help':
-                    $help = true;
+                break;
 
-                    break;
+            case '--disallow-resource-usage':
+                $beStrictAboutResourceUsageDuringSmallTests = true;
 
-                case '--filter':
-                    $filter = $option[1];
+                break;
 
-                    break;
+            case '--default-time-limit':
+                $defaultTimeLimit = (int) $option[1];
 
-                case '--testsuite':
-                    $testSuite = $option[1];
+                break;
 
-                    break;
+            case '--enforce-time-limit':
+                $enforceTimeLimit = true;
 
-                case '--generate-configuration':
-                    $generateConfiguration = true;
+                break;
 
-                    break;
+            case '--disallow-todo-tests':
+                $disallowTodoAnnotatedTests = true;
 
-                case '--migrate-configuration':
-                    $migrateConfiguration = true;
+                break;
 
-                    break;
+            case '--reverse-list':
+                $reverseList = true;
 
-                case '--group':
-                    $groups = explode(',', $option[1]);
+                break;
 
-                    break;
+            case '--check-version':
+                $checkVersion = true;
 
-                case '--exclude-group':
-                    $excludeGroups = explode(',', $option[1]);
+                break;
 
-                    break;
+            case '--coverage-filter':
+            case '--whitelist':
+                if ($coverageFilter === null) {
+                    $coverageFilter = [];
+                }
 
-                case '--covers':
-                    $testsCovering = array_map('strtolower', explode(',', $option[1]));
+                $coverageFilter[] = $option[1];
 
-                    break;
+                break;
 
-                case '--uses':
-                    $testsUsing = array_map('strtolower', explode(',', $option[1]));
+            case '--random-order':
+                $executionOrder = TestSuiteSorter::ORDER_RANDOMIZED;
 
-                    break;
+                break;
 
-                case '--test-suffix':
-                    $testSuffixes = explode(',', $option[1]);
+            case '--random-order-seed':
+                $randomOrderSeed = (int) $option[1];
 
-                    break;
+                break;
 
-                case '--include-path':
-                    $includePath = $option[1];
+            case '--resolve-dependencies':
+                $resolveDependencies = true;
 
-                    break;
+                break;
 
-                case '--list-groups':
-                    $listGroups = true;
+            case '--ignore-dependencies':
+                $resolveDependencies = false;
 
-                    break;
+                break;
 
-                case '--list-suites':
-                    $listSuites = true;
+            case '--reverse-order':
+                $executionOrder = TestSuiteSorter::ORDER_REVERSED;
 
-                    break;
+                break;
 
-                case '--list-tests':
-                    $listTests = true;
+            case '--dump-xdebug-filter':
+                $xdebugFilterFile = $option[1];
 
-                    break;
+                break;
 
-                case '--list-tests-xml':
-                    $listTestsXml = $option[1];
-
-                    break;
-
-                case '--printer':
-                    $printer = $option[1];
-
-                    break;
-
-                case '--loader':
-                    $loader = $option[1];
-
-                    break;
-
-                case '--log-junit':
-                    $junitLogfile = $option[1];
-
-                    break;
-
-                case '--log-teamcity':
-                    $teamcityLogfile = $option[1];
-
-                    break;
-
-                case '--order-by':
-                    foreach (explode(',', $option[1]) as $order) {
-                        switch ($order) {
-                            case 'default':
-                                $executionOrder        = TestSuiteSorter::ORDER_DEFAULT;
-                                $executionOrderDefects = TestSuiteSorter::ORDER_DEFAULT;
-                                $resolveDependencies   = true;
-
-                                break;
-
-                            case 'defects':
-                                $executionOrderDefects = TestSuiteSorter::ORDER_DEFECTS_FIRST;
-
-                                break;
-
-                            case 'depends':
-                                $resolveDependencies = true;
-
-                                break;
-
-                            case 'duration':
-                                $executionOrder = TestSuiteSorter::ORDER_DURATION;
-
-                                break;
-
-                            case 'no-depends':
-                                $resolveDependencies = false;
-
-                                break;
-
-                            case 'random':
-                                $executionOrder = TestSuiteSorter::ORDER_RANDOMIZED;
-
-                                break;
-
-                            case 'reverse':
-                                $executionOrder = TestSuiteSorter::ORDER_REVERSED;
-
-                                break;
-
-                            case 'size':
-                                $executionOrder = TestSuiteSorter::ORDER_SIZE;
-
-                                break;
-
-                            default:
-                                $unrecognizedOrderBy = $order;
-                        }
-                    }
-
-                    break;
-
-                case '--process-isolation':
-                    $processIsolation = true;
-
-                    break;
-
-                case '--repeat':
-                    $repeat = (int) $option[1];
-
-                    break;
-
-                case '--stderr':
-                    $stderr = true;
-
-                    break;
-
-                case '--stop-on-defect':
-                    $stopOnDefect = true;
-
-                    break;
-
-                case '--stop-on-error':
-                    $stopOnError = true;
-
-                    break;
-
-                case '--stop-on-failure':
-                    $stopOnFailure = true;
-
-                    break;
-
-                case '--stop-on-warning':
-                    $stopOnWarning = true;
-
-                    break;
-
-                case '--stop-on-incomplete':
-                    $stopOnIncomplete = true;
-
-                    break;
-
-                case '--stop-on-risky':
-                    $stopOnRisky = true;
-
-                    break;
-
-                case '--stop-on-skipped':
-                    $stopOnSkipped = true;
-
-                    break;
-
-                case '--fail-on-empty-test-suite':
-                    $failOnEmptyTestSuite = true;
-
-                    break;
-
-                case '--fail-on-incomplete':
-                    $failOnIncomplete = true;
-
-                    break;
-
-                case '--fail-on-risky':
-                    $failOnRisky = true;
-
-                    break;
-
-                case '--fail-on-skipped':
-                    $failOnSkipped = true;
-
-                    break;
-
-                case '--fail-on-warning':
-                    $failOnWarning = true;
-
-                    break;
-
-                case '--teamcity':
-                    $printer = TeamCity::class;
-
-                    break;
-
-                case '--testdox':
-                    $printer = CliTestDoxPrinter::class;
-
-                    break;
-
-                case '--testdox-group':
-                    $testdoxGroups = explode(',', $option[1]);
-
-                    break;
-
-                case '--testdox-exclude-group':
-                    $testdoxExcludeGroups = explode(',', $option[1]);
-
-                    break;
-
-                case '--testdox-html':
-                    $testdoxHtmlFile = $option[1];
-
-                    break;
-
-                case '--testdox-text':
-                    $testdoxTextFile = $option[1];
-
-                    break;
-
-                case '--testdox-xml':
-                    $testdoxXmlFile = $option[1];
-
-                    break;
-
-                case '--no-configuration':
-                    $useDefaultConfiguration = false;
-
-                    break;
-
-                case '--extensions':
-                    foreach (explode(',', $option[1]) as $extensionClass) {
-                        if (!class_exists($extensionClass)) {
-                            $unavailableExtensions[] = $extensionClass;
-
-                            continue;
-                        }
-
-                        $extensions[] = new Extension($extensionClass, '', []);
-                    }
-
-                    break;
-
-                case '--no-extensions':
-                    $noExtensions = true;
-
-                    break;
-
-                case '--no-coverage':
-                    $noCoverage = true;
-
-                    break;
-
-                case '--no-logging':
-                    $noLogging = true;
-
-                    break;
-
-                case '--no-interaction':
-                    $noInteraction = true;
-
-                    break;
-
-                case '--globals-backup':
-                    $backupGlobals = true;
-
-                    break;
-
-                case '--static-backup':
-                    $backupStaticAttributes = true;
-
-                    break;
-
-                case 'v':
-                case '--verbose':
-                    $verbose = true;
-
-                    break;
-
-                case '--atleast-version':
-                    $atLeastVersion = $option[1];
-
-                    break;
-
-                case '--version':
-                    $version = true;
-
-                    break;
-
-                case '--dont-report-useless-tests':
-                    $reportUselessTests = false;
-
-                    break;
-
-                case '--strict-coverage':
-                    $strictCoverage = true;
-
-                    break;
-
-                case '--disable-coverage-ignore':
-                    $disableCodeCoverageIgnore = true;
-
-                    break;
-
-                case '--strict-global-state':
-                    $beStrictAboutChangesToGlobalState = true;
-
-                    break;
-
-                case '--disallow-test-output':
-                    $disallowTestOutput = true;
-
-                    break;
-
-                case '--disallow-resource-usage':
-                    $beStrictAboutResourceUsageDuringSmallTests = true;
-
-                    break;
-
-                case '--default-time-limit':
-                    $defaultTimeLimit = (int) $option[1];
-
-                    break;
-
-                case '--enforce-time-limit':
-                    $enforceTimeLimit = true;
-
-                    break;
-
-                case '--disallow-todo-tests':
-                    $disallowTodoAnnotatedTests = true;
-
-                    break;
-
-                case '--reverse-list':
-                    $reverseList = true;
-
-                    break;
-
-                case '--check-version':
-                    $checkVersion = true;
-
-                    break;
-
-                case '--coverage-filter':
-                case '--whitelist':
-                    if ($coverageFilter === null) {
-                        $coverageFilter = [];
-                    }
-
-                    $coverageFilter[] = $option[1];
-
-                    break;
-
-                case '--random-order':
-                    $executionOrder = TestSuiteSorter::ORDER_RANDOMIZED;
-
-                    break;
-
-                case '--random-order-seed':
-                    $randomOrderSeed = (int) $option[1];
-
-                    break;
-
-                case '--resolve-dependencies':
-                    $resolveDependencies = true;
-
-                    break;
-
-                case '--ignore-dependencies':
-                    $resolveDependencies = false;
-
-                    break;
-
-                case '--reverse-order':
-                    $executionOrder = TestSuiteSorter::ORDER_REVERSED;
-
-                    break;
-
-                case '--dump-xdebug-filter':
-                    $xdebugFilterFile = $option[1];
-
-                    break;
-
-                default:
-                    $unrecognizedOptions[str_replace('--', '', $option[0])] = $option[1];
+            default:
+                $unrecognizedOptions[str_replace('--', '', $option[0])] = $option[1];
             }
         }
 

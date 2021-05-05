@@ -253,9 +253,9 @@ class Person extends \Faker\Provider\Person
     );
 
     /**
-     * @param string|null $gender 'male', 'female' or null for any
+     * @param   string|null $gender 'male', 'female' or null for any
      * @example 'Doe'
-     * @return string
+     * @return  string
      */
     public function lastName($gender = null)
     {
@@ -270,7 +270,8 @@ class Person extends \Faker\Provider\Person
 
     /**
      * Return male last name
-     * @return string
+     *
+     * @return  string
      * @example 'Vasiliauskas'
      */
     public function lastNameMale()
@@ -280,7 +281,8 @@ class Person extends \Faker\Provider\Person
 
     /**
      * Return female last name
-     * @return string
+     *
+     * @return  string
      * @example 'Žukauskaitė'
      */
     public function lastNameFemale()
@@ -290,7 +292,8 @@ class Person extends \Faker\Provider\Person
 
     /**
      * Return driver license number
-     * @return string
+     *
+     * @return  string
      * @example 12345678
      */
     public function driverLicence()
@@ -300,7 +303,8 @@ class Person extends \Faker\Provider\Person
 
     /**
      * Return passport number
-     * @return string
+     *
+     * @return  string
      * @example 12345678
      */
     public function passportNumber()
@@ -310,11 +314,12 @@ class Person extends \Faker\Provider\Person
 
     /**
      * National Personal Identity number (asmens kodas)
-     * @link https://en.wikipedia.org/wiki/National_identification_number#Lithuania
-     * @link https://lt.wikipedia.org/wiki/Asmens_kodas
-     * @param string [male|female]
-     * @param \DateTime $birthdate
-     * @param string $randomNumber three integers
+     *
+     * @link   https://en.wikipedia.org/wiki/National_identification_number#Lithuania
+     * @link   https://lt.wikipedia.org/wiki/Asmens_kodas
+     * @param  string [male|female]
+     * @param  \DateTime            $birthdate
+     * @param  string               $randomNumber three integers
      * @return string on format XXXXXXXXXXX
      */
     public function personalIdentityNumber($gender = 'male', \DateTime $birthdate = null, $randomNumber = '')
@@ -347,10 +352,11 @@ class Person extends \Faker\Provider\Person
 
     /**
      * Calculate the sum of personal code
-     * @link https://en.wikipedia.org/wiki/National_identification_number#Lithuania
-     * @link https://lt.wikipedia.org/wiki/Asmens_kodas
-     * @param string $numbers
-     * @param int $time [1|2]
+     *
+     * @link   https://en.wikipedia.org/wiki/National_identification_number#Lithuania
+     * @link   https://lt.wikipedia.org/wiki/Asmens_kodas
+     * @param  string $numbers
+     * @param  int    $time    [1|2]
      * @return int
      */
     private static function calculateSum($numbers, $time = 1)

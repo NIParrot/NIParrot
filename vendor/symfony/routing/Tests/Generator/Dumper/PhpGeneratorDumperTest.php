@@ -96,9 +96,13 @@ class PhpGeneratorDumperTest extends TestCase
         }
         $this->routeCollection->add('Test2', new Route('/testing2'));
 
-        file_put_contents($this->largeTestTmpFilepath, $this->generatorDumper->dump([
-            'class' => 'ProjectLargeUrlGenerator',
-        ]));
+        file_put_contents(
+            $this->largeTestTmpFilepath, $this->generatorDumper->dump(
+                [
+                'class' => 'ProjectLargeUrlGenerator',
+                ]
+            )
+        );
         $this->routeCollection = $this->generatorDumper = null;
         include $this->largeTestTmpFilepath;
 

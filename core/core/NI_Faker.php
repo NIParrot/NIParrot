@@ -9,7 +9,7 @@ class NI_Faker
         $static = $input[2] ?? null;
         $column = ORM::for_table($model)->raw_query("DESCRIBE $model")->findArray();
         $faker = Faker\Factory::create();
-        for ($i=0; $i < $loop ; $i++) {
+        for ($i = 0; $i < $loop; $i++) {
             $dataToCreate = [];
 
             foreach ($column as $item) {
@@ -28,22 +28,22 @@ class NI_Faker
                         break;
                     case 'varchar':
                         $value = $faker->name;
-                            if (strstr($item['Field'], 'phone')) {
-                                $value = $faker->phoneNumber;
-                            }
-                            if (strstr($item['Field'], 'email')) {
-                                $value = $faker->email;
-                            }
-                            if (strstr($item['Field'], 'user')) {
-                                $value = $faker->userName;
-                            }
-                            if (strstr($item['Field'], 'pass')) {
-                                $value = $faker->password;
-                            }
-                            if (strstr($item['Field'], 'url')) {
-                                $value = $faker->url;
-                            }
-                            break;
+                        if (strstr($item['Field'], 'phone')) {
+                            $value = $faker->phoneNumber;
+                        }
+                        if (strstr($item['Field'], 'email')) {
+                            $value = $faker->email;
+                        }
+                        if (strstr($item['Field'], 'user')) {
+                            $value = $faker->userName;
+                        }
+                        if (strstr($item['Field'], 'pass')) {
+                            $value = $faker->password;
+                        }
+                        if (strstr($item['Field'], 'url')) {
+                            $value = $faker->url;
+                        }
+                        break;
                     case 'date':
                         $value = $faker->date;
                         break;
@@ -65,7 +65,7 @@ class NI_Faker
                 }
                 $dataToCreate[$item['Field']] = $value;
             }
-            $modelcall = 'model\\'.$model;
+            $modelcall = 'model\\' . $model;
             $modelcall::create($dataToCreate);
         }
     }

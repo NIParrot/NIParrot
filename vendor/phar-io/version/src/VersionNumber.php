@@ -9,20 +9,26 @@
  */
 namespace PharIo\Version;
 
-class VersionNumber {
+class VersionNumber
+{
 
-    /** @var ?int */
+    /**
+     * @var ?int 
+     */
     private $value;
 
-    public function __construct(?int $value) {
+    public function __construct(?int $value)
+    {
         $this->value = $value;
     }
 
-    public function isAny(): bool {
+    public function isAny(): bool
+    {
         return $this->value === null;
     }
 
-    public function getValue(): ?int {
+    public function getValue(): ?int
+    {
         return $this->value;
     }
 }

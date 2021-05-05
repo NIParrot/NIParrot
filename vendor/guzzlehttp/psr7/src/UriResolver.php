@@ -102,13 +102,15 @@ final class UriResolver
             }
         }
 
-        return new Uri(Uri::composeComponents(
-            $base->getScheme(),
-            $targetAuthority,
-            $targetPath,
-            $targetQuery,
-            $rel->getFragment()
-        ));
+        return new Uri(
+            Uri::composeComponents(
+                $base->getScheme(),
+                $targetAuthority,
+                $targetPath,
+                $targetQuery,
+                $rel->getFragment()
+            )
+        );
     }
 
     /**
@@ -139,8 +141,8 @@ final class UriResolver
      */
     public static function relativize(UriInterface $base, UriInterface $target)
     {
-        if ($target->getScheme() !== '' &&
-            ($base->getScheme() !== $target->getScheme() || $target->getAuthority() === '' && $base->getAuthority() !== '')
+        if ($target->getScheme() !== '' 
+            && ($base->getScheme() !== $target->getScheme() || $target->getAuthority() === '' && $base->getAuthority() !== '')
         ) {
             return $target;
         }

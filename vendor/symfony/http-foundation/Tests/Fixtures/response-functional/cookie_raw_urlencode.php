@@ -2,7 +2,7 @@
 
 use Symfony\Component\HttpFoundation\Cookie;
 
-$r = require __DIR__.'/common.inc';
+$r = include __DIR__.'/common.inc';
 
 $str = '?*():@&+$/%#[]';
 

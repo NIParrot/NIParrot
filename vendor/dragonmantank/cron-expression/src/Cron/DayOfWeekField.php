@@ -72,7 +72,9 @@ class DayOfWeekField extends AbstractField
 
         // Find out if this is the last specific weekday of the month
         if (strpos($value, 'L')) {
-            /** @phpstan-ignore-next-line */
+            /**
+ * @phpstan-ignore-next-line 
+*/
             $weekday = $this->convertLiterals(substr($value, 0, strpos($value, 'L')));
             $weekday %= 7;
 
@@ -146,9 +148,13 @@ class DayOfWeekField extends AbstractField
         }
 
         // Test to see which Sunday to use -- 0 == 7 == Sunday
-        $format = \in_array(7, array_map(function ($value) {
-            return (int) $value;
-        }, str_split($value)), true) ? 'N' : 'w';
+        $format = \in_array(
+            7, array_map(
+                function ($value) {
+                    return (int) $value;
+                }, str_split($value)
+            ), true
+        ) ? 'N' : 'w';
         $fieldValue = (int) $date->format($format);
 
         return $this->isSatisfied($fieldValue, $value);

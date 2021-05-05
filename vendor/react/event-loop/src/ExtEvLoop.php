@@ -215,7 +215,9 @@ class ExtEvLoop implements LoopInterface
 
     public function __destruct()
     {
-        /** @var TimerInterface $timer */
+        /**
+ * @var TimerInterface $timer 
+*/
         foreach ($this->timers as $timer) {
             $this->cancelTimer($timer);
         }
@@ -234,9 +236,11 @@ class ExtEvLoop implements LoopInterface
         $this->signals->add($signal, $listener);
 
         if (!isset($this->signalEvents[$signal])) {
-            $this->signalEvents[$signal] = $this->loop->signal($signal, function() use ($signal) {
-                $this->signals->call($signal);
-            });
+            $this->signalEvents[$signal] = $this->loop->signal(
+                $signal, function () use ($signal) {
+                    $this->signals->call($signal);
+                }
+            );
         }
     }
 

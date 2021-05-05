@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Reflection\Types;
@@ -35,11 +35,13 @@ use function trim;
  */
 final class Context
 {
-    /** @var string The current namespace. */
+    /**
+     * @var string The current namespace. 
+     */
     private $namespace;
 
     /**
-     * @var string[] List of namespace aliases => Fully Qualified Namespace.
+     * @var       string[] List of namespace aliases => Fully Qualified Namespace.
      * @psalm-var array<string, string>
      */
     private $namespaceAliases;

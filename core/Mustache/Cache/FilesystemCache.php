@@ -50,7 +50,7 @@ class Mustache_Cache_FilesystemCache extends Mustache_Cache_AbstractCache
             return false;
         }
 
-        require_once $fileName;
+        include_once $fileName;
 
         return true;
     }

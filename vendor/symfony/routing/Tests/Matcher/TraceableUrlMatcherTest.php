@@ -62,21 +62,25 @@ class TraceableUrlMatcherTest extends UrlMatcherTest
     public function testMatchRouteOnMultipleHosts()
     {
         $routes = new RouteCollection();
-        $routes->add('first', new Route(
-            '/mypath/',
-            ['_controller' => 'MainBundle:Info:first'],
-            [],
-            [],
-            'some.example.com'
-        ));
+        $routes->add(
+            'first', new Route(
+                '/mypath/',
+                ['_controller' => 'MainBundle:Info:first'],
+                [],
+                [],
+                'some.example.com'
+            )
+        );
 
-        $routes->add('second', new Route(
-            '/mypath/',
-            ['_controller' => 'MainBundle:Info:second'],
-            [],
-            [],
-            'another.example.com'
-        ));
+        $routes->add(
+            'second', new Route(
+                '/mypath/',
+                ['_controller' => 'MainBundle:Info:second'],
+                [],
+                [],
+                'another.example.com'
+            )
+        );
 
         $context = new RequestContext();
         $context->setHost('baz');

@@ -7,12 +7,14 @@ class Address extends \Faker\Provider\en_US\Address
 
     /**
      * An array of en_NZ (New Zealand) building number formats
+     *
      * @var array
      */
     protected static $buildingNumber = array('#', '##', '###');
 
     /**
      * An array of en_NZ (New Zealand) street suffixes
+     *
      * @var array
      */
     protected static $streetSuffix = array(
@@ -21,18 +23,21 @@ class Address extends \Faker\Provider\en_US\Address
 
     /**
      * City suffixes
+     *
      * @var array
      */
     protected static $citySuffix = array('ville', 'ston');
 
     /**
      * City formats
+     *
      * @var array
      */
     protected static $cityFormats = array('{{firstName}}{{citySuffix}}');
 
     /**
      * An array of en_NZ (New Zealand) regions
+     *
      * @see http://en.wikipedia.org/wiki/Regions_of_New_Zealand
      * @var array
      */
@@ -42,24 +47,28 @@ class Address extends \Faker\Provider\en_US\Address
 
     /**
      * An array of en_NZ (New Zealand) poscode formats
+     *
      * @var array
      */
     protected static $postcode = array('####');
 
     /**
      * An array of en_NZ (New Zealand) address formats
+     *
      * @var array
      */
     protected static $addressFormats = array('{{buildingNumber}} {{streetName}}, {{city}}, {{region}}, {{postcode}}');
 
     /**
      * An array of en_NZ (New Zealand) street address formats
+     *
      * @var array
      */
     protected static $streetAddressFormats = array('{{buildingNumber}} {{streetName}}');
 
     /**
      * Return a en_NZ (New Zealand) postcode
+     *
      * @return string
      */
     public static function postcode()
@@ -69,6 +78,7 @@ class Address extends \Faker\Provider\en_US\Address
 
     /**
      * Return a en_NZ (New Zealand) region
+     *
      * @return string
      */
     public static function region()

@@ -14,10 +14,14 @@ use Psr\Http\Message\StreamInterface;
  */
 class FnStream implements StreamInterface
 {
-    /** @var array */
+    /**
+     * @var array 
+     */
     private $methods;
 
-    /** @var array Methods that must be implemented in the given array */
+    /**
+     * @var array Methods that must be implemented in the given array 
+     */
     private static $slots = ['__toString', 'close', 'detach', 'rewind',
         'getSize', 'tell', 'eof', 'isSeekable', 'seek', 'isWritable', 'write',
         'isReadable', 'read', 'getContents', 'getMetadata'];
@@ -42,8 +46,10 @@ class FnStream implements StreamInterface
      */
     public function __get($name)
     {
-        throw new \BadMethodCallException(str_replace('_fn_', '', $name)
-            . '() is not implemented in the FnStream');
+        throw new \BadMethodCallException(
+            str_replace('_fn_', '', $name)
+            . '() is not implemented in the FnStream'
+        );
     }
 
     /**

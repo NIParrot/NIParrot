@@ -45,7 +45,7 @@ class EntityPopulator
     /**
      * Class constructor.
      *
-     * @param Mapper $mapper
+     * @param Mapper  $mapper
      * @param Locator $locator
      * @param $useExistingData
      */
@@ -113,7 +113,7 @@ class EntityPopulator
     }
 
     /**
-     * @param Generator $generator
+     * @param  Generator $generator
      * @return array
      */
     public function guessColumnFormatters(Generator $generator)
@@ -176,7 +176,7 @@ class EntityPopulator
     /**
      * Insert one new record using the Entity class.
      *
-     * @param $insertedEntities
+     * @param  $insertedEntities
      * @return string
      */
     public function execute($insertedEntities)

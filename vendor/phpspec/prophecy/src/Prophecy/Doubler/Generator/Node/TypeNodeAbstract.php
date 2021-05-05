@@ -6,7 +6,9 @@ use Prophecy\Exception\Doubler\DoubleException;
 
 abstract class TypeNodeAbstract
 {
-    /** @var string[] */
+    /**
+     * @var string[] 
+     */
     protected $types = [];
 
     public function __construct(string ...$types)
@@ -46,32 +48,32 @@ abstract class TypeNodeAbstract
     {
         switch ($type) {
             // type aliases
-            case 'double':
-            case 'real':
-                return 'float';
-            case 'boolean':
-                return 'bool';
-            case 'integer':
-                return 'int';
+        case 'double':
+        case 'real':
+            return 'float';
+        case 'boolean':
+            return 'bool';
+        case 'integer':
+            return 'int';
 
             //  built in types
-            case 'self':
-            case 'array':
-            case 'callable':
-            case 'bool':
-            case 'false':
-            case 'float':
-            case 'int':
-            case 'string':
-            case 'iterable':
-            case 'object':
-            case 'null':
-                return $type;
-            case 'mixed':
-                return \PHP_VERSION_ID < 80000 ? $this->prefixWithNsSeparator($type) : $type;
+        case 'self':
+        case 'array':
+        case 'callable':
+        case 'bool':
+        case 'false':
+        case 'float':
+        case 'int':
+        case 'string':
+        case 'iterable':
+        case 'object':
+        case 'null':
+            return $type;
+        case 'mixed':
+            return \PHP_VERSION_ID < 80000 ? $this->prefixWithNsSeparator($type) : $type;
 
-            default:
-                return $this->prefixWithNsSeparator($type);
+        default:
+            return $this->prefixWithNsSeparator($type);
         }
     }
 

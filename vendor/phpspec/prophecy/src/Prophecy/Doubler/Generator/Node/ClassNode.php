@@ -84,9 +84,11 @@ class ClassNode
         $visibility = strtolower($visibility);
 
         if (!in_array($visibility, array('public', 'private', 'protected'))) {
-            throw new InvalidArgumentException(sprintf(
-                '`%s` property visibility is not supported.', $visibility
-            ));
+            throw new InvalidArgumentException(
+                sprintf(
+                    '`%s` property visibility is not supported.', $visibility
+                )
+            );
         }
 
         $this->properties[$name] = $visibility;
@@ -102,7 +104,7 @@ class ClassNode
 
     public function addMethod(MethodNode $method, $force = false)
     {
-        if (!$this->isExtendable($method->getName())){
+        if (!$this->isExtendable($method->getName())) {
             $message = sprintf(
                 'Method `%s` is not extendable, so can not be added.', $method->getName()
             );
@@ -152,14 +154,14 @@ class ClassNode
      */
     public function addUnextendableMethod($unextendableMethod)
     {
-        if (!$this->isExtendable($unextendableMethod)){
+        if (!$this->isExtendable($unextendableMethod)) {
             return;
         }
         $this->unextendableMethods[] = $unextendableMethod;
     }
 
     /**
-     * @param string $method
+     * @param  string $method
      * @return bool
      */
     public function isExtendable($method)

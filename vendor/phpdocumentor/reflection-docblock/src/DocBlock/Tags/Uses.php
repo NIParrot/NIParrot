@@ -28,10 +28,14 @@ use function explode;
  */
 final class Uses extends BaseTag implements Factory\StaticMethod
 {
-    /** @var string */
+    /**
+     * @var string 
+     */
     protected $name = 'uses';
 
-    /** @var Fqsen */
+    /**
+     * @var Fqsen 
+     */
     protected $refers;
 
     /**

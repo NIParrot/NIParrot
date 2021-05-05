@@ -54,8 +54,8 @@ class DeepCopy
     private $useCloneMethod;
 
     /**
-     * @param bool $useCloneMethod   If set to true, when an object implements the __clone() function, it will be used
-     *                               instead of the regular deep cloning.
+     * @param bool $useCloneMethod If set to true, when an object implements the __clone() function, it will be used
+     *                             instead of the regular deep cloning.
      */
     public function __construct($useCloneMethod = false)
     {
@@ -104,10 +104,12 @@ class DeepCopy
 
     public function prependFilter(Filter $filter, Matcher $matcher)
     {
-        array_unshift($this->filters, [
+        array_unshift(
+            $this->filters, [
             'matcher' => $matcher,
             'filter'  => $filter,
-        ]);
+            ]
+        );
     }
 
     public function addTypeFilter(TypeFilter $filter, TypeMatcher $matcher)
@@ -146,7 +148,8 @@ class DeepCopy
 
     /**
      * Copy an array
-     * @param array $array
+     *
+     * @param  array $array
      * @return array
      */
     private function copyArray(array $array)
@@ -220,9 +223,13 @@ class DeepCopy
 
         // Apply the filters
         foreach ($this->filters as $item) {
-            /** @var Matcher $matcher */
+            /**
+ * @var Matcher $matcher 
+*/
             $matcher = $item['matcher'];
-            /** @var Filter $filter */
+            /**
+ * @var Filter $filter 
+*/
             $filter = $item['filter'];
 
             if ($matcher->matches($object, $property->getName())) {
@@ -279,7 +286,7 @@ class DeepCopy
     /**
      * Returns first element that matches predicate, `null` if no such element found.
      *
-     * @param array    $elements Array of ['filter' => Filter, 'matcher' => Matcher] pairs.
+     * @param array    $elements  Array of ['filter' => Filter, 'matcher' => Matcher] pairs.
      * @param callable $predicate Predicate arguments are: element.
      *
      * @return array|null Associative array with 2 members: 'filter' with value of type {@see TypeFilter} and 'matcher'

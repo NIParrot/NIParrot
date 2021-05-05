@@ -9,5 +9,6 @@
  */
 namespace PharIo\Manifest;
 
-interface Exception extends \Throwable {
+interface Exception extends \Throwable
+{
 }

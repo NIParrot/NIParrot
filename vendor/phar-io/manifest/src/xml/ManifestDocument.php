@@ -12,13 +12,17 @@ namespace PharIo\Manifest;
 use DOMDocument;
 use DOMElement;
 
-class ManifestDocument {
+class ManifestDocument
+{
     public const XMLNS = 'https://phar.io/xml/manifest/1.0';
 
-    /** @var DOMDocument */
+    /**
+     * @var DOMDocument 
+     */
     private $dom;
 
-    public static function fromFile(string $filename): ManifestDocument {
+    public static function fromFile(string $filename): ManifestDocument
+    {
         if (!\file_exists($filename)) {
             throw new ManifestDocumentException(
                 \sprintf('File "%s" not found', $filename)
@@ -30,7 +34,8 @@ class ManifestDocument {
         );
     }
 
-    public static function fromString(string $xmlString): ManifestDocument {
+    public static function fromString(string $xmlString): ManifestDocument
+    {
         $prev = \libxml_use_internal_errors(true);
         \libxml_clear_errors();
 
@@ -47,41 +52,48 @@ class ManifestDocument {
         return new self($dom);
     }
 
-    private function __construct(DOMDocument $dom) {
+    private function __construct(DOMDocument $dom)
+    {
         $this->ensureCorrectDocumentType($dom);
 
         $this->dom = $dom;
     }
 
-    public function getContainsElement(): ContainsElement {
+    public function getContainsElement(): ContainsElement
+    {
         return new ContainsElement(
             $this->fetchElementByName('contains')
         );
     }
 
-    public function getCopyrightElement(): CopyrightElement {
+    public function getCopyrightElement(): CopyrightElement
+    {
         return new CopyrightElement(
             $this->fetchElementByName('copyright')
         );
     }
 
-    public function getRequiresElement(): RequiresElement {
+    public function getRequiresElement(): RequiresElement
+    {
         return new RequiresElement(
             $this->fetchElementByName('requires')
         );
     }
 
-    public function hasBundlesElement(): bool {
+    public function hasBundlesElement(): bool
+    {
         return $this->dom->getElementsByTagNameNS(self::XMLNS, 'bundles')->length === 1;
     }
 
-    public function getBundlesElement(): BundlesElement {
+    public function getBundlesElement(): BundlesElement
+    {
         return new BundlesElement(
             $this->fetchElementByName('bundles')
         );
     }
 
-    private function ensureCorrectDocumentType(DOMDocument $dom): void {
+    private function ensureCorrectDocumentType(DOMDocument $dom): void
+    {
         $root = $dom->documentElement;
 
         if ($root->localName !== 'phar' || $root->namespaceURI !== self::XMLNS) {
@@ -89,7 +101,8 @@ class ManifestDocument {
         }
     }
 
-    private function fetchElementByName(string $elementName): DOMElement {
+    private function fetchElementByName(string $elementName): DOMElement
+    {
         $element = $this->dom->getElementsByTagNameNS(self::XMLNS, $elementName)->item(0);
 
         if (!$element instanceof DOMElement) {

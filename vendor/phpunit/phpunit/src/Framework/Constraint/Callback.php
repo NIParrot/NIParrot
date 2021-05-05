@@ -23,7 +23,9 @@ final class Callback extends Constraint
      */
     private $callback;
 
-    /** @psalm-param callable(CallbackInput $input): bool $callback */
+    /**
+     * @psalm-param callable(CallbackInput $input): bool $callback 
+     */
     public function __construct(callable $callback)
     {
         $this->callback = $callback;

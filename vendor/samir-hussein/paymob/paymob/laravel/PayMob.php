@@ -20,9 +20,11 @@ class PayMob
         $postData = json_encode($userInfo);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://accept.paymobsolutions.com/api/auth/tokens');
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        curl_setopt(
+            $ch, CURLOPT_HTTPHEADER, array(
             'Content-Type: application/json'
-        ));
+            )
+        );
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
@@ -40,9 +42,11 @@ class PayMob
         $postData = json_encode($requestData);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://accept.paymobsolutions.com/api/ecommerce/orders');
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        curl_setopt(
+            $ch, CURLOPT_HTTPHEADER, array(
             'Content-Type: application/json'
-        ));
+            )
+        );
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
@@ -64,9 +68,11 @@ class PayMob
         $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_URL, 'https://accept.paymobsolutions.com/api/acceptance/payment_keys');
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        curl_setopt(
+            $ch, CURLOPT_HTTPHEADER, array(
             'Content-Type: application/json'
-        ));
+            )
+        );
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);

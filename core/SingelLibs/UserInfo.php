@@ -1,24 +1,27 @@
 <?php
 /**
  * Get information about user which visited page of your website
- * @package UserInfo
- * @uses browscap http://www.php.net/manual/en/misc.configuration.php#ini.browscap
- * @uses cURL http://php.net/manual/en/book.curl.php
- * @uses freegeoip http://freegeoip.net
- * @author Oleg Koval <oleh.koval@gmail.com>
+ *
+ * @package   UserInfo
+ * @uses      browscap http://www.php.net/manual/en/misc.configuration.php#ini.browscap
+ * @uses      cURL http://php.net/manual/en/book.curl.php
+ * @uses      freegeoip http://freegeoip.net
+ * @author    Oleg Koval <oleh.koval@gmail.com>
  * @copyright Copyright (c) 2013 Oleg Koval -- http://olegkoval.com
- * @version 1.1
- * @link https://github.com/olegkoval/php-user_info
+ * @version   1.1
+ * @link      https://github.com/olegkoval/php-user_info
  */
 
-class UserInfo {
+class UserInfo
+{
     private $browserInfo;
     private $geoInfo;
 
     /**
      * Autoload information from external services and set values of internal proprties
      */
-    public function __construct() {
+    public function __construct()
+    {
         //use try-catch to prevent error when server is not configured to use browscap (get_browser() function)
         try {
             $this->browserInfo = get_browser($_SERVER['HTTP_USER_AGENT'], true);
@@ -43,9 +46,11 @@ class UserInfo {
 
     /**
      * Get user IP
+     *
      * @return string
      */
-    public function getIP() {
+    public function getIP()
+    {
         $result = null;
 
         //for proxy servers
@@ -61,17 +66,21 @@ class UserInfo {
 
     /**
      * Get user reverse DNS
+     *
      * @return string
      */
-    public function getReverseDNS() {
+    public function getReverseDNS()
+    {
         return gethostbyaddr($this->getIP());
     }
 
     /**
      * Get current page URL
+     *
      * @return string
      */
-    public function getCurrentURL() {
+    public function getCurrentURL()
+    {
         return 'http'. (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? 's': '') 
                 . '://' . $_SERVER["SERVER_NAME"] 
                 . ($_SERVER['SERVER_PORT'] != '80' ? $_SERVER['SERVER_PORT'] : '')
@@ -80,25 +89,31 @@ class UserInfo {
 
     /**
      * Get referer URL
+     *
      * @return string
      */
-    public function getRefererURL() {
+    public function getRefererURL()
+    {
         return (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '');
     }
 
     /**
      * Get user browser language
+     *
      * @return string
      */
-    public function getLanguage() {
+    public function getLanguage()
+    {
         return strtoupper(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
     }
 
     /**
      * Get user Device info (PC/Mac/Mobile/iPhone/iPad/etc...)
+     *
      * @return string
      */
-    public function getDevice() {
+    public function getDevice()
+    {
         $result = '';
 
         if (is_array($this->browserInfo) && isset($this->browserInfo['device_name'])) {
@@ -110,9 +125,11 @@ class UserInfo {
 
     /**
      * Get user OS info
+     *
      * @return string
      */
-    public function getOS() {
+    public function getOS()
+    {
         $result = '';
 
         if (is_array($this->browserInfo) && isset($this->browserInfo['platform'])) {
@@ -124,9 +141,11 @@ class UserInfo {
 
     /**
      * Get user Browser info
+     *
      * @return string
      */
-    public function getBrowser() {
+    public function getBrowser()
+    {
         $result = '';
 
         if (is_array($this->browserInfo) && isset($this->browserInfo['browser'])) {
@@ -138,9 +157,11 @@ class UserInfo {
 
     /**
      * Get user Country Code
+     *
      * @return string
      */
-    public function getCountryCode() {
+    public function getCountryCode()
+    {
         $result = '';
 
         if (is_array($this->geoInfo) && isset($this->geoInfo['country_code'])) {
@@ -152,9 +173,11 @@ class UserInfo {
 
     /**
      * Get user Country Name
+     *
      * @return string
      */
-    public function getCountryName() {
+    public function getCountryName()
+    {
         $result = '';
 
         if (is_array($this->geoInfo) && isset($this->geoInfo['country_name'])) {
@@ -166,9 +189,11 @@ class UserInfo {
 
     /**
      * Get user Region Code
+     *
      * @return string
      */
-    public function getRegionCode() {
+    public function getRegionCode()
+    {
         $result = '';
 
         if (is_array($this->geoInfo) && isset($this->geoInfo['region_code'])) {
@@ -180,9 +205,11 @@ class UserInfo {
 
     /**
      * Get user Region Name
+     *
      * @return string
      */
-    public function getRegionName() {
+    public function getRegionName()
+    {
         $result = '';
 
         if (is_array($this->geoInfo) && isset($this->geoInfo['region_name'])) {
@@ -194,9 +221,11 @@ class UserInfo {
 
     /**
      * Get user City
+     *
      * @return string
      */
-    public function getCity() {
+    public function getCity()
+    {
         $result = '';
 
         if (is_array($this->geoInfo) && isset($this->geoInfo['city'])) {
@@ -208,9 +237,11 @@ class UserInfo {
 
     /**
      * Get user Zipcode
+     *
      * @return string
      */
-    public function getZipcode() {
+    public function getZipcode()
+    {
         $result = '';
 
         if (is_array($this->geoInfo) && isset($this->geoInfo['zipcode'])) {
@@ -222,9 +253,11 @@ class UserInfo {
 
     /**
      * Get user Latitude
+     *
      * @return string
      */
-    public function getLatitude() {
+    public function getLatitude()
+    {
         $result = '';
 
         if (is_array($this->geoInfo) && isset($this->geoInfo['latitude'])) {
@@ -236,9 +269,11 @@ class UserInfo {
 
     /**
      * Get user Longitude
+     *
      * @return string
      */
-    public function getLongitude() {
+    public function getLongitude()
+    {
         $result = '';
 
         if (is_array($this->geoInfo) && isset($this->geoInfo['longitude'])) {
@@ -250,9 +285,11 @@ class UserInfo {
 
     /**
      * Check if connection was through proxy
+     *
      * @return boolean
      */
-    public function isProxy() {
+    public function isProxy()
+    {
         $result = false;
 
         //for proxy servers
@@ -271,7 +308,8 @@ class UserInfo {
      * Get geo information about user. For this we use user IP and external service
      * Freegeoip (http://freegeoip.net)
      */
-    private function getGeoInfo() {
+    private function getGeoInfo()
+    {
         $url = 'http://freegeoip.net/json/' . self::getIP();
 
         $ch = curl_init();

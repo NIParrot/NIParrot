@@ -152,7 +152,9 @@ class LimitingServer extends EventEmitter implements ServerInterface
         $this->server->close();
     }
 
-    /** @internal */
+    /**
+     * @internal 
+     */
     public function handleConnection(ConnectionInterface $connection)
     {
         // close connection if limit exceeded
@@ -164,9 +166,11 @@ class LimitingServer extends EventEmitter implements ServerInterface
 
         $this->connections[] = $connection;
         $that = $this;
-        $connection->on('close', function () use ($that, $connection) {
-            $that->handleDisconnection($connection);
-        });
+        $connection->on(
+            'close', function () use ($that, $connection) {
+                $that->handleDisconnection($connection);
+            }
+        );
 
         // pause accepting new connections if limit exceeded
         if ($this->pauseOnLimit && !$this->autoPaused && \count($this->connections) >= $this->limit) {
@@ -180,7 +184,9 @@ class LimitingServer extends EventEmitter implements ServerInterface
         $this->emit('connection', array($connection));
     }
 
-    /** @internal */
+    /**
+     * @internal 
+     */
     public function handleDisconnection(ConnectionInterface $connection)
     {
         unset($this->connections[\array_search($connection, $this->connections)]);
@@ -195,7 +201,9 @@ class LimitingServer extends EventEmitter implements ServerInterface
         }
     }
 
-    /** @internal */
+    /**
+     * @internal 
+     */
     public function handleError(\Exception $error)
     {
         $this->emit('error', array($error));

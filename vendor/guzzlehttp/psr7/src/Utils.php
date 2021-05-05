@@ -312,37 +312,39 @@ final class Utils
         }
 
         switch (gettype($resource)) {
-            case 'resource':
-                /*
-                 * The 'php://input' is a special stream with quirks and inconsistencies.
-                 * We avoid using that stream by reading it into php://temp
-                 */
-                $metaData = \stream_get_meta_data($resource);
-                if (isset($metaData['uri']) && $metaData['uri'] === 'php://input') {
-                    $stream = self::tryFopen('php://temp', 'w+');
-                    fwrite($stream, stream_get_contents($resource));
-                    fseek($stream, 0);
-                    $resource = $stream;
-                }
-                return new Stream($resource, $options);
-            case 'object':
-                if ($resource instanceof StreamInterface) {
-                    return $resource;
-                } elseif ($resource instanceof \Iterator) {
-                    return new PumpStream(function () use ($resource) {
+        case 'resource':
+            /*
+             * The 'php://input' is a special stream with quirks and inconsistencies.
+             * We avoid using that stream by reading it into php://temp
+             */
+            $metaData = \stream_get_meta_data($resource);
+            if (isset($metaData['uri']) && $metaData['uri'] === 'php://input') {
+                $stream = self::tryFopen('php://temp', 'w+');
+                fwrite($stream, stream_get_contents($resource));
+                fseek($stream, 0);
+                $resource = $stream;
+            }
+            return new Stream($resource, $options);
+        case 'object':
+            if ($resource instanceof StreamInterface) {
+                return $resource;
+            } elseif ($resource instanceof \Iterator) {
+                return new PumpStream(
+                    function () use ($resource) {
                         if (!$resource->valid()) {
                             return false;
                         }
                         $result = $resource->current();
                         $resource->next();
                         return $result;
-                    }, $options);
-                } elseif (method_exists($resource, '__toString')) {
-                    return Utils::streamFor((string) $resource, $options);
-                }
-                break;
-            case 'NULL':
-                return new Stream(self::tryFopen('php://temp', 'r+'), $options);
+                    }, $options
+                );
+            } elseif (method_exists($resource, '__toString')) {
+                return Utils::streamFor((string) $resource, $options);
+            }
+            break;
+        case 'NULL':
+            return new Stream(self::tryFopen('php://temp', 'r+'), $options);
         }
 
         if (is_callable($resource)) {
@@ -368,32 +370,40 @@ final class Utils
     public static function tryFopen($filename, $mode)
     {
         $ex = null;
-        set_error_handler(function () use ($filename, $mode, &$ex) {
-            $ex = new \RuntimeException(sprintf(
-                'Unable to open "%s" using mode "%s": %s',
-                $filename,
-                $mode,
-                func_get_args()[1]
-            ));
+        set_error_handler(
+            function () use ($filename, $mode, &$ex) {
+                $ex = new \RuntimeException(
+                    sprintf(
+                        'Unable to open "%s" using mode "%s": %s',
+                        $filename,
+                        $mode,
+                        func_get_args()[1]
+                    )
+                );
 
-            return true;
-        });
+                return true;
+            }
+        );
 
         try {
             $handle = fopen($filename, $mode);
         } catch (\Throwable $e) {
-            $ex = new \RuntimeException(sprintf(
-                'Unable to open "%s" using mode "%s": %s',
-                $filename,
-                $mode,
-                $e->getMessage()
-            ), 0, $e);
+            $ex = new \RuntimeException(
+                sprintf(
+                    'Unable to open "%s" using mode "%s": %s',
+                    $filename,
+                    $mode,
+                    $e->getMessage()
+                ), 0, $e
+            );
         }
 
         restore_error_handler();
 
         if ($ex) {
-            /** @var $ex \RuntimeException */
+            /**
+ * @var $ex \RuntimeException 
+*/
             throw $ex;
         }
 

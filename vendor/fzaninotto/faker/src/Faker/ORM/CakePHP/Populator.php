@@ -64,8 +64,8 @@ class Populator
     }
 
     /**
-     * @param array $customColumnFormatters
-     * @param array $customModifiers
+     * @param  array $customColumnFormatters
+     * @param  array $customModifiers
      * @return $this
      */
     public function addEntity($entity, $number, $customColumnFormatters = [], $customModifiers = [])
@@ -91,7 +91,7 @@ class Populator
     }
 
     /**
-     * @param array $options
+     * @param  array $options
      * @return array
      */
     public function execute($options = [])

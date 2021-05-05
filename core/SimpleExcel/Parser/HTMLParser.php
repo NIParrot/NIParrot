@@ -13,19 +13,20 @@ use SimpleExcel\Exception\SimpleExcelException;
 class HTMLParser extends BaseParser implements IParser
 {
     /**
-    * Defines valid file extension
-    * 
-    * @access   protected
-    * @var      string
-    */
+     * Defines valid file extension
+     * 
+     * @access protected
+     * @var    string
+     */
     protected $file_extension = 'html';
     
     /**
-    * Process the loaded file/string
-    * 
-    * @param    DOMDocument $html   DOMDocument object of HTML
-    */
-    private function parseDOM($html){
+     * Process the loaded file/string
+     * 
+     * @param DOMDocument $html DOMDocument object of HTML
+     */
+    private function parseDOM($html)
+    {
         $tables = $html->getElementsByTagName('table');
         $field = array();    
         foreach ($tables as $table) {
@@ -63,33 +64,35 @@ class HTMLParser extends BaseParser implements IParser
     }
     
     /**
-    * Load the HTML file to be parsed
-    * 
-    * @param    string  $file_path  Path to HTML file
-    */
-    public function loadFile($file_path) {
+     * Load the HTML file to be parsed
+     * 
+     * @param string $file_path Path to HTML file
+     */
+    public function loadFile($file_path)
+    {
     
         if (!$this->isFileReady($file_path)) {
             return;
         }
         
         $html = new \DOMDocument('1.0', 'UTF-8');
-	    $sp = mb_convert_encoding(file_get_contents($file_path), 'HTML-ENTITIES', "UTF-8"); 
+        $sp = mb_convert_encoding(file_get_contents($file_path), 'HTML-ENTITIES', "UTF-8"); 
         $html->loadHTML($sp);
-	    $html->encoding = 'UTF-8'; 
+        $html->encoding = 'UTF-8'; 
         $this->parseDOM($html);
     }
     
     /**
-    * Load the string to be parsed
-    * 
-    * @param    string  $str    String with HTML format
-    */
-    public function loadString($str){
+     * Load the string to be parsed
+     * 
+     * @param string $str String with HTML format
+     */
+    public function loadString($str)
+    {
         $html = new \DOMDocument('1.0', 'UTF-8');
         $sp = mb_convert_encoding($str, 'HTML-ENTITIES', "UTF-8"); 
         $html->loadHTML($sp);
-	    $html->encoding = 'UTF-8'; 
+        $html->encoding = 'UTF-8'; 
         $this->parseDOM($html);
     }
 }

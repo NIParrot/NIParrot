@@ -20,7 +20,10 @@ require __DIR__.'/../vendor/autoload.php';
 $emitter = new EventEmitter();
 
 for ($i = 0; $i < ITERATIONS; $i++) {
-    $emitter->once('event', function ($a, $b, $c) {});
+    $emitter->once(
+        'event', function ($a, $b, $c) {
+        }
+    );
 }
 
 $start = microtime(true);

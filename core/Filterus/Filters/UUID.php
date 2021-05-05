@@ -2,7 +2,8 @@
 
 namespace Filterus\Filters;
 
-class UUID extends Regex {
+class UUID extends Regex
+{
     
     protected $defaultOptions = array(
         'min' => 36,

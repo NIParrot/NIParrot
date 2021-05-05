@@ -1,17 +1,27 @@
 <?php
 
-/** @var $loader \Symfony\Component\Routing\Loader\PhpFileLoader */
-/** @var \Symfony\Component\Routing\RouteCollection $collection */
+/**
+ * @var $loader \Symfony\Component\Routing\Loader\PhpFileLoader 
+ */
+/**
+ * @var \Symfony\Component\Routing\RouteCollection $collection 
+ */
 $collection = $loader->import('validpattern.php');
-$collection->addDefaults([
+$collection->addDefaults(
+    [
     'foo' => 123,
-]);
-$collection->addRequirements([
+    ]
+);
+$collection->addRequirements(
+    [
     'foo' => '\d+',
-]);
-$collection->addOptions([
+    ]
+);
+$collection->addOptions(
+    [
     'foo' => 'bar',
-]);
+    ]
+);
 $collection->setCondition('context.getMethod() == "POST"');
 $collection->addPrefix('/prefix');
 

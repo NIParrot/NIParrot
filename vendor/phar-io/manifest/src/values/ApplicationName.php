@@ -9,24 +9,31 @@
  */
 namespace PharIo\Manifest;
 
-class ApplicationName {
-    /** @var string */
+class ApplicationName
+{
+    /**
+     * @var string 
+     */
     private $name;
 
-    public function __construct(string $name) {
+    public function __construct(string $name)
+    {
         $this->ensureValidFormat($name);
         $this->name = $name;
     }
 
-    public function asString(): string {
+    public function asString(): string
+    {
         return $this->name;
     }
 
-    public function isEqual(ApplicationName $name): bool {
+    public function isEqual(ApplicationName $name): bool
+    {
         return $this->name === $name->name;
     }
 
-    private function ensureValidFormat(string $name): void {
+    private function ensureValidFormat(string $name): void
+    {
         if (!\preg_match('#\w/\w#', $name)) {
             throw new InvalidApplicationNameException(
                 \sprintf('Format of name "%s" is not valid - expected: vendor/packagename', $name),

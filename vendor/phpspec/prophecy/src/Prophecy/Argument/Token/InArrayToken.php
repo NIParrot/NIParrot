@@ -23,7 +23,7 @@ class InArrayToken implements TokenInterface
 
     /**
      * @param array $arguments tokens
-     * @param bool $strict
+     * @param bool  $strict
      */
     public function __construct(array $arguments, $strict = true)
     {

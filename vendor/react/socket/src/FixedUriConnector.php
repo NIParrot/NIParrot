@@ -25,7 +25,7 @@ class FixedUriConnector implements ConnectorInterface
     private $connector;
 
     /**
-     * @param string $uri
+     * @param string             $uri
      * @param ConnectorInterface $connector
      */
     public function __construct($uri, ConnectorInterface $connector)

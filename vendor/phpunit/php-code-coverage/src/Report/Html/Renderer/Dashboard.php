@@ -253,8 +253,9 @@ final class Dashboard extends Renderer
                 }
             }
 
-            if ($class['coverage'] < $this->highLowerBound &&
-                $class['ccn'] > count($class['methods'])) {
+            if ($class['coverage'] < $this->highLowerBound 
+                && $class['ccn'] > count($class['methods'])
+            ) {
                 $classRisks[$className] = $class['crap'];
             }
         }

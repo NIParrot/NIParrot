@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Reflection\Types;
@@ -62,10 +62,14 @@ if (!defined('T_NAME_FULLY_QUALIFIED')) {
  */
 final class ContextFactory
 {
-    /** The literal used at the end of a use statement. */
+    /**
+     * The literal used at the end of a use statement. 
+     */
     private const T_LITERAL_END_OF_USE = ';';
 
-    /** The literal used between sets of use statements */
+    /**
+     * The literal used between sets of use statements 
+     */
     private const T_LITERAL_USE_SEPARATOR = ',';
 
     /**
@@ -77,7 +81,9 @@ final class ContextFactory
     {
         if ($reflector instanceof ReflectionClass) {
             //phpcs:ignore SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.MissingVariable
-            /** @var ReflectionClass<object> $reflector */
+            /**
+ * @var ReflectionClass<object> $reflector 
+*/
 
             return $this->createFromReflectionClass($reflector);
         }
@@ -109,7 +115,9 @@ final class ContextFactory
         }
 
         //phpcs:ignore SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.MissingVariable
-        /** @var ReflectionClass<object> $class */
+        /**
+ * @var ReflectionClass<object> $class 
+*/
 
         return $this->createFromReflectionClass($class);
     }
@@ -117,7 +125,9 @@ final class ContextFactory
     private function createFromReflectionMethod(ReflectionMethod $method) : Context
     {
         //phpcs:ignore SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.MissingVariable
-        /** @var ReflectionClass<object> $class */
+        /**
+ * @var ReflectionClass<object> $class 
+*/
         $class = $method->getDeclaringClass();
 
         return $this->createFromReflectionClass($class);
@@ -126,7 +136,9 @@ final class ContextFactory
     private function createFromReflectionProperty(ReflectionProperty $property) : Context
     {
         //phpcs:ignore SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.MissingVariable
-        /** @var ReflectionClass<object> $class */
+        /**
+ * @var ReflectionClass<object> $class 
+*/
         $class = $property->getDeclaringClass();
 
         return $this->createFromReflectionClass($class);
@@ -135,7 +147,9 @@ final class ContextFactory
     private function createFromReflectionClassConstant(ReflectionClassConstant $constant) : Context
     {
         //phpcs:ignore SlevomatCodingStandard.Commenting.InlineDocCommentDeclaration.MissingVariable
-        /** @var ReflectionClass<object> $class */
+        /**
+ * @var ReflectionClass<object> $class 
+*/
         $class = $constant->getDeclaringClass();
 
         return $this->createFromReflectionClass($class);
@@ -167,7 +181,7 @@ final class ContextFactory
      * @see Context for more information on Contexts.
      *
      * @param string $namespace    It does not matter if a `\` precedes the namespace name,
-     * this method first normalizes.
+     *                             this method first normalizes.
      * @param string $fileContents The file's contents to retrieve the aliases from with the given namespace.
      */
     public function createForNamespace(string $namespace, string $fileContents) : Context
@@ -180,40 +194,41 @@ final class ContextFactory
         while ($tokens->valid()) {
             $currentToken = $tokens->current();
             switch ($currentToken[0]) {
-                case T_NAMESPACE:
-                    $currentNamespace = $this->parseNamespace($tokens);
-                    break;
-                case T_CLASS:
-                    // Fast-forward the iterator through the class so that any
-                    // T_USE tokens found within are skipped - these are not
-                    // valid namespace use statements so should be ignored.
-                    $braceLevel      = 0;
-                    $firstBraceFound = false;
-                    while ($tokens->valid() && ($braceLevel > 0 || !$firstBraceFound)) {
-                        $currentToken = $tokens->current();
-                        if ($currentToken === '{'
-                            || in_array($currentToken[0], [T_CURLY_OPEN, T_DOLLAR_OPEN_CURLY_BRACES], true)) {
-                            if (!$firstBraceFound) {
-                                $firstBraceFound = true;
-                            }
-
-                            ++$braceLevel;
+            case T_NAMESPACE:
+                $currentNamespace = $this->parseNamespace($tokens);
+                break;
+            case T_CLASS:
+                // Fast-forward the iterator through the class so that any
+                // T_USE tokens found within are skipped - these are not
+                // valid namespace use statements so should be ignored.
+                $braceLevel      = 0;
+                $firstBraceFound = false;
+                while ($tokens->valid() && ($braceLevel > 0 || !$firstBraceFound)) {
+                    $currentToken = $tokens->current();
+                    if ($currentToken === '{'
+                        || in_array($currentToken[0], [T_CURLY_OPEN, T_DOLLAR_OPEN_CURLY_BRACES], true)
+                    ) {
+                        if (!$firstBraceFound) {
+                            $firstBraceFound = true;
                         }
 
-                        if ($currentToken === '}') {
-                            --$braceLevel;
-                        }
-
-                        $tokens->next();
+                        ++$braceLevel;
                     }
 
-                    break;
-                case T_USE:
-                    if ($currentNamespace === $namespace) {
-                        $useStatements += $this->parseUseStatement($tokens);
+                    if ($currentToken === '}') {
+                        --$braceLevel;
                     }
 
-                    break;
+                    $tokens->next();
+                }
+
+                break;
+            case T_USE:
+                if ($currentNamespace === $namespace) {
+                    $useStatements += $this->parseUseStatement($tokens);
+                }
+
+                break;
             }
 
             $tokens->next();
@@ -318,93 +333,93 @@ final class ContextFactory
             $tokenId      = is_string($currentToken) ? $currentToken : $currentToken[0];
             $tokenValue   = is_string($currentToken) ? null : $currentToken[1];
             switch ($state) {
-                case 'start':
-                    switch ($tokenId) {
-                        case T_STRING:
-                        case T_NS_SEPARATOR:
-                            $currentNs   .= (string) $tokenValue;
-                            $currentAlias =  $tokenValue;
-                            break;
-                        case T_NAME_QUALIFIED:
-                        case T_NAME_FULLY_QUALIFIED:
-                            $currentNs   .= (string) $tokenValue;
-                            $currentAlias = substr(
-                                (string) $tokenValue,
-                                (int) (strrpos((string) $tokenValue, '\\')) + 1
-                            );
-                            break;
-                        case T_CURLY_OPEN:
-                        case '{':
-                            $state     = 'grouped';
-                            $groupedNs = $currentNs;
-                            break;
-                        case T_AS:
-                            $state = 'start-alias';
-                            break;
-                        case self::T_LITERAL_USE_SEPARATOR:
-                        case self::T_LITERAL_END_OF_USE:
-                            $state = 'end';
-                            break;
-                        default:
-                            break;
-                    }
-
+            case 'start':
+                switch ($tokenId) {
+                case T_STRING:
+                case T_NS_SEPARATOR:
+                    $currentNs   .= (string) $tokenValue;
+                    $currentAlias =  $tokenValue;
                     break;
-                case 'start-alias':
-                    switch ($tokenId) {
-                        case T_STRING:
-                            $currentAlias = $tokenValue;
-                            break;
-                        case self::T_LITERAL_USE_SEPARATOR:
-                        case self::T_LITERAL_END_OF_USE:
-                            $state = 'end';
-                            break;
-                        default:
-                            break;
-                    }
-
+                case T_NAME_QUALIFIED:
+                case T_NAME_FULLY_QUALIFIED:
+                    $currentNs   .= (string) $tokenValue;
+                    $currentAlias = substr(
+                        (string) $tokenValue,
+                        (int) (strrpos((string) $tokenValue, '\\')) + 1
+                    );
                     break;
-                case 'grouped':
-                    switch ($tokenId) {
-                        case T_STRING:
-                        case T_NS_SEPARATOR:
-                            $currentNs   .= (string) $tokenValue;
-                            $currentAlias = $tokenValue;
-                            break;
-                        case T_AS:
-                            $state = 'grouped-alias';
-                            break;
-                        case self::T_LITERAL_USE_SEPARATOR:
-                            $state                                          = 'grouped';
-                            $extractedUseStatements[(string) $currentAlias] = $currentNs;
-                            $currentNs                                      = $groupedNs;
-                            $currentAlias                                   = '';
-                            break;
-                        case self::T_LITERAL_END_OF_USE:
-                            $state = 'end';
-                            break;
-                        default:
-                            break;
-                    }
-
+                case T_CURLY_OPEN:
+                case '{':
+                    $state     = 'grouped';
+                    $groupedNs = $currentNs;
                     break;
-                case 'grouped-alias':
-                    switch ($tokenId) {
-                        case T_STRING:
-                            $currentAlias = $tokenValue;
-                            break;
-                        case self::T_LITERAL_USE_SEPARATOR:
-                            $state                                          = 'grouped';
-                            $extractedUseStatements[(string) $currentAlias] = $currentNs;
-                            $currentNs                                      = $groupedNs;
-                            $currentAlias                                   = '';
-                            break;
-                        case self::T_LITERAL_END_OF_USE:
-                            $state = 'end';
-                            break;
-                        default:
-                            break;
-                    }
+                case T_AS:
+                    $state = 'start-alias';
+                    break;
+                case self::T_LITERAL_USE_SEPARATOR:
+                case self::T_LITERAL_END_OF_USE:
+                    $state = 'end';
+                    break;
+                default:
+                    break;
+                }
+
+                break;
+            case 'start-alias':
+                switch ($tokenId) {
+                case T_STRING:
+                    $currentAlias = $tokenValue;
+                    break;
+                case self::T_LITERAL_USE_SEPARATOR:
+                case self::T_LITERAL_END_OF_USE:
+                    $state = 'end';
+                    break;
+                default:
+                    break;
+                }
+
+                break;
+            case 'grouped':
+                switch ($tokenId) {
+                case T_STRING:
+                case T_NS_SEPARATOR:
+                    $currentNs   .= (string) $tokenValue;
+                    $currentAlias = $tokenValue;
+                    break;
+                case T_AS:
+                    $state = 'grouped-alias';
+                    break;
+                case self::T_LITERAL_USE_SEPARATOR:
+                    $state                                          = 'grouped';
+                    $extractedUseStatements[(string) $currentAlias] = $currentNs;
+                    $currentNs                                      = $groupedNs;
+                    $currentAlias                                   = '';
+                    break;
+                case self::T_LITERAL_END_OF_USE:
+                    $state = 'end';
+                    break;
+                default:
+                    break;
+                }
+
+                break;
+            case 'grouped-alias':
+                switch ($tokenId) {
+                case T_STRING:
+                    $currentAlias = $tokenValue;
+                    break;
+                case self::T_LITERAL_USE_SEPARATOR:
+                    $state                                          = 'grouped';
+                    $extractedUseStatements[(string) $currentAlias] = $currentNs;
+                    $currentNs                                      = $groupedNs;
+                    $currentAlias                                   = '';
+                    break;
+                case self::T_LITERAL_END_OF_USE:
+                    $state = 'end';
+                    break;
+                default:
+                    break;
+                }
             }
 
             if ($state === 'end') {

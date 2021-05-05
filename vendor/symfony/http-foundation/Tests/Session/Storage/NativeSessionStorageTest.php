@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\Proxy\SessionHandlerProxy;
  * These tests require separate processes.
  *
  * @runTestsInSeparateProcesses
- * @preserveGlobalState disabled
+ * @preserveGlobalState         disabled
  */
 class NativeSessionStorageTest extends TestCase
 {
@@ -281,9 +281,11 @@ class NativeSessionStorageTest extends TestCase
     public function testSetSessionOptionsOnceSessionStartedIsIgnored()
     {
         session_start();
-        $this->getStorage([
+        $this->getStorage(
+            [
             'name' => 'something-else',
-        ]);
+            ]
+        );
 
         // Assert no exception has been thrown by `getStorage()`
         $this->addToAssertionCount(1);

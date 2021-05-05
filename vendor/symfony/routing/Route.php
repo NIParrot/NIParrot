@@ -67,7 +67,8 @@ class Route implements \Serializable
      */
     public function serialize()
     {
-        return serialize([
+        return serialize(
+            [
             'path' => $this->path,
             'host' => $this->host,
             'defaults' => $this->defaults,
@@ -77,7 +78,8 @@ class Route implements \Serializable
             'methods' => $this->methods,
             'condition' => $this->condition,
             'compiled' => $this->compiled,
-        ]);
+            ]
+        );
     }
 
     /**

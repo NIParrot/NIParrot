@@ -82,7 +82,7 @@ class Mustache_Autoloader
 
         $file = sprintf('%s/%s.php', $this->baseDir, str_replace('_', '/', $class));
         if (is_file($file)) {
-            require $file;
+            include $file;
         }
     }
 }

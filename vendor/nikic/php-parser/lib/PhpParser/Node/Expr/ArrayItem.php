@@ -6,13 +6,21 @@ use PhpParser\Node\Expr;
 
 class ArrayItem extends Expr
 {
-    /** @var null|Expr Key */
+    /**
+     * @var null|Expr Key 
+     */
     public $key;
-    /** @var Expr Value */
+    /**
+     * @var Expr Value 
+     */
     public $value;
-    /** @var bool Whether to assign by reference */
+    /**
+     * @var bool Whether to assign by reference 
+     */
     public $byRef;
-    /** @var bool Whether to unpack the argument */
+    /**
+     * @var bool Whether to unpack the argument 
+     */
     public $unpack;
 
     /**
@@ -23,7 +31,8 @@ class ArrayItem extends Expr
      * @param bool      $byRef      Whether to assign by reference
      * @param array     $attributes Additional attributes
      */
-    public function __construct(Expr $value, Expr $key = null, bool $byRef = false, array $attributes = [], bool $unpack = false) {
+    public function __construct(Expr $value, Expr $key = null, bool $byRef = false, array $attributes = [], bool $unpack = false)
+    {
         $this->attributes = $attributes;
         $this->key = $key;
         $this->value = $value;
@@ -31,11 +40,13 @@ class ArrayItem extends Expr
         $this->unpack = $unpack;
     }
 
-    public function getSubNodeNames() : array {
+    public function getSubNodeNames() : array
+    {
         return ['key', 'value', 'byRef', 'unpack'];
     }
 
-    public function getType() : string {
+    public function getType() : string
+    {
         return 'Expr_ArrayItem';
     }
 }

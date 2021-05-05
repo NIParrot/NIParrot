@@ -13,42 +13,43 @@ abstract class BaseWriter implements IWriter
     /**
      * Holds tabular data
      *
-     * @access  protected
-     * @var     array
+     * @access protected
+     * @var    array
      */
     protected $tabl_data;
 
     /**
      * Defines content-type for HTTP header
      *
-     * @access  protected
-     * @var     string
+     * @access protected
+     * @var    string
      */
     protected $content_type = 'text';
 
     /**
      * Defines file extension to be used when saving file
      *
-     * @access  protected
-     * @var     string
+     * @access protected
+     * @var    string
      */
     protected $file_extension = 'txt';
 
     /**
-     * @return  void
+     * @return void
      */
-    public function __construct(){
+    public function __construct()
+    {
         $this->tabl_data = array();
     }
 
     /**
      * Adding row data to table
      *
-     * @param   array   $values An array contains ordered value for every cell
-     * @param   bool    Check if row goes at the beginning or end of array
-     * @return  void
+     * @param  array                                                      $values An array contains ordered value for every cell
+     * @param  bool    Check if row goes at the beginning or end of array
+     * @return void
      */
-    public function addRow($values, $end = TRUE)
+    public function addRow($values, $end = true)
     {
         if (!is_array($values)) {
             $values = array($values);
@@ -63,9 +64,10 @@ abstract class BaseWriter implements IWriter
     /**
      * Get document content as string
      *
-     * @return  string  Content of document
+     * @return string  Content of document
      */
-    public function saveString(){
+    public function saveString()
+    {
         $content = '';
         foreach ($this->tabl_data as $row) {
             foreach ($row as $cell) {
@@ -79,11 +81,12 @@ abstract class BaseWriter implements IWriter
     /**
      * Export the document
      *
-     * @param   string  $filename   Name for the saved file (extension will be set automatically)
-     * @param   string  $target     Save location
-     * @return  void
+     * @param  string $filename Name for the saved file (extension will be set automatically)
+     * @param  string $target   Save location
+     * @return void
      */
-    public function saveFile($filename, $target = NULL){
+    public function saveFile($filename, $target = null)
+    {
 
         if (!isset($filename)) {
             $filename = date('YmdHis');
@@ -111,11 +114,12 @@ abstract class BaseWriter implements IWriter
     /**
      * Set tabular data
      *
-     * @param   array   $values An array contains ordered value of arrays for all fields
-     * @return  void
+     * @param  array $values An array contains ordered value of arrays for all fields
+     * @return void
      */
-    public function setData($values){
-        if(!is_array($values)){
+    public function setData($values)
+    {
+        if(!is_array($values)) {
             $values = array($values);
         }
         $this->tabl_data = $values;

@@ -19,7 +19,8 @@ class Differ
      *
      * @param callable $isEqual Equality relation with signature function($a, $b) : bool
      */
-    public function __construct(callable $isEqual) {
+    public function __construct(callable $isEqual)
+    {
         $this->isEqual = $isEqual;
     }
 
@@ -31,7 +32,8 @@ class Differ
      *
      * @return DiffElem[] Diff (edit script)
      */
-    public function diff(array $old, array $new) {
+    public function diff(array $old, array $new)
+    {
         list($trace, $x, $y) = $this->calculateTrace($old, $new);
         return $this->extractDiff($trace, $x, $y, $old, $new);
     }
@@ -47,11 +49,13 @@ class Differ
      *
      * @return DiffElem[] Diff (edit script), including replace operations
      */
-    public function diffWithReplacements(array $old, array $new) {
+    public function diffWithReplacements(array $old, array $new)
+    {
         return $this->coalesceReplacements($this->diff($old, $new));
     }
 
-    private function calculateTrace(array $a, array $b) {
+    private function calculateTrace(array $a, array $b)
+    {
         $n = \count($a);
         $m = \count($b);
         $max = $n + $m;
@@ -81,7 +85,8 @@ class Differ
         throw new \Exception('Should not happen');
     }
 
-    private function extractDiff(array $trace, int $x, int $y, array $a, array $b) {
+    private function extractDiff(array $trace, int $x, int $y, array $a, array $b)
+    {
         $result = [];
         for ($d = \count($trace) - 1; $d >= 0; $d--) {
             $v = $trace[$d];
@@ -122,10 +127,11 @@ class Differ
     /**
      * Coalesce equal-length sequences of remove+add into a replace operation.
      *
-     * @param DiffElem[] $diff
+     * @param  DiffElem[] $diff
      * @return DiffElem[]
      */
-    private function coalesceReplacements(array $diff) {
+    private function coalesceReplacements(array $diff)
+    {
         $newDiff = [];
         $c = \count($diff);
         for ($i = 0; $i < $c; $i++) {

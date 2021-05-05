@@ -9,7 +9,8 @@
  */
 namespace PharIo\Version;
 
-interface VersionConstraint {
+interface VersionConstraint
+{
     public function complies(Version $version): bool;
 
     public function asString(): string;

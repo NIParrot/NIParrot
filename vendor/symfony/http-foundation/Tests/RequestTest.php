@@ -219,13 +219,15 @@ class RequestTest extends TestCase
         $this->assertEquals(['foo' => ''], $request->query->all());
 
         // assume rewrite rule: (.*) --> app/app.php; app/ is a symlink to a symfony web/ directory
-        $request = Request::create('http://test.com/apparthotel-1234', 'GET', [], [], [],
+        $request = Request::create(
+            'http://test.com/apparthotel-1234', 'GET', [], [], [],
             [
                 'DOCUMENT_ROOT' => '/var/www/www.test.com',
                 'SCRIPT_FILENAME' => '/var/www/www.test.com/app/app.php',
                 'SCRIPT_NAME' => '/app/app.php',
                 'PHP_SELF' => '/app/app.php/apparthotel-1234',
-            ]);
+            ]
+        );
         $this->assertEquals('http://test.com/apparthotel-1234', $request->getUri());
         $this->assertEquals('/apparthotel-1234', $request->getPathInfo());
         $this->assertEquals('', $request->getQueryString());
@@ -289,13 +291,15 @@ class RequestTest extends TestCase
     public function testGetRequestUri($serverRequestUri, $expected, $message)
     {
         $request = new Request();
-        $request->server->add([
+        $request->server->add(
+            [
             'REQUEST_URI' => $serverRequestUri,
 
             // For having http://test.com
             'SERVER_NAME' => 'test.com',
             'SERVER_PORT' => 80,
-        ]);
+            ]
+        );
 
         $this->assertSame($expected, $request->getRequestUri(), $message);
         $this->assertSame($expected, $request->server->get('REQUEST_URI'), 'Normalize the request URI.');
@@ -335,7 +339,8 @@ class RequestTest extends TestCase
     public function testCreateCheckPrecedence()
     {
         // server is used by default
-        $request = Request::create('/', 'DELETE', [], [], [], [
+        $request = Request::create(
+            '/', 'DELETE', [], [], [], [
             'HTTP_HOST' => 'example.com',
             'HTTPS' => 'on',
             'SERVER_PORT' => 443,
@@ -343,7 +348,8 @@ class RequestTest extends TestCase
             'PHP_AUTH_PW' => 'pa$$',
             'QUERY_STRING' => 'foo=bar',
             'CONTENT_TYPE' => 'application/json',
-        ]);
+            ]
+        );
         $this->assertEquals('example.com', $request->getHost());
         $this->assertEquals(443, $request->getPort());
         $this->assertTrue($request->isSecure());
@@ -353,11 +359,13 @@ class RequestTest extends TestCase
         $this->assertEquals('application/json', $request->headers->get('CONTENT_TYPE'));
 
         // URI has precedence over server
-        $request = Request::create('http://thomas:pokemon@example.net:8080/?foo=bar', 'GET', [], [], [], [
+        $request = Request::create(
+            'http://thomas:pokemon@example.net:8080/?foo=bar', 'GET', [], [], [], [
             'HTTP_HOST' => 'example.com',
             'HTTPS' => 'on',
             'SERVER_PORT' => 443,
-        ]);
+            ]
+        );
         $this->assertEquals('example.net', $request->getHost());
         $this->assertEquals(8080, $request->getPort());
         $this->assertFalse($request->isSecure());
@@ -834,54 +842,68 @@ class RequestTest extends TestCase
 
     public function testGetPort()
     {
-        $request = Request::create('http://example.com', 'GET', [], [], [], [
+        $request = Request::create(
+            'http://example.com', 'GET', [], [], [], [
             'HTTP_X_FORWARDED_PROTO' => 'https',
             'HTTP_X_FORWARDED_PORT' => '443',
-        ]);
+            ]
+        );
         $port = $request->getPort();
 
         $this->assertEquals(80, $port, 'Without trusted proxies FORWARDED_PROTO and FORWARDED_PORT are ignored.');
 
         Request::setTrustedProxies(['1.1.1.1'], Request::HEADER_X_FORWARDED_ALL);
-        $request = Request::create('http://example.com', 'GET', [], [], [], [
+        $request = Request::create(
+            'http://example.com', 'GET', [], [], [], [
             'HTTP_X_FORWARDED_PROTO' => 'https',
             'HTTP_X_FORWARDED_PORT' => '8443',
-        ]);
+            ]
+        );
         $this->assertEquals(80, $request->getPort(), 'With PROTO and PORT on untrusted connection server value takes precedence.');
         $request->server->set('REMOTE_ADDR', '1.1.1.1');
         $this->assertEquals(8443, $request->getPort(), 'With PROTO and PORT set PORT takes precedence.');
 
-        $request = Request::create('http://example.com', 'GET', [], [], [], [
+        $request = Request::create(
+            'http://example.com', 'GET', [], [], [], [
             'HTTP_X_FORWARDED_PROTO' => 'https',
-        ]);
+            ]
+        );
         $this->assertEquals(80, $request->getPort(), 'With only PROTO set getPort() ignores trusted headers on untrusted connection.');
         $request->server->set('REMOTE_ADDR', '1.1.1.1');
         $this->assertEquals(443, $request->getPort(), 'With only PROTO set getPort() defaults to 443.');
 
-        $request = Request::create('http://example.com', 'GET', [], [], [], [
+        $request = Request::create(
+            'http://example.com', 'GET', [], [], [], [
             'HTTP_X_FORWARDED_PROTO' => 'http',
-        ]);
+            ]
+        );
         $this->assertEquals(80, $request->getPort(), 'If X_FORWARDED_PROTO is set to HTTP getPort() ignores trusted headers on untrusted connection.');
         $request->server->set('REMOTE_ADDR', '1.1.1.1');
         $this->assertEquals(80, $request->getPort(), 'If X_FORWARDED_PROTO is set to HTTP getPort() returns port of the original request.');
 
-        $request = Request::create('http://example.com', 'GET', [], [], [], [
+        $request = Request::create(
+            'http://example.com', 'GET', [], [], [], [
             'HTTP_X_FORWARDED_PROTO' => 'On',
-        ]);
+            ]
+        );
         $this->assertEquals(80, $request->getPort(), 'With only PROTO set and value is On, getPort() ignores trusted headers on untrusted connection.');
         $request->server->set('REMOTE_ADDR', '1.1.1.1');
         $this->assertEquals(443, $request->getPort(), 'With only PROTO set and value is On, getPort() defaults to 443.');
 
-        $request = Request::create('http://example.com', 'GET', [], [], [], [
+        $request = Request::create(
+            'http://example.com', 'GET', [], [], [], [
             'HTTP_X_FORWARDED_PROTO' => '1',
-        ]);
+            ]
+        );
         $this->assertEquals(80, $request->getPort(), 'With only PROTO set and value is 1, getPort() ignores trusted headers on untrusted connection.');
         $request->server->set('REMOTE_ADDR', '1.1.1.1');
         $this->assertEquals(443, $request->getPort(), 'With only PROTO set and value is 1, getPort() defaults to 443.');
 
-        $request = Request::create('http://example.com', 'GET', [], [], [], [
+        $request = Request::create(
+            'http://example.com', 'GET', [], [], [], [
             'HTTP_X_FORWARDED_PROTO' => 'something-else',
-        ]);
+            ]
+        );
         $port = $request->getPort();
         $this->assertEquals(80, $port, 'With only PROTO set and value is not recognized, getPort() defaults to 80.');
     }
@@ -1201,7 +1223,7 @@ class RequestTest extends TestCase
 
     /**
      * @dataProvider getContentCanBeCalledTwiceWithResourcesProvider
-     * @requires PHP 5.6
+     * @requires     PHP 5.6
      */
     public function testGetContentCanBeCalledTwiceWithResources($first, $second)
     {
@@ -1868,7 +1890,7 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @group legacy
+     * @group               legacy
      * @expectedDeprecation The "Symfony\Component\HttpFoundation\Request::setTrustedHeaderName()" method is deprecated since Symfony 3.3 and will be removed in 4.0. Use the $trustedHeaderSet argument of the Request::setTrustedProxies() method instead.
      */
     public function testLegacyTrustedProxies()
@@ -2079,9 +2101,11 @@ class RequestTest extends TestCase
 
     public function testFactory()
     {
-        Request::setFactory(function (array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null) {
-            return new NewRequest();
-        });
+        Request::setFactory(
+            function (array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null) {
+                return new NewRequest();
+            }
+        );
 
         $this->assertEquals('foo', Request::create('/')->getFoo());
 
@@ -2196,7 +2220,7 @@ class RequestTest extends TestCase
     }
 
     /**
-     * @group legacy
+     * @group               legacy
      * @expectedDeprecation Checking only for cacheable HTTP methods with Symfony\Component\HttpFoundation\Request::isMethodSafe() is deprecated since Symfony 3.2 and will throw an exception in 4.0. Disable checking only for cacheable methods by calling the method with `false` as first argument or use the Request::isMethodCacheable() instead.
      */
     public function testMethodSafeChecksCacheable()

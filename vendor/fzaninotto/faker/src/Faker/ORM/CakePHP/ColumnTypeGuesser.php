@@ -20,10 +20,10 @@ class ColumnTypeGuesser
         $schema = $table->schema();
 
         switch ($schema->columnType($column)) {
-            case 'boolean':
-                return function () use ($generator) {
+        case 'boolean':
+            return function () use ($generator) {
                     return $generator->boolean;
-                };
+            };
             case 'integer':
                 return function () {
                     return mt_rand(0, intval('2147483647'));

@@ -29,12 +29,14 @@ if (filter_var(ini_get('xdebug.default_enable'), FILTER_VALIDATE_BOOLEAN)) {
 header_remove('X-Powered-By');
 header('Content-Type: text/plain; charset=utf-8');
 
-register_shutdown_function(function () {
-    echo "\n";
-    session_write_close();
-    print_r(headers_list());
-    echo "shutdown\n";
-});
+register_shutdown_function(
+    function () {
+        echo "\n";
+        session_write_close();
+        print_r(headers_list());
+        echo "shutdown\n";
+    }
+);
 ob_start();
 
 $r = new Response();

@@ -51,7 +51,9 @@ use React\EventLoop\Timer\Timers;
  */
 final class StreamSelectLoop implements LoopInterface
 {
-    /** @internal */
+    /**
+ * @internal 
+*/
     const MICROSECONDS_PER_SECOND = 1000000;
 
     private $futureTickQueue;
@@ -187,7 +189,7 @@ final class StreamSelectLoop implements LoopInterface
             if (!$this->running || !$this->futureTickQueue->isEmpty()) {
                 $timeout = 0;
 
-            // There is a pending timer, only block until it is due ...
+                // There is a pending timer, only block until it is due ...
             } elseif ($scheduledAt = $this->timers->getFirst()) {
                 $timeout = $scheduledAt - $this->timers->getTime();
                 if ($timeout < 0) {
@@ -200,11 +202,11 @@ final class StreamSelectLoop implements LoopInterface
                     $timeout = $timeout > \PHP_INT_MAX ? \PHP_INT_MAX : (int)$timeout;
                 }
 
-            // The only possible event is stream or signal activity, so wait forever ...
+                // The only possible event is stream or signal activity, so wait forever ...
             } elseif ($this->readStreams || $this->writeStreams || !$this->signals->isEmpty()) {
                 $timeout = null;
 
-            // There's nothing left to do ...
+                // There's nothing left to do ...
             } else {
                 break;
             }

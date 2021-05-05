@@ -81,75 +81,75 @@ final class Xml
         $variable = null;
 
         switch ($element->tagName) {
-            case 'array':
-                $variable = [];
+        case 'array':
+            $variable = [];
 
-                foreach ($element->childNodes as $entry) {
-                    if (!$entry instanceof DOMElement || $entry->tagName !== 'element') {
-                        continue;
-                    }
-                    $item = $entry->childNodes->item(0);
+            foreach ($element->childNodes as $entry) {
+                if (!$entry instanceof DOMElement || $entry->tagName !== 'element') {
+                    continue;
+                }
+                $item = $entry->childNodes->item(0);
 
-                    if ($item instanceof DOMText) {
-                        $item = $entry->childNodes->item(1);
-                    }
-
-                    $value = self::xmlToVariable($item);
-
-                    if ($entry->hasAttribute('key')) {
-                        $variable[(string) $entry->getAttribute('key')] = $value;
-                    } else {
-                        $variable[] = $value;
-                    }
+                if ($item instanceof DOMText) {
+                    $item = $entry->childNodes->item(1);
                 }
 
-                break;
+                $value = self::xmlToVariable($item);
 
-            case 'object':
-                $className = $element->getAttribute('class');
-
-                if ($element->hasChildNodes()) {
-                    $arguments       = $element->childNodes->item(0)->childNodes;
-                    $constructorArgs = [];
-
-                    foreach ($arguments as $argument) {
-                        if ($argument instanceof DOMElement) {
-                            $constructorArgs[] = self::xmlToVariable($argument);
-                        }
-                    }
-
-                    try {
-                        assert(class_exists($className));
-
-                        $variable = (new ReflectionClass($className))->newInstanceArgs($constructorArgs);
-                        // @codeCoverageIgnoreStart
-                    } catch (ReflectionException $e) {
-                        throw new Exception(
-                            $e->getMessage(),
-                            (int) $e->getCode(),
-                            $e
-                        );
-                    }
-                    // @codeCoverageIgnoreEnd
+                if ($entry->hasAttribute('key')) {
+                    $variable[(string) $entry->getAttribute('key')] = $value;
                 } else {
-                    $variable = new $className;
+                    $variable[] = $value;
+                }
+            }
+
+            break;
+
+        case 'object':
+            $className = $element->getAttribute('class');
+
+            if ($element->hasChildNodes()) {
+                $arguments       = $element->childNodes->item(0)->childNodes;
+                $constructorArgs = [];
+
+                foreach ($arguments as $argument) {
+                    if ($argument instanceof DOMElement) {
+                        $constructorArgs[] = self::xmlToVariable($argument);
+                    }
                 }
 
-                break;
+                try {
+                    assert(class_exists($className));
 
-            case 'boolean':
-                $variable = $element->textContent === 'true';
+                    $variable = (new ReflectionClass($className))->newInstanceArgs($constructorArgs);
+                    // @codeCoverageIgnoreStart
+                } catch (ReflectionException $e) {
+                    throw new Exception(
+                        $e->getMessage(),
+                        (int) $e->getCode(),
+                        $e
+                    );
+                }
+                // @codeCoverageIgnoreEnd
+            } else {
+                $variable = new $className;
+            }
 
-                break;
+            break;
 
-            case 'integer':
-            case 'double':
-            case 'string':
-                $variable = $element->textContent;
+        case 'boolean':
+            $variable = $element->textContent === 'true';
 
-                settype($variable, $element->tagName);
+            break;
 
-                break;
+        case 'integer':
+        case 'double':
+        case 'string':
+            $variable = $element->textContent;
+
+            settype($variable, $element->tagName);
+
+            break;
         }
 
         return $variable;

@@ -25,7 +25,9 @@ function echoStreamerFactory($conn)
     return new MessageBuffer(
         new CloseFrameChecker,
         function (MessageInterface $msg) use ($conn) {
-            /** @var Frame $frame */
+            /**
+        * @var Frame $frame 
+        */
             foreach ($msg as $frame) {
                 $frame->maskPayload();
             }
@@ -33,11 +35,11 @@ function echoStreamerFactory($conn)
         },
         function (FrameInterface $frame) use ($conn) {
             switch ($frame->getOpcode()) {
-                case Frame::OP_PING:
-                    return $conn->write((new Frame($frame->getPayload(), true, Frame::OP_PONG))->maskPayload()->getContents());
+            case Frame::OP_PING:
+return $conn->write((new Frame($frame->getPayload(), true, Frame::OP_PONG))->maskPayload()->getContents());
                     break;
-                case Frame::OP_CLOSE:
-                    return $conn->end((new Frame($frame->getPayload(), true, Frame::OP_CLOSE))->maskPayload()->getContents());
+            case Frame::OP_CLOSE:
+return $conn->end((new Frame($frame->getPayload(), true, Frame::OP_CLOSE))->maskPayload()->getContents());
                     break;
             }
         },
@@ -45,56 +47,63 @@ function echoStreamerFactory($conn)
     );
 }
 
-function getTestCases() {
+function getTestCases()
+{
     global $testServer;
     global $connector;
 
     $deferred = new Deferred();
 
-    $connector->connect($testServer . ':9001')->then(function (ConnectionInterface $connection) use ($deferred) {
-        $cn = new ClientNegotiator();
-        $cnRequest = $cn->generateRequest(new Uri('ws://127.0.0.1:9001/getCaseCount'));
+    $connector->connect($testServer . ':9001')->then(
+        function (ConnectionInterface $connection) use ($deferred) {
+            $cn = new ClientNegotiator();
+            $cnRequest = $cn->generateRequest(new Uri('ws://127.0.0.1:9001/getCaseCount'));
 
-        $rawResponse = "";
-        $response = null;
+            $rawResponse = "";
+            $response = null;
 
-        /** @var MessageBuffer $ms */
-        $ms = null;
+            /**
+        * @var MessageBuffer $ms 
+        */
+            $ms = null;
 
-        $connection->on('data', function ($data) use ($connection, &$rawResponse, &$response, &$ms, $cn, $deferred, &$context, $cnRequest) {
-            if ($response === null) {
-                $rawResponse .= $data;
-                $pos = strpos($rawResponse, "\r\n\r\n");
-                if ($pos) {
-                    $data = substr($rawResponse, $pos + 4);
-                    $rawResponse = substr($rawResponse, 0, $pos + 4);
-                    $response = \GuzzleHttp\Psr7\parse_response($rawResponse);
+            $connection->on(
+                'data', function ($data) use ($connection, &$rawResponse, &$response, &$ms, $cn, $deferred, &$context, $cnRequest) {
+                    if ($response === null) {
+                        $rawResponse .= $data;
+                        $pos = strpos($rawResponse, "\r\n\r\n");
+                        if ($pos) {
+                            $data = substr($rawResponse, $pos + 4);
+                            $rawResponse = substr($rawResponse, 0, $pos + 4);
+                            $response = \GuzzleHttp\Psr7\parse_response($rawResponse);
 
-                    if (!$cn->validateResponse($cnRequest, $response)) {
-                        $connection->end();
-                        $deferred->reject();
-                    } else {
-                        $ms = new MessageBuffer(
-                            new CloseFrameChecker,
-                            function (MessageInterface $msg) use ($deferred, $connection) {
-                                $deferred->resolve($msg->getPayload());
-                                $connection->close();
-                            },
-                            null,
-                            false
-                        );
+                            if (!$cn->validateResponse($cnRequest, $response)) {
+                                $connection->end();
+                                $deferred->reject();
+                            } else {
+                                $ms = new MessageBuffer(
+                                    new CloseFrameChecker,
+                                    function (MessageInterface $msg) use ($deferred, $connection) {
+                                        $deferred->resolve($msg->getPayload());
+                                        $connection->close();
+                                    },
+                                    null,
+                                    false
+                                );
+                            }
+                        }
+                    }
+
+                    // feed the message streamer
+                    if ($ms) {
+                        $ms->onData($data);
                     }
                 }
-            }
+            );
 
-            // feed the message streamer
-            if ($ms) {
-                $ms->onData($data);
-            }
-        });
-
-        $connection->write(\GuzzleHttp\Psr7\str($cnRequest));
-    });
+            $connection->write(\GuzzleHttp\Psr7\str($cnRequest));
+        }
+    );
 
     return $deferred->promise();
 }
@@ -108,100 +117,113 @@ function runTest($case)
 
     $deferred = new Deferred();
 
-    $connector->connect($testServer . ':9001')->then(function (ConnectionInterface $connection) use ($deferred, $casePath, $case) {
-        $cn = new ClientNegotiator();
-        $cnRequest = $cn->generateRequest(new Uri('ws://127.0.0.1:9001' . $casePath));
+    $connector->connect($testServer . ':9001')->then(
+        function (ConnectionInterface $connection) use ($deferred, $casePath, $case) {
+            $cn = new ClientNegotiator();
+            $cnRequest = $cn->generateRequest(new Uri('ws://127.0.0.1:9001' . $casePath));
 
-        $rawResponse = "";
-        $response = null;
+            $rawResponse = "";
+            $response = null;
 
-        $ms = null;
+            $ms = null;
 
-        $connection->on('data', function ($data) use ($connection, &$rawResponse, &$response, &$ms, $cn, $deferred, &$context, $cnRequest) {
-            if ($response === null) {
-                $rawResponse .= $data;
-                $pos = strpos($rawResponse, "\r\n\r\n");
-                if ($pos) {
-                    $data = substr($rawResponse, $pos + 4);
-                    $rawResponse = substr($rawResponse, 0, $pos + 4);
-                    $response = \GuzzleHttp\Psr7\parse_response($rawResponse);
+            $connection->on(
+                'data', function ($data) use ($connection, &$rawResponse, &$response, &$ms, $cn, $deferred, &$context, $cnRequest) {
+                    if ($response === null) {
+                        $rawResponse .= $data;
+                        $pos = strpos($rawResponse, "\r\n\r\n");
+                        if ($pos) {
+                            $data = substr($rawResponse, $pos + 4);
+                            $rawResponse = substr($rawResponse, 0, $pos + 4);
+                            $response = \GuzzleHttp\Psr7\parse_response($rawResponse);
 
-                    if (!$cn->validateResponse($cnRequest, $response)) {
-                        $connection->end();
-                        $deferred->reject();
-                    } else {
-                        $ms = echoStreamerFactory($connection);
+                            if (!$cn->validateResponse($cnRequest, $response)) {
+                                $connection->end();
+                                $deferred->reject();
+                            } else {
+                                $ms = echoStreamerFactory($connection);
+                            }
+                        }
+                    }
+
+                    // feed the message streamer
+                    if ($ms) {
+                        $ms->onData($data);
                     }
                 }
-            }
+            );
 
-            // feed the message streamer
-            if ($ms) {
-                $ms->onData($data);
-            }
-        });
+            $connection->on(
+                'close', function () use ($deferred) {
+                    $deferred->resolve();
+                }
+            );
 
-        $connection->on('close', function () use ($deferred) {
-            $deferred->resolve();
-        });
-
-        $connection->write(\GuzzleHttp\Psr7\str($cnRequest));
-    });
+            $connection->write(\GuzzleHttp\Psr7\str($cnRequest));
+        }
+    );
 
     return $deferred->promise();
 }
 
-function createReport() {
+function createReport()
+{
     global $connector;
     global $testServer;
 
     $deferred = new Deferred();
 
-    $connector->connect($testServer . ':9001')->then(function (ConnectionInterface $connection) use ($deferred) {
-        $reportPath = "/updateReports?agent=" . AGENT . "&shutdownOnComplete=true";
-        $cn = new ClientNegotiator();
-        $cnRequest = $cn->generateRequest(new Uri('ws://127.0.0.1:9001' . $reportPath));
+    $connector->connect($testServer . ':9001')->then(
+        function (ConnectionInterface $connection) use ($deferred) {
+            $reportPath = "/updateReports?agent=" . AGENT . "&shutdownOnComplete=true";
+            $cn = new ClientNegotiator();
+            $cnRequest = $cn->generateRequest(new Uri('ws://127.0.0.1:9001' . $reportPath));
 
-        $rawResponse = "";
-        $response = null;
+            $rawResponse = "";
+            $response = null;
 
-        /** @var MessageBuffer $ms */
-        $ms = null;
+            /**
+        * @var MessageBuffer $ms 
+        */
+            $ms = null;
 
-        $connection->on('data', function ($data) use ($connection, &$rawResponse, &$response, &$ms, $cn, $deferred, &$context, $cnRequest) {
-            if ($response === null) {
-                $rawResponse .= $data;
-                $pos = strpos($rawResponse, "\r\n\r\n");
-                if ($pos) {
-                    $data = substr($rawResponse, $pos + 4);
-                    $rawResponse = substr($rawResponse, 0, $pos + 4);
-                    $response = \GuzzleHttp\Psr7\parse_response($rawResponse);
+            $connection->on(
+                'data', function ($data) use ($connection, &$rawResponse, &$response, &$ms, $cn, $deferred, &$context, $cnRequest) {
+                    if ($response === null) {
+                        $rawResponse .= $data;
+                        $pos = strpos($rawResponse, "\r\n\r\n");
+                        if ($pos) {
+                            $data = substr($rawResponse, $pos + 4);
+                            $rawResponse = substr($rawResponse, 0, $pos + 4);
+                            $response = \GuzzleHttp\Psr7\parse_response($rawResponse);
 
-                    if (!$cn->validateResponse($cnRequest, $response)) {
-                        $connection->end();
-                        $deferred->reject();
-                    } else {
-                        $ms = new MessageBuffer(
-                            new CloseFrameChecker,
-                            function (MessageInterface $msg) use ($deferred, $stream) {
-                                $deferred->resolve($msg->getPayload());
-                                $stream->close();
-                            },
-                            null,
-                            false
-                        );
+                            if (!$cn->validateResponse($cnRequest, $response)) {
+                                $connection->end();
+                                $deferred->reject();
+                            } else {
+                                $ms = new MessageBuffer(
+                                    new CloseFrameChecker,
+                                    function (MessageInterface $msg) use ($deferred, $stream) {
+                                        $deferred->resolve($msg->getPayload());
+                                        $stream->close();
+                                    },
+                                    null,
+                                    false
+                                );
+                            }
+                        }
+                    }
+
+                    // feed the message streamer
+                    if ($ms) {
+                        $ms->onData($data);
                     }
                 }
-            }
+            );
 
-            // feed the message streamer
-            if ($ms) {
-                $ms->onData($data);
-            }
-        });
-
-        $connection->write(\GuzzleHttp\Psr7\str($cnRequest));
-    });
+            $connection->write(\GuzzleHttp\Psr7\str($cnRequest));
+        }
+    );
 
     return $deferred->promise();
 }
@@ -209,24 +231,28 @@ function createReport() {
 
 $testPromises = [];
 
-getTestCases()->then(function ($count) use ($loop) {
-    $allDeferred = new Deferred();
+getTestCases()->then(
+    function ($count) use ($loop) {
+        $allDeferred = new Deferred();
 
-    $runNextCase = function () use (&$i, &$runNextCase, $count, $allDeferred) {
-        $i++;
-        if ($i > $count) {
-            $allDeferred->resolve();
-            return;
-        }
-        runTest($i)->then($runNextCase);
-    };
+        $runNextCase = function () use (&$i, &$runNextCase, $count, $allDeferred) {
+            $i++;
+            if ($i > $count) {
+                $allDeferred->resolve();
+                return;
+            }
+            runTest($i)->then($runNextCase);
+        };
 
-    $i = 0;
-    $runNextCase();
+        $i = 0;
+        $runNextCase();
 
-    $allDeferred->promise()->then(function () {
-        createReport();
-    });
-});
+        $allDeferred->promise()->then(
+            function () {
+                createReport();
+            }
+        );
+    }
+);
 
 $loop->run();

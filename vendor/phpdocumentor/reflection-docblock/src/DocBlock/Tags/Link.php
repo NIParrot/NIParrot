@@ -24,10 +24,14 @@ use Webmozart\Assert\Assert;
  */
 final class Link extends BaseTag implements Factory\StaticMethod
 {
-    /** @var string */
+    /**
+     * @var string 
+     */
     protected $name = 'link';
 
-    /** @var string */
+    /**
+     * @var string 
+     */
     private $link;
 
     /**

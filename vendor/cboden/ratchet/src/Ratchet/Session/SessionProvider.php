@@ -14,7 +14,8 @@ use Symfony\Component\HttpFoundation\Session\Storage\Handler\NullSessionHandler;
  * Your website must also use Symfony HttpFoundation Sessions to read your sites session data
  * If your are not using at least PHP 5.4 you must include a SessionHandlerInterface stub (is included in Symfony HttpFoundation, loaded w/ composer)
  */
-class SessionProvider implements HttpServerInterface {
+class SessionProvider implements HttpServerInterface
+{
     /**
      * @var \Ratchet\MessageComponentInterface
      */
@@ -22,12 +23,14 @@ class SessionProvider implements HttpServerInterface {
 
     /**
      * Selected handler storage assigned by the developer
+     *
      * @var \SessionHandlerInterface
      */
     protected $_handler;
 
     /**
      * Null storage handler if no previous session was found
+     *
      * @var \SessionHandlerInterface
      */
     protected $_null;
@@ -38,13 +41,14 @@ class SessionProvider implements HttpServerInterface {
     protected $_serializer;
 
     /**
-     * @param \Ratchet\Http\HttpServerInterface           $app
-     * @param \SessionHandlerInterface                    $handler
-     * @param array                                       $options
-     * @param \Ratchet\Session\Serialize\HandlerInterface $serializer
+     * @param  \Ratchet\Http\HttpServerInterface           $app
+     * @param  \SessionHandlerInterface                    $handler
+     * @param  array                                       $options
+     * @param  \Ratchet\Session\Serialize\HandlerInterface $serializer
      * @throws \RuntimeException
      */
-    public function __construct(HttpServerInterface $app, \SessionHandlerInterface $handler, array $options = array(), HandlerInterface $serializer = null) {
+    public function __construct(HttpServerInterface $app, \SessionHandlerInterface $handler, array $options = array(), HandlerInterface $serializer = null)
+    {
         $this->_app     = $app;
         $this->_handler = $handler;
         $this->_null    = new NullSessionHandler;
@@ -70,18 +74,21 @@ class SessionProvider implements HttpServerInterface {
     /**
      * {@inheritdoc}
      */
-    public function onOpen(ConnectionInterface $conn, RequestInterface $request = null) {
+    public function onOpen(ConnectionInterface $conn, RequestInterface $request = null)
+    {
         $sessionName = ini_get('session.name');
 
-        $id = array_reduce($request->getHeader('Cookie'), function($accumulator, $cookie) use ($sessionName) {
-            if ($accumulator) {
-                return $accumulator;
-            }
+        $id = array_reduce(
+            $request->getHeader('Cookie'), function ($accumulator, $cookie) use ($sessionName) {
+                if ($accumulator) {
+                    return $accumulator;
+                }
 
-            $crumbs = $this->parseCookie($cookie);
+                $crumbs = $this->parseCookie($cookie);
 
-            return isset($crumbs['cookies'][$sessionName]) ? $crumbs['cookies'][$sessionName] : false;
-        }, false);
+                return isset($crumbs['cookies'][$sessionName]) ? $crumbs['cookies'][$sessionName] : false;
+            }, false
+        );
 
         if (null === $request || false === $id) {
             $saveHandler = $this->_null;
@@ -102,14 +109,16 @@ class SessionProvider implements HttpServerInterface {
     /**
      * {@inheritdoc}
      */
-    function onMessage(ConnectionInterface $from, $msg) {
+    function onMessage(ConnectionInterface $from, $msg)
+    {
         return $this->_app->onMessage($from, $msg);
     }
 
     /**
      * {@inheritdoc}
      */
-    function onClose(ConnectionInterface $conn) {
+    function onClose(ConnectionInterface $conn)
+    {
         // "close" session for Connection
 
         return $this->_app->onClose($conn);
@@ -118,17 +127,20 @@ class SessionProvider implements HttpServerInterface {
     /**
      * {@inheritdoc}
      */
-    function onError(ConnectionInterface $conn, \Exception $e) {
+    function onError(ConnectionInterface $conn, \Exception $e)
+    {
         return $this->_app->onError($conn, $e);
     }
 
     /**
      * Set all the php session. ini options
      * © Symfony
-     * @param array $options
+     *
+     * @param  array $options
      * @return array
      */
-    protected function setOptions(array $options) {
+    protected function setOptions(array $options)
+    {
         $all = array(
             'auto_start', 'cache_limiter', 'cookie_domain', 'cookie_httponly',
             'cookie_lifetime', 'cookie_path', 'cookie_secure',
@@ -153,10 +165,11 @@ class SessionProvider implements HttpServerInterface {
     }
 
     /**
-     * @param string $langDef Input to convert
+     * @param  string $langDef Input to convert
      * @return string
      */
-    protected function toClassCase($langDef) {
+    protected function toClassCase($langDef)
+    {
         return str_replace(' ', '', ucwords(str_replace('_', ' ', $langDef)));
     }
 
@@ -180,7 +193,8 @@ class SessionProvider implements HttpServerInterface {
     /**
      * Taken from Guzzle3
      */
-    private function parseCookie($cookie, $host = null, $path = null, $decode = false) {
+    private function parseCookie($cookie, $host = null, $path = null, $decode = false)
+    {
         // Explode the cookie string using a series of semicolons
         $pieces = array_filter(array_map('trim', explode(';', $cookie)));
 
@@ -190,14 +204,16 @@ class SessionProvider implements HttpServerInterface {
         }
 
         // Create the default return array
-        $data = array_merge(array_fill_keys(array_keys(self::$cookieParts), null), array(
+        $data = array_merge(
+            array_fill_keys(array_keys(self::$cookieParts), null), array(
             'cookies'   => array(),
             'data'      => array(),
             'path'      => $path ?: '/',
             'http_only' => false,
             'discard'   => false,
             'domain'    => $host
-        ));
+            )
+        );
         $foundNonCookies = 0;
 
         // Add the cookie pieces into the parsed data array

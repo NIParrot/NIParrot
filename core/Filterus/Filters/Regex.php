@@ -2,7 +2,8 @@
 
 namespace Filterus\Filters;
 
-class Regex extends Strings {
+class Regex extends Strings
+{
     
     protected $defaultOptions = array(
         'min' => 0,
@@ -10,7 +11,8 @@ class Regex extends Strings {
         'regex' => '/.?/',
     );
 
-    public function filter($var) {
+    public function filter($var)
+    {
         $var = parent::filter($var);
         if (!preg_match($this->options['regex'], $var)) {
             return null;

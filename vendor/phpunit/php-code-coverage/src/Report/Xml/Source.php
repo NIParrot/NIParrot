@@ -19,7 +19,9 @@ use TheSeer\Tokenizer\XMLSerializer;
  */
 final class Source
 {
-    /** @var DOMElement */
+    /**
+     * @var DOMElement 
+     */
     private $context;
 
     public function __construct(DOMElement $context)

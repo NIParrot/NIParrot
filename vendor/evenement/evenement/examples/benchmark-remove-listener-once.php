@@ -21,7 +21,8 @@ $emitter = new EventEmitter();
 
 $listeners = [];
 for ($i = 0; $i < ITERATIONS; $i++) {
-    $listeners[] = function ($a, $b, $c) {};
+    $listeners[] = function ($a, $b, $c) {
+    };
 }
 
 $start = microtime(true);

@@ -184,8 +184,9 @@ class CliTestDoxPrinter extends TestDoxPrinter
     protected function writeTestResult(array $prevResult, array $result): void
     {
         // spacer line for new suite headers and after verbose messages
-        if ($prevResult['testName'] !== '' &&
-            (!empty($prevResult['message']) || $prevResult['className'] !== $result['className'])) {
+        if ($prevResult['testName'] !== '' 
+            && (!empty($prevResult['message']) || $prevResult['className'] !== $result['className'])
+        ) {
             $this->write(PHP_EOL);
         }
 
@@ -301,9 +302,11 @@ class CliTestDoxPrinter extends TestDoxPrinter
 
         if ($this->colors) {
             $color  = self::STATUS_STYLES[$result['status']]['color'] ?? '';
-            $prefix = array_map(static function ($p) use ($color) {
-                return Color::colorize($color, $p);
-            }, self::PREFIX_DECORATED);
+            $prefix = array_map(
+                static function ($p) use ($color) {
+                    return Color::colorize($color, $p);
+                }, self::PREFIX_DECORATED
+            );
         }
 
         $trace = $this->formatStacktrace($t);

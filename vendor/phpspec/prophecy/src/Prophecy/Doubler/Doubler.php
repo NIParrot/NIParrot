@@ -48,8 +48,8 @@ class Doubler
      * @param NameGenerator $namer
      */
     public function __construct(ClassMirror $mirror = null, ClassCreator $creator = null,
-                                NameGenerator $namer = null)
-    {
+        NameGenerator $namer = null
+    ) {
         $this->mirror  = $mirror  ?: new ClassMirror;
         $this->creator = $creator ?: new ClassCreator;
         $this->namer   = $namer   ?: new NameGenerator;
@@ -74,9 +74,11 @@ class Doubler
     {
         $this->patches[] = $patch;
 
-        @usort($this->patches, function (ClassPatchInterface $patch1, ClassPatchInterface $patch2) {
-            return $patch2->getPriority() - $patch1->getPriority();
-        });
+        @usort(
+            $this->patches, function (ClassPatchInterface $patch1, ClassPatchInterface $patch2) {
+                return $patch2->getPriority() - $patch1->getPriority();
+            }
+        );
     }
 
     /**
@@ -94,11 +96,13 @@ class Doubler
     {
         foreach ($interfaces as $interface) {
             if (!$interface instanceof ReflectionClass) {
-                throw new InvalidArgumentException(sprintf(
-                    "[ReflectionClass \$interface1 [, ReflectionClass \$interface2]] array expected as\n".
-                    "a second argument to `Doubler::double(...)`, but got %s.",
-                    is_object($interface) ? get_class($interface).' class' : gettype($interface)
-                ));
+                throw new InvalidArgumentException(
+                    sprintf(
+                        "[ReflectionClass \$interface1 [, ReflectionClass \$interface2]] array expected as\n".
+                        "a second argument to `Doubler::double(...)`, but got %s.",
+                        is_object($interface) ? get_class($interface).' class' : gettype($interface)
+                    )
+                );
             }
         }
 
@@ -109,7 +113,8 @@ class Doubler
             return $reflection->newInstanceArgs($args);
         }
         if ((null === $constructor = $reflection->getConstructor())
-            || ($constructor->isPublic() && !$constructor->isFinal())) {
+            || ($constructor->isPublic() && !$constructor->isFinal())
+        ) {
             return $reflection->newInstance();
         }
 

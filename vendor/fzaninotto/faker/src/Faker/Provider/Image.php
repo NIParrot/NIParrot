@@ -19,12 +19,12 @@ class Image extends Base
      *
      * @example 'http://lorempixel.com/640/480/?12345'
      *
-     * @param integer $width
-     * @param integer $height
+     * @param integer     $width
+     * @param integer     $height
      * @param string|null $category
-     * @param bool $randomize
+     * @param bool        $randomize
      * @param string|null $word
-     * @param bool $gray
+     * @param bool        $gray
      *
      * @return string
      */

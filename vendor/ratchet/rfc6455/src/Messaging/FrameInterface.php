@@ -1,21 +1,25 @@
 <?php
 namespace Ratchet\RFC6455\Messaging;
 
-interface FrameInterface extends DataInterface {
+interface FrameInterface extends DataInterface
+{
     /**
      * Add incoming data to the frame from peer
+     *
      * @param string
      */
     function addBuffer($buf);
 
     /**
      * Is this the final frame in a fragmented message?
+     *
      * @return bool
      */
     function isFinal();
 
     /**
      * Is the payload masked?
+     *
      * @return bool
      */
     function isMasked();
@@ -32,6 +36,7 @@ interface FrameInterface extends DataInterface {
 
     /**
      * 32-big string
+     *
      * @return string
      */
     function getMaskingKey();

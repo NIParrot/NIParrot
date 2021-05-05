@@ -24,11 +24,13 @@ final class RetryExecutor implements ExecutorInterface
 
     public function tryQuery(Query $query, $retries)
     {
-        $deferred = new Deferred(function () use (&$promise) {
-            if ($promise instanceof CancellablePromiseInterface || (!\interface_exists('React\Promise\CancellablePromiseInterface') && \method_exists($promise, 'cancel'))) {
-                $promise->cancel();
+        $deferred = new Deferred(
+            function () use (&$promise) {
+                if ($promise instanceof CancellablePromiseInterface || (!\interface_exists('React\Promise\CancellablePromiseInterface') && \method_exists($promise, 'cancel'))) {
+                    $promise->cancel();
+                }
             }
-        });
+        );
 
         $success = function ($value) use ($deferred, &$errorback) {
             $errorback = null;
@@ -42,11 +44,13 @@ final class RetryExecutor implements ExecutorInterface
                 $deferred->reject($e);
             } elseif ($retries <= 0) {
                 $errorback = null;
-                $deferred->reject($e = new \RuntimeException(
-                    'DNS query for ' . $query->describe() . ' failed: too many retries',
-                    0,
-                    $e
-                ));
+                $deferred->reject(
+                    $e = new \RuntimeException(
+                        'DNS query for ' . $query->describe() . ' failed: too many retries',
+                        0,
+                        $e
+                    )
+                );
 
                 // avoid garbage references by replacing all closures in call stack.
                 // what a lovely piece of code!

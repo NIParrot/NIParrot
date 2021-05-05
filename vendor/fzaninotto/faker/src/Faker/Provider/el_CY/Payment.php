@@ -21,7 +21,7 @@ class Payment extends \Faker\Provider\Payment
     }
 
     /**
-     * @var array Cyprus banks
+     * @var  array Cyprus banks
      * @link http://www.acb.com.cy/cgibin/hweb?-A=206&-V=membership
      */
     protected static $banks = array(

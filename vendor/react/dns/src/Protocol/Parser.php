@@ -17,7 +17,7 @@ final class Parser
     /**
      * Parses the given raw binary message into a Message object
      *
-     * @param string $data
+     * @param  string $data
      * @throws InvalidArgumentException
      * @return Message
      */
@@ -99,7 +99,7 @@ final class Parser
     }
 
     /**
-     * @param Message $message
+     * @param  Message $message
      * @return ?Query
      */
     private function parseQuestion(Message $message)
@@ -125,7 +125,7 @@ final class Parser
     }
 
     /**
-     * @param Message $message
+     * @param  Message $message
      * @return ?Record returns parsed Record on success or null if data is invalid/incomplete
      */
     private function parseRecord(Message $message)
@@ -302,9 +302,9 @@ final class Parser
     }
 
     /**
-     * @param string $data
-     * @param int    $consumed
-     * @param int    $compressionDepth maximum depth for compressed labels to avoid unreasonable recursion
+     * @param  string $data
+     * @param  int    $consumed
+     * @param  int    $compressionDepth maximum depth for compressed labels to avoid unreasonable recursion
      * @return array
      */
     private function readLabels($data, $consumed, $compressionDepth = 127)

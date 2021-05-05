@@ -2,13 +2,15 @@
 
 namespace Filterus\Filters;
 
-class Objects extends \Filterus\Filter {
+class Objects extends \Filterus\Filter
+{
 
     protected $defaultOptions = array(
         'class' => '',
     );
 
-    public function filter($var) {
+    public function filter($var)
+    {
         if (!is_object($var)) {
             return null;
         }
@@ -19,7 +21,8 @@ class Objects extends \Filterus\Filter {
         return $var;
     }
 
-    public function validate($var) {
+    public function validate($var)
+    {
         return $var === $this->filter($var);
     }
 

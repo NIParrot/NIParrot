@@ -12,7 +12,7 @@ $files = [
 
 foreach ($files as $file) {
     if (file_exists($file)) {
-        $loader = require $file;
+        $loader = include $file;
         $loader->addPsr4('Ratchet\\RFC6455\\Test\\', __DIR__);
         break;
     }

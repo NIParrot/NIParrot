@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcachedSessionHan
 
 /**
  * @requires extension memcached
- * @group time-sensitive
+ * @group    time-sensitive
  */
 class MemcachedSessionHandlerTest extends TestCase
 {
@@ -66,8 +66,7 @@ class MemcachedSessionHandlerTest extends TestCase
         $this->memcached
             ->expects($this->once())
             ->method('quit')
-            ->willReturn(true)
-        ;
+            ->willReturn(true);
 
         $this->assertTrue($this->storage->close());
     }
@@ -77,8 +76,7 @@ class MemcachedSessionHandlerTest extends TestCase
         $this->memcached
             ->expects($this->once())
             ->method('get')
-            ->with(self::PREFIX.'id')
-        ;
+            ->with(self::PREFIX.'id');
 
         $this->assertEquals('', $this->storage->read('id'));
     }
@@ -89,8 +87,7 @@ class MemcachedSessionHandlerTest extends TestCase
             ->expects($this->once())
             ->method('set')
             ->with(self::PREFIX.'id', 'data', $this->equalTo(time() + self::TTL, 2))
-            ->willReturn(true)
-        ;
+            ->willReturn(true);
 
         $this->assertTrue($this->storage->write('id', 'data'));
     }
@@ -101,8 +98,7 @@ class MemcachedSessionHandlerTest extends TestCase
             ->expects($this->once())
             ->method('delete')
             ->with(self::PREFIX.'id')
-            ->willReturn(true)
-        ;
+            ->willReturn(true);
 
         $this->assertTrue($this->storage->destroy('id'));
     }

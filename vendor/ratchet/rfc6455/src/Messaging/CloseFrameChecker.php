@@ -1,10 +1,12 @@
 <?php
 namespace Ratchet\RFC6455\Messaging;
 
-class CloseFrameChecker {
+class CloseFrameChecker
+{
     private $validCloseCodes = [];
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->validCloseCodes = [
             Frame::CLOSE_NORMAL,
             Frame::CLOSE_GOING_AWAY,
@@ -18,7 +20,8 @@ class CloseFrameChecker {
         ];
     }
 
-    public function __invoke($val) {
+    public function __invoke($val)
+    {
         return ($val >= 3000 && $val <= 4999) || in_array($val, $this->validCloseCodes);
     }
 }

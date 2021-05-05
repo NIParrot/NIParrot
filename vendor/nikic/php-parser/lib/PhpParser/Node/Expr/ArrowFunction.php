@@ -8,21 +8,33 @@ use PhpParser\Node\FunctionLike;
 
 class ArrowFunction extends Expr implements FunctionLike
 {
-    /** @var bool */
+    /**
+     * @var bool 
+     */
     public $static;
 
-    /** @var bool */
+    /**
+     * @var bool 
+     */
     public $byRef;
 
-    /** @var Node\Param[] */
+    /**
+     * @var Node\Param[] 
+     */
     public $params = [];
 
-    /** @var null|Node\Identifier|Node\Name|Node\NullableType|Node\UnionType */
+    /**
+     * @var null|Node\Identifier|Node\Name|Node\NullableType|Node\UnionType 
+     */
     public $returnType;
 
-    /** @var Expr */
+    /**
+     * @var Expr 
+     */
     public $expr;
-    /** @var Node\AttributeGroup[] */
+    /**
+     * @var Node\AttributeGroup[] 
+     */
     public $attrGroups;
 
     /**
@@ -35,7 +47,8 @@ class ArrowFunction extends Expr implements FunctionLike
      *                          'attrGroups' => array() : PHP attribute groups
      * @param array $attributes Additional attributes
      */
-    public function __construct(array $subNodes = [], array $attributes = []) {
+    public function __construct(array $subNodes = [], array $attributes = [])
+    {
         $this->attributes = $attributes;
         $this->static = $subNodes['static'] ?? false;
         $this->byRef = $subNodes['byRef'] ?? false;
@@ -46,34 +59,41 @@ class ArrowFunction extends Expr implements FunctionLike
         $this->attrGroups = $subNodes['attrGroups'] ?? [];
     }
 
-    public function getSubNodeNames() : array {
+    public function getSubNodeNames() : array
+    {
         return ['attrGroups', 'static', 'byRef', 'params', 'returnType', 'expr'];
     }
 
-    public function returnsByRef() : bool {
+    public function returnsByRef() : bool
+    {
         return $this->byRef;
     }
 
-    public function getParams() : array {
+    public function getParams() : array
+    {
         return $this->params;
     }
 
-    public function getReturnType() {
+    public function getReturnType()
+    {
         return $this->returnType;
     }
 
-    public function getAttrGroups() : array {
+    public function getAttrGroups() : array
+    {
         return $this->attrGroups;
     }
 
     /**
      * @return Node\Stmt\Return_[]
      */
-    public function getStmts() : array {
+    public function getStmts() : array
+    {
         return [new Node\Stmt\Return_($this->expr)];
     }
 
-    public function getType() : string {
+    public function getType() : string
+    {
         return 'Expr_ArrowFunction';
     }
 }

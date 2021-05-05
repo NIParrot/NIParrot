@@ -71,8 +71,9 @@ final class GlobalState
         unset($files[0]);
 
         foreach (array_reverse($files) as $file) {
-            if (!empty($GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST']) &&
-                in_array($file, $GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST'], true)) {
+            if (!empty($GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST']) 
+                && in_array($file, $GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST'], true)
+            ) {
                 continue;
             }
 
@@ -166,8 +167,9 @@ final class GlobalState
 
     private static function exportVariable($variable): string
     {
-        if (is_scalar($variable) || $variable === null ||
-            (is_array($variable) && self::arrayOnlyContainsScalars($variable))) {
+        if (is_scalar($variable) || $variable === null 
+            || (is_array($variable) && self::arrayOnlyContainsScalars($variable))
+        ) {
             return var_export($variable, true);
         }
 

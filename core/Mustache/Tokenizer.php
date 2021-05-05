@@ -114,99 +114,99 @@ class Mustache_Tokenizer
         $len = strlen($text);
         for ($i = 0; $i < $len; $i++) {
             switch ($this->state) {
-                case self::IN_TEXT:
-                    $char = $text[$i];
-                    // Test whether it's time to change tags.
-                    if ($char === $this->otagChar && substr($text, $i, $this->otagLen) === $this->otag) {
-                        $i--;
+            case self::IN_TEXT:
+                $char = $text[$i];
+                // Test whether it's time to change tags.
+                if ($char === $this->otagChar && substr($text, $i, $this->otagLen) === $this->otag) {
+                    $i--;
+                    $this->flushBuffer();
+                    $this->state = self::IN_TAG_TYPE;
+                } else {
+                    $this->buffer .= $char;
+                    if ($char === "\n") {
                         $this->flushBuffer();
-                        $this->state = self::IN_TAG_TYPE;
-                    } else {
-                        $this->buffer .= $char;
-                        if ($char === "\n") {
-                            $this->flushBuffer();
-                            $this->line++;
-                        }
+                        $this->line++;
                     }
-                    break;
+                }
+                break;
 
-                case self::IN_TAG_TYPE:
-                    $i += $this->otagLen - 1;
-                    $char = $text[$i + 1];
-                    if (isset(self::$tagTypes[$char])) {
-                        $tag = $char;
-                        $this->tagType = $tag;
-                    } else {
-                        $tag = null;
-                        $this->tagType = self::T_ESCAPED;
+            case self::IN_TAG_TYPE:
+                $i += $this->otagLen - 1;
+                $char = $text[$i + 1];
+                if (isset(self::$tagTypes[$char])) {
+                    $tag = $char;
+                    $this->tagType = $tag;
+                } else {
+                    $tag = null;
+                    $this->tagType = self::T_ESCAPED;
+                }
+
+                if ($this->tagType === self::T_DELIM_CHANGE) {
+                    $i = $this->changeDelimiters($text, $i);
+                    $this->state = self::IN_TEXT;
+                } elseif ($this->tagType === self::T_PRAGMA) {
+                    $i = $this->addPragma($text, $i);
+                    $this->state = self::IN_TEXT;
+                } else {
+                    if ($tag !== null) {
+                        $i++;
                     }
+                    $this->state = self::IN_TAG;
+                }
+                $this->seenTag = $i;
+                break;
 
-                    if ($this->tagType === self::T_DELIM_CHANGE) {
-                        $i = $this->changeDelimiters($text, $i);
-                        $this->state = self::IN_TEXT;
-                    } elseif ($this->tagType === self::T_PRAGMA) {
-                        $i = $this->addPragma($text, $i);
-                        $this->state = self::IN_TEXT;
-                    } else {
-                        if ($tag !== null) {
-                            $i++;
-                        }
-                        $this->state = self::IN_TAG;
-                    }
-                    $this->seenTag = $i;
-                    break;
+            default:
+                $char = $text[$i];
+                // Test whether it's time to change tags.
+                if ($char === $this->ctagChar && substr($text, $i, $this->ctagLen) === $this->ctag) {
+                    $token = array(
+                        self::TYPE  => $this->tagType,
+                        self::NAME  => trim($this->buffer),
+                        self::OTAG  => $this->otag,
+                        self::CTAG  => $this->ctag,
+                        self::LINE  => $this->line,
+                        self::INDEX => ($this->tagType === self::T_END_SECTION) ? $this->seenTag - $this->otagLen : $i + $this->ctagLen,
+                    );
 
-                default:
-                    $char = $text[$i];
-                    // Test whether it's time to change tags.
-                    if ($char === $this->ctagChar && substr($text, $i, $this->ctagLen) === $this->ctag) {
-                        $token = array(
-                            self::TYPE  => $this->tagType,
-                            self::NAME  => trim($this->buffer),
-                            self::OTAG  => $this->otag,
-                            self::CTAG  => $this->ctag,
-                            self::LINE  => $this->line,
-                            self::INDEX => ($this->tagType === self::T_END_SECTION) ? $this->seenTag - $this->otagLen : $i + $this->ctagLen,
-                        );
-
-                        if ($this->tagType === self::T_UNESCAPED) {
-                            // Clean up `{{{ tripleStache }}}` style tokens.
-                            if ($this->ctag === '}}') {
-                                if (($i + 2 < $len) && $text[$i + 2] === '}') {
-                                    $i++;
-                                } else {
-                                    $msg = sprintf(
-                                        'Mismatched tag delimiters: %s on line %d',
-                                        $token[self::NAME],
-                                        $token[self::LINE]
-                                    );
-
-                                    throw new Mustache_Exception_SyntaxException($msg, $token);
-                                }
+                    if ($this->tagType === self::T_UNESCAPED) {
+                        // Clean up `{{{ tripleStache }}}` style tokens.
+                        if ($this->ctag === '}}') {
+                            if (($i + 2 < $len) && $text[$i + 2] === '}') {
+                                $i++;
                             } else {
-                                $lastName = $token[self::NAME];
-                                if (substr($lastName, -1) === '}') {
-                                    $token[self::NAME] = trim(substr($lastName, 0, -1));
-                                } else {
-                                    $msg = sprintf(
-                                        'Mismatched tag delimiters: %s on line %d',
-                                        $token[self::NAME],
-                                        $token[self::LINE]
-                                    );
+                                $msg = sprintf(
+                                    'Mismatched tag delimiters: %s on line %d',
+                                    $token[self::NAME],
+                                    $token[self::LINE]
+                                );
 
-                                    throw new Mustache_Exception_SyntaxException($msg, $token);
-                                }
+                                throw new Mustache_Exception_SyntaxException($msg, $token);
+                            }
+                        } else {
+                            $lastName = $token[self::NAME];
+                            if (substr($lastName, -1) === '}') {
+                                $token[self::NAME] = trim(substr($lastName, 0, -1));
+                            } else {
+                                $msg = sprintf(
+                                    'Mismatched tag delimiters: %s on line %d',
+                                    $token[self::NAME],
+                                    $token[self::LINE]
+                                );
+
+                                throw new Mustache_Exception_SyntaxException($msg, $token);
                             }
                         }
-
-                        $this->buffer = '';
-                        $i += $this->ctagLen - 1;
-                        $this->state = self::IN_TEXT;
-                        $this->tokens[] = $token;
-                    } else {
-                        $this->buffer .= $char;
                     }
-                    break;
+
+                    $this->buffer = '';
+                    $i += $this->ctagLen - 1;
+                    $this->state = self::IN_TEXT;
+                    $this->tokens[] = $token;
+                } else {
+                    $this->buffer .= $char;
+                }
+                break;
             }
         }
 
@@ -331,11 +331,13 @@ class Mustache_Tokenizer
         $pragma = trim(substr($text, $index + 2, $end - $index - 2));
 
         // Pragmas are hoisted to the front of the template.
-        array_unshift($this->tokens, array(
+        array_unshift(
+            $this->tokens, array(
             self::TYPE => self::T_PRAGMA,
             self::NAME => $pragma,
             self::LINE => 0,
-        ));
+            )
+        );
 
         return $end + $this->ctagLen - 1;
     }

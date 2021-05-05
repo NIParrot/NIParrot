@@ -1,11 +1,71 @@
 {
-    "admins": [{
-        "user": "value",
-        "password": "value",
-        "role": "admin"
+    "Kindergartens": [{
+        "name": "حضانة النور"
+    }],
+    "Worktimes": [{
+        "start_time": "05:00:00",
+        "end_time": "10:00:00"
+    }],
+    "Managers": [{
+        "username": "admin",
+        "password": "123"
+    }],
+    "Teachers": [{
+        "name": "teacher",
+        "password": "123",
+        "phone": 7755,
+        "salary": 5000,
+        "worktimes_id": 1,
+        "active": 0,
+        "fcm_token": "mytoken"
+    }],
+    "Fathers": [{
+        "name": "father",
+        "password": "123",
+        "phone": 123456,
+        "fcm_token": "mytoken"
+    }],
+    "Kids": [{
+            "name": "kid1",
+            "fathers_id": 1
+        },
+        {
+            "name": "kid2",
+            "fathers_id": 1
+        }, {
+            "name": "kid3",
+            "fathers_id": 1
+        }
+    ],
+    "Payments": [{
+        "kids_id": 1
     }, {
-        "user": "value1",
-        "password": "value1",
-        "role": "admin"
+        "kids_id": 2
+    }, {
+        "kids_id": 3
+    }],
+    "Kindergarten_Teacher": [{
+        "kindergartens_id": 1,
+        "teachers_id": 1
+    }],
+    "Kindergarten_Kid": [{
+        "kindergartens_id": 1,
+        "kids_id": 1
+    }, {
+        "kids_id": 2,
+        "kindergartens_id": 1
+    }, {
+        "kids_id": 3,
+        "kindergartens_id": 1
+    }],
+    "kid_Teacher": [{
+        "teachers_id": 1,
+        "kids_id": 1
+    }, {
+        "kids_id": 2,
+        "teachers_id": 1
+    }, {
+        "kids_id": 3,
+        "teachers_id": 1
     }]
 }

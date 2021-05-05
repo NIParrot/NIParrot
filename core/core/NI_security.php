@@ -29,19 +29,19 @@ class NI_security
                 }
     
                 switch ($chr) {
-                    case "\n":
-                    case "\r":
-                    case "\\":
-                    case "&":
-                    case '"':
-                    case "'":
-                    case "<":
-                    case ">":
-                        $output .= sprintf("\\u%04x", $chrNum);
-                        break;
-                    default:
-                        $output .= $str[$i];
-                        break;
+                case "\n":
+                case "\r":
+                case "\\":
+                case "&":
+                case '"':
+                case "'":
+                case "<":
+                case ">":
+                    $output .= sprintf("\\u%04x", $chrNum);
+                    break;
+                default:
+                    $output .= $str[$i];
+                    break;
                 }
             }
     
@@ -51,9 +51,9 @@ class NI_security
 
     public static function check($var)
     {
-        $var=htmlspecialchars($var) ;
-        $var=trim($var) ;
-        $var=stripcslashes($var) ;
+        $var=htmlspecialchars($var);
+        $var=trim($var);
+        $var=stripcslashes($var);
         return $var;
     }
 

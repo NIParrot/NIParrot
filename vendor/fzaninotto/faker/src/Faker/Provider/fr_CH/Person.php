@@ -94,7 +94,7 @@ class Person extends \Faker\Provider\fr_FR\Person
      * This function will generate a valid random AVS13 number and return it
      * as a formatted string.
      *
-     * @see https://www.zas.admin.ch/zas/fr/home/partenaires-et-institutions-/navs13.html
+     * @see    https://www.zas.admin.ch/zas/fr/home/partenaires-et-institutions-/navs13.html
      * @return string
      */
     public static function avs13()

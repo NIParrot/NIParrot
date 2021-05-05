@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Reflection\DocBlock\Tags;
@@ -32,7 +32,9 @@ use const PREG_SPLIT_DELIM_CAPTURE;
  */
 final class Var_ extends TagWithType implements Factory\StaticMethod
 {
-    /** @var string|null */
+    /**
+     * @var string|null 
+     */
     protected $variableName = '';
 
     public function __construct(?string $variableName, ?Type $type = null, ?Description $description = null)

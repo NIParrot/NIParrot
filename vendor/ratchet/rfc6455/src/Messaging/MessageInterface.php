@@ -1,9 +1,10 @@
 <?php
 namespace Ratchet\RFC6455\Messaging;
 
-interface MessageInterface extends DataInterface, \Traversable, \Countable {
+interface MessageInterface extends DataInterface, \Traversable, \Countable
+{
     /**
-     * @param FrameInterface $fragment
+     * @param  FrameInterface $fragment
      * @return MessageInterface
      */
     function addFrame(FrameInterface $fragment);

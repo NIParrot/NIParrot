@@ -39,25 +39,39 @@ class Uri implements UriInterface
     private static $charSubDelims = '!\$&\'\(\)\*\+,;=';
     private static $replaceQuery = ['=' => '%3D', '&' => '%26'];
 
-    /** @var string Uri scheme. */
+    /**
+     * @var string Uri scheme. 
+     */
     private $scheme = '';
 
-    /** @var string Uri user info. */
+    /**
+     * @var string Uri user info. 
+     */
     private $userInfo = '';
 
-    /** @var string Uri host. */
+    /**
+     * @var string Uri host. 
+     */
     private $host = '';
 
-    /** @var int|null Uri port. */
+    /**
+     * @var int|null Uri port. 
+     */
     private $port;
 
-    /** @var string Uri path. */
+    /**
+     * @var string Uri path. 
+     */
     private $path = '';
 
-    /** @var string Uri query string. */
+    /**
+     * @var string Uri query string. 
+     */
     private $query = '';
 
-    /** @var string Uri fragment. */
+    /**
+     * @var string Uri fragment. 
+     */
     private $fragment = '';
 
     /**
@@ -211,9 +225,9 @@ class Uri implements UriInterface
      *
      * @return bool
      *
-     * @see Uri::isNetworkPathReference
-     * @see Uri::isAbsolutePathReference
-     * @see Uri::isRelativePathReference
+     * @see  Uri::isNetworkPathReference
+     * @see  Uri::isAbsolutePathReference
+     * @see  Uri::isRelativePathReference
      * @link https://tools.ietf.org/html/rfc3986#section-4
      */
     public static function isAbsolute(UriInterface $uri)
@@ -310,7 +324,7 @@ class Uri implements UriInterface
      * @return string
      *
      * @deprecated since version 1.4. Use UriResolver::removeDotSegments instead.
-     * @see UriResolver::removeDotSegments
+     * @see        UriResolver::removeDotSegments
      */
     public static function removeDotSegments($path)
     {
@@ -326,7 +340,7 @@ class Uri implements UriInterface
      * @return UriInterface
      *
      * @deprecated since version 1.4. Use UriResolver::resolve instead.
-     * @see UriResolver::resolve
+     * @see        UriResolver::resolve
      */
     public static function resolve(UriInterface $base, $rel)
     {
@@ -703,9 +717,11 @@ class Uri implements UriInterface
 
         $decodedKeys = array_map('rawurldecode', $keys);
 
-        return array_filter(explode('&', $current), function ($part) use ($decodedKeys) {
-            return !in_array(rawurldecode(explode('=', $part)[0]), $decodedKeys, true);
-        });
+        return array_filter(
+            explode('&', $current), function ($part) use ($decodedKeys) {
+                return !in_array(rawurldecode(explode('=', $part)[0]), $decodedKeys, true);
+            }
+        );
     }
 
     /**

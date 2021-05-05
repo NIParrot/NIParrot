@@ -35,7 +35,7 @@ interface ExecutorInterface
      * $promise->cancel();
      * ```
      *
-     * @param Query $query
+     * @param  Query $query
      * @return \React\Promise\PromiseInterface<\React\Dns\Model\Message,\Exception>
      *     resolves with response message on success or rejects with an Exception on error
      */

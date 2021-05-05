@@ -839,12 +839,14 @@ class ComposerStaticInit634355e07e9ea7af11613faefce5fb79
 
     public static function getInitializer(ClassLoader $loader)
     {
-        return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit634355e07e9ea7af11613faefce5fb79::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit634355e07e9ea7af11613faefce5fb79::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit634355e07e9ea7af11613faefce5fb79::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit634355e07e9ea7af11613faefce5fb79::$classMap;
+        return \Closure::bind(
+            function () use ($loader) {
+                $loader->prefixLengthsPsr4 = ComposerStaticInit634355e07e9ea7af11613faefce5fb79::$prefixLengthsPsr4;
+                $loader->prefixDirsPsr4 = ComposerStaticInit634355e07e9ea7af11613faefce5fb79::$prefixDirsPsr4;
+                $loader->prefixesPsr0 = ComposerStaticInit634355e07e9ea7af11613faefce5fb79::$prefixesPsr0;
+                $loader->classMap = ComposerStaticInit634355e07e9ea7af11613faefce5fb79::$classMap;
 
-        }, null, ClassLoader::class);
+            }, null, ClassLoader::class
+        );
     }
 }

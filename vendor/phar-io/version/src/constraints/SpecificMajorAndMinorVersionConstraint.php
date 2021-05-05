@@ -9,21 +9,28 @@
  */
 namespace PharIo\Version;
 
-class SpecificMajorAndMinorVersionConstraint extends AbstractVersionConstraint {
-    /** @var int */
+class SpecificMajorAndMinorVersionConstraint extends AbstractVersionConstraint
+{
+    /**
+     * @var int 
+     */
     private $major;
 
-    /** @var int */
+    /**
+     * @var int 
+     */
     private $minor;
 
-    public function __construct(string $originalValue, int $major, int $minor) {
+    public function __construct(string $originalValue, int $major, int $minor)
+    {
         parent::__construct($originalValue);
 
         $this->major = $major;
         $this->minor = $minor;
     }
 
-    public function complies(Version $version): bool {
+    public function complies(Version $version): bool
+    {
         if ($version->getMajor()->getValue() !== $this->major) {
             return false;
         }

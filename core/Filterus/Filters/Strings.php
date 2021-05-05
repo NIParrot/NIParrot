@@ -2,14 +2,16 @@
 
 namespace Filterus\Filters;
 
-class Strings extends \Filterus\Filter {
+class Strings extends \Filterus\Filter
+{
     
     protected $defaultOptions = array(
         'min' => 0,
         'max' => PHP_INT_MAX,
     );
 
-    public function filter($var) {
+    public function filter($var)
+    {
         if (is_object($var) && method_exists($var, '__toString')) {
             $var = (string) $var;
         }
@@ -25,7 +27,8 @@ class Strings extends \Filterus\Filter {
         return $var;
     }
 
-    public function validate($var) {
+    public function validate($var)
+    {
         if (is_object($var) && method_exists($var, '__toString')) {
             $var = (string) $var;
         }

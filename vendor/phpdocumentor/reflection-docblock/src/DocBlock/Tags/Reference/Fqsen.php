@@ -20,7 +20,9 @@ use phpDocumentor\Reflection\Fqsen as RealFqsen;
  */
 final class Fqsen implements Reference
 {
-    /** @var RealFqsen */
+    /**
+     * @var RealFqsen 
+     */
     private $fqsen;
 
     public function __construct(RealFqsen $fqsen)

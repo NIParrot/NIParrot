@@ -486,7 +486,9 @@ final class File extends Renderer
 
         $lineData = [];
 
-        /** @var int $line */
+        /**
+ * @var int $line 
+*/
         foreach (array_keys($codeLines) as $line) {
             $lineData[$line + 1] = [
                 'includedInBranches'    => 0,
@@ -515,7 +517,9 @@ final class File extends Renderer
         $lines = '';
         $i     = 1;
 
-        /** @var string $line */
+        /**
+ * @var string $line 
+*/
         foreach ($codeLines as $line) {
             $trClass = '';
             $popover = '';
@@ -573,7 +577,9 @@ final class File extends Renderer
 
         $lineData = [];
 
-        /** @var int $line */
+        /**
+ * @var int $line 
+*/
         foreach (array_keys($codeLines) as $line) {
             $lineData[$line + 1] = [
                 'includedInPaths'    => [],
@@ -603,7 +609,9 @@ final class File extends Renderer
         $lines = '';
         $i     = 1;
 
-        /** @var string $line */
+        /**
+ * @var string $line 
+*/
         foreach ($codeLines as $line) {
             $trClass                 = '';
             $popover                 = '';
@@ -695,7 +703,9 @@ final class File extends Renderer
         $branchLines = range($branch['line_start'], $branch['line_end']);
         sort($branchLines); // sometimes end_line < start_line
 
-        /** @var int $line */
+        /**
+ * @var int $line 
+*/
         foreach ($branchLines as $line) {
             if (!isset($codeLines[$line])) { // blank line at end of file is sometimes included here
                 continue;
@@ -802,7 +812,9 @@ final class File extends Renderer
             $branchLines = range($branches[$branchId]['line_start'], $branches[$branchId]['line_end']);
             sort($branchLines); // sometimes end_line < start_line
 
-            /** @var int $line */
+            /**
+ * @var int $line 
+*/
             foreach ($branchLines as $line) {
                 if (!isset($codeLines[$line])) { // blank line at end of file is sometimes included here
                     continue;
@@ -994,39 +1006,39 @@ final class File extends Renderer
 
         if ($testData['fromTestcase']) {
             switch ($testData['status']) {
-                case BaseTestRunner::STATUS_PASSED:
-                    switch ($testData['size']) {
-                        case 'small':
-                            $testCSS = ' class="covered-by-small-tests"';
-
-                            break;
-
-                        case 'medium':
-                            $testCSS = ' class="covered-by-medium-tests"';
-
-                            break;
-
-                        default:
-                            $testCSS = ' class="covered-by-large-tests"';
-
-                            break;
-                    }
+            case BaseTestRunner::STATUS_PASSED:
+                switch ($testData['size']) {
+                case 'small':
+                    $testCSS = ' class="covered-by-small-tests"';
 
                     break;
 
-                case BaseTestRunner::STATUS_SKIPPED:
-                case BaseTestRunner::STATUS_INCOMPLETE:
-                case BaseTestRunner::STATUS_RISKY:
-                case BaseTestRunner::STATUS_WARNING:
-                    $testCSS = ' class="warning"';
+                case 'medium':
+                    $testCSS = ' class="covered-by-medium-tests"';
 
                     break;
 
-                case BaseTestRunner::STATUS_FAILURE:
-                case BaseTestRunner::STATUS_ERROR:
-                    $testCSS = ' class="danger"';
+                default:
+                    $testCSS = ' class="covered-by-large-tests"';
 
                     break;
+                }
+
+                break;
+
+            case BaseTestRunner::STATUS_SKIPPED:
+            case BaseTestRunner::STATUS_INCOMPLETE:
+            case BaseTestRunner::STATUS_RISKY:
+            case BaseTestRunner::STATUS_WARNING:
+                $testCSS = ' class="warning"';
+
+                break;
+
+            case BaseTestRunner::STATUS_FAILURE:
+            case BaseTestRunner::STATUS_ERROR:
+                $testCSS = ' class="danger"';
+
+                break;
             }
         }
 

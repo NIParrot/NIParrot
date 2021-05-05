@@ -8,4 +8,6 @@
 
 namespace Delight\FileUpload\Throwable;
 
-class TempDirectoryNotFoundError extends TempFileWriteError {}
+class TempDirectoryNotFoundError extends TempFileWriteError
+{
+}

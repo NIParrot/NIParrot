@@ -87,12 +87,13 @@ class Person extends \Faker\Provider\Person
     protected static $titleFemale = array('Rva.', 'Nti.', 'Tri.');
     
      /**
-     * National Personal Identity Number (Henkilötunnus)
-     * @link http://www.finlex.fi/fi/laki/ajantasa/2010/20100128
-     * @param \DateTime $birthdate
-     * @param string $gender Person::GENDER_MALE || Person::GENDER_FEMALE
-     * @return string on format DDMMYYCZZZQ, where DDMMYY is the date of birth, C the century sign, ZZZ the individual number and Q the control character (checksum)
-     */
+      * National Personal Identity Number (Henkilötunnus)
+      *
+      * @link   http://www.finlex.fi/fi/laki/ajantasa/2010/20100128
+      * @param  \DateTime $birthdate
+      * @param  string    $gender    Person::GENDER_MALE || Person::GENDER_FEMALE
+      * @return string on format DDMMYYCZZZQ, where DDMMYY is the date of birth, C the century sign, ZZZ the individual number and Q the control character (checksum)
+      */
     public function personalIdentityNumber(\DateTime $birthdate = null, $gender = null)
     {
         $checksumCharacters = '0123456789ABCDEFHJKLMNPRSTUVWXY';
@@ -103,17 +104,17 @@ class Person extends \Faker\Provider\Person
         $datePart = $birthdate->format('dmy');
 
         switch ((int)($birthdate->format('Y')/100)) {
-            case 18:
-                $centurySign = '+';
-                break;
-            case 19:
-                $centurySign = '-';
-                break;
-            case 20:
-                $centurySign = 'A';
-                break;
-            default:
-                throw new \InvalidArgumentException('Year must be between 1800 and 2099 inclusive.');
+        case 18:
+            $centurySign = '+';
+            break;
+        case 19:
+            $centurySign = '-';
+            break;
+        case 20:
+            $centurySign = 'A';
+            break;
+        default:
+            throw new \InvalidArgumentException('Year must be between 1800 and 2099 inclusive.');
         }
 
         $randomDigits = self::numberBetween(0, 89);

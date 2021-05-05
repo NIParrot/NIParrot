@@ -54,7 +54,8 @@ class CompiledRoute implements \Serializable
      */
     public function serialize()
     {
-        return serialize([
+        return serialize(
+            [
             'vars' => $this->variables,
             'path_prefix' => $this->staticPrefix,
             'path_regex' => $this->regex,
@@ -63,7 +64,8 @@ class CompiledRoute implements \Serializable
             'host_regex' => $this->hostRegex,
             'host_tokens' => $this->hostTokens,
             'host_vars' => $this->hostVariables,
-        ]);
+            ]
+        );
     }
 
     /**

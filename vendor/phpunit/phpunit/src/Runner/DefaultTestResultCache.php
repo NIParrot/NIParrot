@@ -198,10 +198,12 @@ final class DefaultTestResultCache implements Serializable, TestResultCache
 
     public function serialize(): string
     {
-        return serialize([
+        return serialize(
+            [
             'defects' => $this->defects,
             'times'   => $this->times,
-        ]);
+            ]
+        );
     }
 
     /**

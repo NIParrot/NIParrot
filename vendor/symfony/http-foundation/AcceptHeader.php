@@ -52,12 +52,16 @@ class AcceptHeader
     {
         $index = 0;
 
-        return new self(array_map(function ($itemValue) use (&$index) {
-            $item = AcceptHeaderItem::fromString($itemValue);
-            $item->setIndex($index++);
+        return new self(
+            array_map(
+                function ($itemValue) use (&$index) {
+                    $item = AcceptHeaderItem::fromString($itemValue);
+                    $item->setIndex($index++);
 
-            return $item;
-        }, preg_split('/\s*(?:,*("[^"]+"),*|,*(\'[^\']+\'),*|,+)\s*/', $headerValue, 0, \PREG_SPLIT_NO_EMPTY | \PREG_SPLIT_DELIM_CAPTURE)));
+                    return $item;
+                }, preg_split('/\s*(?:,*("[^"]+"),*|,*(\'[^\']+\'),*|,+)\s*/', $headerValue, 0, \PREG_SPLIT_NO_EMPTY | \PREG_SPLIT_DELIM_CAPTURE)
+            )
+        );
     }
 
     /**
@@ -128,9 +132,13 @@ class AcceptHeader
      */
     public function filter($pattern)
     {
-        return new self(array_filter($this->items, function (AcceptHeaderItem $item) use ($pattern) {
-            return preg_match($pattern, $item->getValue());
-        }));
+        return new self(
+            array_filter(
+                $this->items, function (AcceptHeaderItem $item) use ($pattern) {
+                    return preg_match($pattern, $item->getValue());
+                }
+            )
+        );
     }
 
     /**
@@ -151,16 +159,18 @@ class AcceptHeader
     private function sort()
     {
         if (!$this->sorted) {
-            uasort($this->items, function (AcceptHeaderItem $a, AcceptHeaderItem $b) {
-                $qA = $a->getQuality();
-                $qB = $b->getQuality();
+            uasort(
+                $this->items, function (AcceptHeaderItem $a, AcceptHeaderItem $b) {
+                    $qA = $a->getQuality();
+                    $qB = $b->getQuality();
 
-                if ($qA === $qB) {
-                    return $a->getIndex() > $b->getIndex() ? 1 : -1;
+                    if ($qA === $qB) {
+                        return $a->getIndex() > $b->getIndex() ? 1 : -1;
+                    }
+
+                    return $qA > $qB ? -1 : 1;
                 }
-
-                return $qA > $qB ? -1 : 1;
-            });
+            );
 
             $this->sorted = true;
         }

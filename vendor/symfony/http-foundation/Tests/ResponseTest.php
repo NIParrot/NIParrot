@@ -935,9 +935,9 @@ class ResponseTest extends ResponseTestCase
     /**
      * @see http://github.com/zendframework/zend-diactoros for the canonical source repository
      *
-     * @author Fábio Pacheco
+     * @author    Fábio Pacheco
      * @copyright Copyright (c) 2015-2016 Zend Technologies USA Inc. (http://www.zend.com)
-     * @license https://github.com/zendframework/zend-diactoros/blob/master/LICENSE.md New BSD License
+     * @license   https://github.com/zendframework/zend-diactoros/blob/master/LICENSE.md New BSD License
      */
     public function ianaCodesReasonPhrasesProvider()
     {
@@ -947,13 +947,15 @@ class ResponseTest extends ResponseTestCase
 
         $ianaHttpStatusCodes = new \DOMDocument();
 
-        $context = stream_context_create([
+        $context = stream_context_create(
+            [
             'http' => [
                 'method' => 'GET',
                 'timeout' => 30,
                 'user_agent' => __METHOD__,
             ],
-        ]);
+            ]
+        );
 
         if (!$rawStatusCodes = file_get_contents('https://www.iana.org/assignments/http-status-codes/http-status-codes.xml', false, $context)) {
             $this->markTestSkipped('The IANA server is throttling the list of status codes');

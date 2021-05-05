@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Reflection;
@@ -18,25 +18,39 @@ use Webmozart\Assert\Assert;
 
 final class DocBlock
 {
-    /** @var string The opening line for this docblock. */
+    /**
+     * @var string The opening line for this docblock. 
+     */
     private $summary;
 
-    /** @var DocBlock\Description The actual description for this docblock. */
+    /**
+     * @var DocBlock\Description The actual description for this docblock. 
+     */
     private $description;
 
-    /** @var Tag[] An array containing all the tags in this docblock; except inline. */
+    /**
+     * @var Tag[] An array containing all the tags in this docblock; except inline. 
+     */
     private $tags = [];
 
-    /** @var Types\Context|null Information about the context of this DocBlock. */
+    /**
+     * @var Types\Context|null Information about the context of this DocBlock. 
+     */
     private $context;
 
-    /** @var Location|null Information about the location of this DocBlock. */
+    /**
+     * @var Location|null Information about the location of this DocBlock. 
+     */
     private $location;
 
-    /** @var bool Is this DocBlock (the start of) a template? */
+    /**
+     * @var bool Is this DocBlock (the start of) a template? 
+     */
     private $isTemplateStart;
 
-    /** @var bool Does this DocBlock signify the end of a DocBlock template? */
+    /**
+     * @var bool Does this DocBlock signify the end of a DocBlock template? 
+     */
     private $isTemplateEnd;
 
     /**

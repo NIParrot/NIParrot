@@ -23,7 +23,7 @@ final class Config
      * Note that the previous section implies that this may return an empty
      * `Config` object if no valid nameserver entries can be found.
      *
-     * @return self
+     * @return             self
      * @codeCoverageIgnore
      */
     public static function loadSystemConfigBlocking()
@@ -67,7 +67,7 @@ final class Config
      * should be used in this case. This is left up to higher level consumers
      * of this API.
      *
-     * @param ?string $path (optional) path to resolv.conf file or null=load default location
+     * @param  ?string $path (optional) path to resolv.conf file or null=load default location
      * @return self
      * @throws RuntimeException if the path can not be loaded (does not exist)
      */
@@ -108,9 +108,9 @@ final class Config
      * Note that the previous section implies that this may return an empty
      * `Config` object if no valid nameserver entries can be found.
      *
-     * @param ?string $command (advanced) should not be given (NULL) unless you know what you're doing
+     * @param  ?string $command (advanced) should not be given (NULL) unless you know what you're doing
      * @return self
-     * @link https://ss64.com/nt/wmic.html
+     * @link   https://ss64.com/nt/wmic.html
      */
     public static function loadWmicBlocking($command = null)
     {

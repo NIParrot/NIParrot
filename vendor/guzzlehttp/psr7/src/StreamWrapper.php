@@ -11,13 +11,19 @@ use Psr\Http\Message\StreamInterface;
  */
 class StreamWrapper
 {
-    /** @var resource */
+    /**
+     * @var resource 
+     */
     public $context;
 
-    /** @var StreamInterface */
+    /**
+     * @var StreamInterface 
+     */
     private $stream;
 
-    /** @var string r, r+, or w */
+    /**
+     * @var string r, r+, or w 
+     */
     private $mode;
 
     /**
@@ -38,8 +44,10 @@ class StreamWrapper
         } elseif ($stream->isWritable()) {
             $mode = 'w';
         } else {
-            throw new \InvalidArgumentException('The stream must be readable, '
-                . 'writable, or both.');
+            throw new \InvalidArgumentException(
+                'The stream must be readable, '
+                . 'writable, or both.'
+            );
         }
 
         return fopen('guzzle://stream', $mode, null, self::createStreamContext($stream));
@@ -54,9 +62,11 @@ class StreamWrapper
      */
     public static function createStreamContext(StreamInterface $stream)
     {
-        return stream_context_create([
+        return stream_context_create(
+            [
             'guzzle' => ['stream' => $stream]
-        ]);
+            ]
+        );
     }
 
     /**

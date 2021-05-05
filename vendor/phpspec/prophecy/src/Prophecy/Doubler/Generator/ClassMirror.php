@@ -44,10 +44,9 @@ class ClassMirror
      * Reflects provided arguments into class node.
      *
      * @param ReflectionClass|null $class
-     * @param ReflectionClass[] $interfaces
+     * @param ReflectionClass[]    $interfaces
      *
      * @return Node\ClassNode
-     *
      */
     public function reflect(?ReflectionClass $class, array $interfaces)
     {
@@ -55,11 +54,13 @@ class ClassMirror
 
         if (null !== $class) {
             if (true === $class->isInterface()) {
-                throw new InvalidArgumentException(sprintf(
-                    "Could not reflect %s as a class, because it\n".
-                    "is interface - use the second argument instead.",
-                    $class->getName()
-                ));
+                throw new InvalidArgumentException(
+                    sprintf(
+                        "Could not reflect %s as a class, because it\n".
+                        "is interface - use the second argument instead.",
+                        $class->getName()
+                    )
+                );
             }
 
             $this->reflectClassToNode($class, $node);
@@ -67,18 +68,22 @@ class ClassMirror
 
         foreach ($interfaces as $interface) {
             if (!$interface instanceof ReflectionClass) {
-                throw new InvalidArgumentException(sprintf(
-                    "[ReflectionClass \$interface1 [, ReflectionClass \$interface2]] array expected as\n".
-                    "a second argument to `ClassMirror::reflect(...)`, but got %s.",
-                    is_object($interface) ? get_class($interface).' class' : gettype($interface)
-                ));
+                throw new InvalidArgumentException(
+                    sprintf(
+                        "[ReflectionClass \$interface1 [, ReflectionClass \$interface2]] array expected as\n".
+                        "a second argument to `ClassMirror::reflect(...)`, but got %s.",
+                        is_object($interface) ? get_class($interface).' class' : gettype($interface)
+                    )
+                );
             }
             if (false === $interface->isInterface()) {
-                throw new InvalidArgumentException(sprintf(
-                    "Could not reflect %s as an interface, because it\n".
-                    "is class - use the first argument instead.",
-                    $interface->getName()
-                ));
+                throw new InvalidArgumentException(
+                    sprintf(
+                        "Could not reflect %s as an interface, because it\n".
+                        "is class - use the first argument instead.",
+                        $interface->getName()
+                    )
+                );
             }
 
             $this->reflectInterfaceToNode($interface, $node);
@@ -92,9 +97,11 @@ class ClassMirror
     private function reflectClassToNode(ReflectionClass $class, Node\ClassNode $node)
     {
         if (true === $class->isFinal()) {
-            throw new ClassMirrorException(sprintf(
-                'Could not reflect class %s as it is marked final.', $class->getName()
-            ), $class);
+            throw new ClassMirrorException(
+                sprintf(
+                    'Could not reflect class %s as it is marked final.', $class->getName()
+                ), $class
+            );
         }
 
         $node->setParentClass($class->getName());
@@ -109,7 +116,8 @@ class ClassMirror
 
         foreach ($class->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
             if (0 === strpos($method->getName(), '_')
-                && !in_array($method->getName(), self::$reflectableMethods)) {
+                && !in_array($method->getName(), self::$reflectableMethods)
+            ) {
                 continue;
             }
 
@@ -221,7 +229,7 @@ class ClassMirror
         }
 
         $types = array_map(
-            function(string $type) use ($class) {
+            function (string $type) use ($class) {
                 if ($type === 'self') {
                     return $class->getName();
                 }

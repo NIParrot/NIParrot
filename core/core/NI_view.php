@@ -15,9 +15,9 @@ class NI_view
     {
         $page = self::$path . implode(SEP, func_get_args()) . '.php';
         if (file_exists($page)) {
-            require_once $page;
+            include_once $page;
         } else {
-            require_once ROOT.SEP.'ServerErrorHandeler.php';
+            include_once ROOT.SEP.'ServerErrorHandeler.php';
             exit;
         }
         self::notifications();
@@ -27,9 +27,9 @@ class NI_view
     {
         $page = self::$path . implode(SEP, func_get_args()) . '.html';
         if (file_exists($page)) {
-            require_once $page;
+            include_once $page;
         } else {
-            require_once ROOT.SEP.'ServerErrorHandeler.php';
+            include_once ROOT.SEP.'ServerErrorHandeler.php';
             exit;
         }
     }
@@ -44,7 +44,7 @@ class NI_view
             echo $NI_Mustache->render($templats, $view_args[1]);
             self::notifications();
         } else {
-            require_once ROOT.SEP.'ServerErrorHandeler.php';
+            include_once ROOT.SEP.'ServerErrorHandeler.php';
             exit;
         }
     }
@@ -81,7 +81,7 @@ class NI_view
             NI_template::footer($footer_js_arr);
             self::notifications();
         } else {
-            require_once ROOT.SEP.'ServerErrorHandeler.php';
+            include_once ROOT.SEP.'ServerErrorHandeler.php';
             exit;
         }
     }
@@ -107,7 +107,7 @@ class NI_view
             $twig = new \Twig\Environment(new \Twig\Loader\FilesystemLoader($path_for_twig));
             echo $twig->render($file_for_twig, $render_data);
         } else {
-            require_once ROOT.SEP.'ServerErrorHandeler.php';
+            include_once ROOT.SEP.'ServerErrorHandeler.php';
             exit;
         }
     }

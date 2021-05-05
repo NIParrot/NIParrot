@@ -43,12 +43,14 @@ ini_set('session.cache_limiter', '');
 header_remove('X-Powered-By');
 header('Content-Type: text/plain; charset=utf-8');
 
-register_shutdown_function(function () {
-    echo "\n";
-    session_write_close();
-    print_r(headers_list());
-    echo "shutdown\n";
-});
+register_shutdown_function(
+    function () {
+        echo "\n";
+        session_write_close();
+        print_r(headers_list());
+        echo "shutdown\n";
+    }
+);
 ob_start();
 
 class TestSessionHandler extends AbstractSessionHandler

@@ -83,40 +83,46 @@ final class TcpConnector implements ConnectorInterface
         );
 
         if (false === $stream) {
-            return Promise\reject(new \RuntimeException(
-                \sprintf("Connection to %s failed: %s", $uri, $errstr),
-                $errno
-            ));
+            return Promise\reject(
+                new \RuntimeException(
+                    \sprintf("Connection to %s failed: %s", $uri, $errstr),
+                    $errno
+                )
+            );
         }
 
         // wait for connection
         $loop = $this->loop;
-        return new Promise\Promise(function ($resolve, $reject) use ($loop, $stream, $uri) {
-            $loop->addWriteStream($stream, function ($stream) use ($loop, $resolve, $reject, $uri) {
+        return new Promise\Promise(
+            function ($resolve, $reject) use ($loop, $stream, $uri) {
+                $loop->addWriteStream(
+                    $stream, function ($stream) use ($loop, $resolve, $reject, $uri) {
+                        $loop->removeWriteStream($stream);
+
+                        // The following hack looks like the only way to
+                        // detect connection refused errors with PHP's stream sockets.
+                        if (false === \stream_socket_get_name($stream, true)) {
+                            \fclose($stream);
+
+                            $reject(new \RuntimeException('Connection to ' . $uri . ' failed: Connection refused'));
+                        } else {
+                            $resolve(new Connection($stream, $loop));
+                        }
+                    }
+                );
+            }, function () use ($loop, $stream, $uri) {
                 $loop->removeWriteStream($stream);
-
-                // The following hack looks like the only way to
-                // detect connection refused errors with PHP's stream sockets.
-                if (false === \stream_socket_get_name($stream, true)) {
-                    \fclose($stream);
-
-                    $reject(new \RuntimeException('Connection to ' . $uri . ' failed: Connection refused'));
-                } else {
-                    $resolve(new Connection($stream, $loop));
-                }
-            });
-        }, function () use ($loop, $stream, $uri) {
-            $loop->removeWriteStream($stream);
-            \fclose($stream);
-
-            // @codeCoverageIgnoreStart
-            // legacy PHP 5.3 sometimes requires a second close call (see tests)
-            if (\PHP_VERSION_ID < 50400 && \is_resource($stream)) {
                 \fclose($stream);
-            }
-            // @codeCoverageIgnoreEnd
 
-            throw new \RuntimeException('Connection to ' . $uri . ' cancelled during TCP/IP handshake');
-        });
+                // @codeCoverageIgnoreStart
+                // legacy PHP 5.3 sometimes requires a second close call (see tests)
+                if (\PHP_VERSION_ID < 50400 && \is_resource($stream)) {
+                    \fclose($stream);
+                }
+                // @codeCoverageIgnoreEnd
+
+                throw new \RuntimeException('Connection to ' . $uri . ' cancelled during TCP/IP handshake');
+            }
+        );
     }
 }

@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Reflection;
@@ -34,10 +34,14 @@ use function trim;
 
 final class DocBlockFactory implements DocBlockFactoryInterface
 {
-    /** @var DocBlock\DescriptionFactory */
+    /**
+     * @var DocBlock\DescriptionFactory 
+     */
     private $descriptionFactory;
 
-    /** @var DocBlock\TagFactory */
+    /**
+     * @var DocBlock\TagFactory 
+     */
     private $tagFactory;
 
     /**

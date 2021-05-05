@@ -91,33 +91,33 @@ class HtmlLorem extends Base
     {
         $rand = mt_rand(1, 10);
         switch ($rand) {
-            case 1:
-                $this->addRandomP($node);
-                break;
-            case 2:
-                $this->addRandomA($node);
-                break;
-            case 3:
-                $this->addRandomSpan($node);
-                break;
-            case 4:
-                $this->addRandomUL($node);
-                break;
-            case 5:
-                $this->addRandomH($node);
-                break;
-            case 6:
-                $this->addRandomB($node);
-                break;
-            case 7:
-                $this->addRandomI($node);
-                break;
-            case 8:
-                $this->addRandomTable($node);
-                break;
-            default:
-                $this->addRandomText($node);
-                break;
+        case 1:
+            $this->addRandomP($node);
+            break;
+        case 2:
+            $this->addRandomA($node);
+            break;
+        case 3:
+            $this->addRandomSpan($node);
+            break;
+        case 4:
+            $this->addRandomUL($node);
+            break;
+        case 5:
+            $this->addRandomH($node);
+            break;
+        case 6:
+            $this->addRandomB($node);
+            break;
+        case 7:
+            $this->addRandomI($node);
+            break;
+        case 8:
+            $this->addRandomTable($node);
+            break;
+        default:
+            $this->addRandomText($node);
+            break;
         }
     }
 
@@ -125,12 +125,12 @@ class HtmlLorem extends Base
     {
         $rand = mt_rand(1, 2);
         switch ($rand) {
-            case 1:
-                $node->setAttribute("class", $this->generator->word);
-                break;
-            case 2:
-                $node->setAttribute("id", (string)$this->idGenerator->randomNumber(5));
-                break;
+        case 1:
+            $node->setAttribute("class", $this->generator->word);
+            break;
+        case 2:
+            $node->setAttribute("id", (string)$this->idGenerator->randomNumber(5));
+            break;
         }
     }
 

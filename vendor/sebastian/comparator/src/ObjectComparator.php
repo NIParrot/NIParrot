@@ -63,8 +63,9 @@ class ObjectComparator extends ArrayComparator
         }
 
         // don't compare twice to allow for cyclic dependencies
-        if (in_array([$actual, $expected], $processed, true) ||
-            in_array([$expected, $actual], $processed, true)) {
+        if (in_array([$actual, $expected], $processed, true) 
+            || in_array([$expected, $actual], $processed, true)
+        ) {
             return;
         }
 

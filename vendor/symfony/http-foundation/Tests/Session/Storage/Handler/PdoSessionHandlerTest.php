@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
 
 /**
  * @requires extension pdo_sqlite
- * @group time-sensitive
+ * @group    time-sensitive
  */
 class PdoSessionHandlerTest extends TestCase
 {
@@ -171,14 +171,18 @@ class PdoSessionHandlerTest extends TestCase
         $exception = null;
 
         $selectStmt->expects($this->atLeast(2))->method('fetchAll')
-            ->willReturnCallback(function () use (&$exception, $stream) {
-                return $exception ? [[$stream, 42, time()]] : [];
-            });
+            ->willReturnCallback(
+                function () use (&$exception, $stream) {
+                    return $exception ? [[$stream, 42, time()]] : [];
+                }
+            );
 
         $insertStmt->expects($this->once())->method('execute')
-            ->willReturnCallback(function () use (&$exception) {
-                throw $exception = new \PDOException('', '23');
-            });
+            ->willReturnCallback(
+                function () use (&$exception) {
+                    throw $exception = new \PDOException('', '23');
+                }
+            );
 
         $storage = new PdoSessionHandler($pdo);
         $result = $storage->read('foo');

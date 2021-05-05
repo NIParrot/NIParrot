@@ -1,44 +1,74 @@
 <?php
 
+namespace Api;
+
 class NI_JWT
 {
-    public static function CheckToken($jwt)
+    public static function CheckMangerToken($jwt)
     {
         try {
-            $decoded = JWT::decode($jwt, APISK, array('HS256'));
-            $data =json_decode(json_encode($decoded->data), true);
-            /*  $user = model\users::check($data);
-             if (empty($user)) {
-                 return (array(
-                     false,
-                      "error" => 'error on token',
-                      "data" => $data
-                  ));
-             }else{
-                 return (array(
-                     true,
-                     $user->id,
-                     'user'
-                 ));
-             } */
-        } catch (Exception $e) {
+            $decoded = \JWT::decode($jwt, APISK, array('HS256'));
+            $data = json_decode(json_encode($decoded->data), true);
+            $user = \model\Managers::check($data);
+            if (empty($user)) {
+                return (array(
+                    false,
+                    "error" => 'error on token',
+                    "data" => $data
+                ));
+            } else {
+                return (array(
+                    true,
+                    $user->id,
+                    'manager'
+                ));
+            }
+        } catch (\Exception $e) {
             return (array(
-               false,
+                false,
                 "error" => $e->getMessage()
             ));
         }
     }
 
-    public static function CreateToken(array $data)
+    public static function CheckFatherToken($jwt)
+    {
+        try {
+            $decoded = \JWT::decode($jwt, APISK, array('HS256'));
+            $data = json_decode(json_encode($decoded->data), true);
+            $user = \model\Fathers::check($data);
+            if (empty($user)) {
+                return (array(
+                    false,
+                    "error" => 'error on token',
+                    "data" => $data
+                ));
+            } else {
+                return (array(
+                    true,
+                    $user->id,
+                    'father'
+                ));
+            }
+        } catch (\Exception $e) {
+            return (array(
+                false,
+                "error" => $e->getMessage()
+            ));
+        }
+    }
+
+    public static function CreateToken(object $data)
     {
         $issuedat_claim = time(); // issued at
         $token = array(
             "iat" => $issuedat_claim,
             "data" => array(
-                "mail" => $data['mail'],
-                "password" => $data['password']
-        ));
-        return JWT::encode($token, APISK);
+                "username" => $data->username,
+                "password" => $data->password
+            )
+        );
+        return \JWT::encode($token, APISK);
     }
 
     public static function getJWT()

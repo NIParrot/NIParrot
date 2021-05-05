@@ -2,7 +2,8 @@
 
 namespace Filterus\Filters;
 
-class Arrays extends \Filterus\Filter {
+class Arrays extends \Filterus\Filter
+{
     
     protected $defaultOptions = array(
         'min' => 0,
@@ -11,7 +12,8 @@ class Arrays extends \Filterus\Filter {
         'values' => null,
     );
 
-    public function filter($var) {
+    public function filter($var)
+    {
         if (!is_array($var)) {
             return null;
         }
@@ -41,7 +43,8 @@ class Arrays extends \Filterus\Filter {
         return $var;
     }
 
-    public function validate($var) {
+    public function validate($var)
+    {
         if (!is_array($var)) {
             return false;
         }

@@ -157,7 +157,11 @@ class JsonResponse extends Response
             $data = json_encode($data, $this->encodingOptions);
         } else {
             if (!interface_exists('JsonSerializable', false)) {
-                set_error_handler(function () { return false; });
+                set_error_handler(
+                    function () {
+                        return false; 
+                    }
+                );
                 try {
                     $data = @json_encode($data, $this->encodingOptions);
                 } finally {

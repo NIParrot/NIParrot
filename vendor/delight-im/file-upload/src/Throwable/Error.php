@@ -8,4 +8,6 @@
 
 namespace Delight\FileUpload\Throwable;
 
-class Error extends \Exception {}
+class Error extends \Exception
+{
+}

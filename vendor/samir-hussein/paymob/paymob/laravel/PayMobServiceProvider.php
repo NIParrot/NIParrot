@@ -13,10 +13,12 @@ class PayMobServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->publishes([
+        $this->publishes(
+            [
             // Config file.
             __DIR__ . '/config/paymob.php' => config_path('paymob.php'),
-        ]);
+            ]
+        );
     }
 
     /**
@@ -27,8 +29,10 @@ class PayMobServiceProvider extends ServiceProvider
     public function register()
     {
         // PayMob Facede.
-        $this->app->singleton('paymob', function () {
-            return new PayMob;
-        });
+        $this->app->singleton(
+            'paymob', function () {
+                return new PayMob;
+            }
+        );
     }
 }

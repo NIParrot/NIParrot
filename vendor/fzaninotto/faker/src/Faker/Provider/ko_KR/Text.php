@@ -16,7 +16,7 @@ class Text extends \Faker\Provider\Text
      * @licence https://creativecommons.org/licenses/by-sa/3.0/deed.ko
      * @see     https://wikimediafoundation.org/wiki/Terms_of_Use/
      * @link    https://ko.wikisource.org/wiki/유정
-     * @var string
+     * @var     string
      */
     protected static $baseText = <<<'EOT'
 최석(崔晳)으로부터 최후의 편지가 온 지가 벌써 일 년이 지났다. 그는 바이칼 호수에 몸을 던져 버렸는가. 또는 시베리아 어느 으슥한 곳에 숨어서 세상을 잊고 있는가. 또 최석의 뒤를 따라간다고 북으로 한정 없이 가 버린 남정임(南貞妊)도 어찌 되었는지, 이 글을 쓰기 시작할 이 때까지에는 아직 소식이 없다. 나는 이 두 사람의 일을 알아보려고 하얼빈, 치치하얼, 치타, 이르쿠츠크에 있는 친구들한테 편지를 부쳐 탐문도 해 보았으나 그 회답은 다 `모른다'는 것뿐이었다. 모스크바에도 두어 번 편지를 띄워 보았으나 역시 마찬가지로 모른다는 회답뿐이었다.

@@ -21,10 +21,10 @@ class ColumnTypeGuesser
     {
         $generator = $this->generator;
         switch ($field['type']) {
-            case 'boolean':
-                return function () use ($generator) {
+        case 'boolean':
+            return function () use ($generator) {
                     return $generator->boolean;
-                };
+            };
             case 'integer':
                 return function () {
                     return mt_rand(0, intval('4294967295'));

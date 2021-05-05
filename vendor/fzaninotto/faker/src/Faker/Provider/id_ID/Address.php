@@ -86,6 +86,7 @@ class Address extends \Faker\Provider\Address
     /**
      * Abbreviated State Names.
      * Currently this is all just a guesswork, but should be highly accurate
+     *
      * @var array
      */
     protected static $stateAbbr = array(
@@ -97,8 +98,8 @@ class Address extends \Faker\Provider\Address
     );
 
     /**
-    * @link http://id.wikipedia.org/wiki/Daftar_negara-negara_di_dunia
-    **/
+     * @link http://id.wikipedia.org/wiki/Daftar_negara-negara_di_dunia
+     **/
     protected static $country = array(
         'Afganistan', 'Afrika Selatan', 'Albania', 'Aljazair',
         'Amerika Serikat', 'Andorra', 'Angola', 'Anguilla',

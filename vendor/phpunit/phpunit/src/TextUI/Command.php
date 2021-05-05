@@ -436,10 +436,10 @@ class Command
 
             if ($loaderFile) {
                 /**
-                 * @noinspection PhpIncludeInspection
+                 * @noinspection   PhpIncludeInspection
                  * @psalm-suppress UnresolvableInclude
                  */
-                require $loaderFile;
+                include $loaderFile;
             }
         }
 
@@ -497,10 +497,10 @@ class Command
 
             if ($printerFile) {
                 /**
-                 * @noinspection PhpIncludeInspection
+                 * @noinspection   PhpIncludeInspection
                  * @psalm-suppress UnresolvableInclude
                  */
-                require $printerFile;
+                include $printerFile;
             }
         }
 

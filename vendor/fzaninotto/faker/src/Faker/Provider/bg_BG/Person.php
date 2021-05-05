@@ -88,7 +88,7 @@ class Person extends \Faker\Provider\Person
     protected static $titleFemale = array('Г-жа', 'Г-ца', 'Др.');
 
     /**
-     * @param string|null $gender 'male', 'female' or null for any
+     * @param   string|null $gender 'male', 'female' or null for any
      * @example 'Чанталиев'
      */
     public function lastName($gender = null)

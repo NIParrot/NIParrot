@@ -9,7 +9,9 @@ namespace SimpleExcel\Exception;
  * @package SimpleExcel
  */
 
-/** define exception enum */
+/**
+ * define exception enum 
+ */
 abstract class SimpleExcelException
 {
     const UNKNOWN                       = 0;

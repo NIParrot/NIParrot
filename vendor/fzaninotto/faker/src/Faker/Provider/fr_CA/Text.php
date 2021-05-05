@@ -4,7 +4,7 @@ namespace Faker\Provider\fr_CA;
 
 class Text extends \Faker\Provider\Text
 {
-   /**
+    /**
      * The Project Gutenberg EBook of La chasse galerie, by Honoré Beaugrand
      *
      * This eBook is for the use of anyone anywhere at no cost and with
@@ -97,9 +97,6 @@ class Text extends \Faker\Provider\Text
      * des hommes au langage aussi rude que leur difficile métier.
      *
      * H.B.
-     *
-     *
-     *
      *
      * @see http://www.gutenberg.org/cache/epub/16210/pg16210.txt
      * @var string

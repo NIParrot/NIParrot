@@ -115,7 +115,7 @@ class Exporter
      *
      * @return string
      *
-     * @see    SebastianBergmann\Exporter\Exporter::export
+     * @see SebastianBergmann\Exporter\Exporter::export
      */
     public function shortenedExport($value)
     {
@@ -215,7 +215,7 @@ class Exporter
      *
      * @return string
      *
-     * @see    SebastianBergmann\Exporter\Exporter::export
+     * @see SebastianBergmann\Exporter\Exporter::export
      */
     protected function recursiveExport(&$value, $indentation, $processed = null)
     {

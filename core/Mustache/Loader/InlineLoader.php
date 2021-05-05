@@ -21,10 +21,10 @@
  *
  *     __halt_compiler();
  *
- *     @@ hello
+ * @@ hello
  *     Hello, {{ planet }}!
  *
- *     @@ goodbye
+ * @@ goodbye
  *     Goodbye, cruel {{ planet }}
  *
  * Templates are deliniated by lines containing only `@@ name`.
@@ -44,7 +44,7 @@
  *
  *     __halt_compiler();
  *
- *     @@ hello
+ * @@ hello
  *     Hello, {{ name }}!
  */
 class Mustache_Loader_InlineLoader implements Mustache_Loader

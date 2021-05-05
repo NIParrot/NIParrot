@@ -3,18 +3,23 @@ use Ratchet\ConnectionInterface;
 
     require dirname(dirname(dirname(__DIR__))) . '/vendor/autoload.php';
 
-class BinaryEcho implements \Ratchet\WebSocket\MessageComponentInterface {
-    public function onMessage(ConnectionInterface $from, \Ratchet\RFC6455\Messaging\MessageInterface $msg) {
+class BinaryEcho implements \Ratchet\WebSocket\MessageComponentInterface
+{
+    public function onMessage(ConnectionInterface $from, \Ratchet\RFC6455\Messaging\MessageInterface $msg)
+    {
         $from->send($msg);
     }
 
-    public function onOpen(ConnectionInterface $conn) {
+    public function onOpen(ConnectionInterface $conn)
+    {
     }
 
-    public function onClose(ConnectionInterface $conn) {
+    public function onClose(ConnectionInterface $conn)
+    {
     }
 
-    public function onError(ConnectionInterface $conn, \Exception $e) {
+    public function onError(ConnectionInterface $conn, \Exception $e)
+    {
     }
 }
 

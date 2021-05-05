@@ -16,7 +16,7 @@ interface InstantiatorInterface
      *
      * @throws ExceptionInterface
      *
-     * @template T of object
+     * @template      T of object
      * @phpstan-param class-string<T> $className
      */
     public function instantiate($className);

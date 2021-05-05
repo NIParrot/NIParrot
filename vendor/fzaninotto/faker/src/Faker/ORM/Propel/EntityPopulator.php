@@ -51,7 +51,7 @@ class EntityPopulator
     }
 
     /**
-     * @param \Faker\Generator $generator
+     * @param  \Faker\Generator $generator
      * @return array
      */
     public function guessColumnFormatters(\Faker\Generator $generator)
@@ -91,7 +91,7 @@ class EntityPopulator
     }
 
     /**
-     * @param ColumnMap $columnMap
+     * @param  ColumnMap $columnMap
      * @return bool
      */
     protected function isColumnBehavior(ColumnMap $columnMap)
@@ -99,18 +99,18 @@ class EntityPopulator
         foreach ($columnMap->getTable()->getBehaviors() as $name => $params) {
             $columnName = Base::toLower($columnMap->getName());
             switch ($name) {
-                case 'nested_set':
-                    $columnNames = array($params['left_column'], $params['right_column'], $params['level_column']);
-                    if (in_array($columnName, $columnNames)) {
-                        return true;
-                    }
-                    break;
-                case 'timestampable':
-                    $columnNames = array($params['create_column'], $params['update_column']);
-                    if (in_array($columnName, $columnNames)) {
-                        return true;
-                    }
-                    break;
+            case 'nested_set':
+                $columnNames = array($params['left_column'], $params['right_column'], $params['level_column']);
+                if (in_array($columnName, $columnNames)) {
+                    return true;
+                }
+                break;
+            case 'timestampable':
+                $columnNames = array($params['create_column'], $params['update_column']);
+                if (in_array($columnName, $columnNames)) {
+                    return true;
+                }
+                break;
             }
         }
 
@@ -136,7 +136,7 @@ class EntityPopulator
     }
 
     /**
-     * @param \Faker\Generator $generator
+     * @param  \Faker\Generator $generator
      * @return array
      */
     public function guessModifiers(\Faker\Generator $generator)
@@ -147,23 +147,23 @@ class EntityPopulator
         $tableMap = $peerClass::getTableMap();
         foreach ($tableMap->getBehaviors() as $name => $params) {
             switch ($name) {
-                case 'nested_set':
-                    $modifiers['nested_set'] = function ($obj, $inserted) use ($class, $generator) {
-                        if (isset($inserted[$class])) {
-                            $queryClass = $class . 'Query';
-                            $parent = $queryClass::create()->findPk($generator->randomElement($inserted[$class]));
-                            $obj->insertAsLastChildOf($parent);
-                        } else {
-                            $obj->makeRoot();
-                        }
-                    };
-                    break;
-                case 'sortable':
-                    $modifiers['sortable'] = function ($obj, $inserted) use ($class) {
-                        $maxRank = isset($inserted[$class]) ? count($inserted[$class]) : 0;
-                        $obj->insertAtRank(mt_rand(1, $maxRank + 1));
-                    };
-                    break;
+            case 'nested_set':
+                $modifiers['nested_set'] = function ($obj, $inserted) use ($class, $generator) {
+                    if (isset($inserted[$class])) {
+                        $queryClass = $class . 'Query';
+                        $parent = $queryClass::create()->findPk($generator->randomElement($inserted[$class]));
+                        $obj->insertAsLastChildOf($parent);
+                    } else {
+                        $obj->makeRoot();
+                    }
+                };
+                break;
+            case 'sortable':
+                $modifiers['sortable'] = function ($obj, $inserted) use ($class) {
+                    $maxRank = isset($inserted[$class]) ? count($inserted[$class]) : 0;
+                    $obj->insertAtRank(mt_rand(1, $maxRank + 1));
+                };
+                break;
             }
         }
 

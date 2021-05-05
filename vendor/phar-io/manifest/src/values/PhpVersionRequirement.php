@@ -11,15 +11,20 @@ namespace PharIo\Manifest;
 
 use PharIo\Version\VersionConstraint;
 
-class PhpVersionRequirement implements Requirement {
-    /** @var VersionConstraint */
+class PhpVersionRequirement implements Requirement
+{
+    /**
+     * @var VersionConstraint 
+     */
     private $versionConstraint;
 
-    public function __construct(VersionConstraint $versionConstraint) {
+    public function __construct(VersionConstraint $versionConstraint)
+    {
         $this->versionConstraint = $versionConstraint;
     }
 
-    public function getVersionConstraint(): VersionConstraint {
+    public function getVersionConstraint(): VersionConstraint
+    {
         return $this->versionConstraint;
     }
 }

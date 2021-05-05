@@ -16,6 +16,7 @@ use SebastianBergmann\RecursionContext\Context;
 
 /**
  * This class is a modification from sebastianbergmann/exporter
+ *
  * @see https://github.com/sebastianbergmann/exporter
  */
 class ExportUtil
@@ -33,8 +34,8 @@ class ExportUtil
      *  - Carriage returns and newlines are normalized to \n
      *  - Recursion and repeated rendering is treated properly
      *
-     * @param  mixed  $value
-     * @param  int    $indentation The indentation level of the 2nd+ line
+     * @param  mixed $value
+     * @param  int   $indentation The indentation level of the 2nd+ line
      * @return string
      */
     public static function export($value, $indentation = 0)

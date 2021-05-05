@@ -111,7 +111,7 @@ interface ServerInterface extends EventEmitterInterface
      * calling `pause()` more than once SHOULD NOT have any effect.
      * Similarly, calling this after `close()` is a NO-OP.
      *
-     * @see self::resume()
+     * @see    self::resume()
      * @return void
      */
     public function pause();
@@ -133,7 +133,7 @@ interface ServerInterface extends EventEmitterInterface
      * calling `resume()` without a prior `pause()` SHOULD NOT have any effect.
      * Similarly, calling this after `close()` is a NO-OP.
      *
-     * @see self::pause()
+     * @see    self::pause()
      * @return void
      */
     public function resume();

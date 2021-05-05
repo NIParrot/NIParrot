@@ -79,15 +79,16 @@ final class Filter
             return $this->isFileCache[$filename];
         }
 
-        if ($filename === '-' ||
-            strpos($filename, 'vfs://') === 0 ||
-            strpos($filename, 'xdebug://debug-eval') !== false ||
-            strpos($filename, 'eval()\'d code') !== false ||
-            strpos($filename, 'runtime-created function') !== false ||
-            strpos($filename, 'runkit created function') !== false ||
-            strpos($filename, 'assert code') !== false ||
-            strpos($filename, 'regexp code') !== false ||
-            strpos($filename, 'Standard input code') !== false) {
+        if ($filename === '-' 
+            || strpos($filename, 'vfs://') === 0 
+            || strpos($filename, 'xdebug://debug-eval') !== false 
+            || strpos($filename, 'eval()\'d code') !== false 
+            || strpos($filename, 'runtime-created function') !== false 
+            || strpos($filename, 'runkit created function') !== false 
+            || strpos($filename, 'assert code') !== false 
+            || strpos($filename, 'regexp code') !== false 
+            || strpos($filename, 'Standard input code') !== false
+        ) {
             $isFile = false;
         } else {
             $isFile = is_file($filename);

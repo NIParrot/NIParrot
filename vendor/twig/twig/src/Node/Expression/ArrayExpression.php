@@ -77,8 +77,7 @@ class ArrayExpression extends AbstractExpression
             $compiler
                 ->subcompile($pair['key'])
                 ->raw(' => ')
-                ->subcompile($pair['value'])
-            ;
+                ->subcompile($pair['value']);
         }
         $compiler->raw(']');
     }

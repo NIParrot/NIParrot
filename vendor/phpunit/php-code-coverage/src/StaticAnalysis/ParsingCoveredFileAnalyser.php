@@ -190,27 +190,30 @@ final class ParsingCoveredFileAnalyser implements CoveredFileAnalyser
             }
 
             switch ($token[0]) {
-                case T_COMMENT:
-                case T_DOC_COMMENT:
-                    if (!$useAnnotationsForIgnoringCode) {
-                        break;
-                    }
-
-                    $comment = trim($token[1]);
-
-                    if ($comment === '// @codeCoverageIgnore' ||
-                        $comment === '//@codeCoverageIgnore') {
-                        $ignore = true;
-                        $stop   = true;
-                    } elseif ($comment === '// @codeCoverageIgnoreStart' ||
-                        $comment === '//@codeCoverageIgnoreStart') {
-                        $ignore = true;
-                    } elseif ($comment === '// @codeCoverageIgnoreEnd' ||
-                        $comment === '//@codeCoverageIgnoreEnd') {
-                        $stop = true;
-                    }
-
+            case T_COMMENT:
+            case T_DOC_COMMENT:
+                if (!$useAnnotationsForIgnoringCode) {
                     break;
+                }
+
+                $comment = trim($token[1]);
+
+                if ($comment === '// @codeCoverageIgnore' 
+                    || $comment === '//@codeCoverageIgnore'
+                ) {
+                    $ignore = true;
+                    $stop   = true;
+                } elseif ($comment === '// @codeCoverageIgnoreStart' 
+                    || $comment === '//@codeCoverageIgnoreStart'
+                ) {
+                    $ignore = true;
+                } elseif ($comment === '// @codeCoverageIgnoreEnd' 
+                    || $comment === '//@codeCoverageIgnoreEnd'
+                ) {
+                    $stop = true;
+                }
+
+                break;
             }
 
             if ($ignore) {

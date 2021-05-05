@@ -65,7 +65,7 @@ final class Instantiator implements InstantiatorInterface
      *
      * @return object
      *
-     * @template T of object
+     * @template      T of object
      * @phpstan-param class-string<T> $className
      *
      * @phpstan-return T
@@ -90,7 +90,7 @@ final class Instantiator implements InstantiatorInterface
      * @throws UnexpectedValueException
      * @throws ReflectionException
      *
-     * @template T of object
+     * @template      T of object
      * @phpstan-param class-string<T> $className
      *
      * @phpstan-return callable(): T
@@ -121,7 +121,7 @@ final class Instantiator implements InstantiatorInterface
      * @throws InvalidArgumentException
      * @throws ReflectionException
      *
-     * @template T of object
+     * @template      T of object
      * @phpstan-param class-string<T> $className
      *
      * @phpstan-return ReflectionClass<T>
@@ -144,22 +144,24 @@ final class Instantiator implements InstantiatorInterface
     /**
      * @throws UnexpectedValueException
      *
-     * @template T of object
+     * @template      T of object
      * @phpstan-param ReflectionClass<T> $reflectionClass
      */
     private function checkIfUnSerializationIsSupported(ReflectionClass $reflectionClass, string $serializedString): void
     {
-        set_error_handler(static function (int $code, string $message, string $file, int $line) use ($reflectionClass, &$error): bool {
-            $error = UnexpectedValueException::fromUncleanUnSerialization(
-                $reflectionClass,
-                $message,
-                $code,
-                $file,
-                $line
-            );
+        set_error_handler(
+            static function (int $code, string $message, string $file, int $line) use ($reflectionClass, &$error): bool {
+                $error = UnexpectedValueException::fromUncleanUnSerialization(
+                    $reflectionClass,
+                    $message,
+                    $code,
+                    $file,
+                    $line
+                );
 
-            return true;
-        });
+                return true;
+            }
+        );
 
         try {
             $this->attemptInstantiationViaUnSerialization($reflectionClass, $serializedString);
@@ -175,7 +177,7 @@ final class Instantiator implements InstantiatorInterface
     /**
      * @throws UnexpectedValueException
      *
-     * @template T of object
+     * @template      T of object
      * @phpstan-param ReflectionClass<T> $reflectionClass
      */
     private function attemptInstantiationViaUnSerialization(ReflectionClass $reflectionClass, string $serializedString): void
@@ -188,7 +190,7 @@ final class Instantiator implements InstantiatorInterface
     }
 
     /**
-     * @template T of object
+     * @template      T of object
      * @phpstan-param ReflectionClass<T> $reflectionClass
      */
     private function isInstantiableViaReflection(ReflectionClass $reflectionClass): bool
@@ -199,7 +201,7 @@ final class Instantiator implements InstantiatorInterface
     /**
      * Verifies whether the given class is to be considered internal
      *
-     * @template T of object
+     * @template      T of object
      * @phpstan-param ReflectionClass<T> $reflectionClass
      */
     private function hasInternalAncestors(ReflectionClass $reflectionClass): bool
@@ -220,7 +222,7 @@ final class Instantiator implements InstantiatorInterface
      *
      * Classes implementing `__clone` cannot be safely cloned, as that may cause side-effects.
      *
-     * @template T of object
+     * @template      T of object
      * @phpstan-param ReflectionClass<T> $reflectionClass
      */
     private function isSafeToClone(ReflectionClass $reflectionClass): bool

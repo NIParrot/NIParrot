@@ -2,13 +2,15 @@
 
 namespace Filterus\Filters;
 
-class Map extends \Filterus\Filter {
+class Map extends \Filterus\Filter
+{
     
     protected $defaultOptions = array(
         'filters' => array(),
     );
 
-    public function filter($var) {
+    public function filter($var)
+    {
         if (!is_object($var) && !is_array($var)) {
             return null;
         }
@@ -35,7 +37,8 @@ class Map extends \Filterus\Filter {
         return $var;
     }
 
-    public function validate($var) {
+    public function validate($var)
+    {
         if (!is_object($var) && !is_array($var)) {
             return false;
         }

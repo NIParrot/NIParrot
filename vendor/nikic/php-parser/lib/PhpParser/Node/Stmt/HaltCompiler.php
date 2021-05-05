@@ -6,7 +6,9 @@ use PhpParser\Node\Stmt;
 
 class HaltCompiler extends Stmt
 {
-    /** @var string Remaining text after halt compiler statement. */
+    /**
+     * @var string Remaining text after halt compiler statement. 
+     */
     public $remaining;
 
     /**
@@ -15,16 +17,19 @@ class HaltCompiler extends Stmt
      * @param string $remaining  Remaining text after halt compiler statement.
      * @param array  $attributes Additional attributes
      */
-    public function __construct(string $remaining, array $attributes = []) {
+    public function __construct(string $remaining, array $attributes = [])
+    {
         $this->attributes = $attributes;
         $this->remaining = $remaining;
     }
 
-    public function getSubNodeNames() : array {
+    public function getSubNodeNames() : array
+    {
         return ['remaining'];
     }
     
-    public function getType() : string {
+    public function getType() : string
+    {
         return 'Stmt_HaltCompiler';
     }
 }

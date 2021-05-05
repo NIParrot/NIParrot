@@ -12,41 +12,53 @@ namespace PharIo\Manifest;
 use DOMElement;
 use DOMNodeList;
 
-abstract class ElementCollection implements \Iterator {
-    /** @var DOMElement[] */
+abstract class ElementCollection implements \Iterator
+{
+    /**
+     * @var DOMElement[] 
+     */
     private $nodes = [];
 
-    /** @var int */
+    /**
+     * @var int 
+     */
     private $position;
 
-    public function __construct(DOMNodeList $nodeList) {
+    public function __construct(DOMNodeList $nodeList)
+    {
         $this->position = 0;
         $this->importNodes($nodeList);
     }
 
     abstract public function current();
 
-    public function next(): void {
+    public function next(): void
+    {
         $this->position++;
     }
 
-    public function key() {
+    public function key()
+    {
         return $this->position;
     }
 
-    public function valid() {
+    public function valid()
+    {
         return $this->position < \count($this->nodes);
     }
 
-    public function rewind(): void {
+    public function rewind(): void
+    {
         $this->position = 0;
     }
 
-    protected function getCurrentElement(): DOMElement {
+    protected function getCurrentElement(): DOMElement
+    {
         return $this->nodes[$this->position];
     }
 
-    private function importNodes(DOMNodeList $nodeList): void {
+    private function importNodes(DOMNodeList $nodeList): void
+    {
         foreach ($nodeList as $node) {
             if (!$node instanceof DOMElement) {
                 throw new ElementCollectionException(

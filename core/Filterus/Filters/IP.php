@@ -2,7 +2,8 @@
 
 namespace Filterus\Filters;
 
-class IP extends \Filterus\Filter {
+class IP extends \Filterus\Filter
+{
     
     protected $defaultOptions = array(
         'ipv4' => true,
@@ -11,7 +12,8 @@ class IP extends \Filterus\Filter {
         'reserved' => true,
     );
 
-    public function filter($var) {
+    public function filter($var)
+    {
         $flags = 0;
         if ($this->options['ipv4']) {
             $flags |= FILTER_FLAG_IPV4;

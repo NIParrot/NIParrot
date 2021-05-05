@@ -59,10 +59,10 @@ final class PharLoader
             }
 
             /**
-             * @noinspection PhpIncludeInspection
+             * @noinspection   PhpIncludeInspection
              * @psalm-suppress UnresolvableInclude
              */
-            require $file;
+            include $file;
 
             $loadedExtensions[] = $manifest->getName()->asString() . ' ' . $manifest->getVersion()->getVersionString();
         }

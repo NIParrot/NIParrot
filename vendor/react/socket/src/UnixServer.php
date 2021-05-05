@@ -37,9 +37,9 @@ final class UnixServer extends EventEmitter implements ServerInterface
      * $server = new React\Socket\UnixServer('unix:///tmp/app.sock', $loop);
      * ```
      *
-     * @param string        $path
-     * @param LoopInterface $loop
-     * @param array         $context
+     * @param  string        $path
+     * @param  LoopInterface $loop
+     * @param  array         $context
      * @throws InvalidArgumentException if the listening address is invalid
      * @throws RuntimeException if listening on this address fails (already in use etc.)
      */
@@ -105,15 +105,17 @@ final class UnixServer extends EventEmitter implements ServerInterface
         }
 
         $that = $this;
-        $this->loop->addReadStream($this->master, function ($master) use ($that) {
-            $newSocket = @\stream_socket_accept($master, 0);
-            if (false === $newSocket) {
-                $that->emit('error', array(new \RuntimeException('Error accepting new connection')));
+        $this->loop->addReadStream(
+            $this->master, function ($master) use ($that) {
+                $newSocket = @\stream_socket_accept($master, 0);
+                if (false === $newSocket) {
+                    $that->emit('error', array(new \RuntimeException('Error accepting new connection')));
 
-                return;
+                    return;
+                }
+                $that->handleConnection($newSocket);
             }
-            $that->handleConnection($newSocket);
-        });
+        );
         $this->listening = true;
     }
 
@@ -128,14 +130,18 @@ final class UnixServer extends EventEmitter implements ServerInterface
         $this->removeAllListeners();
     }
 
-    /** @internal */
+    /**
+     * @internal 
+     */
     public function handleConnection($socket)
     {
         $connection = new Connection($socket, $this->loop);
         $connection->unix = true;
 
-        $this->emit('connection', array(
+        $this->emit(
+            'connection', array(
             $connection
-        ));
+            )
+        );
     }
 }

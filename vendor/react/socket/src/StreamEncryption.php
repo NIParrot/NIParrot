@@ -57,9 +57,11 @@ class StreamEncryption
         // TODO: add write() event to make sure we're not sending any excessive data
 
         // cancelling this leaves this stream in an inconsistent state…
-        $deferred = new Deferred(function () {
-            throw new \RuntimeException();
-        });
+        $deferred = new Deferred(
+            function () {
+                throw new \RuntimeException();
+            }
+        );
 
         // get actual stream socket from stream instance
         $socket = $stream->stream;
@@ -84,31 +86,35 @@ class StreamEncryption
 
         $loop = $this->loop;
 
-        return $deferred->promise()->then(function () use ($stream, $socket, $loop, $toggle) {
-            $loop->removeReadStream($socket);
+        return $deferred->promise()->then(
+            function () use ($stream, $socket, $loop, $toggle) {
+                $loop->removeReadStream($socket);
 
-            $stream->encryptionEnabled = $toggle;
-            $stream->resume();
+                $stream->encryptionEnabled = $toggle;
+                $stream->resume();
 
-            return $stream;
-        }, function($error) use ($stream, $socket, $loop) {
-            $loop->removeReadStream($socket);
-            $stream->resume();
-            throw $error;
-        });
+                return $stream;
+            }, function ($error) use ($stream, $socket, $loop) {
+                $loop->removeReadStream($socket);
+                $stream->resume();
+                throw $error;
+            }
+        );
     }
 
     public function toggleCrypto($socket, Deferred $deferred, $toggle, $method)
     {
         $error = null;
-        \set_error_handler(function ($_, $errstr) use (&$error) {
-            $error = \str_replace(array("\r", "\n"), ' ', $errstr);
+        \set_error_handler(
+            function ($_, $errstr) use (&$error) {
+                $error = \str_replace(array("\r", "\n"), ' ', $errstr);
 
-            // remove useless function name from error message
-            if (($pos = \strpos($error, "): ")) !== false) {
-                $error = \substr($error, $pos + 3);
+                // remove useless function name from error message
+                if (($pos = \strpos($error, "): ")) !== false) {
+                    $error = \substr($error, $pos + 3);
+                }
             }
-        });
+        );
 
         $result = \stream_socket_enable_crypto($socket, $toggle, $method);
 
@@ -124,15 +130,19 @@ class StreamEncryption
 
             if (\feof($socket) || $error === null) {
                 // EOF or failed without error => connection closed during handshake
-                $d->reject(new \UnexpectedValueException(
-                    'Connection lost during TLS handshake',
-                    \defined('SOCKET_ECONNRESET') ? \SOCKET_ECONNRESET : 0
-                ));
+                $d->reject(
+                    new \UnexpectedValueException(
+                        'Connection lost during TLS handshake',
+                        \defined('SOCKET_ECONNRESET') ? \SOCKET_ECONNRESET : 0
+                    )
+                );
             } else {
                 // handshake failed with error message
-                $d->reject(new \UnexpectedValueException(
-                    'Unable to complete TLS handshake: ' . $error
-                ));
+                $d->reject(
+                    new \UnexpectedValueException(
+                        'Unable to complete TLS handshake: ' . $error
+                    )
+                );
             }
         } else {
             // need more data, will retry

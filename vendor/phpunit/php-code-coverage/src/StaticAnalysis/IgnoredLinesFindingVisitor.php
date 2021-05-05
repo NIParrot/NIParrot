@@ -49,11 +49,12 @@ final class IgnoredLinesFindingVisitor extends NodeVisitorAbstract
 
     public function enterNode(Node $node): ?int
     {
-        if (!$node instanceof Class_ &&
-            !$node instanceof Trait_ &&
-            !$node instanceof Interface_ &&
-            !$node instanceof ClassMethod &&
-            !$node instanceof Function_) {
+        if (!$node instanceof Class_ 
+            && !$node instanceof Trait_ 
+            && !$node instanceof Interface_ 
+            && !$node instanceof ClassMethod 
+            && !$node instanceof Function_
+        ) {
             return null;
         }
 
@@ -62,9 +63,10 @@ final class IgnoredLinesFindingVisitor extends NodeVisitorAbstract
         }
 
         // Workaround for https://bugs.xdebug.org/view.php?id=1798
-        if ($node instanceof Class_ ||
-            $node instanceof Trait_ ||
-            $node instanceof Interface_) {
+        if ($node instanceof Class_ 
+            || $node instanceof Trait_ 
+            || $node instanceof Interface_
+        ) {
             $this->ignoredLines[] = $node->getStartLine();
         }
 

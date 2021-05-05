@@ -47,7 +47,7 @@ class LazyPromise implements ExtendedPromiseInterface, CancellablePromiseInterfa
 
     /**
      * @internal
-     * @see Promise::settle()
+     * @see      Promise::settle()
      */
     public function promise()
     {

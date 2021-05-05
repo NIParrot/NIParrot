@@ -40,9 +40,15 @@ class ClassCodeGenerator
         $classname = array_pop($parts);
         $namespace = implode('\\', $parts);
 
-        $code = sprintf("class %s extends \%s implements %s {\n",
-            $classname, $class->getParentClass(), implode(', ',
-                array_map(function ($interface) {return '\\'.$interface;}, $class->getInterfaces())
+        $code = sprintf(
+            "class %s extends \%s implements %s {\n",
+            $classname, $class->getParentClass(), implode(
+                ', ',
+                array_map(
+                    function ($interface) {
+                        return '\\'.$interface;
+                    }, $class->getInterfaces()
+                )
             )
         );
 
@@ -61,7 +67,8 @@ class ClassCodeGenerator
 
     private function generateMethod(Node\MethodNode $method)
     {
-        $php = sprintf("%s %s function %s%s(%s)%s {\n",
+        $php = sprintf(
+            "%s %s function %s%s(%s)%s {\n",
             $method->getVisibility(),
             $method->isStatic() ? 'static' : '',
             $method->returnsReference() ? '&':'',
@@ -82,7 +89,7 @@ class ClassCodeGenerator
 
         // When we require PHP 8 we can stop generating ?foo nullables and remove this first block
         if ($typeNode->canUseNullShorthand()) {
-            return sprintf( '?%s', $typeNode->getNonNullTypes()[0]);
+            return sprintf('?%s', $typeNode->getNonNullTypes()[0]);
         } else {
             return join('|', $typeNode->getTypes());
         }
@@ -90,21 +97,23 @@ class ClassCodeGenerator
 
     private function generateArguments(array $arguments)
     {
-        return array_map(function (Node\ArgumentNode $argument){
+        return array_map(
+            function (Node\ArgumentNode $argument) {
 
-            $php = $this->generateTypes($argument->getTypeNode());
+                $php = $this->generateTypes($argument->getTypeNode());
 
-            $php .= ' '.($argument->isPassedByReference() ? '&' : '');
+                $php .= ' '.($argument->isPassedByReference() ? '&' : '');
 
-            $php .= $argument->isVariadic() ? '...' : '';
+                $php .= $argument->isVariadic() ? '...' : '';
 
-            $php .= '$'.$argument->getName();
+                $php .= '$'.$argument->getName();
 
-            if ($argument->isOptional() && !$argument->isVariadic()) {
-                $php .= ' = '.var_export($argument->getDefault(), true);
-            }
+                if ($argument->isOptional() && !$argument->isVariadic()) {
+                    $php .= ' = '.var_export($argument->getDefault(), true);
+                }
 
-            return $php;
-        }, $arguments);
+                return $php;
+            }, $arguments
+        );
     }
 }

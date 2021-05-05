@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Reflection;
@@ -31,10 +31,14 @@ use function trim;
  */
 final class Fqsen
 {
-    /** @var string full quallified class name */
+    /**
+     * @var string full quallified class name 
+     */
     private $fqsen;
 
-    /** @var string name of the element without path. */
+    /**
+     * @var string name of the element without path. 
+     */
     private $name;
 
     /**

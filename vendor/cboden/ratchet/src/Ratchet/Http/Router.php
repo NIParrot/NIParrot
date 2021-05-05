@@ -7,7 +7,8 @@ use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use GuzzleHttp\Psr7 as gPsr;
 
-class Router implements HttpServerInterface {
+class Router implements HttpServerInterface
+{
     use CloseResponseTrait;
 
     /**
@@ -15,15 +16,18 @@ class Router implements HttpServerInterface {
      */
     protected $_matcher;
 
-    public function __construct(UrlMatcherInterface $matcher) {
+    public function __construct(UrlMatcherInterface $matcher)
+    {
         $this->_matcher = $matcher;
     }
 
     /**
      * {@inheritdoc}
+     *
      * @throws \UnexpectedValueException If a controller is not \Ratchet\Http\HttpServerInterface
      */
-    public function onOpen(ConnectionInterface $conn, RequestInterface $request = null) {
+    public function onOpen(ConnectionInterface $conn, RequestInterface $request = null)
+    {
         if (null === $request) {
             throw new \UnexpectedValueException('$request can not be null');
         }
@@ -67,14 +71,16 @@ class Router implements HttpServerInterface {
     /**
      * {@inheritdoc}
      */
-    function onMessage(ConnectionInterface $from, $msg) {
+    function onMessage(ConnectionInterface $from, $msg)
+    {
         $from->controller->onMessage($from, $msg);
     }
 
     /**
      * {@inheritdoc}
      */
-    function onClose(ConnectionInterface $conn) {
+    function onClose(ConnectionInterface $conn)
+    {
         if (isset($conn->controller)) {
             $conn->controller->onClose($conn);
         }
@@ -83,7 +89,8 @@ class Router implements HttpServerInterface {
     /**
      * {@inheritdoc}
      */
-    function onError(ConnectionInterface $conn, \Exception $e) {
+    function onError(ConnectionInterface $conn, \Exception $e)
+    {
         if (isset($conn->controller)) {
             $conn->controller->onError($conn, $e);
         }

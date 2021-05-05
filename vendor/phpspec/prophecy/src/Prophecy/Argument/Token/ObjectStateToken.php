@@ -96,7 +96,8 @@ class ObjectStateToken implements TokenInterface
      */
     public function __toString()
     {
-        return sprintf('state(%s(), %s)',
+        return sprintf(
+            'state(%s(), %s)',
             $this->name,
             $this->util->stringify($this->value)
         );

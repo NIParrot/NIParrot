@@ -19,8 +19,8 @@ use React\EventLoop\LoopInterface;
 final class Factory
 {
     /**
-     * @param string        $nameserver
-     * @param LoopInterface $loop
+     * @param  string        $nameserver
+     * @param  LoopInterface $loop
      * @return \React\Dns\Resolver\ResolverInterface
      */
     public function create($nameserver, LoopInterface $loop)
@@ -31,9 +31,9 @@ final class Factory
     }
 
     /**
-     * @param string          $nameserver
-     * @param LoopInterface   $loop
-     * @param ?CacheInterface $cache
+     * @param  string          $nameserver
+     * @param  LoopInterface   $loop
+     * @param  ?CacheInterface $cache
      * @return \React\Dns\Resolver\ResolverInterface
      */
     public function createCached($nameserver, LoopInterface $loop, CacheInterface $cache = null)
@@ -53,8 +53,8 @@ final class Factory
     /**
      * Tries to load the hosts file and decorates the given executor on success
      *
-     * @param ExecutorInterface $executor
-     * @return ExecutorInterface
+     * @param              ExecutorInterface $executor
+     * @return             ExecutorInterface
      * @codeCoverageIgnore
      */
     private function decorateHostsFileExecutor(ExecutorInterface $executor)

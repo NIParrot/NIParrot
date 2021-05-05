@@ -5,9 +5,11 @@ use GuzzleHttp\Psr7\Response;
 
 /**
  * The latest version of the WebSocket protocol
+ *
  * @todo Unicode: return mb_convert_encoding(pack("N",$u), mb_internal_encoding(), 'UCS-4BE');
  */
-class ServerNegotiator implements NegotiatorInterface {
+class ServerNegotiator implements NegotiatorInterface
+{
     /**
      * @var \Ratchet\RFC6455\Handshake\RequestVerifier
      */
@@ -17,28 +19,32 @@ class ServerNegotiator implements NegotiatorInterface {
 
     private $_strictSubProtocols = false;
 
-    public function __construct(RequestVerifier $requestVerifier) {
+    public function __construct(RequestVerifier $requestVerifier)
+    {
         $this->verifier = $requestVerifier;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isProtocol(RequestInterface $request) {
+    public function isProtocol(RequestInterface $request)
+    {
         return $this->verifier->verifyVersion($request->getHeader('Sec-WebSocket-Version'));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getVersionNumber() {
+    public function getVersionNumber()
+    {
         return RequestVerifier::VERSION;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function handshake(RequestInterface $request) {
+    public function handshake(RequestInterface $request)
+    {
         if (true !== $this->verifier->verifyMethod($request->getMethod())) {
             return new Response(405, ['Allow' => 'GET']);
         }
@@ -84,9 +90,11 @@ class ServerNegotiator implements NegotiatorInterface {
         if (count($subProtocols) > 0 || (count($this->_supportedSubProtocols) > 0 && $this->_strictSubProtocols)) {
             $subProtocols = array_map('trim', explode(',', implode(',', $subProtocols)));
 
-            $match = array_reduce($subProtocols, function($accumulator, $protocol) {
-                return $accumulator ?: (isset($this->_supportedSubProtocols[$protocol]) ? $protocol : null);
-            }, null);
+            $match = array_reduce(
+                $subProtocols, function ($accumulator, $protocol) {
+                    return $accumulator ?: (isset($this->_supportedSubProtocols[$protocol]) ? $protocol : null);
+                }, null
+            );
 
             if ($this->_strictSubProtocols && null === $match) {
                 return new Response(426, $upgradeSuggestion, null, '1.1', 'No Sec-WebSocket-Protocols requested supported');
@@ -97,40 +105,49 @@ class ServerNegotiator implements NegotiatorInterface {
             }
         }
 
-        return new Response(101, array_merge($headers, [
-            'Upgrade'              => 'websocket'
-          , 'Connection'           => 'Upgrade'
-          , 'Sec-WebSocket-Accept' => $this->sign((string)$request->getHeader('Sec-WebSocket-Key')[0])
-          , 'X-Powered-By'         => 'Ratchet'
-        ]));
+        return new Response(
+            101, array_merge(
+                $headers, [
+                'Upgrade'              => 'websocket'
+                , 'Connection'           => 'Upgrade'
+                , 'Sec-WebSocket-Accept' => $this->sign((string)$request->getHeader('Sec-WebSocket-Key')[0])
+                , 'X-Powered-By'         => 'Ratchet'
+                ]
+            )
+        );
     }
 
     /**
      * Used when doing the handshake to encode the key, verifying client/server are speaking the same language
-     * @param  string $key
-     * @return string
+     *
+     * @param    string $key
+     * @return   string
      * @internal
      */
-    public function sign($key) {
+    public function sign($key)
+    {
         return base64_encode(sha1($key . static::GUID, true));
     }
 
     /**
      * @param array $protocols
      */
-    function setSupportedSubProtocols(array $protocols) {
+    function setSupportedSubProtocols(array $protocols)
+    {
         $this->_supportedSubProtocols = array_flip($protocols);
     }
 
     /**
      * If enabled and support for a subprotocol has been added handshake
      *  will not upgrade if a match between request and supported subprotocols
+     *
      * @param boolean $enable
-     * @todo Consider extending this interface and moving this there.
+     * @todo  Consider extending this interface and moving this there.
      *       The spec does says the server can fail for this reason, but
      * it is not a requirement. This is an implementation detail.
      */
-    function setStrictSubProtocolCheck($enable) {
+    function setStrictSubProtocolCheck($enable)
+    {
         $this->_strictSubProtocols = (boolean)$enable;
     }
 }

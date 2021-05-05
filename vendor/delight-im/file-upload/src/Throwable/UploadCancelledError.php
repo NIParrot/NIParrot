@@ -8,4 +8,6 @@
 
 namespace Delight\FileUpload\Throwable;
 
-class UploadCancelledError extends Error {}
+class UploadCancelledError extends Error
+{
+}

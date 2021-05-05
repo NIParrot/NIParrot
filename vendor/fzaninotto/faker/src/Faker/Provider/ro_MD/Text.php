@@ -21,9 +21,9 @@ class Text extends \Faker\Provider\Text
      *
      * Language: Romanian
      *
-     * @see     https://wikimediafoundation.org/wiki/Terms_of_Use/
-     * @link    https://ro.wikisource.org/wiki/Povestea_lui_Harap-Alb
-     * @var string
+     * @see  https://wikimediafoundation.org/wiki/Terms_of_Use/
+     * @link https://ro.wikisource.org/wiki/Povestea_lui_Harap-Alb
+     * @var  string
      */
     protected static $baseText = <<<'EOT'
 Amu cică era odată într-o țară un crai, care avea trei feciori.

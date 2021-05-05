@@ -1,56 +1,77 @@
 <?php declare(strict_types = 1);
 namespace PharIo\Version;
 
-class VersionConstraintValue {
-    /** @var VersionNumber */
+class VersionConstraintValue
+{
+    /**
+     * @var VersionNumber 
+     */
     private $major;
 
-    /** @var VersionNumber */
+    /**
+     * @var VersionNumber 
+     */
     private $minor;
 
-    /** @var VersionNumber */
+    /**
+     * @var VersionNumber 
+     */
     private $patch;
 
-    /** @var string */
+    /**
+     * @var string 
+     */
     private $label = '';
 
-    /** @var string */
+    /**
+     * @var string 
+     */
     private $buildMetaData = '';
 
-    /** @var string */
+    /**
+     * @var string 
+     */
     private $versionString = '';
 
-    public function __construct(string $versionString) {
+    public function __construct(string $versionString)
+    {
         $this->versionString = $versionString;
 
         $this->parseVersion($versionString);
     }
 
-    public function getLabel(): string {
+    public function getLabel(): string
+    {
         return $this->label;
     }
 
-    public function getBuildMetaData(): string {
+    public function getBuildMetaData(): string
+    {
         return $this->buildMetaData;
     }
 
-    public function getVersionString(): string {
+    public function getVersionString(): string
+    {
         return $this->versionString;
     }
 
-    public function getMajor(): VersionNumber {
+    public function getMajor(): VersionNumber
+    {
         return $this->major;
     }
 
-    public function getMinor(): VersionNumber {
+    public function getMinor(): VersionNumber
+    {
         return $this->minor;
     }
 
-    public function getPatch(): VersionNumber {
+    public function getPatch(): VersionNumber
+    {
         return $this->patch;
     }
 
-    private function parseVersion(string $versionString): void {
+    private function parseVersion(string $versionString): void
+    {
         $this->extractBuildMetaData($versionString);
         $this->extractLabel($versionString);
         $this->stripPotentialVPrefix($versionString);
@@ -65,21 +86,24 @@ class VersionConstraintValue {
         $this->patch = new VersionNumber($patchValue);
     }
 
-    private function extractBuildMetaData(string &$versionString): void {
+    private function extractBuildMetaData(string &$versionString): void
+    {
         if (\preg_match('/\+(.*)/', $versionString, $matches) === 1) {
             $this->buildMetaData = $matches[1];
             $versionString       = \str_replace($matches[0], '', $versionString);
         }
     }
 
-    private function extractLabel(string &$versionString): void {
+    private function extractLabel(string &$versionString): void
+    {
         if (\preg_match('/-(.*)/', $versionString, $matches) === 1) {
             $this->label   = $matches[1];
             $versionString = \str_replace($matches[0], '', $versionString);
         }
     }
 
-    private function stripPotentialVPrefix(string &$versionString): void {
+    private function stripPotentialVPrefix(string &$versionString): void
+    {
         if ($versionString[0] !== 'v') {
             return;
         }

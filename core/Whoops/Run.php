@@ -1,6 +1,7 @@
 <?php
 /**
  * Whoops - php errors for cool kids
+ *
  * @author Filipe Dobreira <http://github.com/filp>
  */
 
@@ -74,6 +75,7 @@ final class Run implements RunInterface
     /**
      * Removes the last handler in the stack and returns it.
      * Returns null if there"s nothing else to pop.
+     *
      * @return null|HandlerInterface
      */
     public function popHandler()
@@ -84,6 +86,7 @@ final class Run implements RunInterface
     /**
      * Returns an array with all handlers, in the
      * order they were added to the stack.
+     *
      * @return array
      */
     public function getHandlers()
@@ -94,6 +97,7 @@ final class Run implements RunInterface
     /**
      * Clears all handlers in the handlerStack, including
      * the default PrettyPage handler.
+     *
      * @return Run
      */
     public function clearHandlers()
@@ -113,6 +117,7 @@ final class Run implements RunInterface
 
     /**
      * Registers this instance as an error handler.
+     *
      * @return Run
      */
     public function register()
@@ -137,6 +142,7 @@ final class Run implements RunInterface
 
     /**
      * Unregisters all handlers registered by this Whoops\Run instance
+     *
      * @return Run
      */
     public function unregister()
@@ -153,6 +159,7 @@ final class Run implements RunInterface
 
     /**
      * Should Whoops allow Handlers to force the script to quit?
+     *
      * @param  bool|int $exit
      * @return bool
      */
@@ -167,6 +174,7 @@ final class Run implements RunInterface
 
     /**
      * Silence particular errors in particular files
+     *
      * @param  array|string $patterns List or a single regex pattern to match
      * @param  int          $levels   Defaults to E_STRICT | E_DEPRECATED
      * @return \Whoops\Run
@@ -223,7 +231,7 @@ final class Run implements RunInterface
 
         if ($code < 400 || 600 <= $code) {
             throw new InvalidArgumentException(
-                 "Invalid status code '$code', must be 4xx or 5xx"
+                "Invalid status code '$code', must be 4xx or 5xx"
             );
         }
 
@@ -233,6 +241,7 @@ final class Run implements RunInterface
     /**
      * Should Whoops push output directly to the client?
      * If this is false, output will be returned by handleException
+     *
      * @param  bool|int $send
      * @return bool
      */
@@ -396,6 +405,7 @@ final class Run implements RunInterface
 
     /**
      * In certain scenarios, like in shutdown handler, we can not throw exceptions
+     *
      * @var bool
      */
     private $canThrowExceptions = true;
@@ -408,7 +418,7 @@ final class Run implements RunInterface
 
         if (!$handler instanceof HandlerInterface) {
             throw new InvalidArgumentException(
-                  "Handler must be a callable, or instance of "
+                "Handler must be a callable, or instance of "
                 . "Whoops\\Handler\\HandlerInterface"
             );
         }
@@ -418,6 +428,7 @@ final class Run implements RunInterface
 
     /**
      * Echo something to the browser
+     *
      * @param  string $output
      * @return $this
      */

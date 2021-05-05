@@ -9,7 +9,7 @@ use SplQueue;
  *
  * This class should only be used internally, see LoopInterface instead.
  *
- * @see LoopInterface
+ * @see      LoopInterface
  * @internal
  */
 final class FutureTickQueue

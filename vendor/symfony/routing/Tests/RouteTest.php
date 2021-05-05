@@ -53,9 +53,13 @@ class RouteTest extends TestCase
     {
         $route = new Route('/{foo}');
         $route->setOptions(['foo' => 'bar']);
-        $this->assertEquals(array_merge([
-        'compiler_class' => 'Symfony\\Component\\Routing\\RouteCompiler',
-        ], ['foo' => 'bar']), $route->getOptions(), '->setOptions() sets the options');
+        $this->assertEquals(
+            array_merge(
+                [
+                'compiler_class' => 'Symfony\\Component\\Routing\\RouteCompiler',
+                ], ['foo' => 'bar']
+            ), $route->getOptions(), '->setOptions() sets the options'
+        );
         $this->assertEquals($route, $route->setOptions([]), '->setOptions() implements a fluent interface');
 
         $route->setOptions(['foo' => 'foo']);
@@ -87,7 +91,11 @@ class RouteTest extends TestCase
         $this->assertEquals('bar2', $route->getDefault('foo2'), '->getDefault() return the default value');
         $this->assertNull($route->getDefault('not_defined'), '->getDefault() return null if default value is not set');
 
-        $route->setDefault('_controller', $closure = function () { return 'Hello'; });
+        $route->setDefault(
+            '_controller', $closure = function () {
+                return 'Hello'; 
+            }
+        );
         $this->assertEquals($closure, $route->getDefault('_controller'), '->setDefault() sets a default value');
 
         $route->setDefaults(['foo' => 'foo']);

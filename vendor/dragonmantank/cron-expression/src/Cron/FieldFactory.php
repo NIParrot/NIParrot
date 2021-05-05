@@ -33,16 +33,16 @@ class FieldFactory implements FieldFactoryInterface
     private function instantiateField(int $position): FieldInterface
     {
         switch ($position) {
-            case CronExpression::MINUTE:
-                return new MinutesField();
-            case CronExpression::HOUR:
-                return new HoursField();
-            case CronExpression::DAY:
-                return new DayOfMonthField();
-            case CronExpression::MONTH:
-                return new MonthField();
-            case CronExpression::WEEKDAY:
-                return new DayOfWeekField();
+        case CronExpression::MINUTE:
+            return new MinutesField();
+        case CronExpression::HOUR:
+            return new HoursField();
+        case CronExpression::DAY:
+            return new DayOfMonthField();
+        case CronExpression::MONTH:
+            return new MonthField();
+        case CronExpression::WEEKDAY:
+            return new DayOfWeekField();
         }
 
         throw new InvalidArgumentException(

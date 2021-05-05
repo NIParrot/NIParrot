@@ -14,7 +14,7 @@ use React\Stream\WritableStreamInterface;
  *
  * This class should only be used internally, see ConnectionInterface instead.
  *
- * @see ConnectionInterface
+ * @see      ConnectionInterface
  * @internal
  */
 class Connection extends EventEmitter implements ConnectionInterface
@@ -36,7 +36,9 @@ class Connection extends EventEmitter implements ConnectionInterface
      */
     public $encryptionEnabled = false;
 
-    /** @internal */
+    /**
+     * @internal 
+     */
     public $stream;
 
     private $input;

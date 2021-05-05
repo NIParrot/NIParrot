@@ -8,4 +8,6 @@
 
 namespace Delight\FileUpload\Throwable;
 
-class FileUploadsDisabledError extends Error {}
+class FileUploadsDisabledError extends Error
+{
+}

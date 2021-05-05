@@ -7,19 +7,33 @@ use PhpParser\Node\FunctionLike;
 
 class ClassMethod extends Node\Stmt implements FunctionLike
 {
-    /** @var int Flags */
+    /**
+     * @var int Flags 
+     */
     public $flags;
-    /** @var bool Whether to return by reference */
+    /**
+     * @var bool Whether to return by reference 
+     */
     public $byRef;
-    /** @var Node\Identifier Name */
+    /**
+     * @var Node\Identifier Name 
+     */
     public $name;
-    /** @var Node\Param[] Parameters */
+    /**
+     * @var Node\Param[] Parameters 
+     */
     public $params;
-    /** @var null|Node\Identifier|Node\Name|Node\NullableType|Node\UnionType Return type */
+    /**
+     * @var null|Node\Identifier|Node\Name|Node\NullableType|Node\UnionType Return type 
+     */
     public $returnType;
-    /** @var Node\Stmt[]|null Statements */
+    /**
+     * @var Node\Stmt[]|null Statements 
+     */
     public $stmts;
-    /** @var Node\AttributeGroup[] PHP attribute groups */
+    /**
+     * @var Node\AttributeGroup[] PHP attribute groups 
+     */
     public $attrGroups;
 
     private static $magicNames = [
@@ -43,17 +57,20 @@ class ClassMethod extends Node\Stmt implements FunctionLike
     /**
      * Constructs a class method node.
      *
-     * @param string|Node\Identifier $name Name
-     * @param array $subNodes   Array of the following optional subnodes:
-     *                          'flags       => MODIFIER_PUBLIC: Flags
-     *                          'byRef'      => false          : Whether to return by reference
-     *                          'params'     => array()        : Parameters
-     *                          'returnType' => null           : Return type
-     *                          'stmts'      => array()        : Statements
-     *                          'attrGroups' => array()        : PHP attribute groups
-     * @param array $attributes Additional attributes
+     * @param string|Node\Identifier $name       Name
+     * @param array                  $subNodes   Array of the following optional subnodes:
+     *                                           'flags       => MODIFIER_PUBLIC: Flags
+     *                                           'byRef'      => false          : Whether
+     *                                           to return by reference 'params'     =>
+     *                                           array()        : Parameters 'returnType'
+     *                                           => null           : Return type 'stmts'  
+     *                                           => array()        : Statements
+     *                                           'attrGroups' => array()        : PHP
+     *                                           attribute groups
+     * @param array                  $attributes Additional attributes
      */
-    public function __construct($name, array $subNodes = [], array $attributes = []) {
+    public function __construct($name, array $subNodes = [], array $attributes = [])
+    {
         $this->attributes = $attributes;
         $this->flags = $subNodes['flags'] ?? $subNodes['type'] ?? 0;
         $this->byRef = $subNodes['byRef'] ?? false;
@@ -65,27 +82,33 @@ class ClassMethod extends Node\Stmt implements FunctionLike
         $this->attrGroups = $subNodes['attrGroups'] ?? [];
     }
 
-    public function getSubNodeNames() : array {
+    public function getSubNodeNames() : array
+    {
         return ['attrGroups', 'flags', 'byRef', 'name', 'params', 'returnType', 'stmts'];
     }
 
-    public function returnsByRef() : bool {
+    public function returnsByRef() : bool
+    {
         return $this->byRef;
     }
 
-    public function getParams() : array {
+    public function getParams() : array
+    {
         return $this->params;
     }
 
-    public function getReturnType() {
+    public function getReturnType()
+    {
         return $this->returnType;
     }
 
-    public function getStmts() {
+    public function getStmts()
+    {
         return $this->stmts;
     }
 
-    public function getAttrGroups() : array {
+    public function getAttrGroups() : array
+    {
         return $this->attrGroups;
     }
 
@@ -94,7 +117,8 @@ class ClassMethod extends Node\Stmt implements FunctionLike
      *
      * @return bool
      */
-    public function isPublic() : bool {
+    public function isPublic() : bool
+    {
         return ($this->flags & Class_::MODIFIER_PUBLIC) !== 0
             || ($this->flags & Class_::VISIBILITY_MODIFIER_MASK) === 0;
     }
@@ -104,7 +128,8 @@ class ClassMethod extends Node\Stmt implements FunctionLike
      *
      * @return bool
      */
-    public function isProtected() : bool {
+    public function isProtected() : bool
+    {
         return (bool) ($this->flags & Class_::MODIFIER_PROTECTED);
     }
 
@@ -113,7 +138,8 @@ class ClassMethod extends Node\Stmt implements FunctionLike
      *
      * @return bool
      */
-    public function isPrivate() : bool {
+    public function isPrivate() : bool
+    {
         return (bool) ($this->flags & Class_::MODIFIER_PRIVATE);
     }
 
@@ -122,7 +148,8 @@ class ClassMethod extends Node\Stmt implements FunctionLike
      *
      * @return bool
      */
-    public function isAbstract() : bool {
+    public function isAbstract() : bool
+    {
         return (bool) ($this->flags & Class_::MODIFIER_ABSTRACT);
     }
 
@@ -131,7 +158,8 @@ class ClassMethod extends Node\Stmt implements FunctionLike
      *
      * @return bool
      */
-    public function isFinal() : bool {
+    public function isFinal() : bool
+    {
         return (bool) ($this->flags & Class_::MODIFIER_FINAL);
     }
 
@@ -140,7 +168,8 @@ class ClassMethod extends Node\Stmt implements FunctionLike
      *
      * @return bool
      */
-    public function isStatic() : bool {
+    public function isStatic() : bool
+    {
         return (bool) ($this->flags & Class_::MODIFIER_STATIC);
     }
 
@@ -149,11 +178,13 @@ class ClassMethod extends Node\Stmt implements FunctionLike
      *
      * @return bool
      */
-    public function isMagic() : bool {
+    public function isMagic() : bool
+    {
         return isset(self::$magicNames[$this->name->toLowerString()]);
     }
 
-    public function getType() : string {
+    public function getType() : string
+    {
         return 'Stmt_ClassMethod';
     }
 }

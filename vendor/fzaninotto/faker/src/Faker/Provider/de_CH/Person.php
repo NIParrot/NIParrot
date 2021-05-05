@@ -94,7 +94,7 @@ class Person extends \Faker\Provider\de_DE\Person
      * fr_CH provider. In the german-speaking part of Switzerland, the AVS13
      * number is generally known as AHV13.
      *
-     * @see \Faker\Provider\fr_CH\Person::avs13()
+     * @see    \Faker\Provider\fr_CH\Person::avs13()
      * @return string
      */
     public static function ahv13()
@@ -107,7 +107,7 @@ class Person extends \Faker\Provider\de_DE\Person
      *
      * This function acts as an alias for the function defined in the fr_CH provider.
      *
-     * @see \Faker\Provider\fr_CH\Person::avs13()
+     * @see    \Faker\Provider\fr_CH\Person::avs13()
      * @return string
      */
     public static function avs13()

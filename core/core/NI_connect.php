@@ -1,6 +1,6 @@
 <?php
+
 /**
- *
  * Idiorm
  *
  * http://github.com/j4mie/idiorm/
@@ -38,6 +38,7 @@
  *
  * The methods documented below are magic methods that conform to PSR-1.
  * This documentation exposes these methods to doc generators and IDEs.
+ *
  * @see http://www.php-fig.org/psr/psr-1/
  *
  * @method static array|string getConfig($key = null, $connection_name = self::DEFAULT_CONNECTION)
@@ -253,9 +254,10 @@ class ORM implements ArrayAccess
      * required to use Idiorm). If you have more than one setting
      * you wish to configure, another shortcut is to pass an array
      * of settings (and omit the second argument).
+     *
      * @param string|array $key
-     * @param mixed $value
-     * @param string $connection_name Which connection to use
+     * @param mixed        $value
+     * @param string       $connection_name Which connection to use
      */
     public static function configure($key, $value = null, $connection_name = self::DEFAULT_CONNECTION)
     {
@@ -269,7 +271,7 @@ class ORM implements ArrayAccess
             }
         } else {
             if (is_null($value)) {
-                // Shortcut: If only one string argument is passed,
+                // Shortcut: If only one string argument is passed, 
                 // assume it's a connection string
                 $value = $key;
                 $key = 'connection_string';
@@ -280,6 +282,7 @@ class ORM implements ArrayAccess
 
     /**
      * Retrieve configuration options by key, or as whole array.
+     *
      * @param string $key
      * @param string $connection_name Which connection to use
      */
@@ -299,15 +302,16 @@ class ORM implements ArrayAccess
     {
         self::$_config = array();
     }
-    
+
     /**
      * Despite its slightly odd name, this is actually the factory
      * method used to acquire instances of the class. It is named
      * this way for the sake of a readable interface, ie
      * ORM::for_table('table_name')->find_one()-> etc. As such,
      * this will normally be the first method called in a chain.
-     * @param string $table_name
-     * @param string $connection_name Which connection to use
+     *
+     * @param  string $table_name
+     * @param  string $connection_name Which connection to use
      * @return ORM
      */
     public static function for_table($table_name, $connection_name = self::DEFAULT_CONNECTION)
@@ -318,12 +322,14 @@ class ORM implements ArrayAccess
 
     /**
      * Set up the database connection used by the class
+     *
      * @param string $connection_name Which connection to use
      */
     protected static function _setup_db($connection_name = self::DEFAULT_CONNECTION)
     {
-        if (!array_key_exists($connection_name, self::$_db) ||
-            !is_object(self::$_db[$connection_name])) {
+        if (!array_key_exists($connection_name, self::$_db) 
+            || !is_object(self::$_db[$connection_name])
+        ) {
             self::_setup_db_config($connection_name);
 
             $db = new PDO(
@@ -340,6 +346,7 @@ class ORM implements ArrayAccess
 
     /**
      * Ensures configuration (multiple connections) is at least set to default.
+     *
      * @param string $connection_name Which connection to use
      */
     protected static function _setup_db_config($connection_name)
@@ -354,7 +361,8 @@ class ORM implements ArrayAccess
      * This is public in case the ORM should use a ready-instantiated
      * PDO object as its database connection. Accepts an optional string key
      * to identify the connection if multiple connections are used.
-     * @param PDO $db
+     *
+     * @param PDO    $db
      * @param string $connection_name Which connection to use
      */
     public static function set_db($db, $connection_name = self::DEFAULT_CONNECTION)
@@ -382,6 +390,7 @@ class ORM implements ArrayAccess
      * (table names, column names etc). If this has been specified
      * manually using ORM::configure('identifier_quote_character', 'some-char'),
      * this will do nothing.
+     *
      * @param string $connection_name Which connection to use
      */
     protected static function _setup_identifier_quote_character($connection_name)
@@ -394,8 +403,9 @@ class ORM implements ArrayAccess
 
     /**
      * Detect and initialise the limit clause style ("SELECT TOP 5" /
-     * "... LIMIT 5"). If this has been specified manually using
+     * "... LIMIT 5"). If this has been specified manually using 
      * ORM::configure('limit_clause_style', 'top'), this will do nothing.
+     *
      * @param string $connection_name Which connection to use
      */
     public static function _setup_limit_clause_style($connection_name)
@@ -409,42 +419,44 @@ class ORM implements ArrayAccess
     /**
      * Return the correct character used to quote identifiers (table
      * names, column names etc) by looking at the driver being used by PDO.
-     * @param string $connection_name Which connection to use
+     *
+     * @param  string $connection_name Which connection to use
      * @return string
      */
     protected static function _detect_identifier_quote_character($connection_name)
     {
         switch (self::get_db($connection_name)->getAttribute(PDO::ATTR_DRIVER_NAME)) {
-            case 'pgsql':
-            case 'sqlsrv':
-            case 'dblib':
-            case 'mssql':
-            case 'sybase':
-            case 'firebird':
-                return '"';
-            case 'mysql':
-            case 'sqlite':
-            case 'sqlite2':
-            default:
-                return '`';
+        case 'pgsql':
+        case 'sqlsrv':
+        case 'dblib':
+        case 'mssql':
+        case 'sybase':
+        case 'firebird':
+            return '"';
+        case 'mysql':
+        case 'sqlite':
+        case 'sqlite2':
+        default:
+            return '`';
         }
     }
 
     /**
      * Returns a constant after determining the appropriate limit clause
      * style
-     * @param string $connection_name Which connection to use
+     *
+     * @param  string $connection_name Which connection to use
      * @return string Limit clause style keyword/constant
      */
     protected static function _detect_limit_clause_style($connection_name)
     {
         switch (self::get_db($connection_name)->getAttribute(PDO::ATTR_DRIVER_NAME)) {
-            case 'sqlsrv':
-            case 'dblib':
-            case 'mssql':
-                return ORM::LIMIT_STYLE_TOP_N;
-            default:
-                return ORM::LIMIT_STYLE_LIMIT;
+        case 'sqlsrv':
+        case 'dblib':
+        case 'mssql':
+            return ORM::LIMIT_STYLE_TOP_N;
+        default:
+            return ORM::LIMIT_STYLE_LIMIT;
         }
     }
 
@@ -453,7 +465,8 @@ class ORM implements ArrayAccess
      * the database. This can be called if any low-level DB access is
      * required outside the class. If multiple connections are used,
      * accepts an optional key name for the connection.
-     * @param string $connection_name Which connection to use
+     *
+     * @param  string $connection_name Which connection to use
      * @return PDO
      */
     public static function get_db($connection_name = self::DEFAULT_CONNECTION)
@@ -466,12 +479,13 @@ class ORM implements ArrayAccess
      * Executes a raw query as a wrapper for PDOStatement::execute.
      * Useful for queries that can't be accomplished through Idiorm,
      * particularly those using engine-specific features.
+     *
      * @example raw_execute('SELECT `name`, AVG(`order`) FROM `customer` GROUP BY `name` HAVING AVG(`order`) > 10')
      * @example raw_execute('INSERT OR REPLACE INTO `widget` (`id`, `name`) SELECT `id`, `name` FROM `other_table`')
-     * @param string $query The raw SQL query
-     * @param array  $parameters Optional bound parameters
-     * @param string $connection_name Which connection to use
-     * @return bool Success
+     * @param   string $query           The raw SQL query
+     * @param   array  $parameters      Optional bound parameters
+     * @param   string $connection_name Which connection to use
+     * @return  bool Success
      */
     public static function raw_execute($query, $parameters = array(), $connection_name = self::DEFAULT_CONNECTION)
     {
@@ -482,6 +496,7 @@ class ORM implements ArrayAccess
     /**
      * Returns the PDOStatement instance last used by any connection wrapped by the ORM.
      * Useful for access to PDOStatement::rowCount() or error information
+     *
      * @return PDOStatement
      */
     public static function get_last_statement()
@@ -493,9 +508,10 @@ class ORM implements ArrayAccess
      * Internal helper method for executing statments. Logs queries, and
      * stores statement object in ::_last_statment, accessible publicly
      * through ::get_last_statement()
-     * @param string $query
-     * @param array $parameters An array of parameters to be bound in to the query
-     * @param string $connection_name Which connection to use
+     *
+     * @param  string $query
+     * @param  array  $parameters      An array of parameters to be bound in to the query
+     * @param  string $connection_name Which connection to use
      * @return bool Response of PDOStatement::execute()
      */
     protected static function _execute($query, $parameters = array(), $connection_name = self::DEFAULT_CONNECTION)
@@ -507,9 +523,9 @@ class ORM implements ArrayAccess
         foreach ($parameters as $key => &$param) {
             if (is_null($param)) {
                 $type = PDO::PARAM_NULL;
-            } elseif (is_bool($param)) {
+            } else if (is_bool($param)) {
                 $type = PDO::PARAM_BOOL;
-            } elseif (is_int($param)) {
+            } else if (is_int($param)) {
                 $type = PDO::PARAM_INT;
             } else {
                 $type = PDO::PARAM_STR;
@@ -519,7 +535,7 @@ class ORM implements ArrayAccess
         }
 
         $q = $statement->execute();
-        self::_log_query($query, $parameters, $connection_name, (microtime(true)-$time));
+        self::_log_query($query, $parameters, $connection_name, (microtime(true) - $time));
 
         return $q;
     }
@@ -532,10 +548,11 @@ class ORM implements ArrayAccess
      * query isn't executed like this (PDO normally passes the query and
      * parameters to the database which takes care of the binding) but
      * doing it this way makes the logged queries more readable.
-     * @param string $query
-     * @param array $parameters An array of parameters to be bound in to the query
-     * @param string $connection_name Which connection to use
-     * @param float $query_time Query time
+     *
+     * @param  string $query
+     * @param  array  $parameters      An array of parameters to be bound in to the query
+     * @param  string $connection_name Which connection to use
+     * @param  float  $query_time      Query time
      * @return bool
      */
     protected static function _log_query($query, $parameters, $connection_name, $query_time)
@@ -580,13 +597,13 @@ class ORM implements ArrayAccess
 
         self::$_last_query = $bound_query;
         self::$_query_log[$connection_name][] = $bound_query;
-        
-        
+
+
         if (is_callable(self::$_config[$connection_name]['logger'])) {
             $logger = self::$_config[$connection_name]['logger'];
             $logger($bound_query, $query_time);
         }
-        
+
         return true;
     }
 
@@ -595,7 +612,8 @@ class ORM implements ArrayAccess
      * 'logging' config option is set to true. Otherwise
      * this will return null. Returns last query from all connections if
      * no connection_name is specified
-     * @param null|string $connection_name Which connection to use
+     *
+     * @param  null|string $connection_name Which connection to use
      * @return string
      */
     public static function get_last_query($connection_name = null)
@@ -615,6 +633,7 @@ class ORM implements ArrayAccess
      * specified connection up to now.
      * Only works if the 'logging' config option is
      * set to true. Otherwise, returned array will be empty.
+     *
      * @param string $connection_name Which connection to use
      */
     public static function get_query_log($connection_name = self::DEFAULT_CONNECTION)
@@ -627,6 +646,7 @@ class ORM implements ArrayAccess
 
     /**
      * Get a list of the available connection names
+     *
      * @return array
      */
     public static function get_connection_names()
@@ -659,7 +679,7 @@ class ORM implements ArrayAccess
      * dirty so all will be saved to the database when
      * save() is called.
      */
-    public function create($data=null)
+    public function create($data = null)
     {
         $this->_is_new = true;
         if (!is_null($data)) {
@@ -703,7 +723,7 @@ class ORM implements ArrayAccess
      * to this method. This will perform a primary key
      * lookup on the table.
      */
-    public function find_one($id=null)
+    public function find_one($id = null)
     {
         if (!is_null($id)) {
             $this->where_id_is($id);
@@ -723,6 +743,7 @@ class ORM implements ArrayAccess
      * from your query, and execute it. Will return an array
      * of instances of the ORM class, or an empty array if
      * no rows were returned.
+     *
      * @return array|\IdiormResultSet
      */
     public function find_many()
@@ -738,6 +759,7 @@ class ORM implements ArrayAccess
      * from your query, and execute it. Will return an array
      * of instances of the ORM class, or an empty array if
      * no rows were returned.
+     *
      * @return array
      */
     protected function _find_many()
@@ -750,6 +772,7 @@ class ORM implements ArrayAccess
      * Tell the ORM that you are expecting multiple results
      * from your query, and execute it. Will return a result set object
      * containing instances of the ORM class.
+     *
      * @return \IdiormResultSet
      */
     public function find_result_set()
@@ -761,6 +784,7 @@ class ORM implements ArrayAccess
      * Tell the ORM that you are expecting multiple results
      * from your query, and execute it. Will return an array,
      * or an empty array if no rows were returned.
+     *
      * @return array
      */
     public function find_array()
@@ -816,8 +840,9 @@ class ORM implements ArrayAccess
 
     /**
      * Execute an aggregate query on the current connection.
-     * @param string $sql_function The aggregate function to call eg. MIN, COUNT, etc
-     * @param string $column The column to execute the aggregate query against
+     *
+     * @param  string $sql_function The aggregate function to call eg. MIN, COUNT, etc
+     * @param  string $column       The column to execute the aggregate query against
      * @return int
      */
     protected function _call_aggregate_db_function($sql_function, $column)
@@ -847,12 +872,12 @@ class ORM implements ArrayAccess
     }
 
     /**
-    * This method can be called to hydrate (populate) this
-    * instance of the class from an associative array of data.
-    * This will usually be called only from inside the class,
-    * but it's public in case you need to call it directly.
-    */
-    public function hydrate($data=array())
+     * This method can be called to hydrate (populate) this
+     * instance of the class from an associative array of data.
+     * This will usually be called only from inside the class,
+     * but it's public in case you need to call it directly.
+     */
+    public function hydrate($data = array())
     {
         $this->_data = $data;
         return $this;
@@ -897,7 +922,7 @@ class ORM implements ArrayAccess
      * of columns returned by the SELECT query. The second optional
      * argument is the alias to return the expression as.
      */
-    protected function _add_result_column($expr, $alias=null)
+    protected function _add_result_column($expr, $alias = null)
     {
         if (!is_null($alias)) {
             $expr .= " AS " . $this->_quote_identifier($alias);
@@ -930,7 +955,7 @@ class ORM implements ArrayAccess
      * query. This defaults to '*'. The second optional argument is
      * the alias to return the column as.
      */
-    public function select($column, $alias=null)
+    public function select($column, $alias = null)
     {
         $column = $this->_quote_identifier($column);
         return $this->_add_result_column($column, $alias);
@@ -941,7 +966,7 @@ class ORM implements ArrayAccess
      * by the SELECT query. The second optional argument is
      * the alias to return the column as.
      */
-    public function select_expr($expr, $alias=null)
+    public function select_expr($expr, $alias = null)
     {
         return $this->_add_result_column($expr, $alias);
     }
@@ -950,14 +975,14 @@ class ORM implements ArrayAccess
      * Add columns to the list of columns returned by the SELECT
      * query. This defaults to '*'. Many columns can be supplied
      * as either an array or as a list of parameters to the method.
-     *
+     * 
      * Note that the alias must not be numeric - if you want a
      * numeric alias then prepend it with some alpha chars. eg. a1
-     *
+     * 
      * @example select_many(array('alias' => 'column', 'column2', 'alias2' => 'column3'), 'column4', 'column5');
      * @example select_many('column', 'column2', 'column3');
      * @example select_many(array('column', 'column2', 'column3'), 'column4', 'column5');
-     *
+     * 
      * @return \ORM
      */
     public function select_many()
@@ -977,16 +1002,16 @@ class ORM implements ArrayAccess
 
     /**
      * Add an unquoted expression to the list of columns returned
-     * by the SELECT query. Many columns can be supplied as either
+     * by the SELECT query. Many columns can be supplied as either 
      * an array or as a list of parameters to the method.
-     *
+     * 
      * Note that the alias must not be numeric - if you want a
      * numeric alias then prepend it with some alpha chars. eg. a1
-     *
+     * 
      * @example select_many_expr(array('alias' => 'column', 'column2', 'alias2' => 'column3'), 'column4', 'column5')
      * @example select_many_expr('column', 'column2', 'column3')
      * @example select_many_expr(array('column', 'column2', 'column3'), 'column4', 'column5')
-     *
+     * 
      * @return \ORM
      */
     public function select_many_expr()
@@ -1007,12 +1032,12 @@ class ORM implements ArrayAccess
     /**
      * Take a column specification for the select many methods and convert it
      * into a normalised array of columns and aliases.
-     *
+     * 
      * It is designed to turn the following styles into a normalised array:
-     *
+     * 
      * array(array('alias' => 'column', 'column2', 'alias2' => 'column3'), 'column4', 'column5'))
-     *
-     * @param array $columns
+     * 
+     * @param  array $columns
      * @return array
      */
     protected function _normalise_select_many_columns($columns)
@@ -1065,8 +1090,9 @@ class ORM implements ArrayAccess
      *
      * The final (optional) argument specifies an alias for the joined table.
      */
-    protected function _add_join_source($join_operator, $table, $constraint, $table_alias=null)
+    protected function _add_join_source($join_operator, $table, $constraint, $table_alias = null)
     {
+
         $join_operator = trim("{$join_operator} JOIN");
 
         $table = $this->_quote_identifier($table);
@@ -1117,7 +1143,7 @@ class ORM implements ArrayAccess
     /**
      * Add a simple JOIN source to the query
      */
-    public function join($table, $constraint, $table_alias=null)
+    public function join($table, $constraint, $table_alias = null)
     {
         return $this->_add_join_source("", $table, $constraint, $table_alias);
     }
@@ -1125,7 +1151,7 @@ class ORM implements ArrayAccess
     /**
      * Add an INNER JOIN souce to the query
      */
-    public function inner_join($table, $constraint, $table_alias=null)
+    public function inner_join($table, $constraint, $table_alias = null)
     {
         return $this->_add_join_source("INNER", $table, $constraint, $table_alias);
     }
@@ -1133,7 +1159,7 @@ class ORM implements ArrayAccess
     /**
      * Add a LEFT OUTER JOIN souce to the query
      */
-    public function left_outer_join($table, $constraint, $table_alias=null)
+    public function left_outer_join($table, $constraint, $table_alias = null)
     {
         return $this->_add_join_source("LEFT OUTER", $table, $constraint, $table_alias);
     }
@@ -1141,7 +1167,7 @@ class ORM implements ArrayAccess
     /**
      * Add an RIGHT OUTER JOIN souce to the query
      */
-    public function right_outer_join($table, $constraint, $table_alias=null)
+    public function right_outer_join($table, $constraint, $table_alias = null)
     {
         return $this->_add_join_source("RIGHT OUTER", $table, $constraint, $table_alias);
     }
@@ -1149,7 +1175,7 @@ class ORM implements ArrayAccess
     /**
      * Add an FULL OUTER JOIN souce to the query
      */
-    public function full_outer_join($table, $constraint, $table_alias=null)
+    public function full_outer_join($table, $constraint, $table_alias = null)
     {
         return $this->_add_join_source("FULL OUTER", $table, $constraint, $table_alias);
     }
@@ -1157,7 +1183,7 @@ class ORM implements ArrayAccess
     /**
      * Internal method to add a HAVING condition to the query
      */
-    protected function _add_having($fragment, $values=array())
+    protected function _add_having($fragment, $values = array())
     {
         return $this->_add_condition('having', $fragment, $values);
     }
@@ -1206,7 +1232,7 @@ class ORM implements ArrayAccess
     /**
      * Internal method to add a WHERE condition to the query
      */
-    protected function _add_where($fragment, $values=array())
+    protected function _add_where($fragment, $values = array())
     {
         return $this->_add_condition('where', $fragment, $values);
     }
@@ -1255,27 +1281,29 @@ class ORM implements ArrayAccess
     /**
      * Internal method to add a HAVING or WHERE condition to the query
      */
-    protected function _add_condition($type, $fragment, $values=array())
+    protected function _add_condition($type, $fragment, $values = array())
     {
         $conditions_class_property_name = "_{$type}_conditions";
         if (!is_array($values)) {
             $values = array($values);
         }
-        array_push($this->$conditions_class_property_name, array(
+        array_push(
+            $this->$conditions_class_property_name, array(
             self::CONDITION_FRAGMENT => $fragment,
             self::CONDITION_VALUES => $values,
-        ));
+            )
+        );
         return $this;
     }
 
     /**
-      * Helper method to compile a simple COLUMN SEPARATOR VALUE
-      * style HAVING or WHERE condition into a string and value ready to
-      * be passed to the _add_condition method. Avoids duplication
-      * of the call to _quote_identifier
-      *
-      * If column_name is an associative array, it will add a condition for each column
-      */
+     * Helper method to compile a simple COLUMN SEPARATOR VALUE
+     * style HAVING or WHERE condition into a string and value ready to
+     * be passed to the _add_condition method. Avoids duplication
+     * of the call to _quote_identifier
+     *
+     * If column_name is an associative array, it will add a condition for each column
+     */
     protected function _add_simple_condition($type, $column_name, $separator, $value)
     {
         $multiple = is_array($column_name) ? $column_name : array($column_name => $value);
@@ -1316,7 +1344,7 @@ class ORM implements ArrayAccess
             return implode(', ', $db_fields);
         }
     }
-    
+
     /**
      * Helper method that filters a column/value array returning only those
      * columns that belong to a compound primary key.
@@ -1334,9 +1362,9 @@ class ORM implements ArrayAccess
     }
 
     /**
-      * Helper method that filters an array containing compound column/value
-      * arrays.
-      */
+     * Helper method that filters an array containing compound column/value
+     * arrays.
+     */
     protected function _get_compound_id_column_values_array($values)
     {
         $filtered = array();
@@ -1355,7 +1383,7 @@ class ORM implements ArrayAccess
      * If you use an array in $column_name, a new clause will be
      * added for each element. In this case, $value is ignored.
      */
-    public function where($column_name, $value=null)
+    public function where($column_name, $value = null)
     {
         return $this->where_equal($column_name, $value);
     }
@@ -1364,7 +1392,7 @@ class ORM implements ArrayAccess
      * More explicitly named version of for the where() method.
      * Can be used if preferred.
      */
-    public function where_equal($column_name, $value=null)
+    public function where_equal($column_name, $value = null)
     {
         return $this->_add_simple_where($column_name, '=', $value);
     }
@@ -1372,7 +1400,7 @@ class ORM implements ArrayAccess
     /**
      * Add a WHERE column != value clause to your query.
      */
-    public function where_not_equal($column_name, $value=null)
+    public function where_not_equal($column_name, $value = null)
     {
         return $this->_add_simple_where($column_name, '!=', $value);
     }
@@ -1400,7 +1428,7 @@ class ORM implements ArrayAccess
      *
      * Each condition will be ORed together when added to the final query.
      */
-    public function where_any_is($values, $operator='=')
+    public function where_any_is($values, $operator = '=')
     {
         $data = array();
         $query = array("((");
@@ -1425,7 +1453,7 @@ class ORM implements ArrayAccess
             }
         }
         $query[] = "))";
-        return $this->where_raw(join($query, ' '), $data);
+        return $this->where_raw(join(' ', $query), $data);
     }
 
     /**
@@ -1444,7 +1472,7 @@ class ORM implements ArrayAccess
     /**
      * Add a WHERE ... LIKE clause to your query.
      */
-    public function where_like($column_name, $value=null)
+    public function where_like($column_name, $value = null)
     {
         return $this->_add_simple_where($column_name, 'LIKE', $value);
     }
@@ -1452,7 +1480,7 @@ class ORM implements ArrayAccess
     /**
      * Add where WHERE ... NOT LIKE clause to your query.
      */
-    public function where_not_like($column_name, $value=null)
+    public function where_not_like($column_name, $value = null)
     {
         return $this->_add_simple_where($column_name, 'NOT LIKE', $value);
     }
@@ -1460,7 +1488,7 @@ class ORM implements ArrayAccess
     /**
      * Add a WHERE ... > clause to your query
      */
-    public function where_gt($column_name, $value=null)
+    public function where_gt($column_name, $value = null)
     {
         return $this->_add_simple_where($column_name, '>', $value);
     }
@@ -1468,7 +1496,7 @@ class ORM implements ArrayAccess
     /**
      * Add a WHERE ... < clause to your query
      */
-    public function where_lt($column_name, $value=null)
+    public function where_lt($column_name, $value = null)
     {
         return $this->_add_simple_where($column_name, '<', $value);
     }
@@ -1476,7 +1504,7 @@ class ORM implements ArrayAccess
     /**
      * Add a WHERE ... >= clause to your query
      */
-    public function where_gte($column_name, $value=null)
+    public function where_gte($column_name, $value = null)
     {
         return $this->_add_simple_where($column_name, '>=', $value);
     }
@@ -1484,7 +1512,7 @@ class ORM implements ArrayAccess
     /**
      * Add a WHERE ... <= clause to your query
      */
-    public function where_lte($column_name, $value=null)
+    public function where_lte($column_name, $value = null)
     {
         return $this->_add_simple_where($column_name, '<=', $value);
     }
@@ -1526,7 +1554,7 @@ class ORM implements ArrayAccess
      * contain question mark placeholders, which will be bound
      * to the parameters supplied in the second argument.
      */
-    public function where_raw($clause, $parameters=array())
+    public function where_raw($clause, $parameters = array())
     {
         return $this->_add_where($clause, $parameters);
     }
@@ -1595,7 +1623,7 @@ class ORM implements ArrayAccess
     }
 
     /**
-     * Add an unquoted expression to the list of columns to GROUP BY
+     * Add an unquoted expression to the list of columns to GROUP BY 
      */
     public function group_by_expr($expr)
     {
@@ -1612,7 +1640,7 @@ class ORM implements ArrayAccess
      * If you use an array in $column_name, a new clause will be
      * added for each element. In this case, $value is ignored.
      */
-    public function having($column_name, $value=null)
+    public function having($column_name, $value = null)
     {
         return $this->having_equal($column_name, $value);
     }
@@ -1621,7 +1649,7 @@ class ORM implements ArrayAccess
      * More explicitly named version of for the having() method.
      * Can be used if preferred.
      */
-    public function having_equal($column_name, $value=null)
+    public function having_equal($column_name, $value = null)
     {
         return $this->_add_simple_having($column_name, '=', $value);
     }
@@ -1629,7 +1657,7 @@ class ORM implements ArrayAccess
     /**
      * Add a HAVING column != value clause to your query.
      */
-    public function having_not_equal($column_name, $value=null)
+    public function having_not_equal($column_name, $value = null)
     {
         return $this->_add_simple_having($column_name, '!=', $value);
     }
@@ -1650,7 +1678,7 @@ class ORM implements ArrayAccess
     /**
      * Add a HAVING ... LIKE clause to your query.
      */
-    public function having_like($column_name, $value=null)
+    public function having_like($column_name, $value = null)
     {
         return $this->_add_simple_having($column_name, 'LIKE', $value);
     }
@@ -1658,7 +1686,7 @@ class ORM implements ArrayAccess
     /**
      * Add where HAVING ... NOT LIKE clause to your query.
      */
-    public function having_not_like($column_name, $value=null)
+    public function having_not_like($column_name, $value = null)
     {
         return $this->_add_simple_having($column_name, 'NOT LIKE', $value);
     }
@@ -1666,7 +1694,7 @@ class ORM implements ArrayAccess
     /**
      * Add a HAVING ... > clause to your query
      */
-    public function having_gt($column_name, $value=null)
+    public function having_gt($column_name, $value = null)
     {
         return $this->_add_simple_having($column_name, '>', $value);
     }
@@ -1674,7 +1702,7 @@ class ORM implements ArrayAccess
     /**
      * Add a HAVING ... < clause to your query
      */
-    public function having_lt($column_name, $value=null)
+    public function having_lt($column_name, $value = null)
     {
         return $this->_add_simple_having($column_name, '<', $value);
     }
@@ -1682,7 +1710,7 @@ class ORM implements ArrayAccess
     /**
      * Add a HAVING ... >= clause to your query
      */
-    public function having_gte($column_name, $value=null)
+    public function having_gte($column_name, $value = null)
     {
         return $this->_add_simple_having($column_name, '>=', $value);
     }
@@ -1690,7 +1718,7 @@ class ORM implements ArrayAccess
     /**
      * Add a HAVING ... <= clause to your query
      */
-    public function having_lte($column_name, $value=null)
+    public function having_lte($column_name, $value = null)
     {
         return $this->_add_simple_having($column_name, '<=', $value);
     }
@@ -1698,7 +1726,7 @@ class ORM implements ArrayAccess
     /**
      * Add a HAVING ... IN clause to your query
      */
-    public function having_in($column_name, $values=null)
+    public function having_in($column_name, $values = null)
     {
         return $this->_add_having_placeholder($column_name, 'IN', $values);
     }
@@ -1706,7 +1734,7 @@ class ORM implements ArrayAccess
     /**
      * Add a HAVING ... NOT IN clause to your query
      */
-    public function having_not_in($column_name, $values=null)
+    public function having_not_in($column_name, $values = null)
     {
         return $this->_add_having_placeholder($column_name, 'NOT IN', $values);
     }
@@ -1732,7 +1760,7 @@ class ORM implements ArrayAccess
      * contain question mark placeholders, which will be bound
      * to the parameters supplied in the second argument.
      */
-    public function having_raw($clause, $parameters=array())
+    public function having_raw($clause, $parameters = array())
     {
         return $this->_add_having($clause, $parameters);
     }
@@ -1752,7 +1780,8 @@ class ORM implements ArrayAccess
 
         // Build and return the full SELECT statement by concatenating
         // the results of calling each separate builder method.
-        return $this->_join_if_not_empty(" ", array(
+        return $this->_join_if_not_empty(
+            " ", array(
             $this->_build_select_start(),
             $this->_build_join(),
             $this->_build_where(),
@@ -1761,7 +1790,8 @@ class ORM implements ArrayAccess
             $this->_build_order_by(),
             $this->_build_limit(),
             $this->_build_offset(),
-        ));
+            )
+        );
     }
 
     /**
@@ -1772,8 +1802,9 @@ class ORM implements ArrayAccess
         $fragment = 'SELECT ';
         $result_columns = join(', ', $this->_result_columns);
 
-        if (!is_null($this->_limit) &&
-            self::$_config[$this->_connection_name]['limit_clause_style'] === ORM::LIMIT_STYLE_TOP_N) {
+        if (!is_null($this->_limit) 
+            && self::$_config[$this->_connection_name]['limit_clause_style'] === ORM::LIMIT_STYLE_TOP_N
+        ) {
             $fragment .= "TOP {$this->_limit} ";
         }
 
@@ -1830,7 +1861,8 @@ class ORM implements ArrayAccess
 
     /**
      * Build a WHERE or HAVING clause
-     * @param string $type
+     *
+     * @param  string $type
      * @return string
      */
     protected function _build_conditions($type)
@@ -1867,8 +1899,9 @@ class ORM implements ArrayAccess
     protected function _build_limit()
     {
         $fragment = '';
-        if (!is_null($this->_limit) &&
-            self::$_config[$this->_connection_name]['limit_clause_style'] == ORM::LIMIT_STYLE_LIMIT) {
+        if (!is_null($this->_limit) 
+            && self::$_config[$this->_connection_name]['limit_clause_style'] == ORM::LIMIT_STYLE_LIMIT
+        ) {
             if (self::get_db($this->_connection_name)->getAttribute(PDO::ATTR_DRIVER_NAME) == 'firebird') {
                 $fragment = 'ROWS';
             } else {
@@ -1954,11 +1987,11 @@ class ORM implements ArrayAccess
         $quote_character = self::$_config[$this->_connection_name]['identifier_quote_character'];
         // double up any identifier quotes to escape them
         return $quote_character .
-               str_replace(
-                   $quote_character,
-                   $quote_character . $quote_character,
-                   $part
-               ) . $quote_character;
+            str_replace(
+                $quote_character,
+                $quote_character . $quote_character,
+                $part
+            ) . $quote_character;
     }
 
     /**
@@ -2121,7 +2154,7 @@ class ORM implements ArrayAccess
                         throw new Exception('Primary key ID contains null value(s)');
                     }
                 }
-            } elseif ($id === null) {
+            } else if ($id === null) {
                 throw new Exception('Primary key ID missing from row or is null');
             }
         }
@@ -2146,9 +2179,10 @@ class ORM implements ArrayAccess
      * To set multiple properties at once, pass an associative array
      * as the first parameter and leave out the second parameter.
      * Flags the properties as 'dirty' so they will be saved to the
-     * database when save() is called.
+     * database when save() is called. 
+     *
      * @param string|array $key
-     * @param string|null $value
+     * @param string|null  $value
      */
     public function set_expr($key, $value = null)
     {
@@ -2157,9 +2191,10 @@ class ORM implements ArrayAccess
 
     /**
      * Set a property on the ORM object.
+     *
      * @param string|array $key
-     * @param string|null $value
-     * @param bool $raw Whether this value should be treated as raw or not
+     * @param string|null  $value
+     * @param bool         $raw   Whether this value should be treated as raw or not
      */
     protected function _set_orm_property($key, $value = null, $expr = false)
     {
@@ -2171,7 +2206,7 @@ class ORM implements ArrayAccess
             $this->_dirty_fields[$field] = $value;
             if (false === $expr and isset($this->_expr_fields[$field])) {
                 unset($this->_expr_fields[$field]);
-            } elseif (true === $expr) {
+            } else if (true === $expr) {
                 $this->_expr_fields[$field] = true;
             }
         }
@@ -2189,6 +2224,7 @@ class ORM implements ArrayAccess
 
     /**
      * Check whether the model was the result of a call to create() or not
+     *
      * @return bool
      */
     public function is_new()
@@ -2262,7 +2298,7 @@ class ORM implements ArrayAccess
     public function _add_id_column_conditions(&$query)
     {
         $query[] = "WHERE";
-        $keys = is_array($this->_get_id_column_name()) ? $this->_get_id_column_name() : array( $this->_get_id_column_name() );
+        $keys = is_array($this->_get_id_column_name()) ? $this->_get_id_column_name() : array($this->_get_id_column_name());
         $first = true;
         foreach ($keys as $key) {
             if ($first) {
@@ -2336,11 +2372,13 @@ class ORM implements ArrayAccess
     {
         // Build and return the full DELETE statement by concatenating
         // the results of calling each separate builder method.
-        $query = $this->_join_if_not_empty(" ", array(
+        $query = $this->_join_if_not_empty(
+            " ", array(
             "DELETE FROM",
             $this->_quote_identifier($this->_table_name),
             $this->_build_where(),
-        ));
+            )
+        );
 
         return self::_execute($query, $this->_values, $this->_connection_name);
     }
@@ -2399,14 +2437,14 @@ class ORM implements ArrayAccess
 
     /**
      * Magic method to capture calls to undefined class methods.
-     * In this case we are attempting to convert camel case formatted
+     * In this case we are attempting to convert camel case formatted 
      * methods into underscore formatted methods.
      *
-     * This allows us to call ORM methods using camel case and remain
+     * This allows us to call ORM methods using camel case and remain 
      * backwards compatible.
-     *
-     * @param  string   $name
-     * @param  array    $arguments
+     * 
+     * @param  string $name
+     * @param  array  $arguments
      * @return ORM
      */
     public function __call($name, $arguments)
@@ -2421,15 +2459,15 @@ class ORM implements ArrayAccess
     }
 
     /**
-     * Magic method to capture calls to undefined static class methods.
-     * In this case we are attempting to convert camel case formatted
+     * Magic method to capture calls to undefined static class methods. 
+     * In this case we are attempting to convert camel case formatted 
      * methods into underscore formatted methods.
      *
-     * This allows us to call ORM methods using camel case and remain
+     * This allows us to call ORM methods using camel case and remain 
      * backwards compatible.
-     *
-     * @param  string   $name
-     * @param  array    $arguments
+     * 
+     * @param  string $name
+     * @param  array  $arguments
      * @return ORM
      */
     public static function __callStatic($name, $arguments)
@@ -2442,11 +2480,12 @@ class ORM implements ArrayAccess
 
 /**
  * A class to handle str_replace operations that involve quoted strings
+ *
  * @example IdiormString::str_replace_outside_quotes('?', '%s', 'columnA = "Hello?" AND columnB = ?');
  * @example IdiormString::value('columnA = "Hello?" AND columnB = ?')->replace_outside_quotes('?', '%s');
- * @author Jeff Roberson <ridgerunner@fluxbb.org>
- * @author Simon Holywell <treffynnon@php.net>
- * @link http://stackoverflow.com/a/13370709/461813 StackOverflow answer
+ * @author  Jeff Roberson <ridgerunner@fluxbb.org>
+ * @author  Simon Holywell <treffynnon@php.net>
+ * @link    http://stackoverflow.com/a/13370709/461813 StackOverflow answer
  */
 class IdiormString
 {
@@ -2456,7 +2495,8 @@ class IdiormString
 
     /**
      * Get an easy to use instance of the class
-     * @param string $subject
+     *
+     * @param  string $subject
      * @return \self
      */
     public static function value($subject)
@@ -2467,9 +2507,10 @@ class IdiormString
     /**
      * Shortcut method: Replace all occurrences of the search string with the replacement
      * string where they appear outside quotes.
-     * @param string $search
-     * @param string $replace
-     * @param string $subject
+     *
+     * @param  string $search
+     * @param  string $replace
+     * @param  string $subject
      * @return string
      */
     public static function str_replace_outside_quotes($search, $replace, $subject)
@@ -2479,6 +2520,7 @@ class IdiormString
 
     /**
      * Set the base string object
+     *
      * @param string $subject
      */
     public function __construct($subject)
@@ -2489,8 +2531,9 @@ class IdiormString
     /**
      * Replace all occurrences of the search string with the replacement
      * string where they appear outside quotes
-     * @param string $search
-     * @param string $replace
+     *
+     * @param  string $search
+     * @param  string $replace
      * @return string
      */
     public function replace_outside_quotes($search, $replace)
@@ -2503,53 +2546,54 @@ class IdiormString
     /**
      * Validate an input string and perform a replace on all ocurrences
      * of $this->search with $this->replace
+     *
      * @author Jeff Roberson <ridgerunner@fluxbb.org>
-     * @link http://stackoverflow.com/a/13370709/461813 StackOverflow answer
+     * @link   http://stackoverflow.com/a/13370709/461813 StackOverflow answer
      * @return string
      */
     protected function _str_replace_outside_quotes()
     {
         $re_valid = '/
-            # Validate string having embedded quoted substrings.
-            ^                           # Anchor to start of string.
-            (?:                         # Zero or more string chunks.
-              "[^"\\\\]*(?:\\\\.[^"\\\\]*)*"  # Either a double quoted chunk,
-            | \'[^\'\\\\]*(?:\\\\.[^\'\\\\]*)*\'  # or a single quoted chunk,
-            | [^\'"\\\\]+               # or an unquoted chunk (no escapes).
-            )*                          # Zero or more string chunks.
-            \z                          # Anchor to end of string.
-            /sx';
+                # Validate string having embedded quoted substrings.
+                ^                           # Anchor to start of string.
+                (?:                         # Zero or more string chunks.
+                  "[^"\\\\]*(?:\\\\.[^"\\\\]*)*"  # Either a double quoted chunk,
+                | \'[^\'\\\\]*(?:\\\\.[^\'\\\\]*)*\'  # or a single quoted chunk,
+                | [^\'"\\\\]+               # or an unquoted chunk (no escapes).
+                )*                          # Zero or more string chunks.
+                \z                          # Anchor to end of string.
+                /sx';
         if (!preg_match($re_valid, $this->subject)) {
             throw new IdiormStringException("Subject string is not valid in the replace_outside_quotes context.");
         }
         $re_parse = '/
-            # Match one chunk of a valid string having embedded quoted substrings.
-              (                         # Either $1: Quoted chunk.
-                "[^"\\\\]*(?:\\\\.[^"\\\\]*)*"  # Either a double quoted chunk,
-              | \'[^\'\\\\]*(?:\\\\.[^\'\\\\]*)*\'  # or a single quoted chunk.
-              )                         # End $1: Quoted chunk.
-            | ([^\'"\\\\]+)             # or $2: an unquoted chunk (no escapes).
-            /sx';
+                # Match one chunk of a valid string having embedded quoted substrings.
+                  (                         # Either $1: Quoted chunk.
+                    "[^"\\\\]*(?:\\\\.[^"\\\\]*)*"  # Either a double quoted chunk,
+                  | \'[^\'\\\\]*(?:\\\\.[^\'\\\\]*)*\'  # or a single quoted chunk.
+                  )                         # End $1: Quoted chunk.
+                | ([^\'"\\\\]+)             # or $2: an unquoted chunk (no escapes).
+                /sx';
         return preg_replace_callback($re_parse, array($this, '_str_replace_outside_quotes_cb'), $this->subject);
     }
 
     /**
      * Process each matching chunk from preg_replace_callback replacing
      * each occurrence of $this->search with $this->replace
+     *
      * @author Jeff Roberson <ridgerunner@fluxbb.org>
-     * @link http://stackoverflow.com/a/13370709/461813 StackOverflow answer
-     * @param array $matches
+     * @link   http://stackoverflow.com/a/13370709/461813 StackOverflow answer
+     * @param  array $matches
      * @return string
      */
     protected function _str_replace_outside_quotes_cb($matches)
     {
         // Return quoted string chunks (in group $1) unaltered.
-        if ($matches[1]) {
-            return $matches[1];
+        if ($matches[1]) { return $matches[1];
         }
         // Process only unquoted chunks (in group $2).
         return preg_replace(
-            '/'. preg_quote($this->search, '/') .'/',
+            '/' . preg_quote($this->search, '/') . '/',
             $this->replace,
             $matches[2]
         );
@@ -2558,6 +2602,7 @@ class IdiormString
 
 /**
  * A result set class for working with collections of model instances
+ *
  * @author Simon Holywell <treffynnon@php.net>
  * @method null setResults(array $results)
  * @method array getResults()
@@ -2566,12 +2611,14 @@ class IdiormResultSet implements Countable, IteratorAggregate, ArrayAccess, Seri
 {
     /**
      * The current result set as an array
+     *
      * @var array
      */
     protected $_results = array();
 
     /**
      * Optionally set the contents of the result set by passing in array
+     *
      * @param array $results
      */
     public function __construct(array $results = array())
@@ -2581,6 +2628,7 @@ class IdiormResultSet implements Countable, IteratorAggregate, ArrayAccess, Seri
 
     /**
      * Set the contents of the result set by passing in array
+     *
      * @param array $results
      */
     public function set_results(array $results)
@@ -2590,6 +2638,7 @@ class IdiormResultSet implements Countable, IteratorAggregate, ArrayAccess, Seri
 
     /**
      * Get the current result set as an array
+     *
      * @return array
      */
     public function get_results()
@@ -2599,15 +2648,17 @@ class IdiormResultSet implements Countable, IteratorAggregate, ArrayAccess, Seri
 
     /**
      * Get the current result set as an array
+     *
      * @return array
      */
     public function as_array()
     {
         return $this->get_results();
     }
-    
+
     /**
      * Get the number of records in the result set
+     *
      * @return int
      */
     public function count()
@@ -2618,6 +2669,7 @@ class IdiormResultSet implements Countable, IteratorAggregate, ArrayAccess, Seri
     /**
      * Get an iterator for this object. In this case it supports foreaching
      * over the result set.
+     *
      * @return \ArrayIterator
      */
     public function getIterator()
@@ -2627,7 +2679,8 @@ class IdiormResultSet implements Countable, IteratorAggregate, ArrayAccess, Seri
 
     /**
      * ArrayAccess
-     * @param int|string $offset
+     *
+     * @param  int|string $offset
      * @return bool
      */
     public function offsetExists($offset)
@@ -2637,18 +2690,20 @@ class IdiormResultSet implements Countable, IteratorAggregate, ArrayAccess, Seri
 
     /**
      * ArrayAccess
-     * @param int|string $offset
+     *
+     * @param  int|string $offset
      * @return mixed
      */
     public function offsetGet($offset)
     {
         return $this->_results[$offset];
     }
-    
+
     /**
      * ArrayAccess
+     *
      * @param int|string $offset
-     * @param mixed $value
+     * @param mixed      $value
      */
     public function offsetSet($offset, $value)
     {
@@ -2657,6 +2712,7 @@ class IdiormResultSet implements Countable, IteratorAggregate, ArrayAccess, Seri
 
     /**
      * ArrayAccess
+     *
      * @param int|string $offset
      */
     public function offsetUnset($offset)
@@ -2666,6 +2722,7 @@ class IdiormResultSet implements Countable, IteratorAggregate, ArrayAccess, Seri
 
     /**
      * Serializable
+     *
      * @return string
      */
     public function serialize()
@@ -2675,7 +2732,8 @@ class IdiormResultSet implements Countable, IteratorAggregate, ArrayAccess, Seri
 
     /**
      * Serializable
-     * @param string $serialized
+     *
+     * @param  string $serialized
      * @return array
      */
     public function unserialize($serialized)
@@ -2687,10 +2745,11 @@ class IdiormResultSet implements Countable, IteratorAggregate, ArrayAccess, Seri
      * Call a method on all models in a result set. This allows for method
      * chaining such as setting a property on all models in a result set or
      * any other batch operation across models.
+     *
      * @example ORM::for_table('Widget')->find_many()->set('field', 'value')->save();
-     * @param string $method
-     * @param array $params
-     * @return \IdiormResultSet
+     * @param   string $method
+     * @param   array  $params
+     * @return  \IdiormResultSet
      */
     public function __call($method, $params = array())
     {
@@ -2736,12 +2795,14 @@ class NI_connect extends ORM
     public function connection()
     {
         try {
-            $conn = new PDO("mysql:host=$this->host;port=$this->port;dbname=$this->dbname", $this->user, $this->pass, [
+            $conn = new PDO(
+                "mysql:host=$this->host;port=$this->port;dbname=$this->dbname", $this->user, $this->pass, [
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES => false,
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"
-            ]);
+                ]
+            );
             return $conn;
         } catch (PDOException $e) {
             (print_r($e->getMessage()));
@@ -2753,12 +2814,14 @@ class NI_connect extends ORM
         $this->configure("mysql:host=$this->host;dbname=$this->dbname");
         $this->configure('username', $this->user);
         $this->configure('password', $this->pass);
-        $this->configure('driver_options', array(
+        $this->configure(
+            'driver_options', array(
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES => false,
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"
-        ));
+            )
+        );
     }
     public function sqlsrv()
     {

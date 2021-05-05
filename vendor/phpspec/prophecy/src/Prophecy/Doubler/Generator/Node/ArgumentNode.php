@@ -24,7 +24,9 @@ class ArgumentNode
     private $byReference = false;
     private $isVariadic  = false;
 
-    /** @var ArgumentTypeNode */
+    /**
+     * @var ArgumentTypeNode 
+     */
     private $typeNode;
 
     /**
@@ -94,7 +96,7 @@ class ArgumentNode
 
     /**
      * @deprecated use getArgumentTypeNode instead
-     * @return string|null
+     * @return     string|null
      */
     public function getTypeHint()
     {
@@ -105,7 +107,7 @@ class ArgumentNode
 
     /**
      * @deprecated use setArgumentTypeNode instead
-     * @param string|null $typeHint
+     * @param      string|null $typeHint
      */
     public function setTypeHint($typeHint = null)
     {
@@ -114,7 +116,7 @@ class ArgumentNode
 
     /**
      * @deprecated use getArgumentTypeNode instead
-     * @return bool
+     * @return     bool
      */
     public function isNullable()
     {
@@ -123,7 +125,7 @@ class ArgumentNode
 
     /**
      * @deprecated use getArgumentTypeNode instead
-     * @param bool $isNullable
+     * @param      bool $isNullable
      */
     public function setAsNullable($isNullable = true)
     {

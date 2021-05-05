@@ -10,7 +10,7 @@
 namespace PHPUnit\TextUI\XmlConfiguration;
 
 /**
- * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ * @internal        This class is not covered by the backward compatibility promise for PHPUnit
  * @psalm-immutable
  */
 final class Variable

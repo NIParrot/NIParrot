@@ -30,7 +30,7 @@ class Company extends \Faker\Provider\Company
 
     /**
      * @example 'شرکت'
-     * @return string
+     * @return  string
      */
     public static function companyPrefix()
     {
@@ -39,7 +39,7 @@ class Company extends \Faker\Provider\Company
 
     /**
      * @example 'سرمایه گذاری'
-     * @return string
+     * @return  string
      */
     public static function companyField()
     {
@@ -47,9 +47,9 @@ class Company extends \Faker\Provider\Company
     }
 
     /**
-    * @example 'تمام وقت'
-    * @return string
-    */
+     * @example 'تمام وقت'
+     * @return  string
+     */
     public function contract()
     {
         return static::randomElement(static::$contract);

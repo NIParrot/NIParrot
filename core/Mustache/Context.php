@@ -211,29 +211,29 @@ class Mustache_Context
             $frame = &$stack[$i];
 
             switch (gettype($frame)) {
-                case 'object':
-                    if (!($frame instanceof Closure)) {
-                        // Note that is_callable() *will not work here*
-                        // See https://github.com/bobthecow/mustache.php/wiki/Magic-Methods
-                        if (method_exists($frame, $id)) {
-                            return $frame->$id();
-                        }
-
-                        if (isset($frame->$id)) {
-                            return $frame->$id;
-                        }
-
-                        if ($frame instanceof ArrayAccess && isset($frame[$id])) {
-                            return $frame[$id];
-                        }
+            case 'object':
+                if (!($frame instanceof Closure)) {
+                    // Note that is_callable() *will not work here*
+                    // See https://github.com/bobthecow/mustache.php/wiki/Magic-Methods
+                    if (method_exists($frame, $id)) {
+                        return $frame->$id();
                     }
-                    break;
 
-                case 'array':
-                    if (array_key_exists($id, $frame)) {
+                    if (isset($frame->$id)) {
+                        return $frame->$id;
+                    }
+
+                    if ($frame instanceof ArrayAccess && isset($frame[$id])) {
                         return $frame[$id];
                     }
-                    break;
+                }
+                break;
+
+            case 'array':
+                if (array_key_exists($id, $frame)) {
+                    return $frame[$id];
+                }
+                break;
             }
         }
 

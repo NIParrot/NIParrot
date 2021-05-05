@@ -22,7 +22,8 @@ class ClosureLoaderTest extends TestCase
     {
         $loader = new ClosureLoader();
 
-        $closure = function () {};
+        $closure = function () {
+        };
 
         $this->assertTrue($loader->supports($closure), '->supports() returns true if the resource is loadable');
         $this->assertFalse($loader->supports('foo.foo'), '->supports() returns true if the resource is loadable');
@@ -36,13 +37,15 @@ class ClosureLoaderTest extends TestCase
         $loader = new ClosureLoader();
 
         $route = new Route('/');
-        $routes = $loader->load(function () use ($route) {
-            $routes = new RouteCollection();
+        $routes = $loader->load(
+            function () use ($route) {
+                $routes = new RouteCollection();
 
-            $routes->add('foo', $route);
+                $routes->add('foo', $route);
 
-            return $routes;
-        });
+                return $routes;
+            }
+        );
 
         $this->assertEquals($route, $routes->get('foo'), '->load() loads a \Closure resource');
     }

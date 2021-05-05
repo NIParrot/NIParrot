@@ -9,5 +9,6 @@
  */
 namespace PharIo\Manifest;
 
-class ElementCollectionException extends \InvalidArgumentException implements Exception {
+class ElementCollectionException extends \InvalidArgumentException implements Exception
+{
 }

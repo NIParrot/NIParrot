@@ -50,9 +50,9 @@ interface ConnectorInterface
      * $promise->cancel();
      * ```
      *
-     * @param string $uri
+     * @param  string $uri
      * @return \React\Promise\PromiseInterface resolves with a stream implementing ConnectionInterface on success or rejects with an Exception on error
-     * @see ConnectionInterface
+     * @see    ConnectionInterface
      */
     public function connect($uri);
 }

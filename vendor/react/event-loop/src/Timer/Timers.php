@@ -9,7 +9,7 @@ use React\EventLoop\TimerInterface;
  *
  * This class should only be used internally, see TimerInterface instead.
  *
- * @see TimerInterface
+ * @see      TimerInterface
  * @internal
  */
 final class Timers

@@ -28,9 +28,9 @@ final class RemoveLogTypes implements Migration
 
         foreach (SnapshotNodeList::fromNodeList($logging->getElementsByTagName('log')) as $logNode) {
             switch ($logNode->getAttribute('type')) {
-                case 'json':
-                case 'tap':
-                    $logging->removeChild($logNode);
+            case 'json':
+            case 'tap':
+                $logging->removeChild($logNode);
             }
         }
     }

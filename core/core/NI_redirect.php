@@ -5,7 +5,7 @@ class NI_redirect
     {
         $url = explode('/', $_SERVER['REQUEST_URI']);
         $url = $url[0].'/'.$path;
-        header("Refresh: $time; url=$url") ;
+        header("Refresh: $time; url=$url");
     }
     public static function path($path_dir)
     {

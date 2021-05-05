@@ -8,4 +8,6 @@
 
 namespace Delight\FileUpload\Throwable;
 
-class TargetDirectoryNotSpecifiedError extends Error {}
+class TargetDirectoryNotSpecifiedError extends Error
+{
+}

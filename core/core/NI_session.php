@@ -5,7 +5,7 @@ class NI_session
     {
         $args = func_get_args();
         session_unset();
-        session_destroy() ;
+        session_destroy();
         NI_redirect::path($args[0]);
         if (isset($args[0])) {
             NI_redirect::path($args[0]);

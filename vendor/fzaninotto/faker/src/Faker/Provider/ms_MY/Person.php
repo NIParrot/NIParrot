@@ -186,7 +186,6 @@ class Person extends \Faker\Provider\Person
      *
      * @link https://en.wikipedia.org/wiki/List_of_common_Chinese_surnames
      * @link https://en.wikipedia.org/wiki/Hundred_Family_Surnames
-     *
      */
     protected static $lastNameChinese = array(
         'An','Ang','Au','Au-Yong','Aun','Aw',

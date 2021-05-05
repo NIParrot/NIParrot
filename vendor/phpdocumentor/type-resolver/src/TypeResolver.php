@@ -8,7 +8,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link      http://phpdoc.org
+ * @link http://phpdoc.org
  */
 
 namespace phpDocumentor\Reflection;
@@ -46,26 +46,38 @@ use const PREG_SPLIT_NO_EMPTY;
 
 final class TypeResolver
 {
-    /** @var string Definition of the ARRAY operator for types */
+    /**
+     * @var string Definition of the ARRAY operator for types 
+     */
     private const OPERATOR_ARRAY = '[]';
 
-    /** @var string Definition of the NAMESPACE operator in PHP */
+    /**
+     * @var string Definition of the NAMESPACE operator in PHP 
+     */
     private const OPERATOR_NAMESPACE = '\\';
 
-    /** @var int the iterator parser is inside a compound context */
+    /**
+     * @var int the iterator parser is inside a compound context 
+     */
     private const PARSER_IN_COMPOUND = 0;
 
-    /** @var int the iterator parser is inside a nullable expression context */
+    /**
+     * @var int the iterator parser is inside a nullable expression context 
+     */
     private const PARSER_IN_NULLABLE = 1;
 
-    /** @var int the iterator parser is inside an array expression context */
+    /**
+     * @var int the iterator parser is inside an array expression context 
+     */
     private const PARSER_IN_ARRAY_EXPRESSION = 2;
 
-    /** @var int the iterator parser is inside a collection expression context */
+    /**
+     * @var int the iterator parser is inside a collection expression context 
+     */
     private const PARSER_IN_COLLECTION_EXPRESSION = 3;
 
     /**
-     * @var array<string, string> List of recognized keywords and unto which Value Object they map
+     * @var       array<string, string> List of recognized keywords and unto which Value Object they map
      * @psalm-var array<string, class-string<Type>>
      */
     private $keywords = [
@@ -97,7 +109,7 @@ final class TypeResolver
     ];
 
     /**
-     * @var FqsenResolver
+     * @var            FqsenResolver
      * @psalm-readonly
      */
     private $fqsenResolver;
@@ -149,7 +161,9 @@ final class TypeResolver
             throw new InvalidArgumentException('Unable to split the type string "' . $type . '" into tokens');
         }
 
-        /** @var ArrayIterator<int, string|null> $tokenIterator */
+        /**
+ * @var ArrayIterator<int, string|null> $tokenIterator 
+*/
         $tokenIterator = new ArrayIterator($tokens);
 
         return $this->parseTypes($tokenIterator, $context, self::PARSER_IN_COMPOUND);
@@ -159,8 +173,8 @@ final class TypeResolver
      * Analyse each tokens and creates types
      *
      * @param ArrayIterator<int, string|null> $tokens        the iterator on tokens
-     * @param int                        $parserContext on of self::PARSER_* constants, indicating
-     * the context where we are in the parsing
+     * @param int                             $parserContext on of self::PARSER_* constants, indicating
+     *                                                       the context where we are in the parsing
      */
     private function parseTypes(ArrayIterator $tokens, Context $context, int $parserContext) : Type
     {
@@ -182,11 +196,13 @@ final class TypeResolver
                     );
                 }
 
-                if (!in_array($parserContext, [
+                if (!in_array(
+                    $parserContext, [
                     self::PARSER_IN_COMPOUND,
                     self::PARSER_IN_ARRAY_EXPRESSION,
                     self::PARSER_IN_COLLECTION_EXPRESSION,
-                ], true)
+                    ], true
+                )
                 ) {
                     throw new RuntimeException(
                         'Unexpected type separator'
@@ -196,11 +212,13 @@ final class TypeResolver
                 $compoundToken = $token;
                 $tokens->next();
             } elseif ($token === '?') {
-                if (!in_array($parserContext, [
+                if (!in_array(
+                    $parserContext, [
                     self::PARSER_IN_COMPOUND,
                     self::PARSER_IN_ARRAY_EXPRESSION,
                     self::PARSER_IN_COLLECTION_EXPRESSION,
-                ], true)
+                    ], true
+                )
                 ) {
                     throw new RuntimeException(
                         'Unexpected nullable character'
@@ -316,19 +334,19 @@ final class TypeResolver
     private function resolveSingleType(string $type, Context $context) : object
     {
         switch (true) {
-            case $this->isKeyword($type):
-                return $this->resolveKeyword($type);
-            case $this->isFqsen($type):
-                return $this->resolveTypedObject($type);
-            case $this->isPartialStructuralElementName($type):
-                return $this->resolveTypedObject($type, $context);
+        case $this->isKeyword($type):
+            return $this->resolveKeyword($type);
+        case $this->isFqsen($type):
+            return $this->resolveTypedObject($type);
+        case $this->isPartialStructuralElementName($type):
+            return $this->resolveTypedObject($type, $context);
 
             // @codeCoverageIgnoreStart
-            default:
-                // I haven't got the foggiest how the logic would come here but added this as a defense.
-                throw new RuntimeException(
-                    'Unable to resolve type "' . $type . '", there is no known method to resolve it'
-                );
+        default:
+            // I haven't got the foggiest how the logic would come here but added this as a defense.
+            throw new RuntimeException(
+                'Unable to resolve type "' . $type . '", there is no known method to resolve it'
+            );
         }
 
         // @codeCoverageIgnoreEnd
@@ -460,7 +478,8 @@ final class TypeResolver
 
         // allow only "array", "iterable" or class name before "<"
         if (!$isArray && !$isIterable
-            && (!$classType instanceof Object_ || $classType->getFqsen() === null)) {
+            && (!$classType instanceof Object_ || $classType->getFqsen() === null)
+        ) {
             throw new RuntimeException(
                 $classType . ' is not a collection'
             );
@@ -478,9 +497,9 @@ final class TypeResolver
             if ($isArray) {
                 // check the key type for an "array" collection. We allow only
                 // strings or integers.
-                if (!$keyType instanceof String_ &&
-                    !$keyType instanceof Integer &&
-                    !$keyType instanceof Compound
+                if (!$keyType instanceof String_ 
+                    && !$keyType instanceof Integer 
+                    && !$keyType instanceof Compound
                 ) {
                     throw new RuntimeException(
                         'An array can have only integers or strings as keys'
@@ -489,8 +508,8 @@ final class TypeResolver
 
                 if ($keyType instanceof Compound) {
                     foreach ($keyType->getIterator() as $item) {
-                        if (!$item instanceof String_ &&
-                            !$item instanceof Integer
+                        if (!$item instanceof String_ 
+                            && !$item instanceof Integer
                         ) {
                             throw new RuntimeException(
                                 'An array can have only integers or strings as keys'

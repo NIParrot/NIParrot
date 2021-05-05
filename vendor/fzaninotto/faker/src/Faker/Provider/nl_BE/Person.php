@@ -79,10 +79,10 @@ class Person extends \Faker\Provider\Person
      *  males, even for females. The last part is used to check if it's
      *  a valid number.
      *
-     *  @link https://nl.wikipedia.org/wiki/Rijksregisternummer
+     * @link https://nl.wikipedia.org/wiki/Rijksregisternummer
      *
-     *  @param string|null $gender 'male', 'female' or null for any
-     *  @return string
+     * @param  string|null $gender 'male', 'female' or null for any
+     * @return string
      */
     public static function rrn($gender = null)
     {

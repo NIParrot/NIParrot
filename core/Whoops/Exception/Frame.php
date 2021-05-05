@@ -1,6 +1,7 @@
 <?php
 /**
  * Whoops - php errors for cool kids
+ *
  * @author Filipe Dobreira <http://github.com/filp>
  */
 
@@ -40,7 +41,7 @@ class Frame implements Serializable
     }
 
     /**
-     * @param  bool        $shortened
+     * @param  bool $shortened
      * @return string|null
      */
     public function getFile($shortened = false)
@@ -107,6 +108,7 @@ class Frame implements Serializable
     /**
      * Returns the full contents of the file for this frame,
      * if it's known.
+     *
      * @return string|null
      */
     public function getFileContents()
@@ -153,7 +155,7 @@ class Frame implements Serializable
      * a filter to only retrieve comments from a specific
      * context.
      *
-     * @param  string  $filter
+     * @param  string $filter
      * @return array[]
      */
     public function getComments($filter = null)
@@ -161,9 +163,11 @@ class Frame implements Serializable
         $comments = $this->comments;
 
         if ($filter !== null) {
-            $comments = array_filter($comments, function ($c) use ($filter) {
-                return $c['context'] == $filter;
-            });
+            $comments = array_filter(
+                $comments, function ($c) use ($filter) {
+                    return $c['context'] == $filter;
+                }
+            );
         }
 
         return $comments;
@@ -194,8 +198,8 @@ class Frame implements Serializable
      *     $frame->getFileLines(9, 1); // array( 10 => '...', 11 => '...')
      *
      * @throws InvalidArgumentException if $length is less than or equal to 0
-     * @param  int                      $start
-     * @param  int                      $length
+     * @param  int $start
+     * @param  int $length
      * @return string[]|null
      */
     public function getFileLines($start = 0, $length = null)
@@ -228,7 +232,7 @@ class Frame implements Serializable
      * Implements the Serializable interface, with special
      * steps to also save the existing comments.
      *
-     * @see Serializable::serialize
+     * @see    Serializable::serialize
      * @return string
      */
     public function serialize()
@@ -245,7 +249,7 @@ class Frame implements Serializable
      * Unserializes the frame data, while also preserving
      * any existing comment data.
      *
-     * @see Serializable::unserialize
+     * @see   Serializable::unserialize
      * @param string $serializedFrame
      */
     public function unserialize($serializedFrame)
@@ -262,6 +266,7 @@ class Frame implements Serializable
 
     /**
      * Compares Frame against one another
+     *
      * @param  Frame $frame
      * @return bool
      */

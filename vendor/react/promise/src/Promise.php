@@ -73,26 +73,34 @@ class Promise implements ExtendedPromiseInterface, CancellablePromiseInterface
 
     public function otherwise(callable $onRejected)
     {
-        return $this->then(null, static function ($reason) use ($onRejected) {
-            if (!_checkTypehint($onRejected, $reason)) {
-                return new RejectedPromise($reason);
-            }
+        return $this->then(
+            null, static function ($reason) use ($onRejected) {
+                if (!_checkTypehint($onRejected, $reason)) {
+                    return new RejectedPromise($reason);
+                }
 
-            return $onRejected($reason);
-        });
+                return $onRejected($reason);
+            }
+        );
     }
 
     public function always(callable $onFulfilledOrRejected)
     {
-        return $this->then(static function ($value) use ($onFulfilledOrRejected) {
-            return resolve($onFulfilledOrRejected())->then(function () use ($value) {
-                return $value;
-            });
-        }, static function ($reason) use ($onFulfilledOrRejected) {
-            return resolve($onFulfilledOrRejected())->then(function () use ($reason) {
-                return new RejectedPromise($reason);
-            });
-        });
+        return $this->then(
+            static function ($value) use ($onFulfilledOrRejected) {
+                return resolve($onFulfilledOrRejected())->then(
+                    function () use ($value) {
+                        return $value;
+                    }
+                );
+            }, static function ($reason) use ($onFulfilledOrRejected) {
+                return resolve($onFulfilledOrRejected())->then(
+                    function () use ($reason) {
+                        return new RejectedPromise($reason);
+                    }
+                );
+            }
+        );
     }
 
     public function progress(callable $onProgress)

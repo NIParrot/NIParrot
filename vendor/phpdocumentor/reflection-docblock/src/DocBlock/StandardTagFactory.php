@@ -67,7 +67,9 @@ use function trim;
  */
 final class StandardTagFactory implements TagFactory
 {
-    /** PCRE regular expression matching a tag name. */
+    /**
+     * PCRE regular expression matching a tag name. 
+     */
     public const REGEX_TAGNAME = '[\w\-\_\\\\:]+';
 
     /**
@@ -108,7 +110,9 @@ final class StandardTagFactory implements TagFactory
      */
     private $tagHandlerParameterCache = [];
 
-    /** @var FqsenResolver */
+    /**
+     * @var FqsenResolver 
+     */
     private $fqsenResolver;
 
     /**
@@ -212,7 +216,9 @@ final class StandardTagFactory implements TagFactory
         try {
             $callable = [$handlerClassName, 'create'];
             Assert::isCallable($callable);
-            /** @phpstan-var callable(string): ?Tag $callable */
+            /**
+ * @phpstan-var callable(string): ?Tag $callable 
+*/
             $tag = call_user_func_array($callable, $arguments);
 
             return $tag ?? InvalidTag::create($body, $name);
@@ -307,11 +313,11 @@ final class StandardTagFactory implements TagFactory
      * such as the tag's name, body and Context.
      *
      * @param TypeContext $context The Context (namespace and aliasses) that may be
-     *  passed and is used to resolve FQSENs.
+     *                             passed and is used to resolve FQSENs.
      * @param string      $tagName The name of the tag that may be
-     *  passed onto the factory method of the Tag class.
+     *                             passed onto the factory method of the Tag class.
      * @param string      $tagBody The body of the tag that may be
-     *  passed onto the factory method of the Tag class.
+     *                             passed onto the factory method of the Tag class.
      *
      * @return mixed[]
      */

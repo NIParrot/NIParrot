@@ -31,7 +31,7 @@ final class TimeoutConnector implements ConnectorInterface
      * bound to this instance and the exception trace does not include a
      * reference to this instance and its connector stack as a result.
      *
-     * @param string $uri
+     * @param  string $uri
      * @return callable
      */
     private static function handler($uri)

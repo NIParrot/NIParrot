@@ -12,12 +12,17 @@ use PhpParser\NodeVisitorAbstract;
  */
 class FirstFindingVisitor extends NodeVisitorAbstract
 {
-    /** @var callable Filter callback */
+    /**
+     * @var callable Filter callback 
+     */
     protected $filterCallback;
-    /** @var null|Node Found node */
+    /**
+     * @var null|Node Found node 
+     */
     protected $foundNode;
 
-    public function __construct(callable $filterCallback) {
+    public function __construct(callable $filterCallback)
+    {
         $this->filterCallback = $filterCallback;
     }
 
@@ -28,17 +33,20 @@ class FirstFindingVisitor extends NodeVisitorAbstract
      *
      * @return null|Node Found node (or null if not found)
      */
-    public function getFoundNode() {
+    public function getFoundNode()
+    {
         return $this->foundNode;
     }
 
-    public function beforeTraverse(array $nodes) {
+    public function beforeTraverse(array $nodes)
+    {
         $this->foundNode = null;
 
         return null;
     }
 
-    public function enterNode(Node $node) {
+    public function enterNode(Node $node)
+    {
         $filterCallback = $this->filterCallback;
         if ($filterCallback($node)) {
             $this->foundNode = $node;

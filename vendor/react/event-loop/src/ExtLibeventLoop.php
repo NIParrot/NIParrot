@@ -35,7 +35,9 @@ use SplObjectStorage;
  */
 final class ExtLibeventLoop implements LoopInterface
 {
-    /** @internal */
+    /**
+ * @internal 
+*/
     const MICROSECONDS_PER_SECOND = 1000000;
 
     private $eventBase;
@@ -250,7 +252,7 @@ final class ExtLibeventLoop implements LoopInterface
                     $timer->getInterval() * ExtLibeventLoop::MICROSECONDS_PER_SECOND
                 );
 
-            // Clean-up one shot timers ...
+                // Clean-up one shot timers ...
             } else {
                 $that->cancelTimer($timer);
             }

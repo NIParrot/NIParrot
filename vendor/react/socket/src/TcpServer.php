@@ -115,9 +115,9 @@ final class TcpServer extends EventEmitter implements ServerInterface
      * Passing unknown context options has no effect.
      * The `backlog` context option defaults to `511` unless given explicitly.
      *
-     * @param string|int    $uri
-     * @param LoopInterface $loop
-     * @param array         $context
+     * @param  string|int    $uri
+     * @param  LoopInterface $loop
+     * @param  array         $context
      * @throws InvalidArgumentException if the listening address is invalid
      * @throws RuntimeException if listening on this address fails (already in use etc.)
      */
@@ -203,15 +203,17 @@ final class TcpServer extends EventEmitter implements ServerInterface
         }
 
         $that = $this;
-        $this->loop->addReadStream($this->master, function ($master) use ($that) {
-            $newSocket = @\stream_socket_accept($master, 0);
-            if (false === $newSocket) {
-                $that->emit('error', array(new \RuntimeException('Error accepting new connection')));
+        $this->loop->addReadStream(
+            $this->master, function ($master) use ($that) {
+                $newSocket = @\stream_socket_accept($master, 0);
+                if (false === $newSocket) {
+                    $that->emit('error', array(new \RuntimeException('Error accepting new connection')));
 
-                return;
+                    return;
+                }
+                $that->handleConnection($newSocket);
             }
-            $that->handleConnection($newSocket);
-        });
+        );
         $this->listening = true;
     }
 
@@ -226,11 +228,15 @@ final class TcpServer extends EventEmitter implements ServerInterface
         $this->removeAllListeners();
     }
 
-    /** @internal */
+    /**
+     * @internal 
+     */
     public function handleConnection($socket)
     {
-        $this->emit('connection', array(
+        $this->emit(
+            'connection', array(
             new Connection($socket, $this->loop)
-        ));
+            )
+        );
     }
 }

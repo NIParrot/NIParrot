@@ -6,13 +6,21 @@ use PhpParser\Node;
 
 class For_ extends Node\Stmt
 {
-    /** @var Node\Expr[] Init expressions */
+    /**
+     * @var Node\Expr[] Init expressions 
+     */
     public $init;
-    /** @var Node\Expr[] Loop conditions */
+    /**
+     * @var Node\Expr[] Loop conditions 
+     */
     public $cond;
-    /** @var Node\Expr[] Loop expressions */
+    /**
+     * @var Node\Expr[] Loop expressions 
+     */
     public $loop;
-    /** @var Node\Stmt[] Statements */
+    /**
+     * @var Node\Stmt[] Statements 
+     */
     public $stmts;
 
     /**
@@ -25,7 +33,8 @@ class For_ extends Node\Stmt
      *                          'stmts' => array(): Statements
      * @param array $attributes Additional attributes
      */
-    public function __construct(array $subNodes = [], array $attributes = []) {
+    public function __construct(array $subNodes = [], array $attributes = [])
+    {
         $this->attributes = $attributes;
         $this->init = $subNodes['init'] ?? [];
         $this->cond = $subNodes['cond'] ?? [];
@@ -33,11 +42,13 @@ class For_ extends Node\Stmt
         $this->stmts = $subNodes['stmts'] ?? [];
     }
 
-    public function getSubNodeNames() : array {
+    public function getSubNodeNames() : array
+    {
         return ['init', 'cond', 'loop', 'stmts'];
     }
     
-    public function getType() : string {
+    public function getType() : string
+    {
         return 'Stmt_For';
     }
 }

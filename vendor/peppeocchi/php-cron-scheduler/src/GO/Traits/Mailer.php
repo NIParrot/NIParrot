@@ -9,8 +9,8 @@ trait Mailer
      */
     public function getEmailConfig()
     {
-        if (! isset($this->emailConfig['subject']) ||
-            ! is_string($this->emailConfig['subject'])
+        if (! isset($this->emailConfig['subject']) 
+            || ! is_string($this->emailConfig['subject'])
         ) {
             $this->emailConfig['subject'] = 'Cronjob execution';
         }
@@ -19,14 +19,14 @@ trait Mailer
             $this->emailConfig['from'] = ['cronjob@server.my' => 'My Email Server'];
         }
 
-        if (! isset($this->emailConfig['body']) ||
-            ! is_string($this->emailConfig['body'])
+        if (! isset($this->emailConfig['body']) 
+            || ! is_string($this->emailConfig['body'])
         ) {
             $this->emailConfig['body'] = 'Cronjob output attached';
         }
 
-        if (! isset($this->emailConfig['transport']) ||
-            ! ($this->emailConfig['transport'] instanceof \Swift_Transport)
+        if (! isset($this->emailConfig['transport']) 
+            || ! ($this->emailConfig['transport'] instanceof \Swift_Transport)
         ) {
             $this->emailConfig['transport'] = new \Swift_SendmailTransport();
         }
@@ -37,7 +37,7 @@ trait Mailer
     /**
      * Send files to emails.
      *
-     * @param  array  $files
+     * @param  array $files
      * @return void
      */
     private function sendToEmails(array $files)

@@ -118,19 +118,23 @@ final class ReadableResourceStream extends EventEmitter implements ReadableStrea
         }
     }
 
-    /** @internal */
+    /**
+     * @internal 
+     */
     public function handleData()
     {
         $error = null;
-        \set_error_handler(function ($errno, $errstr, $errfile, $errline) use (&$error) {
-            $error = new \ErrorException(
-                $errstr,
-                0,
-                $errno,
-                $errfile,
-                $errline
-            );
-        });
+        \set_error_handler(
+            function ($errno, $errstr, $errfile, $errline) use (&$error) {
+                $error = new \ErrorException(
+                    $errstr,
+                    0,
+                    $errno,
+                    $errfile,
+                    $errline
+                );
+            }
+        );
 
         $data = \stream_get_contents($this->stream, $this->bufferSize);
 
@@ -157,9 +161,9 @@ final class ReadableResourceStream extends EventEmitter implements ReadableStrea
      * This works around a legacy PHP bug (#61019) that was fixed in PHP 5.4.28+
      * and PHP 5.5.12+ and newer.
      *
-     * @param resource $resource
+     * @param  resource $resource
      * @return bool
-     * @link https://github.com/reactphp/child-process/issues/40
+     * @link   https://github.com/reactphp/child-process/issues/40
      *
      * @codeCoverageIgnore
      */

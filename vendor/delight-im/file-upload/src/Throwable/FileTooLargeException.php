@@ -8,4 +8,6 @@
 
 namespace Delight\FileUpload\Throwable;
 
-class FileTooLargeException extends Exception {}
+class FileTooLargeException extends Exception
+{
+}

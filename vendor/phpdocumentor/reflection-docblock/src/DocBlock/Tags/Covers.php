@@ -28,10 +28,14 @@ use function explode;
  */
 final class Covers extends BaseTag implements Factory\StaticMethod
 {
-    /** @var string */
+    /**
+     * @var string 
+     */
     protected $name = 'covers';
 
-    /** @var Fqsen */
+    /**
+     * @var Fqsen 
+     */
     private $refers;
 
     /**

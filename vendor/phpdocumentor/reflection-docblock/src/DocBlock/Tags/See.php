@@ -32,10 +32,14 @@ use function preg_match;
  */
 final class See extends BaseTag implements Factory\StaticMethod
 {
-    /** @var string */
+    /**
+     * @var string 
+     */
     protected $name = 'see';
 
-    /** @var Reference */
+    /**
+     * @var Reference 
+     */
     protected $refers;
 
     /**

@@ -31,23 +31,23 @@ final class OperatingSystem
         }
 
         switch (PHP_OS) {
-            case 'Darwin':
-                return 'Darwin';
+        case 'Darwin':
+            return 'Darwin';
 
-            case 'DragonFly':
-            case 'FreeBSD':
-            case 'NetBSD':
-            case 'OpenBSD':
-                return 'BSD';
+        case 'DragonFly':
+        case 'FreeBSD':
+        case 'NetBSD':
+        case 'OpenBSD':
+            return 'BSD';
 
-            case 'Linux':
-                return 'Linux';
+        case 'Linux':
+            return 'Linux';
 
-            case 'SunOS':
-                return 'Solaris';
+        case 'SunOS':
+            return 'Solaris';
 
-            default:
-                return 'Unknown';
+        default:
+            return 'Unknown';
         }
     }
 }

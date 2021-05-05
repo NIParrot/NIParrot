@@ -40,24 +40,24 @@ $upload->withAllowedExtensions([ 'jpeg', 'jpg', 'png', 'gif' ]);
 configureInstance($upload);
 
 try {
-	$uploadedFile = $upload->save();
+    $uploadedFile = $upload->save();
 
-	$message = 'Success: ' . $uploadedFile->getFilenameWithExtension();
+    $message = 'Success: ' . $uploadedFile->getFilenameWithExtension();
 }
 catch (\Delight\FileUpload\Throwable\InputNotFoundException $e) {
-	$message = 'Input not found';
+    $message = 'Input not found';
 }
 catch (\Delight\FileUpload\Throwable\InvalidFilenameException $e) {
-	$message = 'Invalid filename';
+    $message = 'Invalid filename';
 }
 catch (\Delight\FileUpload\Throwable\InvalidExtensionException $e) {
-	$message = 'Invalid extension';
+    $message = 'Invalid extension';
 }
 catch (\Delight\FileUpload\Throwable\FileTooLargeException $e) {
-	$message = 'File too large';
+    $message = 'File too large';
 }
 catch (\Delight\FileUpload\Throwable\UploadCancelledException $e) {
-	$message = 'Upload cancelled';
+    $message = 'Upload cancelled';
 }
 
 echo '    <h2>File</h2>';
@@ -98,24 +98,24 @@ $upload->withFilenameExtension('png');
 configureInstance($upload);
 
 try {
-	$uploadedFile = $upload->save();
+    $uploadedFile = $upload->save();
 
-	$message = 'Success: ' . $uploadedFile->getFilenameWithExtension();
+    $message = 'Success: ' . $uploadedFile->getFilenameWithExtension();
 }
 catch (\Delight\FileUpload\Throwable\InputNotFoundException $e) {
-	$message = 'Input not found';
+    $message = 'Input not found';
 }
 catch (\Delight\FileUpload\Throwable\InvalidFilenameException $e) {
-	$message = 'Invalid filename';
+    $message = 'Invalid filename';
 }
 catch (\Delight\FileUpload\Throwable\InvalidExtensionException $e) {
-	$message = 'Invalid extension';
+    $message = 'Invalid extension';
 }
 catch (\Delight\FileUpload\Throwable\FileTooLargeException $e) {
-	$message = 'File too large';
+    $message = 'File too large';
 }
 catch (\Delight\FileUpload\Throwable\UploadCancelledException $e) {
-	$message = 'Upload cancelled';
+    $message = 'Upload cancelled';
 }
 
 echo '    <h2>Base64</h2>';
@@ -148,32 +148,34 @@ echo '    </form>';
 
 $upload = new \Delight\FileUpload\DataUriUpload();
 $upload->withUri(isset($_POST['my-uri']) ? $_POST['my-uri'] : null);
-$upload->withAllowedMimeTypesAndExtensions([
-	'image/jpeg' => 'jpg',
-	'image/png' => 'png',
-	'image/gif' => 'gif'
-]);
+$upload->withAllowedMimeTypesAndExtensions(
+    [
+    'image/jpeg' => 'jpg',
+    'image/png' => 'png',
+    'image/gif' => 'gif'
+    ]
+);
 configureInstance($upload);
 
 try {
-	$uploadedFile = $upload->save();
+    $uploadedFile = $upload->save();
 
-	$message = 'Success: ' . $uploadedFile->getFilenameWithExtension();
+    $message = 'Success: ' . $uploadedFile->getFilenameWithExtension();
 }
 catch (\Delight\FileUpload\Throwable\InputNotFoundException $e) {
-	$message = 'Input not found';
+    $message = 'Input not found';
 }
 catch (\Delight\FileUpload\Throwable\InvalidFilenameException $e) {
-	$message = 'Invalid filename';
+    $message = 'Invalid filename';
 }
 catch (\Delight\FileUpload\Throwable\InvalidExtensionException $e) {
-	$message = 'Invalid extension';
+    $message = 'Invalid extension';
 }
 catch (\Delight\FileUpload\Throwable\FileTooLargeException $e) {
-	$message = 'File too large';
+    $message = 'File too large';
 }
 catch (\Delight\FileUpload\Throwable\UploadCancelledException $e) {
-	$message = 'Upload cancelled';
+    $message = 'Upload cancelled';
 }
 
 echo '    <h2>Data URI</h2>';
@@ -210,11 +212,12 @@ echo '    </form>';
 echo '  </body>';
 echo '</html>';
 
-function configureInstance(\Delight\FileUpload\AbstractUpload $upload) {
-	$upload->withMaximumSizeInMegabytes(2);
-	$upload->withTargetDirectory(__DIR__ . '/../uploads');
+function configureInstance(\Delight\FileUpload\AbstractUpload $upload)
+{
+    $upload->withMaximumSizeInMegabytes(2);
+    $upload->withTargetDirectory(__DIR__ . '/../uploads');
 
-	if (mt_rand(1, 100) <= 50) {
-		$upload->withTargetFilename(\time());
-	}
+    if (mt_rand(1, 100) <= 50) {
+        $upload->withTargetFilename(\time());
+    }
 }
