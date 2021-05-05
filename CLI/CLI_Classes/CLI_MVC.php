@@ -66,7 +66,7 @@ namespace ParisModel;
                 $deleteFunc = '
                 public static function delete(int $id) 
                 {
-                    $delete = \ORM::for_table("' . $table . '")->find_one([$id]);
+                    $delete = \ORM::for_table("' . strtolower($table) . '")->find_one([$id]);
                     if(is_bool($delete)) return false ;
                     $delete->set("delete_flag",1);
                     if ($delete->save()) {
@@ -80,7 +80,7 @@ namespace ParisModel;
                 $deleteFunc = '
                 public static function delete(int $id) 
                 {
-                    $delete = \ORM::for_table("' . $table . '")->find_one([$id]);
+                    $delete = \ORM::for_table("' . strtolower($table) . '")->find_one([$id]);
                     if(is_bool($delete)) return false ;
                     if ($delete->delete()) {
                         return true;
@@ -90,16 +90,17 @@ namespace ParisModel;
                 }
                 ';
             }
-            $new_model = MODEL . $table . '.php';
+
+            $new_model = MODEL . Inflect::singularize($table) . '.php';
             if (!is_file($new_model)) {
                 $mymodel = fopen($new_model, "w");
                 $code = '<?php 
     namespace model; 
     
-    class ' . $table . ' { 
+    class ' . Inflect::singularize($table) . ' { 
                     public static function create(array $data) 
                     {
-                        $new = \ORM::for_table("' . $table . '")->create();
+                        $new = \ORM::for_table("' . strtolower($table) . '")->create();
                         
                 ';
                 if (DeleteFlag == true) {
@@ -124,7 +125,7 @@ namespace ParisModel;
 
                     public static function update(array $data) 
                     {
-                        $update = \ORM::for_table("' . $table . '")->find_one([$data["id"]]);
+                        $update = \ORM::for_table("' . strtolower($table) . '")->find_one([$data["id"]]);
                         if(is_bool($update)) return false ;
                         
                         foreach ($data as $key => $value) {
@@ -140,12 +141,12 @@ namespace ParisModel;
 
                     public static function select() 
                     {
-                        return \ORM::for_table("' . $table . '")->findArray();
+                        return \ORM::for_table("' . strtolower($table) . '")->findArray();
                     }
 
                     public static function find(int $id) 
                     {
-                        return \ORM::for_table("' . $table . '")->find_one([$id])->as_array();
+                        return \ORM::for_table("' . strtolower($table) . '")->find_one([$id])->as_array();
                     }
                     ' . $deleteFunc . '
                 }
@@ -169,7 +170,7 @@ namespace ParisModel;
         public static function check(array $data)
         {
 
-            $check = \ORM::for_table("' . $ModelName . '")->where(
+            $check = \ORM::for_table("' . strtolower($ModelName) . '")->where(
                 array(
                 ';
         for ($i = 3; $i <= count($input) - 1; $i++) {
@@ -209,7 +210,7 @@ namespace ParisModel;
         public static function uniqe(array $data)
         {
 
-            $check = \ORM::for_table("' . $ModelName . '")->where_any_is(
+            $check = \ORM::for_table("' . strtolower($ModelName) . '")->where_any_is(
                 array(
                 ';
         for ($i = 3; $i <= count($input) - 1; $i++) {
@@ -249,7 +250,7 @@ namespace ParisModel;
         $code = '
         public static function uniqregister(array $data)
         {
-            $check = \ORM::for_table("' . $ModelName . '")->where_any_is(
+            $check = \ORM::for_table("' . strtolower($ModelName) . '")->where_any_is(
                 array(
                 ';
         for ($i = 3; $i <= count($input) - 1; $i++) {
@@ -289,7 +290,7 @@ namespace ParisModel;
         $code = '
         public static function MultAuth(array $data)
         {
-            $check = \ORM::for_table("' . $ModelName . '")->where_any_is(
+            $check = \ORM::for_table("' . strtolower($ModelName) . '")->where_any_is(
                 array(
                 ';
         for ($i = 3; $i <= count($input) - 1; $i++) {
