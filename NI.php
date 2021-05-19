@@ -1,8 +1,7 @@
 <?php
 require_once 'config.php';
-require_once 'core/core/Inflect.php';
-require_once 'core/core/NI_route.php';
-require_once 'api/core/NI_Api_route.php';
+require_once 'functions.php';
+require_once 'corebootstrap.php';
 require_once 'CLI/CLI_Classes/CLI_Helper.php';
 require_once 'CLI/CLI_Classes/CLI_Plugin.php';
 require_once 'CLI/CLI_Classes/CLI_Routes.php';
