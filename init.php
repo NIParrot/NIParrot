@@ -24,6 +24,7 @@ function endsWith($haystack, $needle)
 }
 $DeveloperCode = [
     ...call_app_resources(ROOT . SEP . 'app' . SEP . 'Controller'),
+    ...call_app_resources(ROOT . SEP . 'app' . SEP . 'Middleware'),
     ...call_app_resources(ROOT . SEP . 'routes'),
     ...call_app_resources(ROOT . SEP . 'app' . SEP . 'Model'),
     ...call_app_resources(ROOT . SEP . 'app' . SEP . 'Paris'),

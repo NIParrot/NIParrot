@@ -52,23 +52,26 @@ class NI_response
         header("Content-Type: application/json; charset=UTF-8");
         header("Access-Control-Allow-Methods: *");
         header("Access-Control-Max-Age: 3600");
-        header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+        header("Access-Control-Allow-Headers: Origin, Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, Accept");
+        // header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
         $json_response = is_object($response['data']) ? $response['data'] : json_encode($response['data']);
-        echo($json_response);
+        echo ($json_response);
         exit;
     }
-    public static function pagination($data, $limit =10)
+    public static function pagination($data, $limit = 10)
     {
         $page = !isset($_GET['page']) ? 1 : $_GET['page'];
         $offset = ($page - 1) * $limit; // offset
         $total_items = count($data); // total items
         $total_pages = ceil($total_items / $limit);
         $final = array_splice($data, $offset, $limit);
-        return ['info' => [
-            'total_pages' => $total_pages,
-            'limit' => $limit,
-            'current' => $page
-        ],
-        'data' => $final];
+        return [
+            'info' => [
+                'total_pages' => $total_pages,
+                'limit' => $limit,
+                'current' => $page
+            ],
+            'data' => $final
+        ];
     }
 }

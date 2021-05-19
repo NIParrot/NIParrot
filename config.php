@@ -59,7 +59,7 @@ define("USEDB", false);
 define("USEFIREBASE", false);
 define("USEPayMob", false);
 define("DeleteFlag", false);
-define("FrontFrame", 'NI Parrot');
+define("FrontFrame", false);
 /**
  * FrontFrame : UIkit
  * FrontFrame : Bootstrap
@@ -98,7 +98,7 @@ define('Mail_Port', 'NI Parrot');
 /**
  * init firebase key here while it true
  */
-define("FIREBASE_KEY", 'key');
+define("FIREBASE_KEY", '');
 
 /**
  * init patmob here

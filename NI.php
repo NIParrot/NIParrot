@@ -26,39 +26,39 @@ class NI_CLI
     public static function run($input = array())
     {
         switch ($input[0]) {
-        case 'serve':
-            $randport = random_int(6000, 9999);
-            $ip = system("(ip addr | grep -Po '(?!(inet 127.\d.\d.1))(inet \K(\d{1,3}\.){3}\d{1,3})')");
-            $ip = ($ip > 0) ? $ip : '127.0.0.1';
-            system("php -S $ip:$randport");
-            break;
-        case 'Git':
-            CLI_Plugin::GitPluginFrom_github($input);
-            break;
-        case 'Check':
-            CLI_Plugin::CheckPluginFiles($input);
-            break;
-        case 'Install':
-            CLI_Plugin::InstallPlugin($input);
-            break;
-        case 'GetRoutes':
-            CLI_Routes::GetRoutes();
-            break;
-        case 'GetApiRoutes':
-            CLI_Routes::GetRoutes();
-            break;
+            case 'serve':
+                $randport = random_int(6000, 9999);
+                $ip = system("(ip addr | grep -Po '(?!(inet 127.\d.\d.1))(inet \K(\d{1,3}\.){3}\d{1,3})')");
+                $ip = ($ip > 0) ? $ip : '127.0.0.1';
+                system("php -S $ip:$randport");
+                break;
+            case 'Git':
+                CLI_Plugin::GitPluginFrom_github($input);
+                break;
+            case 'Check':
+                CLI_Plugin::CheckPluginFiles($input);
+                break;
+            case 'Install':
+                CLI_Plugin::InstallPlugin($input);
+                break;
+            case 'GetRoutes':
+                CLI_Routes::GetRoutes();
+                break;
+            case 'GetApiRoutes':
+                CLI_Routes::GetRoutes();
+                break;
 
-        case 'MFunc':
-            $tttmethod = $input[1];
-            $tttclass = 'CLI_MVC';
-            $tttclass::$tttmethod($input);
-            break;
+            case 'MFunc':
+                $tttmethod = $input[1];
+                $tttclass = 'CLI_MVC';
+                $tttclass::$tttmethod($input);
+                break;
 
-        case 'PMFunc':
-            $tttmethod = $input[2];
-            $tttclass = 'CLI_MVC';
-            $tttclass::$tttmethod($input);
-            break;
+            case 'PMFunc':
+                $tttmethod = $input[2];
+                $tttclass = 'CLI_MVC';
+                $tttclass::$tttmethod($input);
+                break;
                 /*
                 break;
             case 'ControllerAddFunc':
@@ -66,32 +66,37 @@ class NI_CLI
                 break;
                  */
 
-        case 'make':
-            switch ($input[1]) {
-            case 'DB':
-                CLI_DB::CreateDataBase();
-                break;
+            case 'make':
+                switch ($input[1]) {
+                    case 'DB':
+                        CLI_DB::CreateDataBase();
+                        break;
 
-            case 'Migrate':
-                CLI_DB::CreateTables();
-                break;
+                    case 'Migrate':
+                        CLI_DB::CreateTables();
+                        break;
 
-            case 'Seeds':
-                CLI_DB::InsertIntoDB();
-                break;
+                    case 'Migrate:Fresh':
+                        CLI_DB::migrateFresh();
+                        CLI_DB::InsertIntoDB();
+                        break;
 
-            case 'Relation':
-                CLI_DB::CreateRelation($input);
-                break;
+                    case 'Seeds':
+                        CLI_DB::InsertIntoDB();
+                        break;
 
-            case 'Model':
-                CLI_MVC::makeModel();
-                break;
+                    case 'Relation':
+                        CLI_DB::CreateRelation($input);
+                        break;
 
-            case 'ParisModel':
-                CLI_MVC::makeParisModel();
-                break;
-                    /*
+                    case 'Model':
+                        CLI_MVC::makeModel();
+                        break;
+
+                    case 'ParisModel':
+                        CLI_MVC::makeParisModel();
+                        break;
+                        /*
                 case 'Route':
                     CLI_MVC::relation($args);
                     break;
@@ -104,15 +109,15 @@ class NI_CLI
                     CLI_MVC::relation($args);
                     break;
                 */
+                    default:
+                        echo "command dose not correct use --h to get help";
+                        break;
+                }
+                break;
+
             default:
                 echo "command dose not correct use --h to get help";
                 break;
-            }
-            break;
-
-        default:
-            echo "command dose not correct use --h to get help";
-            break;
         }
     }
 }

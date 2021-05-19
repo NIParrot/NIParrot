@@ -31,6 +31,33 @@ class NI_JWT
         }
     }
 
+    public static function CheckTeacherToken($jwt)
+    {
+        try {
+            $decoded = \JWT::decode($jwt, APISK, array('HS256'));
+            $data = json_decode(json_encode($decoded->data), true);
+            $user = \model\Teachers::check($data);
+            if (empty($user)) {
+                return (array(
+                    false,
+                    "error" => 'error on token',
+                    "data" => $data
+                ));
+            } else {
+                return (array(
+                    true,
+                    $user->id,
+                    'teacher'
+                ));
+            }
+        } catch (\Exception $e) {
+            return (array(
+                false,
+                "error" => $e->getMessage()
+            ));
+        }
+    }
+
     public static function CheckFatherToken($jwt)
     {
         try {
@@ -93,5 +120,52 @@ class NI_JWT
             }
         }
         return null;
+    }
+
+    public static function FatherAuth()
+    {
+
+        $Token = self::getJWT();
+        if ($Token != null) {
+            $check = self::CheckFatherToken($Token);
+            if ($check[0] == true && $check[2] == 'father') {
+                return $check;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public static function ManagerAuth()
+    {
+        $Token = self::getJWT();
+        if ($Token != null) {
+            $check = self::CheckMangerToken($Token);
+            if ($check[0] == true && $check[2] == 'manager') {
+                return $check;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public static function TeacherAuth()
+    {
+        $Token = self::getJWT();
+
+        if ($Token != null) {
+            $check = self::CheckTeacherToken($Token);
+            if ($check[0] == true && $check[2] == 'teacher') {
+                return $check;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 }

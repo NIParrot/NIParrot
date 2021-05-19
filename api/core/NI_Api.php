@@ -8,13 +8,13 @@ class NI_Api
 
     public static function run($action)
     {
-        self::$data = self::CatchAndHandelRequestData();
+        self::$data = (array)self::CatchAndHandelRequestData();
 
         NI_Api_route::run($action);
         NI_Api::Api_Handeler();
     }
 
-    
+
     public static function CatchAndHandelRequestData()
     {
         if (!isset($_SERVER["CONTENT_TYPE"])) {
@@ -93,7 +93,7 @@ class NI_Api
         header("Access-Control-Allow-Headers: Origin, Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, Accept");
         // header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
         $json_response = is_object(self::$response['data']) ? self::$response['data'] : json_encode(self::$response['data']);
-        echo($json_response);
+        echo ($json_response);
         exit;
     }
 }

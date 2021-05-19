@@ -26,11 +26,11 @@ class NI_route
     public static function MatchParamFromUrl($MasterRouteArray, $ActionRoute, $NumOfParameter = 0, $newPassVarArr = [])
     {
         $pregdigit = "/+[a-zA-Z0-9_.-{}]*";
-        $mypreg =  $ActionRoute[0].str_repeat($pregdigit, count($ActionRoute)-1).'';
+        $mypreg =  $ActionRoute[0] . str_repeat($pregdigit, count($ActionRoute) - 1) . '';
         $matches  = preg_grep("#^$mypreg#i", array_keys($MasterRouteArray));
-        
-        $checkIfStop =0;
-        $keyToRedirect =0;
+
+        $checkIfStop = 0;
+        $keyToRedirect = 0;
         foreach ($matches as $k => $key) {
             $RoutePath = explode('/', $key);
             $NewRoutePath = $RoutePath;
@@ -38,17 +38,17 @@ class NI_route
             $NumOfParameter = self::get_strig_between($key);
 
 
-            for ($i=0; $i < $NumOfParameter; $i++) {
+            for ($i = 0; $i < $NumOfParameter; $i++) {
                 array_pop($NewRoutePath);
                 array_pop($NewActionRoute);
             }
-            
+
 
             if (count($RoutePath) == count($ActionRoute) && ($NewRoutePath === $NewActionRoute)) {
-                for ($i=(count($RoutePath)-$NumOfParameter); $i < count($RoutePath); $i++) {
+                for ($i = (count($RoutePath) - $NumOfParameter); $i < count($RoutePath); $i++) {
                     array_push($newPassVarArr, $ActionRoute[$i]);
                 }
-                $checkIfStop=1;
+                $checkIfStop = 1;
                 $keyToRedirect = $key;
                 break;
             }
@@ -58,10 +58,10 @@ class NI_route
         if ($checkIfStop == 1) {
             $callback =  $MasterRouteArray[$keyToRedirect];
             echo call_user_func_array($callback, $newPassVarArr);
-            return ;
+            return;
         } else {
-            include_once ROOT.SEP.'ServerErrorHandeler.php';
-            header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404);
+            include_once ROOT . SEP . 'ServerErrorHandeler.php';
+            header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found", true, 404);
             exit;
         }
     }
@@ -78,6 +78,8 @@ class NI_route
     }
     public static function get($action, Closure $callback)
     {
+        $action = strtolower($action);
+
         if (key_exists($action, self::$routes)) {
             throw new Exception("Warning! This route has been used before");
         }
@@ -86,6 +88,8 @@ class NI_route
 
     public static function post($action, Closure $callback)
     {
+        $action = strtolower($action);
+
         if (key_exists($action, self::$PostRoutes)) {
             throw new Exception("Warning! This route has been used before");
         }
@@ -94,6 +98,8 @@ class NI_route
 
     public static function put($action, Closure $callback)
     {
+        $action = strtolower($action);
+
         //NI_request::$data = NI_request::FromatPostData(file_get_contents("php://input"));
         if (key_exists($action, self::$PutRoutes)) {
             throw new Exception("Warning! This route has been used before");
@@ -103,6 +109,8 @@ class NI_route
 
     public static function delete($action, Closure $callback)
     {
+        $action = strtolower($action);
+
         //NI_request::$data = NI_request::FromatPostData(file_get_contents("php://input"));
         if (key_exists($action, self::$DeleteRoutes)) {
             throw new Exception("Warning! This route has been used before");
@@ -112,88 +120,101 @@ class NI_route
 
     public static function any($action, Closure $callback)
     {
+        $action = strtolower($action);
+
         if (key_exists($action, self::$any)) {
             throw new Exception("Warning! This route has been used before");
         }
         self::$any[$action] = $callback;
     }
 
+    public static function group(string $type, string $groupName, array $routeNames)
+    {
+        $type = strtolower($type);
+        $standardMethod = array("get", "post", "put", "delete", "any");
+        if (!in_array($type, $standardMethod)) {
+            throw new Exception('Warning! type musy be in ["get", "post", "put", "delete", "any"]');
+        }
+        foreach ($routeNames as $route => $callback) {
+            $action = $groupName . $route;
+            self::$type($action, $callback);
+        }
+    }
     public static function run($action)
     {
         $ActionRoute = explode('/', $action);
         switch ($_SERVER['REQUEST_METHOD']) {
 
-        case 'GET':
+            case 'GET':
 
-            if (array_key_exists($action, self::$routes)) {
-                $callback =  self::$routes[$action];
-                echo call_user_func($callback);
-                return ;
-            } elseif (array_key_exists($action, self::$any)) {
-                $callback =  self::$any[$action];
-                echo call_user_func($callback);
-                return ;
-            } else {
-                self::MatchParamFromUrl(self::$routes, $ActionRoute);
-            }
-            break;
+                if (array_key_exists($action, self::$routes)) {
+                    $callback =  self::$routes[$action];
+                    echo call_user_func($callback);
+                    return;
+                } elseif (array_key_exists($action, self::$any)) {
+                    $callback =  self::$any[$action];
+                    echo call_user_func($callback);
+                    return;
+                } else {
+                    self::MatchParamFromUrl(self::$routes, $ActionRoute);
+                }
+                break;
 
-        case 'POST':
+            case 'POST':
 
-            if (array_key_exists($action, self::$PostRoutes)) {
-                $callback =  self::$PostRoutes[$action];
-                echo call_user_func($callback);
-                return ;
-            } elseif (array_key_exists($action, self::$any)) {
-                $callback =  self::$any[$action];
-                echo call_user_func($callback);
-                return ;
-            } else {
-                self::MatchParamFromUrl(self::$PostRoutes, $ActionRoute);
-            }
-            break;
+                if (array_key_exists($action, self::$PostRoutes)) {
+                    $callback =  self::$PostRoutes[$action];
+                    echo call_user_func($callback);
+                    return;
+                } elseif (array_key_exists($action, self::$any)) {
+                    $callback =  self::$any[$action];
+                    echo call_user_func($callback);
+                    return;
+                } else {
+                    self::MatchParamFromUrl(self::$PostRoutes, $ActionRoute);
+                }
+                break;
 
-        case 'PUT':
+            case 'PUT':
 
-            if (array_key_exists($action, self::$PutRoutes)) {
-                $callback =  self::$PutRoutes[$action];
-                echo call_user_func($callback);
-                return ;
-            } elseif (array_key_exists($action, self::$any)) {
-                $callback =  self::$any[$action];
-                echo call_user_func($callback);
-                return ;
-            } else {
-                self::MatchParamFromUrl(self::$PutRoutes, $ActionRoute);
-            }
-            break;
+                if (array_key_exists($action, self::$PutRoutes)) {
+                    $callback =  self::$PutRoutes[$action];
+                    echo call_user_func($callback);
+                    return;
+                } elseif (array_key_exists($action, self::$any)) {
+                    $callback =  self::$any[$action];
+                    echo call_user_func($callback);
+                    return;
+                } else {
+                    self::MatchParamFromUrl(self::$PutRoutes, $ActionRoute);
+                }
+                break;
 
-        case 'DELETE':
+            case 'DELETE':
 
-            if (array_key_exists($action, self::$DeleteRoutes)) {
-                $callback =  self::$DeleteRoutes[$action];
-                echo call_user_func($callback);
-                return ;
-            } elseif (array_key_exists($action, self::$any)) {
-                $callback =  self::$any[$action];
-                echo call_user_func($callback);
-                return ;
-            } else {
-                self::MatchParamFromUrl(self::$DeleteRoutes, $ActionRoute);
-            }
-            break;
-            
-        default:
-            if (array_key_exists($action, self::$any)) {
-                $callback =  self::$any[$action];
-                echo call_user_func($callback);
-            } else {
-                include_once ROOT.SEP.'ServerErrorHandeler.php';
-                header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found", true, 404);
-                exit;
-            }
-            break;
-            
+                if (array_key_exists($action, self::$DeleteRoutes)) {
+                    $callback =  self::$DeleteRoutes[$action];
+                    echo call_user_func($callback);
+                    return;
+                } elseif (array_key_exists($action, self::$any)) {
+                    $callback =  self::$any[$action];
+                    echo call_user_func($callback);
+                    return;
+                } else {
+                    self::MatchParamFromUrl(self::$DeleteRoutes, $ActionRoute);
+                }
+                break;
+
+            default:
+                if (array_key_exists($action, self::$any)) {
+                    $callback =  self::$any[$action];
+                    echo call_user_func($callback);
+                } else {
+                    include_once ROOT . SEP . 'ServerErrorHandeler.php';
+                    header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found", true, 404);
+                    exit;
+                }
+                break;
         }
     }
 }

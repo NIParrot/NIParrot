@@ -17,11 +17,14 @@ class CLI_DB
         $dns = "mysql:host=" . HOST . ";port=" . PORT . ";dbname=" . DBNAME;
         try {
             $conn = new PDO(
-                $dns, USER, PASS, [
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES => false,
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"
+                $dns,
+                USER,
+                PASS,
+                [
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    PDO::ATTR_EMULATE_PREPARES => false,
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"
                 ]
             );
             echo "\e[1;33;40m Connect successfully \e[0m\n";
@@ -93,6 +96,24 @@ class CLI_DB
         }
     }
 
+    public static function migrateFresh()
+    {
+        $conn = self::PDOConn();
+        if (!$conn) {
+            exit;
+        }
+        $tableArray = CLI_Helper::ReadCLITableFile();
+        if (empty($tableArray)) {
+            exit;
+        }
+
+        foreach ($tableArray as $key => $value) {
+            $query1 = 'TRUNCATE TABLE ' . strtolower($key);
+            $s1 = $conn->prepare($query1);
+            $s1->execute();
+        }
+    }
+
     public static function InsertIntoDB()
     {
         $conn = self::PDOConn();
@@ -112,10 +133,6 @@ class CLI_DB
             foreach ($TableArray as $columnAndValue) {
                 foreach ($columnAndValue as $keyn => $valuen) {
                     $TableName = strtolower($TableName);
-                    // $query1 = "TRUNCATE TABLE $TableName";
-                    // $s1 = $conn->prepare($query1);
-                    // $s1->execute();
-                    // if ($s1->fetchColumn() == 0) {
                     $sql = "INSERT INTO $TableName (" . implode(',', array_keys($columnAndValue)) . ") VALUES ($bind)";
                     $stmt = $conn->prepare($sql);
                     $stmtTrue = $stmt->execute(array_combine(explode(',', $bind), array_values($columnAndValue)));
@@ -126,10 +143,6 @@ class CLI_DB
                         echo "some thing went wrong in '$keyn' => '$valuen' \n";
                         break;
                     }
-                    // } else {
-                    //     echo "'$keyn' => '$valuen' alredy exist \n";
-                    //     break;
-                    // }
                 }
             }
         }

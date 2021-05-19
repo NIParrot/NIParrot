@@ -21,8 +21,11 @@ class NI_Controller
         $method = $class_method[1];
 
         if ($middleware != null) {
+
             foreach ($middleware as $middlewareClass => $middlewareMethod) {
                 $middlewareClass = 'Middleware\\' . $middlewareClass;
+
+
                 if (method_exists($middlewareClass, $middlewareMethod)) {
                     $middlewareClass::$middlewareMethod();
                 }

@@ -3,7 +3,7 @@
 class NI_request
 {
     public static $data = [];
-    
+
     public static function FromatPostData($str)
     {
         $arr = explode('&', $str);
@@ -18,12 +18,16 @@ class NI_request
     }
     public static function all()
     {
-        foreach ($_POST as $key => $value) {
-            if (is_array($_POST[$key])) {
-                $var =implode(',', $_POST[$key]);
+        $temparr = $_POST;
+        $_POST = [];
+        foreach ($temparr as $key => $value) {
+            if (is_array($temparr[$key])) {
+                $var = implode(',', $temparr[$key]);
                 $_POST[$key] = NI_security::check($var);
             } else {
-                $_POST[$key] = NI_security::check($value);
+                if (!empty(NI_security::check($value)) || NI_security::check($value) != null || NI_security::check($value) != '') {
+                    $_POST[$key] = NI_security::check($value);
+                }
             }
         }
         return $_POST;
@@ -35,17 +39,17 @@ class NI_request
         if (!empty($data)) {
             foreach ($data as $key => $value) {
                 if (is_array($value)) {
-                    $data[$key] = NI_security::PoolFilterus($value, self::all()[$key] ?? false)[1] ?? false ;
+                    $data[$key] = NI_security::PoolFilterus($value, self::all()[$key] ?? false)[1] ?? false;
                     if ($data[$key] == false) {
-                        $TempErrorCheck[] =  $key.' not valid';
+                        $TempErrorCheck[] =  $key . ' not valid';
                     }
                 } else {
                     if ($value == 'date') {
                         $value = 'regex,regex:/^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/';
                     }
-                    $data[$key] = NI_security::Filterus($value, self::all()[$key] ?? false)[1] ?? false ;
+                    $data[$key] = NI_security::Filterus($value, self::all()[$key] ?? false)[1] ?? false;
                     if ($data[$key] == false) {
-                        $TempErrorCheck[] =  $key.' not valid';
+                        $TempErrorCheck[] =  $key . ' not valid';
                     }
                 }
             }
@@ -67,7 +71,7 @@ class NI_request
     {
         foreach ($arr as $key => $value) {
             if (is_array($arr[$key])) {
-                $var =implode(',', $arr[$key]);
+                $var = implode(',', $arr[$key]);
                 $arr[$key] = NI_security::check($var);
             } else {
                 $arr[$key] = NI_security::check($value);
@@ -82,17 +86,17 @@ class NI_request
         if (!empty($data)) {
             foreach ($data as $key => $value) {
                 if (is_array($value)) {
-                    $data[$key] = NI_security::PoolFilterus($value, $post_data[$key] ?? false)[1] ?? false ;
+                    $data[$key] = NI_security::PoolFilterus($value, $post_data[$key] ?? false)[1] ?? false;
                     if ($data[$key] == false) {
-                        $TempErrorCheck[] =  $key.' not valid';
+                        $TempErrorCheck[] =  $key . ' not valid';
                     }
                 } else {
                     if ($value == 'date') {
                         $value = 'regex,regex:/^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/';
                     }
-                    $data[$key] = NI_security::Filterus($value, $post_data[$key] ?? false)[1] ?? false ;
+                    $data[$key] = NI_security::Filterus($value, $post_data[$key] ?? false)[1] ?? false;
                     if ($data[$key] == false) {
-                        $TempErrorCheck[] =  $key.' not valid';
+                        $TempErrorCheck[] =  $key . ' not valid';
                     }
                 }
             }
@@ -105,7 +109,7 @@ class NI_request
             } else {
                 $response['status'] = 400;
                 $response['data'] = [
-                    'msg'=> 'valid error',
+                    'msg' => 'valid error',
                     'data' => $TempErrorCheck
                 ];
                 NI_response::forAxios($response);
@@ -114,7 +118,7 @@ class NI_request
         }
     }
 
-    public static function validate_obj(object $object, array $data) : bool
+    public static function validate_obj(object $object, array $data): bool
     {
         $arr = self::validate($data);
         foreach ($arr as $key => $value) {
