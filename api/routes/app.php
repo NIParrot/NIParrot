@@ -1,6 +1,5 @@
 <?php
 
-use NI_Api;
 
 NI_Api_route::get('/maintenance', function () {
     NI_Api::$response['status'] = 200;
