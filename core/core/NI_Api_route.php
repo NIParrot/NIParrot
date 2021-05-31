@@ -204,6 +204,12 @@ class NI_Api_route
                 }
                 break;
 
+            case 'OPTIONS':
+                NI_Api::$response['status'] = 200;  // not api url
+                NI_Api::$response['data'] = 'OK CROS';
+                return NI_Api::$response;
+                break;
+
             default:
                 if (array_key_exists($action, self::$any)) {
                     $callback =  self::$any[$action];

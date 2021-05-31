@@ -327,7 +327,8 @@ class ORM implements ArrayAccess
      */
     protected static function _setup_db($connection_name = self::DEFAULT_CONNECTION)
     {
-        if (!array_key_exists($connection_name, self::$_db) 
+        if (
+            !array_key_exists($connection_name, self::$_db)
             || !is_object(self::$_db[$connection_name])
         ) {
             self::_setup_db_config($connection_name);
@@ -426,18 +427,18 @@ class ORM implements ArrayAccess
     protected static function _detect_identifier_quote_character($connection_name)
     {
         switch (self::get_db($connection_name)->getAttribute(PDO::ATTR_DRIVER_NAME)) {
-        case 'pgsql':
-        case 'sqlsrv':
-        case 'dblib':
-        case 'mssql':
-        case 'sybase':
-        case 'firebird':
-            return '"';
-        case 'mysql':
-        case 'sqlite':
-        case 'sqlite2':
-        default:
-            return '`';
+            case 'pgsql':
+            case 'sqlsrv':
+            case 'dblib':
+            case 'mssql':
+            case 'sybase':
+            case 'firebird':
+                return '"';
+            case 'mysql':
+            case 'sqlite':
+            case 'sqlite2':
+            default:
+                return '`';
         }
     }
 
@@ -451,12 +452,12 @@ class ORM implements ArrayAccess
     protected static function _detect_limit_clause_style($connection_name)
     {
         switch (self::get_db($connection_name)->getAttribute(PDO::ATTR_DRIVER_NAME)) {
-        case 'sqlsrv':
-        case 'dblib':
-        case 'mssql':
-            return ORM::LIMIT_STYLE_TOP_N;
-        default:
-            return ORM::LIMIT_STYLE_LIMIT;
+            case 'sqlsrv':
+            case 'dblib':
+            case 'mssql':
+                return ORM::LIMIT_STYLE_TOP_N;
+            default:
+                return ORM::LIMIT_STYLE_LIMIT;
         }
     }
 
@@ -1288,9 +1289,10 @@ class ORM implements ArrayAccess
             $values = array($values);
         }
         array_push(
-            $this->$conditions_class_property_name, array(
-            self::CONDITION_FRAGMENT => $fragment,
-            self::CONDITION_VALUES => $values,
+            $this->$conditions_class_property_name,
+            array(
+                self::CONDITION_FRAGMENT => $fragment,
+                self::CONDITION_VALUES => $values,
             )
         );
         return $this;
@@ -1781,15 +1783,16 @@ class ORM implements ArrayAccess
         // Build and return the full SELECT statement by concatenating
         // the results of calling each separate builder method.
         return $this->_join_if_not_empty(
-            " ", array(
-            $this->_build_select_start(),
-            $this->_build_join(),
-            $this->_build_where(),
-            $this->_build_group_by(),
-            $this->_build_having(),
-            $this->_build_order_by(),
-            $this->_build_limit(),
-            $this->_build_offset(),
+            " ",
+            array(
+                $this->_build_select_start(),
+                $this->_build_join(),
+                $this->_build_where(),
+                $this->_build_group_by(),
+                $this->_build_having(),
+                $this->_build_order_by(),
+                $this->_build_limit(),
+                $this->_build_offset(),
             )
         );
     }
@@ -1802,7 +1805,8 @@ class ORM implements ArrayAccess
         $fragment = 'SELECT ';
         $result_columns = join(', ', $this->_result_columns);
 
-        if (!is_null($this->_limit) 
+        if (
+            !is_null($this->_limit)
             && self::$_config[$this->_connection_name]['limit_clause_style'] === ORM::LIMIT_STYLE_TOP_N
         ) {
             $fragment .= "TOP {$this->_limit} ";
@@ -1899,7 +1903,8 @@ class ORM implements ArrayAccess
     protected function _build_limit()
     {
         $fragment = '';
-        if (!is_null($this->_limit) 
+        if (
+            !is_null($this->_limit)
             && self::$_config[$this->_connection_name]['limit_clause_style'] == ORM::LIMIT_STYLE_LIMIT
         ) {
             if (self::get_db($this->_connection_name)->getAttribute(PDO::ATTR_DRIVER_NAME) == 'firebird') {
@@ -2373,10 +2378,11 @@ class ORM implements ArrayAccess
         // Build and return the full DELETE statement by concatenating
         // the results of calling each separate builder method.
         $query = $this->_join_if_not_empty(
-            " ", array(
-            "DELETE FROM",
-            $this->_quote_identifier($this->_table_name),
-            $this->_build_where(),
+            " ",
+            array(
+                "DELETE FROM",
+                $this->_quote_identifier($this->_table_name),
+                $this->_build_where(),
             )
         );
 
@@ -2589,7 +2595,8 @@ class IdiormString
     protected function _str_replace_outside_quotes_cb($matches)
     {
         // Return quoted string chunks (in group $1) unaltered.
-        if ($matches[1]) { return $matches[1];
+        if ($matches[1]) {
+            return $matches[1];
         }
         // Process only unquoted chunks (in group $2).
         return preg_replace(
@@ -2796,11 +2803,14 @@ class NI_connect extends ORM
     {
         try {
             $conn = new PDO(
-                "mysql:host=$this->host;port=$this->port;dbname=$this->dbname", $this->user, $this->pass, [
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES => false,
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"
+                "mysql:host=$this->host;port=$this->port;dbname=$this->dbname",
+                $this->user,
+                $this->pass,
+                [
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    PDO::ATTR_EMULATE_PREPARES => false,
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"
                 ]
             );
             return $conn;
@@ -2811,15 +2821,19 @@ class NI_connect extends ORM
 
     public function mysql()
     {
-        $this->configure("mysql:host=$this->host;dbname=$this->dbname");
+        $this->configure("mysql:host=$this->host;port=$this->port;dbname=$this->dbname");
         $this->configure('username', $this->user);
         $this->configure('password', $this->pass);
         $this->configure(
-            'driver_options', array(
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES => false,
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"
+            'driver_options',
+            array(
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_EMULATE_PREPARES => false,
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_EMULATE_PREPARES => true,
+                PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
+                PDO::MYSQL_ATTR_LOCAL_INFILE => true,
+                PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'"
             )
         );
     }
@@ -2828,9 +2842,17 @@ class NI_connect extends ORM
         $this->configure("sqlsrv:Server=$this->host;Database=$this->dbname");
         $this->configure('username', $this->user);
         $this->configure('password', $this->pass);
+        $this->configure(
+            'driver_options',
+            array()
+        );
     }
     public function sqlite()
     {
         $this->configure("sqlite:$this->host");
+        $this->configure(
+            'driver_options',
+            array()
+        );
     }
 }
