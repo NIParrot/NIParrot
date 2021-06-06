@@ -112,7 +112,7 @@ final class Test
     /**
      * @throws CodeCoverageException
      *
-     * @return      array|bool
+     * @return array|bool
      * @psalm-param class-string $className
      */
     public static function getLinesToBeCovered(string $className, string $methodName)
@@ -132,7 +132,7 @@ final class Test
     /**
      * Returns lines of code specified with the @uses annotation.
      *
-     * @throws      CodeCoverageException
+     * @throws CodeCoverageException
      * @psalm-param class-string $className
      */
     public static function getLinesToBeUsed(string $className, string $methodName): array
@@ -171,7 +171,7 @@ final class Test
     }
 
     /**
-     * @throws      Exception
+     * @throws Exception
      * @psalm-param class-string $className
      */
     public static function getRequirements(string $className, string $methodName): array
@@ -185,8 +185,8 @@ final class Test
     /**
      * Returns the missing requirements for a test.
      *
-     * @throws      Exception
-     * @throws      Warning
+     * @throws Exception
+     * @throws Warning
      * @psalm-param class-string $className
      */
     public static function getMissingRequirements(string $className, string $methodName): array
@@ -314,7 +314,7 @@ final class Test
     /**
      * Returns the provided data for a method.
      *
-     * @throws      Exception
+     * @throws Exception
      * @psalm-param class-string $className
      */
     public static function getProvidedData(string $className, string $methodName): ?array
@@ -354,9 +354,7 @@ final class Test
         return Registry::getInstance()->forMethod($className, $methodName)->getInlineAnnotations();
     }
 
-    /**
-     * @psalm-param class-string $className 
-     */
+    /** @psalm-param class-string $className */
     public static function getBackupSettings(string $className, string $methodName): array
     {
         return [
@@ -404,9 +402,7 @@ final class Test
         return array_unique($dependencies);
     }
 
-    /**
-     * @psalm-param class-string $className 
-     */
+    /** @psalm-param class-string $className */
     public static function getGroups(string $className, ?string $methodName = ''): array
     {
         $annotations = self::parseTestMethodAnnotations(
@@ -465,9 +461,7 @@ final class Test
         return array_unique(array_merge([], ...$groups));
     }
 
-    /**
-     * @psalm-param class-string $className 
-     */
+    /** @psalm-param class-string $className */
     public static function getSize(string $className, ?string $methodName): int
     {
         $groups = array_flip(self::getGroups($className, $methodName));
@@ -487,9 +481,7 @@ final class Test
         return self::UNKNOWN;
     }
 
-    /**
-     * @psalm-param class-string $className 
-     */
+    /** @psalm-param class-string $className */
     public static function getProcessIsolationSettings(string $className, string $methodName): bool
     {
         $annotations = self::parseTestMethodAnnotations(
@@ -500,9 +492,7 @@ final class Test
         return isset($annotations['class']['runTestsInSeparateProcesses']) || isset($annotations['method']['runInSeparateProcess']);
     }
 
-    /**
-     * @psalm-param class-string $className 
-     */
+    /** @psalm-param class-string $className */
     public static function getClassProcessIsolationSettings(string $className, string $methodName): bool
     {
         $annotations = self::parseTestMethodAnnotations(
@@ -513,9 +503,7 @@ final class Test
         return isset($annotations['class']['runClassInSeparateProcess']);
     }
 
-    /**
-     * @psalm-param class-string $className 
-     */
+    /** @psalm-param class-string $className */
     public static function getPreserveGlobalStateSettings(string $className, string $methodName): ?bool
     {
         return self::getBooleanAnnotationSetting(
@@ -525,9 +513,7 @@ final class Test
         );
     }
 
-    /**
-     * @psalm-param class-string $className 
-     */
+    /** @psalm-param class-string $className */
     public static function getHookMethods(string $className): array
     {
         if (!class_exists($className, false)) {
@@ -607,12 +593,12 @@ final class Test
                 $method->getDeclaringClass()->getName(),
                 $method->getName()
             )
-                ->symbolAnnotations()
+            ->symbolAnnotations()
         );
     }
 
     /**
-     * @throws      CodeCoverageException
+     * @throws CodeCoverageException
      * @psalm-param class-string $className
      */
     private static function getLinesToBeCoveredOrUsed(string $className, string $methodName, string $mode): array
@@ -695,9 +681,7 @@ final class Test
         ];
     }
 
-    /**
-     * @psalm-param class-string $className 
-     */
+    /** @psalm-param class-string $className */
     private static function getBooleanAnnotationSetting(string $className, ?string $methodName, string $settingName): ?bool
     {
         $annotations = self::parseTestMethodAnnotations(
@@ -769,7 +753,7 @@ final class Test
      *
      * Zend Framework (http://framework.zend.com/)
      *
-     * @see http://github.com/zendframework/zf2 for the canonical source repository
+     * @see      http://github.com/zendframework/zf2 for the canonical source repository
      *
      * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
      * @license   http://framework.zend.com/license/new-bsd New BSD License

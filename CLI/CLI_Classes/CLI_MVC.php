@@ -90,7 +90,7 @@ namespace ParisModel;
                 }
                 ';
             }
-            $new_model = MODEL . $table . '.php';
+            $new_model = ORMMODEL . $table . '.php';
             if (!is_file($new_model)) {
                 $mymodel = fopen($new_model, "w");
                 $code = '<?php 
@@ -164,7 +164,7 @@ namespace ParisModel;
     public static function ModelAuth(array $input)
     {
         $ModelName = $input[2];
-        $ModelPath = MODEL . $input[2] . '.php';
+        $ModelPath = ORMMODEL . $input[2] . '.php';
         $code = '
         public static function check(array $data)
         {
@@ -204,7 +204,7 @@ namespace ParisModel;
     public static function ModelUniqe(array $input)
     {
         $ModelName = $input[2];
-        $ModelPath = MODEL . $input[2] . '.php';
+        $ModelPath = ORMMODEL . $input[2] . '.php';
         $code = '
         public static function uniqe(array $data)
         {
@@ -245,7 +245,7 @@ namespace ParisModel;
     public static function ModelUniqeRegister(array $input)
     {
         $ModelName = $input[2];
-        $ModelPath = MODEL . $input[2] . '.php';
+        $ModelPath = ORMMODEL . $input[2] . '.php';
         $code = '
         public static function uniqregister(array $data)
         {
@@ -285,7 +285,7 @@ namespace ParisModel;
     public static function ModelMultAuth(array $input)
     {
         $ModelName = $input[2];
-        $ModelPath = MODEL . $input[2] . '.php';
+        $ModelPath = ORMMODEL . $input[2] . '.php';
         $code = '
         public static function MultAuth(array $data)
         {

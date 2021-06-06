@@ -12,7 +12,7 @@ namespace PHPUnit\Framework;
 use Throwable;
 
 /**
- * @deprecated         Use the `TestHook` interfaces instead
+ * @deprecated Use the `TestHook` interfaces instead
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 interface TestListener

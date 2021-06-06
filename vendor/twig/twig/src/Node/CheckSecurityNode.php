@@ -82,6 +82,7 @@ class CheckSecurityNode extends Node
             ->outdent()
             ->write("}\n\n")
             ->outdent()
-            ->write("}\n");
+            ->write("}\n")
+        ;
     }
 }

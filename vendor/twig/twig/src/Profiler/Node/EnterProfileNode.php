@@ -36,6 +36,7 @@ class EnterProfileNode extends Node
             ->repr($this->getAttribute('type'))
             ->raw(', ')
             ->repr($this->getAttribute('name'))
-            ->raw("));\n\n");
+            ->raw("));\n\n")
+        ;
     }
 }

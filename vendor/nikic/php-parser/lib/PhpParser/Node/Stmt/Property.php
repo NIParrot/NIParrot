@@ -10,21 +10,13 @@ use PhpParser\Node\UnionType;
 
 class Property extends Node\Stmt
 {
-    /**
-     * @var int Modifiers 
-     */
+    /** @var int Modifiers */
     public $flags;
-    /**
-     * @var PropertyProperty[] Properties 
-     */
+    /** @var PropertyProperty[] Properties */
     public $props;
-    /**
-     * @var null|Identifier|Name|NullableType|UnionType Type declaration 
-     */
+    /** @var null|Identifier|Name|NullableType|UnionType Type declaration */
     public $type;
-    /**
-     * @var Node\AttributeGroup[] PHP attribute groups 
-     */
+    /** @var Node\AttributeGroup[] PHP attribute groups */
     public $attrGroups;
 
     /**
@@ -36,8 +28,7 @@ class Property extends Node\Stmt
      * @param null|string|Identifier|Name|NullableType|UnionType $type       Type declaration
      * @param Node\AttributeGroup[]                              $attrGroups PHP attribute groups
      */
-    public function __construct(int $flags, array $props, array $attributes = [], $type = null, array $attrGroups = [])
-    {
+    public function __construct(int $flags, array $props, array $attributes = [], $type = null, array $attrGroups = []) {
         $this->attributes = $attributes;
         $this->flags = $flags;
         $this->props = $props;
@@ -45,8 +36,7 @@ class Property extends Node\Stmt
         $this->attrGroups = $attrGroups;
     }
 
-    public function getSubNodeNames() : array
-    {
+    public function getSubNodeNames() : array {
         return ['attrGroups', 'flags', 'type', 'props'];
     }
 
@@ -55,8 +45,7 @@ class Property extends Node\Stmt
      *
      * @return bool
      */
-    public function isPublic() : bool
-    {
+    public function isPublic() : bool {
         return ($this->flags & Class_::MODIFIER_PUBLIC) !== 0
             || ($this->flags & Class_::VISIBILITY_MODIFIER_MASK) === 0;
     }
@@ -66,8 +55,7 @@ class Property extends Node\Stmt
      *
      * @return bool
      */
-    public function isProtected() : bool
-    {
+    public function isProtected() : bool {
         return (bool) ($this->flags & Class_::MODIFIER_PROTECTED);
     }
 
@@ -76,8 +64,7 @@ class Property extends Node\Stmt
      *
      * @return bool
      */
-    public function isPrivate() : bool
-    {
+    public function isPrivate() : bool {
         return (bool) ($this->flags & Class_::MODIFIER_PRIVATE);
     }
 
@@ -86,13 +73,11 @@ class Property extends Node\Stmt
      *
      * @return bool
      */
-    public function isStatic() : bool
-    {
+    public function isStatic() : bool {
         return (bool) ($this->flags & Class_::MODIFIER_STATIC);
     }
 
-    public function getType() : string
-    {
+    public function getType() : string {
         return 'Stmt_Property';
     }
 }

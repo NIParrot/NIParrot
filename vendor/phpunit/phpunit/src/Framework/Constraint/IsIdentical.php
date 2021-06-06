@@ -56,10 +56,9 @@ final class IsIdentical extends Constraint
      */
     public function evaluate($other, string $description = '', bool $returnResult = false): ?bool
     {
-        if (is_float($this->value) && is_float($other) 
-            && !is_infinite($this->value) && !is_infinite($other) 
-            && !is_nan($this->value) && !is_nan($other)
-        ) {
+        if (is_float($this->value) && is_float($other) &&
+            !is_infinite($this->value) && !is_infinite($other) &&
+            !is_nan($this->value) && !is_nan($other)) {
             $success = abs($this->value - $other) < self::EPSILON;
         } else {
             $success = $this->value === $other;

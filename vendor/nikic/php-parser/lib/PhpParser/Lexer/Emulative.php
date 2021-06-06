@@ -6,6 +6,7 @@ use PhpParser\Error;
 use PhpParser\ErrorHandler;
 use PhpParser\Lexer;
 use PhpParser\Lexer\TokenEmulator\AttributeEmulator;
+use PhpParser\Lexer\TokenEmulator\EnumTokenEmulator;
 use PhpParser\Lexer\TokenEmulator\CoaleseEqualTokenEmulator;
 use PhpParser\Lexer\TokenEmulator\FlexibleDocStringEmulator;
 use PhpParser\Lexer\TokenEmulator\FnTokenEmulator;
@@ -14,27 +15,21 @@ use PhpParser\Lexer\TokenEmulator\NullsafeTokenEmulator;
 use PhpParser\Lexer\TokenEmulator\NumericLiteralSeparatorEmulator;
 use PhpParser\Lexer\TokenEmulator\ReverseEmulator;
 use PhpParser\Lexer\TokenEmulator\TokenEmulator;
-use PhpParser\Parser\Tokens;
 
 class Emulative extends Lexer
 {
     const PHP_7_3 = '7.3dev';
     const PHP_7_4 = '7.4dev';
     const PHP_8_0 = '8.0dev';
+    const PHP_8_1 = '8.1dev';
 
-    /**
-     * @var mixed[] Patches used to reverse changes introduced in the code 
-     */
+    /** @var mixed[] Patches used to reverse changes introduced in the code */
     private $patches = [];
 
-    /**
-     * @var TokenEmulator[] 
-     */
+    /** @var TokenEmulator[] */
     private $emulators = [];
 
-    /**
-     * @var string 
-     */
+    /** @var string */
     private $targetPhpVersion;
 
     /**
@@ -44,7 +39,7 @@ class Emulative extends Lexer
      */
     public function __construct(array $options = [])
     {
-        $this->targetPhpVersion = $options['phpVersion'] ?? Emulative::PHP_8_0;
+        $this->targetPhpVersion = $options['phpVersion'] ?? Emulative::PHP_8_1;
         unset($options['phpVersion']);
 
         parent::__construct($options);
@@ -57,6 +52,7 @@ class Emulative extends Lexer
             new NumericLiteralSeparatorEmulator(),
             new NullsafeTokenEmulator(),
             new AttributeEmulator(),
+            new EnumTokenEmulator(),
         ];
 
         // Collect emulators that are relevant for the PHP version we're running
@@ -71,13 +67,10 @@ class Emulative extends Lexer
         }
     }
 
-    public function startLexing(string $code, ErrorHandler $errorHandler = null)
-    {
-        $emulators = array_filter(
-            $this->emulators, function ($emulator) use ($code) {
-                return $emulator->isEmulationNeeded($code);
-            }
-        );
+    public function startLexing(string $code, ErrorHandler $errorHandler = null) {
+        $emulators = array_filter($this->emulators, function($emulator) use($code) {
+            return $emulator->isEmulationNeeded($code);
+        });
 
         if (empty($emulators)) {
             // Nothing to emulate, yay
@@ -108,14 +101,12 @@ class Emulative extends Lexer
         }
     }
 
-    private function isForwardEmulationNeeded(string $emulatorPhpVersion): bool
-    {
+    private function isForwardEmulationNeeded(string $emulatorPhpVersion): bool {
         return version_compare(\PHP_VERSION, $emulatorPhpVersion, '<')
             && version_compare($this->targetPhpVersion, $emulatorPhpVersion, '>=');
     }
 
-    private function isReverseEmulationNeeded(string $emulatorPhpVersion): bool
-    {
+    private function isReverseEmulationNeeded(string $emulatorPhpVersion): bool {
         return version_compare(\PHP_VERSION, $emulatorPhpVersion, '>=')
             && version_compare($this->targetPhpVersion, $emulatorPhpVersion, '<');
     }
@@ -124,11 +115,9 @@ class Emulative extends Lexer
     {
         // Patches may be contributed by different emulators.
         // Make sure they are sorted by increasing patch position.
-        usort(
-            $this->patches, function ($p1, $p2) {
-                return $p1[0] <=> $p2[0];
-            }
-        );
+        usort($this->patches, function($p1, $p2) {
+            return $p1[0] <=> $p2[0];
+        });
     }
 
     private function fixupTokens()
@@ -223,8 +212,7 @@ class Emulative extends Lexer
      *
      * @param Error[] $errors
      */
-    private function fixupErrors(array $errors)
-    {
+    private function fixupErrors(array $errors) {
         foreach ($errors as $error) {
             $attrs = $error->getAttributes();
 

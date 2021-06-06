@@ -6,9 +6,7 @@ use PhpParser\NodeAbstract;
 
 class UnionType extends NodeAbstract
 {
-    /**
-     * @var (Identifier|Name)[] Types 
-     */
+    /** @var (Identifier|Name)[] Types */
     public $types;
 
     /**
@@ -17,19 +15,16 @@ class UnionType extends NodeAbstract
      * @param (Identifier|Name)[] $types      Types
      * @param array               $attributes Additional attributes
      */
-    public function __construct(array $types, array $attributes = [])
-    {
+    public function __construct(array $types, array $attributes = []) {
         $this->attributes = $attributes;
         $this->types = $types;
     }
 
-    public function getSubNodeNames() : array
-    {
+    public function getSubNodeNames() : array {
         return ['types'];
     }
     
-    public function getType() : string
-    {
+    public function getType() : string {
         return 'UnionType';
     }
 }

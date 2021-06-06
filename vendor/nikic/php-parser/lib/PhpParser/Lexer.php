@@ -34,8 +34,7 @@ class Lexer
      *                       'endTokenPos', 'startFilePos', 'endFilePos'. The option defaults to the
      *                       first three. For more info see getNextToken() docs.
      */
-    public function __construct(array $options = [])
-    {
+    public function __construct(array $options = []) {
         // Create Map from internal tokens to PhpParser tokens.
         $this->defineCompatibilityTokens();
         $this->tokenMap = $this->createTokenMap();
@@ -66,12 +65,11 @@ class Lexer
      * This function does not throw if lexing errors occur. Instead, errors may be retrieved using
      * the getErrors() method.
      *
-     * @param string            $code         The source code to lex
+     * @param string $code The source code to lex
      * @param ErrorHandler|null $errorHandler Error handler to use for lexing errors. Defaults to
      *                                        ErrorHandler\Throwing
      */
-    public function startLexing(string $code, ErrorHandler $errorHandler = null)
-    {
+    public function startLexing(string $code, ErrorHandler $errorHandler = null) {
         if (null === $errorHandler) {
             $errorHandler = new ErrorHandler\Throwing();
         }
@@ -95,8 +93,7 @@ class Lexer
         }
     }
 
-    private function handleInvalidCharacterRange($start, $end, $line, ErrorHandler $errorHandler)
-    {
+    private function handleInvalidCharacterRange($start, $end, $line, ErrorHandler $errorHandler) {
         $tokens = [];
         for ($i = $start; $i < $end; $i++) {
             $chr = $this->code[$i];
@@ -110,16 +107,12 @@ class Lexer
             }
 
             $tokens[] = [\T_BAD_CHARACTER, $chr, $line];
-            $errorHandler->handleError(
-                new Error(
-                    $errorMsg, [
-                    'startLine' => $line,
-                    'endLine' => $line,
-                    'startFilePos' => $i,
-                    'endFilePos' => $i,
-                    ]
-                )
-            );
+            $errorHandler->handleError(new Error($errorMsg, [
+                'startLine' => $line,
+                'endLine' => $line,
+                'startFilePos' => $i,
+                'endFilePos' => $i,
+            ]));
         }
         return $tokens;
     }
@@ -129,15 +122,13 @@ class Lexer
      *
      * @return bool
      */
-    private function isUnterminatedComment($token) : bool
-    {
+    private function isUnterminatedComment($token) : bool {
         return ($token[0] === \T_COMMENT || $token[0] === \T_DOC_COMMENT)
             && substr($token[1], 0, 2) === '/*'
             && substr($token[1], -2) !== '*/';
     }
 
-    protected function postprocessTokens(ErrorHandler $errorHandler)
-    {
+    protected function postprocessTokens(ErrorHandler $errorHandler) {
         // PHP's error handling for token_get_all() is rather bad, so if we want detailed
         // error information we need to compute it ourselves. Invalid character errors are
         // detected by finding "gaps" in the token array. Unterminated comments are detected
@@ -161,8 +152,7 @@ class Lexer
             }
 
             if ($token[0] === \T_COMMENT && substr($token[1], 0, 2) !== '/*'
-                && preg_match('/(\r\n|\n|\r)$/D', $token[1], $matches)
-            ) {
+                    && preg_match('/(\r\n|\n|\r)$/D', $token[1], $matches)) {
                 $trailingNewline = $matches[0];
                 $token[1] = substr($token[1], 0, -strlen($trailingNewline));
                 $this->tokens[$i] = $token;
@@ -172,11 +162,9 @@ class Lexer
                     $this->tokens[$i + 1][2]--;
                 } else {
                     // Otherwise, we need to create a new T_WHITESPACE token.
-                    array_splice(
-                        $this->tokens, $i + 1, 0, [
+                    array_splice($this->tokens, $i + 1, 0, [
                         [\T_WHITESPACE, $trailingNewline, $line],
-                        ]
-                    );
+                    ]);
                     $numTokens++;
                 }
             }
@@ -184,8 +172,7 @@ class Lexer
             // Emulate PHP 8 T_NAME_* tokens, by combining sequences of T_NS_SEPARATOR and T_STRING
             // into a single token.
             if (\is_array($token)
-                && ($token[0] === \T_NS_SEPARATOR || isset($this->identifierTokens[$token[0]]))
-            ) {
+                    && ($token[0] === \T_NS_SEPARATOR || isset($this->identifierTokens[$token[0]]))) {
                 $lastWasSeparator = $token[0] === \T_NS_SEPARATOR;
                 $text = $token[1];
                 for ($j = $i + 1; isset($this->tokens[$j]); $j++) {
@@ -228,8 +215,7 @@ class Lexer
                 // Something is missing, must be an invalid character
                 $nextFilePos = strpos($this->code, $tokenValue, $filePos);
                 $badCharTokens = $this->handleInvalidCharacterRange(
-                    $filePos, $nextFilePos, $line, $errorHandler
-                );
+                    $filePos, $nextFilePos, $line, $errorHandler);
                 $filePos = (int) $nextFilePos;
 
                 array_splice($this->tokens, $i, 0, $badCharTokens);
@@ -245,16 +231,12 @@ class Lexer
             if (substr($this->code, $filePos, 2) === '/*') {
                 // Unlike PHP, HHVM will drop unterminated comments entirely
                 $comment = substr($this->code, $filePos);
-                $errorHandler->handleError(
-                    new Error(
-                        'Unterminated comment', [
-                        'startLine' => $line,
-                        'endLine' => $line + substr_count($comment, "\n"),
-                        'startFilePos' => $filePos,
-                        'endFilePos' => $filePos + \strlen($comment),
-                        ]
-                    )
-                );
+                $errorHandler->handleError(new Error('Unterminated comment', [
+                    'startLine' => $line,
+                    'endLine' => $line + substr_count($comment, "\n"),
+                    'startFilePos' => $filePos,
+                    'endFilePos' => $filePos + \strlen($comment),
+                ]));
 
                 // Emulate the PHP behavior
                 $isDocComment = isset($comment[3]) && $comment[3] === '*';
@@ -262,8 +244,7 @@ class Lexer
             } else {
                 // Invalid characters at the end of the input
                 $badCharTokens = $this->handleInvalidCharacterRange(
-                    $filePos, \strlen($this->code), $line, $errorHandler
-                );
+                    $filePos, \strlen($this->code), $line, $errorHandler);
                 $this->tokens = array_merge($this->tokens, $badCharTokens);
             }
             return;
@@ -273,16 +254,12 @@ class Lexer
             // Check for unterminated comment
             $lastToken = $this->tokens[count($this->tokens) - 1];
             if ($this->isUnterminatedComment($lastToken)) {
-                $errorHandler->handleError(
-                    new Error(
-                        'Unterminated comment', [
-                        'startLine' => $line - substr_count($lastToken[1], "\n"),
-                        'endLine' => $line,
-                        'startFilePos' => $filePos - \strlen($lastToken[1]),
-                        'endFilePos' => $filePos,
-                        ]
-                    )
-                );
+                $errorHandler->handleError(new Error('Unterminated comment', [
+                    'startLine' => $line - substr_count($lastToken[1], "\n"),
+                    'endLine' => $line,
+                    'startFilePos' => $filePos - \strlen($lastToken[1]),
+                    'endFilePos' => $filePos,
+                ]));
             }
         }
     }
@@ -309,8 +286,7 @@ class Lexer
      *
      * @return int Token id
      */
-    public function getNextToken(&$value = null, &$startAttributes = null, &$endAttributes = null) : int
-    {
+    public function getNextToken(&$value = null, &$startAttributes = null, &$endAttributes = null) : int {
         $startAttributes = [];
         $endAttributes   = [];
 
@@ -346,7 +322,8 @@ class Lexer
                 $value = $token[1];
                 $id = $this->tokenMap[$token[0]];
                 if (\T_CLOSE_TAG === $token[0]) {
-                    $this->prevCloseTagHasNewline = false !== strpos($token[1], "\n");
+                    $this->prevCloseTagHasNewline = false !== strpos($token[1], "\n")
+                        || false !== strpos($token[1], "\r");
                 } elseif (\T_INLINE_HTML === $token[0]) {
                     $startAttributes['hasLeadingNewline'] = $this->prevCloseTagHasNewline;
                 }
@@ -362,16 +339,12 @@ class Lexer
                 if (\T_COMMENT === $token[0] || \T_DOC_COMMENT === $token[0]) {
                     if ($this->attributeCommentsUsed) {
                         $comment = \T_DOC_COMMENT === $token[0]
-                            ? new Comment\Doc(
-                                $token[1],
+                            ? new Comment\Doc($token[1],
                                 $origLine, $origFilePos, $this->pos,
-                                $this->line, $this->filePos - 1, $this->pos
-                            )
-                            : new Comment(
-                                $token[1],
+                                $this->line, $this->filePos - 1, $this->pos)
+                            : new Comment($token[1],
                                 $origLine, $origFilePos, $this->pos,
-                                $this->line, $this->filePos - 1, $this->pos
-                            );
+                                $this->line, $this->filePos - 1, $this->pos);
                         $startAttributes['comments'][] = $comment;
                     }
                 }
@@ -404,8 +377,7 @@ class Lexer
      *
      * @return array Array of tokens in token_get_all() format
      */
-    public function getTokens() : array
-    {
+    public function getTokens() : array {
         return $this->tokens;
     }
 
@@ -414,8 +386,7 @@ class Lexer
      *
      * @return string Remaining text
      */
-    public function handleHaltCompiler() : string
-    {
+    public function handleHaltCompiler() : string {
         // text after T_HALT_COMPILER, still including ();
         $textAfter = substr($this->code, $this->filePos);
 
@@ -433,8 +404,7 @@ class Lexer
         return substr($textAfter, strlen($matches[0]));
     }
 
-    private function defineCompatibilityTokens()
-    {
+    private function defineCompatibilityTokens() {
         static $compatTokensDefined = false;
         if ($compatTokensDefined) {
             return;
@@ -452,6 +422,8 @@ class Lexer
             'T_MATCH',
             'T_NULLSAFE_OBJECT_OPERATOR',
             'T_ATTRIBUTE',
+            // PHP 8.1
+            'T_ENUM',
         ];
 
         // PHP-Parser might be used together with another library that also emulates some or all
@@ -463,13 +435,11 @@ class Lexer
                 $tokenId = \constant($token);
                 $clashingToken = $usedTokenIds[$tokenId] ?? null;
                 if ($clashingToken !== null) {
-                    throw new \Error(
-                        sprintf(
-                            'Token %s has same ID as token %s, ' .
-                            'you may be using a library with broken token emulation',
-                            $token, $clashingToken
-                        )
-                    );
+                    throw new \Error(sprintf(
+                        'Token %s has same ID as token %s, ' .
+                        'you may be using a library with broken token emulation',
+                        $token, $clashingToken
+                    ));
                 }
                 $usedTokenIds[$tokenId] = $token;
             }
@@ -500,8 +470,7 @@ class Lexer
      *
      * @return array The token map
      */
-    protected function createTokenMap() : array
-    {
+    protected function createTokenMap() : array {
         $tokenMap = [];
 
         // 256 is the minimum possible token number, as everything below
@@ -545,15 +514,14 @@ class Lexer
         $tokenMap[\T_MATCH] = Tokens::T_MATCH;
         $tokenMap[\T_NULLSAFE_OBJECT_OPERATOR] = Tokens::T_NULLSAFE_OBJECT_OPERATOR;
         $tokenMap[\T_ATTRIBUTE] = Tokens::T_ATTRIBUTE;
+        $tokenMap[\T_ENUM] = Tokens::T_ENUM;
 
         return $tokenMap;
     }
 
-    private function createIdentifierTokenMap(): array
-    {
+    private function createIdentifierTokenMap(): array {
         // Based on semi_reserved production.
-        return array_fill_keys(
-            [
+        return array_fill_keys([
             \T_STRING,
             \T_STATIC, \T_ABSTRACT, \T_FINAL, \T_PRIVATE, \T_PROTECTED, \T_PUBLIC,
             \T_INCLUDE, \T_INCLUDE_ONCE, \T_EVAL, \T_REQUIRE, \T_REQUIRE_ONCE, \T_LOGICAL_OR, \T_LOGICAL_XOR, \T_LOGICAL_AND,
@@ -564,7 +532,6 @@ class Lexer
             \T_BREAK, \T_ARRAY, \T_CALLABLE, \T_EXTENDS, \T_IMPLEMENTS, \T_NAMESPACE, \T_TRAIT, \T_INTERFACE, \T_CLASS,
             \T_CLASS_C, \T_TRAIT_C, \T_FUNC_C, \T_METHOD_C, \T_LINE, \T_FILE, \T_DIR, \T_NS_C, \T_HALT_COMPILER, \T_FN,
             \T_MATCH,
-            ], true
-        );
+        ], true);
     }
 }

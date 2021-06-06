@@ -12,7 +12,7 @@ namespace PHPUnit\TextUI\CliArguments;
 use PHPUnit\TextUI\XmlConfiguration\Extension;
 
 /**
- * @internal        This class is not covered by the backward compatibility promise for PHPUnit
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  * @psalm-immutable
  */
 final class Configuration

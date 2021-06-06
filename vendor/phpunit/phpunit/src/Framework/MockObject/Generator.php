@@ -178,8 +178,8 @@ final class Generator
      * Concrete methods to mock can be specified with the $mockedMethods parameter.
      *
      * @psalm-template RealInstanceType of object
-     * @psalm-param    class-string<RealInstanceType> $originalClassName
-     * @psalm-return   MockObject&RealInstanceType
+     * @psalm-param class-string<RealInstanceType> $originalClassName
+     * @psalm-return MockObject&RealInstanceType
      *
      * @throws \PHPUnit\Framework\InvalidArgumentException
      * @throws ClassAlreadyExistsException
@@ -194,9 +194,8 @@ final class Generator
      */
     public function getMockForAbstractClass(string $originalClassName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = null, bool $cloneArguments = true): MockObject
     {
-        if (class_exists($originalClassName, $callAutoload) 
-            || interface_exists($originalClassName, $callAutoload)
-        ) {
+        if (class_exists($originalClassName, $callAutoload) ||
+            interface_exists($originalClassName, $callAutoload)) {
             try {
                 $reflector = new ReflectionClass($originalClassName);
                 // @codeCoverageIgnoreStart
@@ -757,10 +756,9 @@ final class Generator
             }
 
             // @see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/103
-            if ($isInterface && $class->implementsInterface(Traversable::class) 
-                && !$class->implementsInterface(Iterator::class) 
-                && !$class->implementsInterface(IteratorAggregate::class)
-            ) {
+            if ($isInterface && $class->implementsInterface(Traversable::class) &&
+                !$class->implementsInterface(Iterator::class) &&
+                !$class->implementsInterface(IteratorAggregate::class)) {
                 $additionalInterfaces[] = Iterator::class;
 
                 $mockMethods->addMethods(

@@ -7,17 +7,11 @@ use PhpParser\Node\Identifier;
 
 class UseUse extends Node\Stmt
 {
-    /**
-     * @var int One of the Stmt\Use_::TYPE_* constants. Will only differ from TYPE_UNKNOWN for mixed group uses 
-     */
+    /** @var int One of the Stmt\Use_::TYPE_* constants. Will only differ from TYPE_UNKNOWN for mixed group uses */
     public $type;
-    /**
-     * @var Node\Name Namespace, class, function or constant to alias 
-     */
+    /** @var Node\Name Namespace, class, function or constant to alias */
     public $name;
-    /**
-     * @var Identifier|null Alias 
-     */
+    /** @var Identifier|null Alias */
     public $alias;
 
     /**
@@ -28,16 +22,14 @@ class UseUse extends Node\Stmt
      * @param int                    $type       Type of the use element (for mixed group use only)
      * @param array                  $attributes Additional attributes
      */
-    public function __construct(Node\Name $name, $alias = null, int $type = Use_::TYPE_UNKNOWN, array $attributes = [])
-    {
+    public function __construct(Node\Name $name, $alias = null, int $type = Use_::TYPE_UNKNOWN, array $attributes = []) {
         $this->attributes = $attributes;
         $this->type = $type;
         $this->name = $name;
         $this->alias = \is_string($alias) ? new Identifier($alias) : $alias;
     }
 
-    public function getSubNodeNames() : array
-    {
+    public function getSubNodeNames() : array {
         return ['type', 'name', 'alias'];
     }
 
@@ -46,8 +38,7 @@ class UseUse extends Node\Stmt
      *
      * @return Identifier
      */
-    public function getAlias() : Identifier
-    {
+    public function getAlias() : Identifier {
         if (null !== $this->alias) {
             return $this->alias;
         }
@@ -55,8 +46,7 @@ class UseUse extends Node\Stmt
         return new Identifier($this->name->getLast());
     }
     
-    public function getType() : string
-    {
+    public function getType() : string {
         return 'Stmt_UseUse';
     }
 }

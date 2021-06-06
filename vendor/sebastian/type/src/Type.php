@@ -35,39 +35,39 @@ abstract class Type
     public static function fromName(string $typeName, bool $allowsNull): self
     {
         switch (strtolower($typeName)) {
-        case 'callable':
-            return new CallableType($allowsNull);
+            case 'callable':
+                return new CallableType($allowsNull);
 
-        case 'iterable':
-            return new IterableType($allowsNull);
+            case 'iterable':
+                return new IterableType($allowsNull);
 
-        case 'null':
-            return new NullType;
+            case 'null':
+                return new NullType;
 
-        case 'object':
-            return new GenericObjectType($allowsNull);
+            case 'object':
+                return new GenericObjectType($allowsNull);
 
-        case 'unknown type':
-            return new UnknownType;
+            case 'unknown type':
+                return new UnknownType;
 
-        case 'void':
-            return new VoidType;
+            case 'void':
+                return new VoidType;
 
-        case 'array':
-        case 'bool':
-        case 'boolean':
-        case 'double':
-        case 'float':
-        case 'int':
-        case 'integer':
-        case 'real':
-        case 'resource':
-        case 'resource (closed)':
-        case 'string':
-            return new SimpleType($typeName, $allowsNull);
+            case 'array':
+            case 'bool':
+            case 'boolean':
+            case 'double':
+            case 'float':
+            case 'int':
+            case 'integer':
+            case 'real':
+            case 'resource':
+            case 'resource (closed)':
+            case 'string':
+                return new SimpleType($typeName, $allowsNull);
 
-        default:
-            return new ObjectType(TypeName::fromQualifiedName($typeName), $allowsNull);
+            default:
+                return new ObjectType(TypeName::fromQualifiedName($typeName), $allowsNull);
         }
     }
 

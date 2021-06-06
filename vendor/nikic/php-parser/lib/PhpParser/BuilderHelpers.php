@@ -24,8 +24,7 @@ final class BuilderHelpers
      *
      * @return Node The normalized node
      */
-    public static function normalizeNode($node) : Node
-    {
+    public static function normalizeNode($node) : Node {
         if ($node instanceof Builder) {
             return $node->getNode();
         } elseif ($node instanceof Node) {
@@ -44,8 +43,7 @@ final class BuilderHelpers
      *
      * @return Stmt The normalized statement node
      */
-    public static function normalizeStmt($node) : Stmt
-    {
+    public static function normalizeStmt($node) : Stmt {
         $node = self::normalizeNode($node);
         if ($node instanceof Stmt) {
             return $node;
@@ -65,8 +63,7 @@ final class BuilderHelpers
      *
      * @return Identifier The normalized identifier
      */
-    public static function normalizeIdentifier($name) : Identifier
-    {
+    public static function normalizeIdentifier($name) : Identifier {
         if ($name instanceof Identifier) {
             return $name;
         }
@@ -85,8 +82,7 @@ final class BuilderHelpers
      *
      * @return Identifier|Expr The normalized identifier or expression
      */
-    public static function normalizeIdentifierOrExpr($name)
-    {
+    public static function normalizeIdentifierOrExpr($name) {
         if ($name instanceof Identifier || $name instanceof Expr) {
             return $name;
         }
@@ -105,8 +101,7 @@ final class BuilderHelpers
      *
      * @return Name The normalized name
      */
-    public static function normalizeName($name) : Name
-    {
+    public static function normalizeName($name) : Name {
         return self::normalizeNameCommon($name, false);
     }
 
@@ -117,8 +112,7 @@ final class BuilderHelpers
      *
      * @return Name|Expr The normalized name or expression
      */
-    public static function normalizeNameOrExpr($name)
-    {
+    public static function normalizeNameOrExpr($name) {
         return self::normalizeNameCommon($name, true);
     }
 
@@ -130,8 +124,7 @@ final class BuilderHelpers
      *
      * @return Name|Expr The normalized name, or expression (if allowed)
      */
-    private static function normalizeNameCommon($name, bool $allowExpr)
-    {
+    private static function normalizeNameCommon($name, bool $allowExpr) {
         if ($name instanceof Name) {
             return $name;
         } elseif (is_string($name)) {
@@ -170,11 +163,11 @@ final class BuilderHelpers
      *
      * @return Name|Identifier|NullableType|UnionType The normalized type
      */
-    public static function normalizeType($type)
-    {
+    public static function normalizeType($type) {
         if (!is_string($type)) {
-            if (!$type instanceof Name && !$type instanceof Identifier 
-                && !$type instanceof NullableType && !$type instanceof UnionType
+            if (
+                !$type instanceof Name && !$type instanceof Identifier &&
+                !$type instanceof NullableType && !$type instanceof UnionType
             ) {
                 throw new \LogicException(
                     'Type must be a string, or an instance of Name, Identifier, NullableType or UnionType'
@@ -219,8 +212,7 @@ final class BuilderHelpers
      *
      * @return Expr The normalized value
      */
-    public static function normalizeValue($value) : Expr
-    {
+    public static function normalizeValue($value) : Expr {
         if ($value instanceof Node\Expr) {
             return $value;
         } elseif (is_null($value)) {
@@ -268,8 +260,7 @@ final class BuilderHelpers
      *
      * @return Comment\Doc The normalized doc comment
      */
-    public static function normalizeDocComment($docComment) : Comment\Doc
-    {
+    public static function normalizeDocComment($docComment) : Comment\Doc {
         if ($docComment instanceof Comment\Doc) {
             return $docComment;
         } elseif (is_string($docComment)) {
@@ -287,8 +278,7 @@ final class BuilderHelpers
      *
      * @return int New modifiers
      */
-    public static function addModifier(int $modifiers, int $modifier) : int
-    {
+    public static function addModifier(int $modifiers, int $modifier) : int {
         Stmt\Class_::verifyModifier($modifiers, $modifier);
         return $modifiers | $modifier;
     }

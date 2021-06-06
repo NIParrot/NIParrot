@@ -21,20 +21,20 @@ final class Token
     private $type;
     private $lineno;
 
-    const EOF_TYPE = -1;
-    const TEXT_TYPE = 0;
-    const BLOCK_START_TYPE = 1;
-    const VAR_START_TYPE = 2;
-    const BLOCK_END_TYPE = 3;
-    const VAR_END_TYPE = 4;
-    const NAME_TYPE = 5;
-    const NUMBER_TYPE = 6;
-    const STRING_TYPE = 7;
-    const OPERATOR_TYPE = 8;
-    const PUNCTUATION_TYPE = 9;
-    const INTERPOLATION_START_TYPE = 10;
-    const INTERPOLATION_END_TYPE = 11;
-    const ARROW_TYPE = 12;
+    public const EOF_TYPE = -1;
+    public const TEXT_TYPE = 0;
+    public const BLOCK_START_TYPE = 1;
+    public const VAR_START_TYPE = 2;
+    public const BLOCK_END_TYPE = 3;
+    public const VAR_END_TYPE = 4;
+    public const NAME_TYPE = 5;
+    public const NUMBER_TYPE = 6;
+    public const STRING_TYPE = 7;
+    public const OPERATOR_TYPE = 8;
+    public const PUNCTUATION_TYPE = 9;
+    public const INTERPOLATION_START_TYPE = 10;
+    public const INTERPOLATION_END_TYPE = 11;
+    public const ARROW_TYPE = 12;
 
     public function __construct(int $type, $value, int $lineno)
     {
@@ -91,50 +91,50 @@ final class Token
     public static function typeToString(int $type, bool $short = false): string
     {
         switch ($type) {
-        case self::EOF_TYPE:
-            $name = 'EOF_TYPE';
-            break;
-        case self::TEXT_TYPE:
-            $name = 'TEXT_TYPE';
-            break;
-        case self::BLOCK_START_TYPE:
-            $name = 'BLOCK_START_TYPE';
-            break;
-        case self::VAR_START_TYPE:
-            $name = 'VAR_START_TYPE';
-            break;
-        case self::BLOCK_END_TYPE:
-            $name = 'BLOCK_END_TYPE';
-            break;
-        case self::VAR_END_TYPE:
-            $name = 'VAR_END_TYPE';
-            break;
-        case self::NAME_TYPE:
-            $name = 'NAME_TYPE';
-            break;
-        case self::NUMBER_TYPE:
-            $name = 'NUMBER_TYPE';
-            break;
-        case self::STRING_TYPE:
-            $name = 'STRING_TYPE';
-            break;
-        case self::OPERATOR_TYPE:
-            $name = 'OPERATOR_TYPE';
-            break;
-        case self::PUNCTUATION_TYPE:
-            $name = 'PUNCTUATION_TYPE';
-            break;
-        case self::INTERPOLATION_START_TYPE:
-            $name = 'INTERPOLATION_START_TYPE';
-            break;
-        case self::INTERPOLATION_END_TYPE:
-            $name = 'INTERPOLATION_END_TYPE';
-            break;
-        case self::ARROW_TYPE:
-            $name = 'ARROW_TYPE';
-            break;
-        default:
-            throw new \LogicException(sprintf('Token of type "%s" does not exist.', $type));
+            case self::EOF_TYPE:
+                $name = 'EOF_TYPE';
+                break;
+            case self::TEXT_TYPE:
+                $name = 'TEXT_TYPE';
+                break;
+            case self::BLOCK_START_TYPE:
+                $name = 'BLOCK_START_TYPE';
+                break;
+            case self::VAR_START_TYPE:
+                $name = 'VAR_START_TYPE';
+                break;
+            case self::BLOCK_END_TYPE:
+                $name = 'BLOCK_END_TYPE';
+                break;
+            case self::VAR_END_TYPE:
+                $name = 'VAR_END_TYPE';
+                break;
+            case self::NAME_TYPE:
+                $name = 'NAME_TYPE';
+                break;
+            case self::NUMBER_TYPE:
+                $name = 'NUMBER_TYPE';
+                break;
+            case self::STRING_TYPE:
+                $name = 'STRING_TYPE';
+                break;
+            case self::OPERATOR_TYPE:
+                $name = 'OPERATOR_TYPE';
+                break;
+            case self::PUNCTUATION_TYPE:
+                $name = 'PUNCTUATION_TYPE';
+                break;
+            case self::INTERPOLATION_START_TYPE:
+                $name = 'INTERPOLATION_START_TYPE';
+                break;
+            case self::INTERPOLATION_END_TYPE:
+                $name = 'INTERPOLATION_END_TYPE';
+                break;
+            case self::ARROW_TYPE:
+                $name = 'ARROW_TYPE';
+                break;
+            default:
+                throw new \LogicException(sprintf('Token of type "%s" does not exist.', $type));
         }
 
         return $short ? $name : 'Twig\Token::'.$name;
@@ -143,36 +143,36 @@ final class Token
     public static function typeToEnglish(int $type): string
     {
         switch ($type) {
-        case self::EOF_TYPE:
-            return 'end of template';
-        case self::TEXT_TYPE:
-            return 'text';
-        case self::BLOCK_START_TYPE:
-            return 'begin of statement block';
-        case self::VAR_START_TYPE:
-            return 'begin of print statement';
-        case self::BLOCK_END_TYPE:
-            return 'end of statement block';
-        case self::VAR_END_TYPE:
-            return 'end of print statement';
-        case self::NAME_TYPE:
-            return 'name';
-        case self::NUMBER_TYPE:
-            return 'number';
-        case self::STRING_TYPE:
-            return 'string';
-        case self::OPERATOR_TYPE:
-            return 'operator';
-        case self::PUNCTUATION_TYPE:
-            return 'punctuation';
-        case self::INTERPOLATION_START_TYPE:
-            return 'begin of string interpolation';
-        case self::INTERPOLATION_END_TYPE:
-            return 'end of string interpolation';
-        case self::ARROW_TYPE:
-            return 'arrow function';
-        default:
-            throw new \LogicException(sprintf('Token of type "%s" does not exist.', $type));
+            case self::EOF_TYPE:
+                return 'end of template';
+            case self::TEXT_TYPE:
+                return 'text';
+            case self::BLOCK_START_TYPE:
+                return 'begin of statement block';
+            case self::VAR_START_TYPE:
+                return 'begin of print statement';
+            case self::BLOCK_END_TYPE:
+                return 'end of statement block';
+            case self::VAR_END_TYPE:
+                return 'end of print statement';
+            case self::NAME_TYPE:
+                return 'name';
+            case self::NUMBER_TYPE:
+                return 'number';
+            case self::STRING_TYPE:
+                return 'string';
+            case self::OPERATOR_TYPE:
+                return 'operator';
+            case self::PUNCTUATION_TYPE:
+                return 'punctuation';
+            case self::INTERPOLATION_START_TYPE:
+                return 'begin of string interpolation';
+            case self::INTERPOLATION_END_TYPE:
+                return 'end of string interpolation';
+            case self::ARROW_TYPE:
+                return 'arrow function';
+            default:
+                throw new \LogicException(sprintf('Token of type "%s" does not exist.', $type));
         }
     }
 }

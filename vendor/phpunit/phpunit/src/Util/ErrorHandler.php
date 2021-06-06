@@ -93,37 +93,37 @@ final class ErrorHandler
         }
 
         switch ($errorNumber) {
-        case E_NOTICE:
-        case E_USER_NOTICE:
-        case E_STRICT:
-            if (!$this->convertNoticesToExceptions) {
-                return false;
-            }
+            case E_NOTICE:
+            case E_USER_NOTICE:
+            case E_STRICT:
+                if (!$this->convertNoticesToExceptions) {
+                    return false;
+                }
 
-            throw new Notice($errorString, $errorNumber, $errorFile, $errorLine);
+                throw new Notice($errorString, $errorNumber, $errorFile, $errorLine);
 
-        case E_WARNING:
-        case E_USER_WARNING:
-            if (!$this->convertWarningsToExceptions) {
-                return false;
-            }
+            case E_WARNING:
+            case E_USER_WARNING:
+                if (!$this->convertWarningsToExceptions) {
+                    return false;
+                }
 
-            throw new Warning($errorString, $errorNumber, $errorFile, $errorLine);
+                throw new Warning($errorString, $errorNumber, $errorFile, $errorLine);
 
-        case E_DEPRECATED:
-        case E_USER_DEPRECATED:
-            if (!$this->convertDeprecationsToExceptions) {
-                return false;
-            }
+            case E_DEPRECATED:
+            case E_USER_DEPRECATED:
+                if (!$this->convertDeprecationsToExceptions) {
+                    return false;
+                }
 
-            throw new Deprecated($errorString, $errorNumber, $errorFile, $errorLine);
+                throw new Deprecated($errorString, $errorNumber, $errorFile, $errorLine);
 
-        default:
-            if (!$this->convertErrorsToExceptions) {
-                return false;
-            }
+            default:
+                if (!$this->convertErrorsToExceptions) {
+                    return false;
+                }
 
-            throw new Error($errorString, $errorNumber, $errorFile, $errorLine);
+                throw new Error($errorString, $errorNumber, $errorFile, $errorLine);
         }
     }
 

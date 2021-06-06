@@ -9,7 +9,7 @@ class ComposerAutoloaderInit634355e07e9ea7af11613faefce5fb79
     public static function loadClassLoader($class)
     {
         if ('Composer\Autoload\ClassLoader' === $class) {
-            include __DIR__ . '/ClassLoader.php';
+            require __DIR__ . '/ClassLoader.php';
         }
     }
 
@@ -22,7 +22,7 @@ class ComposerAutoloaderInit634355e07e9ea7af11613faefce5fb79
             return self::$loader;
         }
 
-        include __DIR__ . '/platform_check.php';
+        require __DIR__ . '/platform_check.php';
 
         spl_autoload_register(array('ComposerAutoloaderInit634355e07e9ea7af11613faefce5fb79', 'loadClassLoader'), true, true);
         self::$loader = $loader = new \Composer\Autoload\ClassLoader(\dirname(\dirname(__FILE__)));
@@ -30,21 +30,21 @@ class ComposerAutoloaderInit634355e07e9ea7af11613faefce5fb79
 
         $useStaticLoader = PHP_VERSION_ID >= 50600 && !defined('HHVM_VERSION') && (!function_exists('zend_loader_file_encoded') || !zend_loader_file_encoded());
         if ($useStaticLoader) {
-            include __DIR__ . '/autoload_static.php';
+            require __DIR__ . '/autoload_static.php';
 
             call_user_func(\Composer\Autoload\ComposerStaticInit634355e07e9ea7af11613faefce5fb79::getInitializer($loader));
         } else {
-            $map = include __DIR__ . '/autoload_namespaces.php';
+            $map = require __DIR__ . '/autoload_namespaces.php';
             foreach ($map as $namespace => $path) {
                 $loader->set($namespace, $path);
             }
 
-            $map = include __DIR__ . '/autoload_psr4.php';
+            $map = require __DIR__ . '/autoload_psr4.php';
             foreach ($map as $namespace => $path) {
                 $loader->setPsr4($namespace, $path);
             }
 
-            $classMap = include __DIR__ . '/autoload_classmap.php';
+            $classMap = require __DIR__ . '/autoload_classmap.php';
             if ($classMap) {
                 $loader->addClassMap($classMap);
             }
@@ -55,7 +55,7 @@ class ComposerAutoloaderInit634355e07e9ea7af11613faefce5fb79
         if ($useStaticLoader) {
             $includeFiles = Composer\Autoload\ComposerStaticInit634355e07e9ea7af11613faefce5fb79::$files;
         } else {
-            $includeFiles = include __DIR__ . '/autoload_files.php';
+            $includeFiles = require __DIR__ . '/autoload_files.php';
         }
         foreach ($includeFiles as $fileIdentifier => $file) {
             composerRequire634355e07e9ea7af11613faefce5fb79($fileIdentifier, $file);
@@ -68,7 +68,7 @@ class ComposerAutoloaderInit634355e07e9ea7af11613faefce5fb79
 function composerRequire634355e07e9ea7af11613faefce5fb79($fileIdentifier, $file)
 {
     if (empty($GLOBALS['__composer_autoload_files'][$fileIdentifier])) {
-        include $file;
+        require $file;
 
         $GLOBALS['__composer_autoload_files'][$fileIdentifier] = true;
     }

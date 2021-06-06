@@ -68,21 +68,21 @@ final class SimpleType extends Type
         $name = strtolower($name);
 
         switch ($name) {
-        case 'boolean':
-            return 'bool';
+            case 'boolean':
+                return 'bool';
 
-        case 'real':
-        case 'double':
-            return 'float';
+            case 'real':
+            case 'double':
+                return 'float';
 
-        case 'integer':
-            return 'int';
+            case 'integer':
+                return 'int';
 
-        case '[]':
-            return 'array';
+            case '[]':
+                return 'array';
 
-        default:
-            return $name;
+            default:
+                return $name;
         }
     }
 }

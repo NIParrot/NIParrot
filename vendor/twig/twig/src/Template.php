@@ -29,9 +29,9 @@ use Twig\Error\RuntimeError;
  */
 abstract class Template
 {
-    const ANY_CALL = 'any';
-    const ARRAY_CALL = 'array';
-    const METHOD_CALL = 'method';
+    public const ANY_CALL = 'any';
+    public const ARRAY_CALL = 'array';
+    public const METHOD_CALL = 'method';
 
     protected $parent;
     protected $parents = [];
@@ -213,11 +213,7 @@ abstract class Template
         if ($this->env->isDebug()) {
             ob_start();
         } else {
-            ob_start(
-                function () {
-                    return ''; 
-                }
-            );
+            ob_start(function () { return ''; });
         }
         $this->displayParentBlock($name, $context, $blocks);
 
@@ -242,11 +238,7 @@ abstract class Template
         if ($this->env->isDebug()) {
             ob_start();
         } else {
-            ob_start(
-                function () {
-                    return ''; 
-                }
-            );
+            ob_start(function () { return ''; });
         }
         $this->displayBlock($name, $context, $blocks, $useBlocks);
 
@@ -381,11 +373,7 @@ abstract class Template
         if ($this->env->isDebug()) {
             ob_start();
         } else {
-            ob_start(
-                function () {
-                    return ''; 
-                }
-            );
+            ob_start(function () { return ''; });
         }
         try {
             $this->display($context);

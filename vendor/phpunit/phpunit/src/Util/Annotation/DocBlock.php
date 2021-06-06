@@ -79,19 +79,13 @@ final class DocBlock
 
     private const REGEX_TEST_WITH = '/@testWith\s+/';
 
-    /**
-     * @var string 
-     */
+    /** @var string */
     private $docComment;
 
-    /**
-     * @var bool 
-     */
+    /** @var bool */
     private $isMethod;
 
-    /**
-     * @var array<string, array<int, string>> pre-parsed annotations indexed by name and occurrence index 
-     */
+    /** @var array<string, array<int, string>> pre-parsed annotations indexed by name and occurrence index */
     private $symbolAnnotations;
 
     /**
@@ -108,24 +102,16 @@ final class DocBlock
      */
     private $parsedRequirements;
 
-    /**
-     * @var int 
-     */
+    /** @var int */
     private $startLine;
 
-    /**
-     * @var int 
-     */
+    /** @var int */
     private $endLine;
 
-    /**
-     * @var string 
-     */
+    /** @var string */
     private $fileName;
 
-    /**
-     * @var string 
-     */
+    /** @var string */
     private $name;
 
     /**
@@ -213,8 +199,8 @@ final class DocBlock
             '__FILE' => realpath($this->fileName),
         ];
 
-        // Split docblock into lines and rewind offset to start of docblock
-        $lines = preg_split('/\r\n|\r|\n/', $this->docComment);
+        // Trim docblock markers, split it into lines and rewind offset to start of docblock
+        $lines = preg_replace(['#^/\*{2}#', '#\*/$#'], '', preg_split('/\r\n|\r|\n/', $this->docComment));
         $offset -= count($lines);
 
         foreach ($lines as $line) {
@@ -279,12 +265,10 @@ final class DocBlock
         return $this->parsedRequirements = array_merge(
             $requires,
             ['__OFFSET' => $recordedOffsets],
-            array_filter(
-                [
+            array_filter([
                 'setting'            => $recordedSettings,
                 'extension_versions' => $extensionVersions,
-                ]
-            )
+            ])
         );
     }
 
@@ -295,9 +279,7 @@ final class DocBlock
      */
     public function getProvidedData(): ?array
     {
-        /**
- * @noinspection SuspiciousBinaryOperationInspection 
-*/
+        /** @noinspection SuspiciousBinaryOperationInspection */
         $data = $this->getDataFromDataProviderAnnotation($this->docComment) ?? $this->getDataFromTestWithAnnotation($this->docComment);
 
         if ($data === null) {
@@ -414,9 +396,7 @@ final class DocBlock
             if (empty($leaf)) {
                 $dataProviderClassName = $className;
             } else {
-                /**
- * @psalm-var class-string $dataProviderClassName 
-*/
+                /** @psalm-var class-string $dataProviderClassName */
                 $dataProviderClassName = $dataProviderMethodNameNamespace . array_pop($leaf);
             }
 
@@ -527,9 +507,7 @@ final class DocBlock
         return rtrim($docComment, "\n");
     }
 
-    /**
-     * @return array<string, array<int, string>> 
-     */
+    /** @return array<string, array<int, string>> */
     private static function parseDocBlock(string $docBlock): array
     {
         // Strip away the docblock header and footer to ease parsing of one line annotations
@@ -547,9 +525,7 @@ final class DocBlock
         return $annotations;
     }
 
-    /**
-     * @param ReflectionClass|ReflectionFunctionAbstract $reflector 
-     */
+    /** @param ReflectionClass|ReflectionFunctionAbstract $reflector */
     private static function extractAnnotationsFromReflector(Reflector $reflector): array
     {
         $annotations = [];

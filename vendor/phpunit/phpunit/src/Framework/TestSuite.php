@@ -206,9 +206,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         $constructor = $theClass->getConstructor();
 
-        if ($constructor !== null 
-            && !$constructor->isPublic()
-        ) {
+        if ($constructor !== null &&
+            !$constructor->isPublic()) {
             $this->addTest(
                 new WarningTestCase(
                     sprintf(
@@ -603,9 +602,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             return $result;
         }
 
-        /**
- * @psalm-var class-string $className 
-*/
+        /** @psalm-var class-string $className */
         $className   = $this->name;
         $hookMethods = TestUtil::getHookMethods($className);
 

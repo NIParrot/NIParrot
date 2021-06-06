@@ -447,9 +447,8 @@ final class TestRunner extends BaseTestRunner
 
         if ($codeCoverageReports > 0) {
             try {
-                if (isset($codeCoverageConfiguration) 
-                    && ($codeCoverageConfiguration->pathCoverage() || (isset($arguments['pathCoverage']) && $arguments['pathCoverage'] === true))
-                ) {
+                if (isset($codeCoverageConfiguration) &&
+                    ($codeCoverageConfiguration->pathCoverage() || (isset($arguments['pathCoverage']) && $arguments['pathCoverage'] === true))) {
                     $codeCoverageDriver = (new Selector)->forLineAndPathCoverage($this->codeCoverageFilter);
                 } else {
                     $codeCoverageDriver = (new Selector)->forLineCoverage($this->codeCoverageFilter);
@@ -1140,12 +1139,11 @@ final class TestRunner extends BaseTestRunner
 
     private function processSuiteFilters(TestSuite $suite, array $arguments): void
     {
-        if (!$arguments['filter'] 
-            && empty($arguments['groups']) 
-            && empty($arguments['excludeGroups']) 
-            && empty($arguments['testsCovering']) 
-            && empty($arguments['testsUsing'])
-        ) {
+        if (!$arguments['filter'] &&
+            empty($arguments['groups']) &&
+            empty($arguments['excludeGroups']) &&
+            empty($arguments['testsCovering']) &&
+            empty($arguments['testsUsing'])) {
             return;
         }
 

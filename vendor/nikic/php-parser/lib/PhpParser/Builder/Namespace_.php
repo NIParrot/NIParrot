@@ -17,8 +17,7 @@ class Namespace_ extends Declaration
      *
      * @param Node\Name|string|null $name Name of the namespace
      */
-    public function __construct($name)
-    {
+    public function __construct($name) {
         $this->name = null !== $name ? BuilderHelpers::normalizeName($name) : null;
     }
 
@@ -29,8 +28,7 @@ class Namespace_ extends Declaration
      *
      * @return $this The builder instance (for fluid interface)
      */
-    public function addStmt($stmt)
-    {
+    public function addStmt($stmt) {
         $this->stmts[] = BuilderHelpers::normalizeStmt($stmt);
 
         return $this;
@@ -39,10 +37,9 @@ class Namespace_ extends Declaration
     /**
      * Returns the built node.
      *
-     * @return Node The built node
+     * @return Stmt\Namespace_ The built node
      */
-    public function getNode() : Node
-    {
+    public function getNode() : Node {
         return new Stmt\Namespace_($this->name, $this->stmts, $this->attributes);
     }
 }

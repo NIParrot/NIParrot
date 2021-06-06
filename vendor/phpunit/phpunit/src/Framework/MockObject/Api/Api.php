@@ -37,9 +37,7 @@ trait Api
      */
     private $__phpunit_invocationMocker;
 
-    /**
-     * @noinspection MagicMethodsValidityInspection 
-     */
+    /** @noinspection MagicMethodsValidityInspection */
     public static function __phpunit_initConfigurableMethods(ConfigurableMethod ...$configurableMethods): void
     {
         if (isset(static::$__phpunit_configurableMethods)) {
@@ -51,25 +49,19 @@ trait Api
         static::$__phpunit_configurableMethods = $configurableMethods;
     }
 
-    /**
-     * @noinspection MagicMethodsValidityInspection 
-     */
+    /** @noinspection MagicMethodsValidityInspection */
     public function __phpunit_setOriginalObject($originalObject): void
     {
         $this->__phpunit_originalObject = $originalObject;
     }
 
-    /**
-     * @noinspection MagicMethodsValidityInspection 
-     */
+    /** @noinspection MagicMethodsValidityInspection */
     public function __phpunit_setReturnValueGeneration(bool $returnValueGeneration): void
     {
         $this->__phpunit_returnValueGeneration = $returnValueGeneration;
     }
 
-    /**
-     * @noinspection MagicMethodsValidityInspection 
-     */
+    /** @noinspection MagicMethodsValidityInspection */
     public function __phpunit_getInvocationHandler(): InvocationHandler
     {
         if ($this->__phpunit_invocationMocker === null) {
@@ -82,17 +74,13 @@ trait Api
         return $this->__phpunit_invocationMocker;
     }
 
-    /**
-     * @noinspection MagicMethodsValidityInspection 
-     */
+    /** @noinspection MagicMethodsValidityInspection */
     public function __phpunit_hasMatchers(): bool
     {
         return $this->__phpunit_getInvocationHandler()->hasMatchers();
     }
 
-    /**
-     * @noinspection MagicMethodsValidityInspection 
-     */
+    /** @noinspection MagicMethodsValidityInspection */
     public function __phpunit_verify(bool $unsetInvocationMocker = true): void
     {
         $this->__phpunit_getInvocationHandler()->verify();

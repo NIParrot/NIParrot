@@ -16,34 +16,26 @@ class Class_ extends ClassLike
 
     const VISIBILITY_MODIFIER_MASK = 7; // 1 | 2 | 4
 
-    /**
-     * @var int Type 
-     */
+    /** @var int Type */
     public $flags;
-    /**
-     * @var null|Node\Name Name of extended class 
-     */
+    /** @var null|Node\Name Name of extended class */
     public $extends;
-    /**
-     * @var Node\Name[] Names of implemented interfaces 
-     */
+    /** @var Node\Name[] Names of implemented interfaces */
     public $implements;
 
     /**
      * Constructs a class node.
      *
-     * @param string|Node\Identifier|null $name       Name
-     * @param array                       $subNodes   Array of the following optional subnodes:
-     *                                                'flags'       => 0      : Flags 'extends'
-     *                                                => null   : Name of extended class
-     *                                                'implements'  => array(): Names of
-     *                                                implemented interfaces 'stmts'       =>
-     *                                                array(): Statements '$attrGroups' =>
-     *                                                array(): PHP attribute groups
-     * @param array                       $attributes Additional attributes
+     * @param string|Node\Identifier|null $name Name
+     * @param array       $subNodes   Array of the following optional subnodes:
+     *                                'flags'       => 0      : Flags
+     *                                'extends'     => null   : Name of extended class
+     *                                'implements'  => array(): Names of implemented interfaces
+     *                                'stmts'       => array(): Statements
+     *                                'attrGroups'  => array(): PHP attribute groups
+     * @param array       $attributes Additional attributes
      */
-    public function __construct($name, array $subNodes = [], array $attributes = [])
-    {
+    public function __construct($name, array $subNodes = [], array $attributes = []) {
         $this->attributes = $attributes;
         $this->flags = $subNodes['flags'] ?? $subNodes['type'] ?? 0;
         $this->name = \is_string($name) ? new Node\Identifier($name) : $name;
@@ -53,8 +45,7 @@ class Class_ extends ClassLike
         $this->attrGroups = $subNodes['attrGroups'] ?? [];
     }
 
-    public function getSubNodeNames() : array
-    {
+    public function getSubNodeNames() : array {
         return ['attrGroups', 'flags', 'name', 'extends', 'implements', 'stmts'];
     }
 
@@ -63,8 +54,7 @@ class Class_ extends ClassLike
      *
      * @return bool
      */
-    public function isAbstract() : bool
-    {
+    public function isAbstract() : bool {
         return (bool) ($this->flags & self::MODIFIER_ABSTRACT);
     }
 
@@ -73,8 +63,7 @@ class Class_ extends ClassLike
      *
      * @return bool
      */
-    public function isFinal() : bool
-    {
+    public function isFinal() : bool {
         return (bool) ($this->flags & self::MODIFIER_FINAL);
     }
 
@@ -83,16 +72,14 @@ class Class_ extends ClassLike
      *
      * @return bool
      */
-    public function isAnonymous() : bool
-    {
+    public function isAnonymous() : bool {
         return null === $this->name;
     }
 
     /**
      * @internal
      */
-    public static function verifyModifier($a, $b)
-    {
+    public static function verifyModifier($a, $b) {
         if ($a & self::VISIBILITY_MODIFIER_MASK && $b & self::VISIBILITY_MODIFIER_MASK) {
             throw new Error('Multiple access type modifiers are not allowed');
         }
@@ -114,8 +101,7 @@ class Class_ extends ClassLike
         }
     }
 
-    public function getType() : string
-    {
+    public function getType() : string {
         return 'Stmt_Class';
     }
 }

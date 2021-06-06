@@ -23,11 +23,9 @@ final class AttributeEmulator extends TokenEmulator
         $line = 1;
         for ($i = 0, $c = count($tokens); $i < $c; ++$i) {
             if ($tokens[$i] === '#' && isset($tokens[$i + 1]) && $tokens[$i + 1] === '[') {
-                array_splice(
-                    $tokens, $i, 2, [
+                array_splice($tokens, $i, 2, [
                     [\T_ATTRIBUTE, '#[', $line]
-                    ]
-                );
+                ]);
                 $c--;
                 continue;
             }
@@ -45,8 +43,7 @@ final class AttributeEmulator extends TokenEmulator
         return $tokens;
     }
 
-    public function preprocessCode(string $code, array &$patches): string
-    {
+    public function preprocessCode(string $code, array &$patches): string {
         $pos = 0;
         while (false !== $pos = strpos($code, '#[', $pos)) {
             // Replace #[ with %[

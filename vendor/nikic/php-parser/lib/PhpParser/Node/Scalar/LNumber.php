@@ -13,9 +13,7 @@ class LNumber extends Scalar
     const KIND_DEC = 10;
     const KIND_HEX = 16;
 
-    /**
-     * @var int Number value 
-     */
+    /** @var int Number value */
     public $value;
 
     /**
@@ -24,14 +22,12 @@ class LNumber extends Scalar
      * @param int   $value      Value of the number
      * @param array $attributes Additional attributes
      */
-    public function __construct(int $value, array $attributes = [])
-    {
+    public function __construct(int $value, array $attributes = []) {
         $this->attributes = $attributes;
         $this->value = $value;
     }
 
-    public function getSubNodeNames() : array
-    {
+    public function getSubNodeNames() : array {
         return ['value'];
     }
 
@@ -44,8 +40,7 @@ class LNumber extends Scalar
      *
      * @return LNumber The constructed LNumber, including kind attribute
      */
-    public static function fromString(string $str, array $attributes = [], bool $allowInvalidOctal = false) : LNumber
-    {
+    public static function fromString(string $str, array $attributes = [], bool $allowInvalidOctal = false) : LNumber {
         $str = str_replace('_', '', $str);
 
         if ('0' !== $str[0] || '0' === $str) {
@@ -72,8 +67,7 @@ class LNumber extends Scalar
         return new LNumber(intval($str, 8), $attributes);
     }
     
-    public function getType() : string
-    {
+    public function getType() : string {
         return 'Scalar_LNumber';
     }
 }

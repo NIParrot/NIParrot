@@ -7,9 +7,7 @@ use PhpParser\Node\Name;
 
 class ConstFetch extends Expr
 {
-    /**
-     * @var Name Constant name 
-     */
+    /** @var Name Constant name */
     public $name;
 
     /**
@@ -18,19 +16,16 @@ class ConstFetch extends Expr
      * @param Name  $name       Constant name
      * @param array $attributes Additional attributes
      */
-    public function __construct(Name $name, array $attributes = [])
-    {
+    public function __construct(Name $name, array $attributes = []) {
         $this->attributes = $attributes;
         $this->name = $name;
     }
 
-    public function getSubNodeNames() : array
-    {
+    public function getSubNodeNames() : array {
         return ['name'];
     }
     
-    public function getType() : string
-    {
+    public function getType() : string {
         return 'Expr_ConstFetch';
     }
 }

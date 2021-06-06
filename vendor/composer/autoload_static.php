@@ -10,11 +10,14 @@ class ComposerStaticInit634355e07e9ea7af11613faefce5fb79
         'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
         'ad155f8f1cf0d418fe49e248db8c661b' => __DIR__ . '/..' . '/react/promise/src/functions_include.php',
         '972fda704d680a3a53c68e34e193cb22' => __DIR__ . '/..' . '/react/promise-timer/src/functions_include.php',
-        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
+        '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
+        '65fec9ebcfbb3cbb4fd0d519687aea01' => __DIR__ . '/..' . '/danielstjules/stringy/src/Create.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
+        '72579e7bd17821bb1321b87411366eae' => __DIR__ . '/..' . '/illuminate/support/helpers.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -34,8 +37,11 @@ class ComposerStaticInit634355e07e9ea7af11613faefce5fb79
         array (
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Polyfill\\Ctype\\' => 23,
+            'Symfony\\Contracts\\Translation\\' => 30,
+            'Symfony\\Component\\Translation\\' => 30,
             'Symfony\\Component\\Routing\\' => 26,
             'Symfony\\Component\\HttpFoundation\\' => 33,
+            'Stringy\\' => 8,
         ),
         'R' => 
         array (
@@ -58,6 +64,13 @@ class ComposerStaticInit634355e07e9ea7af11613faefce5fb79
             'PayMob\\' => 7,
             'PHPMailer\\PHPMailer\\' => 20,
         ),
+        'I' => 
+        array (
+            'Illuminate\\Support\\' => 19,
+            'Illuminate\\Database\\' => 20,
+            'Illuminate\\Contracts\\' => 21,
+            'Illuminate\\Container\\' => 21,
+        ),
         'G' => 
         array (
             'GuzzleHttp\\Psr7\\' => 16,
@@ -70,6 +83,8 @@ class ComposerStaticInit634355e07e9ea7af11613faefce5fb79
         'D' => 
         array (
             'Doctrine\\Instantiator\\' => 22,
+            'Doctrine\\Inflector\\' => 19,
+            'Doctrine\\Common\\Inflector\\' => 26,
             'Delight\\FileUpload\\' => 19,
             'DeepCopy\\' => 9,
         ),
@@ -102,6 +117,14 @@ class ComposerStaticInit634355e07e9ea7af11613faefce5fb79
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
         ),
+        'Symfony\\Contracts\\Translation\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/translation-contracts',
+        ),
+        'Symfony\\Component\\Translation\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/translation',
+        ),
         'Symfony\\Component\\Routing\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/routing',
@@ -109,6 +132,10 @@ class ComposerStaticInit634355e07e9ea7af11613faefce5fb79
         'Symfony\\Component\\HttpFoundation\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/http-foundation',
+        ),
+        'Stringy\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/danielstjules/stringy/src',
         ),
         'React\\Stream\\' => 
         array (
@@ -170,6 +197,22 @@ class ComposerStaticInit634355e07e9ea7af11613faefce5fb79
         array (
             0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
+        'Illuminate\\Support\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/illuminate/support',
+        ),
+        'Illuminate\\Database\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/illuminate/database',
+        ),
+        'Illuminate\\Contracts\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/illuminate/contracts',
+        ),
+        'Illuminate\\Container\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/illuminate/container',
+        ),
         'GuzzleHttp\\Psr7\\' => 
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
@@ -186,6 +229,14 @@ class ComposerStaticInit634355e07e9ea7af11613faefce5fb79
         array (
             0 => __DIR__ . '/..' . '/doctrine/instantiator/src/Doctrine/Instantiator',
         ),
+        'Doctrine\\Inflector\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/inflector/lib/Doctrine/Inflector',
+        ),
+        'Doctrine\\Common\\Inflector\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/inflector/lib/Doctrine/Common/Inflector',
+        ),
         'Delight\\FileUpload\\' => 
         array (
             0 => __DIR__ . '/..' . '/delight-im/file-upload/src',
@@ -200,7 +251,18 @@ class ComposerStaticInit634355e07e9ea7af11613faefce5fb79
         ),
     );
 
+    public static $fallbackDirsPsr4 = array (
+        0 => __DIR__ . '/..' . '/nesbot/carbon/src',
+    );
+
     public static $prefixesPsr0 = array (
+        'U' => 
+        array (
+            'UpdateHelper\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/kylekatarnls/update-helper/src',
+            ),
+        ),
         'E' => 
         array (
             'Evenement' => 
@@ -839,14 +901,13 @@ class ComposerStaticInit634355e07e9ea7af11613faefce5fb79
 
     public static function getInitializer(ClassLoader $loader)
     {
-        return \Closure::bind(
-            function () use ($loader) {
-                $loader->prefixLengthsPsr4 = ComposerStaticInit634355e07e9ea7af11613faefce5fb79::$prefixLengthsPsr4;
-                $loader->prefixDirsPsr4 = ComposerStaticInit634355e07e9ea7af11613faefce5fb79::$prefixDirsPsr4;
-                $loader->prefixesPsr0 = ComposerStaticInit634355e07e9ea7af11613faefce5fb79::$prefixesPsr0;
-                $loader->classMap = ComposerStaticInit634355e07e9ea7af11613faefce5fb79::$classMap;
+        return \Closure::bind(function () use ($loader) {
+            $loader->prefixLengthsPsr4 = ComposerStaticInit634355e07e9ea7af11613faefce5fb79::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit634355e07e9ea7af11613faefce5fb79::$prefixDirsPsr4;
+            $loader->fallbackDirsPsr4 = ComposerStaticInit634355e07e9ea7af11613faefce5fb79::$fallbackDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit634355e07e9ea7af11613faefce5fb79::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit634355e07e9ea7af11613faefce5fb79::$classMap;
 
-            }, null, ClassLoader::class
-        );
+        }, null, ClassLoader::class);
     }
 }

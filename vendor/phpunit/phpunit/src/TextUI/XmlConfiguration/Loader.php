@@ -226,47 +226,47 @@ final class Loader
             $target = $this->toAbsolutePath($filename, $target);
 
             switch ($type) {
-            case 'plain':
-                $text = new Text(
-                    new File($target)
-                );
+                case 'plain':
+                    $text = new Text(
+                        new File($target)
+                    );
 
-                break;
+                    break;
 
-            case 'junit':
-                $junit = new Junit(
-                    new File($target)
-                );
+                case 'junit':
+                    $junit = new Junit(
+                        new File($target)
+                    );
 
-                break;
+                    break;
 
-            case 'teamcity':
-                $teamCity = new TeamCity(
-                    new File($target)
-                );
+                case 'teamcity':
+                    $teamCity = new TeamCity(
+                        new File($target)
+                    );
 
-                break;
+                    break;
 
-            case 'testdox-html':
-                $testDoxHtml = new TestDoxHtml(
-                    new File($target)
-                );
+                case 'testdox-html':
+                    $testDoxHtml = new TestDoxHtml(
+                        new File($target)
+                    );
 
-                break;
+                    break;
 
-            case 'testdox-text':
-                $testDoxText = new TestDoxText(
-                    new File($target)
-                );
+                case 'testdox-text':
+                    $testDoxText = new TestDoxText(
+                        new File($target)
+                    );
 
-                break;
+                    break;
 
-            case 'testdox-xml':
-                $testDoxXml = new TestDoxXml(
-                    new File($target)
-                );
+                case 'testdox-xml':
+                    $testDoxXml = new TestDoxXml(
+                        new File($target)
+                    );
 
-                break;
+                    break;
             }
         }
 
@@ -295,9 +295,7 @@ final class Loader
 
     private function getElementConfigurationParameters(string $filename, DOMElement $element): Extension
     {
-        /**
- * @psalm-var class-string $class 
-*/
+        /** @psalm-var class-string $class */
         $class     = (string) $element->getAttribute('class');
         $file      = '';
         $arguments = $this->getConfigurationArguments($filename, $element->childNodes);
@@ -329,9 +327,8 @@ final class Loader
         //  - C:\windows
         //  - C:/windows
         //  - c:/windows
-        if (defined('PHP_WINDOWS_VERSION_BUILD') 
-            && ($path[0] === '\\' || (strlen($path) >= 3 && preg_match('#^[A-Z]\:[/\\\]#i', substr($path, 0, 3))))
-        ) {
+        if (defined('PHP_WINDOWS_VERSION_BUILD') &&
+            ($path[0] === '\\' || (strlen($path) >= 3 && preg_match('#^[A-Z]\:[/\\\]#i', substr($path, 0, 3))))) {
             return $path;
         }
 
@@ -623,59 +620,59 @@ final class Loader
             $target = $this->toAbsolutePath($filename, $target);
 
             switch ($type) {
-            case 'coverage-clover':
-                $clover = new Clover(
-                    new File($target)
-                );
+                case 'coverage-clover':
+                    $clover = new Clover(
+                        new File($target)
+                    );
 
-                break;
+                    break;
 
-            case 'coverage-cobertura':
-                $cobertura = new Cobertura(
-                    new File($target)
-                );
+                case 'coverage-cobertura':
+                    $cobertura = new Cobertura(
+                        new File($target)
+                    );
 
-                break;
+                    break;
 
-            case 'coverage-crap4j':
-                $crap4j = new Crap4j(
-                    new File($target),
-                    $this->getIntegerAttribute($log, 'threshold', 30)
-                );
+                case 'coverage-crap4j':
+                    $crap4j = new Crap4j(
+                        new File($target),
+                        $this->getIntegerAttribute($log, 'threshold', 30)
+                    );
 
-                break;
+                    break;
 
-            case 'coverage-html':
-                $html = new CodeCoverageHtml(
-                    new Directory($target),
-                    $this->getIntegerAttribute($log, 'lowUpperBound', 50),
-                    $this->getIntegerAttribute($log, 'highLowerBound', 90)
-                );
+                case 'coverage-html':
+                    $html = new CodeCoverageHtml(
+                        new Directory($target),
+                        $this->getIntegerAttribute($log, 'lowUpperBound', 50),
+                        $this->getIntegerAttribute($log, 'highLowerBound', 90)
+                    );
 
-                break;
+                    break;
 
-            case 'coverage-php':
-                $php = new CodeCoveragePhp(
-                    new File($target)
-                );
+                case 'coverage-php':
+                    $php = new CodeCoveragePhp(
+                        new File($target)
+                    );
 
-                break;
+                    break;
 
-            case 'coverage-text':
-                $text = new CodeCoverageText(
-                    new File($target),
-                    $this->getBooleanAttribute($log, 'showUncoveredFiles', false),
-                    $this->getBooleanAttribute($log, 'showOnlySummary', false)
-                );
+                case 'coverage-text':
+                    $text = new CodeCoverageText(
+                        new File($target),
+                        $this->getBooleanAttribute($log, 'showUncoveredFiles', false),
+                        $this->getBooleanAttribute($log, 'showOnlySummary', false)
+                    );
 
-                break;
+                    break;
 
-            case 'coverage-xml':
-                $xml = new CodeCoverageXml(
-                    new Directory($target)
-                );
+                case 'coverage-xml':
+                    $xml = new CodeCoverageXml(
+                        new Directory($target)
+                    );
 
-                break;
+                    break;
             }
         }
 
@@ -942,47 +939,47 @@ final class Loader
         if ($document->documentElement->hasAttribute('executionOrder')) {
             foreach (explode(',', $document->documentElement->getAttribute('executionOrder')) as $order) {
                 switch ($order) {
-                case 'default':
-                    $executionOrder      = TestSuiteSorter::ORDER_DEFAULT;
-                    $defectsFirst        = false;
-                    $resolveDependencies = true;
+                    case 'default':
+                        $executionOrder      = TestSuiteSorter::ORDER_DEFAULT;
+                        $defectsFirst        = false;
+                        $resolveDependencies = true;
 
-                    break;
+                        break;
 
-                case 'depends':
-                    $resolveDependencies = true;
+                    case 'depends':
+                        $resolveDependencies = true;
 
-                    break;
+                        break;
 
-                case 'no-depends':
-                    $resolveDependencies = false;
+                    case 'no-depends':
+                        $resolveDependencies = false;
 
-                    break;
+                        break;
 
-                case 'defects':
-                    $defectsFirst = true;
+                    case 'defects':
+                        $defectsFirst = true;
 
-                    break;
+                        break;
 
-                case 'duration':
-                    $executionOrder = TestSuiteSorter::ORDER_DURATION;
+                    case 'duration':
+                        $executionOrder = TestSuiteSorter::ORDER_DURATION;
 
-                    break;
+                        break;
 
-                case 'random':
-                    $executionOrder = TestSuiteSorter::ORDER_RANDOMIZED;
+                    case 'random':
+                        $executionOrder = TestSuiteSorter::ORDER_RANDOMIZED;
 
-                    break;
+                        break;
 
-                case 'reverse':
-                    $executionOrder = TestSuiteSorter::ORDER_REVERSED;
+                    case 'reverse':
+                        $executionOrder = TestSuiteSorter::ORDER_REVERSED;
 
-                    break;
+                        break;
 
-                case 'size':
-                    $executionOrder = TestSuiteSorter::ORDER_SIZE;
+                    case 'size':
+                        $executionOrder = TestSuiteSorter::ORDER_SIZE;
 
-                    break;
+                        break;
                 }
             }
         }
@@ -1224,9 +1221,7 @@ final class Loader
      */
     private function getTestSuiteElements(DOMXPath $xpath): array
     {
-        /**
- * @var DOMElement[] $elements 
-*/
+        /** @var DOMElement[] $elements */
         $elements = [];
 
         $testSuiteNodes = $xpath->query('testsuites/testsuite');

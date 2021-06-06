@@ -39,18 +39,13 @@ class NodeTraverser implements NodeTraverserInterface
      */
     const DONT_TRAVERSE_CURRENT_AND_CHILDREN = 4;
 
-    /**
-     * @var NodeVisitor[] Visitors 
-     */
+    /** @var NodeVisitor[] Visitors */
     protected $visitors = [];
 
-    /**
-     * @var bool Whether traversal should be stopped 
-     */
+    /** @var bool Whether traversal should be stopped */
     protected $stopTraversal;
 
-    public function __construct()
-    {
+    public function __construct() {
         // for BC
     }
 
@@ -59,8 +54,7 @@ class NodeTraverser implements NodeTraverserInterface
      *
      * @param NodeVisitor $visitor Visitor to add
      */
-    public function addVisitor(NodeVisitor $visitor)
-    {
+    public function addVisitor(NodeVisitor $visitor) {
         $this->visitors[] = $visitor;
     }
 
@@ -69,8 +63,7 @@ class NodeTraverser implements NodeTraverserInterface
      *
      * @param NodeVisitor $visitor
      */
-    public function removeVisitor(NodeVisitor $visitor)
-    {
+    public function removeVisitor(NodeVisitor $visitor) {
         foreach ($this->visitors as $index => $storedVisitor) {
             if ($storedVisitor === $visitor) {
                 unset($this->visitors[$index]);
@@ -86,8 +79,7 @@ class NodeTraverser implements NodeTraverserInterface
      *
      * @return Node[] Traversed array of nodes
      */
-    public function traverse(array $nodes) : array
-    {
+    public function traverse(array $nodes) : array {
         $this->stopTraversal = false;
 
         foreach ($this->visitors as $visitor) {
@@ -114,8 +106,7 @@ class NodeTraverser implements NodeTraverserInterface
      *
      * @return Node Result of traversal (may be original node or new one)
      */
-    protected function traverseNode(Node $node) : Node
-    {
+    protected function traverseNode(Node $node) : Node {
         foreach ($node->getSubNodeNames() as $name) {
             $subNode =& $node->$name;
 
@@ -197,8 +188,7 @@ class NodeTraverser implements NodeTraverserInterface
      *
      * @return array Result of traversal (may be original array or changed one)
      */
-    protected function traverseArray(array $nodes) : array
-    {
+    protected function traverseArray(array $nodes) : array {
         $doNodes = [];
 
         foreach ($nodes as $i => &$node) {
@@ -282,8 +272,7 @@ class NodeTraverser implements NodeTraverserInterface
         return $nodes;
     }
 
-    private function ensureReplacementReasonable($old, $new)
-    {
+    private function ensureReplacementReasonable($old, $new) {
         if ($old instanceof Node\Stmt && $new instanceof Node\Expr) {
             throw new \LogicException(
                 "Trying to replace statement ({$old->getType()}) " .

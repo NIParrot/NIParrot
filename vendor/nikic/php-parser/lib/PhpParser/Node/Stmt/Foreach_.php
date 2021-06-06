@@ -6,25 +6,15 @@ use PhpParser\Node;
 
 class Foreach_ extends Node\Stmt
 {
-    /**
-     * @var Node\Expr Expression to iterate 
-     */
+    /** @var Node\Expr Expression to iterate */
     public $expr;
-    /**
-     * @var null|Node\Expr Variable to assign key to 
-     */
+    /** @var null|Node\Expr Variable to assign key to */
     public $keyVar;
-    /**
-     * @var bool Whether to assign value by reference 
-     */
+    /** @var bool Whether to assign value by reference */
     public $byRef;
-    /**
-     * @var Node\Expr Variable to assign value to 
-     */
+    /** @var Node\Expr Variable to assign value to */
     public $valueVar;
-    /**
-     * @var Node\Stmt[] Statements 
-     */
+    /** @var Node\Stmt[] Statements */
     public $stmts;
 
     /**
@@ -38,8 +28,7 @@ class Foreach_ extends Node\Stmt
      *                              'stmts'  => array(): Statements
      * @param array     $attributes Additional attributes
      */
-    public function __construct(Node\Expr $expr, Node\Expr $valueVar, array $subNodes = [], array $attributes = [])
-    {
+    public function __construct(Node\Expr $expr, Node\Expr $valueVar, array $subNodes = [], array $attributes = []) {
         $this->attributes = $attributes;
         $this->expr = $expr;
         $this->keyVar = $subNodes['keyVar'] ?? null;
@@ -48,13 +37,11 @@ class Foreach_ extends Node\Stmt
         $this->stmts = $subNodes['stmts'] ?? [];
     }
 
-    public function getSubNodeNames() : array
-    {
+    public function getSubNodeNames() : array {
         return ['expr', 'keyVar', 'byRef', 'valueVar', 'stmts'];
     }
     
-    public function getType() : string
-    {
+    public function getType() : string {
         return 'Stmt_Foreach';
     }
 }

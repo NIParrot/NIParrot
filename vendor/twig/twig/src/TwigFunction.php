@@ -35,8 +35,7 @@ final class TwigFunction
     {
         $this->name = $name;
         $this->callable = $callable;
-        $this->options = array_merge(
-            [
+        $this->options = array_merge([
             'needs_environment' => false,
             'needs_context' => false,
             'is_variadic' => false,
@@ -45,8 +44,7 @@ final class TwigFunction
             'node_class' => FunctionExpression::class,
             'deprecated' => false,
             'alternative' => null,
-            ], $options
-        );
+        ], $options);
     }
 
     public function getName(): string

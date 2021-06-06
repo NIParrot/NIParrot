@@ -88,9 +88,7 @@ abstract class BaseTestRunner
     public function getTest(string $suiteClassFile, $suffixes = ''): ?TestSuite
     {
         if (is_dir($suiteClassFile)) {
-            /**
- * @var string[] $files 
-*/
+            /** @var string[] $files */
             $files = (new FileIteratorFacade)->getFilesAsArray(
                 $suiteClassFile,
                 $suffixes

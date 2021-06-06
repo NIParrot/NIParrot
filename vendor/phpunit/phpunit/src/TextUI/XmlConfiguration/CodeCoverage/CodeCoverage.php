@@ -23,7 +23,7 @@ use PHPUnit\TextUI\XmlConfiguration\Exception;
 use PHPUnit\TextUI\XmlConfiguration\FileCollection;
 
 /**
- * @internal        This class is not covered by the backward compatibility promise for PHPUnit
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  * @psalm-immutable
  */
 final class CodeCoverage

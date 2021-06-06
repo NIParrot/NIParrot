@@ -10,13 +10,9 @@ class Namespace_ extends Node\Stmt
     const KIND_SEMICOLON = 1;
     const KIND_BRACED = 2;
 
-    /**
-     * @var null|Node\Name Name 
-     */
+    /** @var null|Node\Name Name */
     public $name;
-    /**
-     * @var Node\Stmt[] Statements 
-     */
+    /** @var Node\Stmt[] Statements */
     public $stmts;
 
     /**
@@ -26,20 +22,17 @@ class Namespace_ extends Node\Stmt
      * @param null|Node\Stmt[] $stmts      Statements
      * @param array            $attributes Additional attributes
      */
-    public function __construct(Node\Name $name = null, $stmts = [], array $attributes = [])
-    {
+    public function __construct(Node\Name $name = null, $stmts = [], array $attributes = []) {
         $this->attributes = $attributes;
         $this->name = $name;
         $this->stmts = $stmts;
     }
 
-    public function getSubNodeNames() : array
-    {
+    public function getSubNodeNames() : array {
         return ['name', 'stmts'];
     }
     
-    public function getType() : string
-    {
+    public function getType() : string {
         return 'Stmt_Namespace';
     }
 }

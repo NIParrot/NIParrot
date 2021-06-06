@@ -132,17 +132,13 @@ final class TestBuilder
         return $test;
     }
 
-    /**
-     * @psalm-param class-string $className 
-     */
+    /** @psalm-param class-string $className */
     private function buildTestWithoutData(string $className)
     {
         return new $className;
     }
 
-    /**
-     * @psalm-param class-string $className 
-     */
+    /** @psalm-param class-string $className */
     private function buildDataProviderTestSuite(
         string $methodName,
         string $className,
@@ -158,10 +154,9 @@ final class TestBuilder
 
         $groups = TestUtil::getGroups($className, $methodName);
 
-        if ($data instanceof ErrorTestCase 
-            || $data instanceof SkippedTestCase 
-            || $data instanceof IncompleteTestCase
-        ) {
+        if ($data instanceof ErrorTestCase ||
+            $data instanceof SkippedTestCase ||
+            $data instanceof IncompleteTestCase) {
             $dataProviderTestSuite->addTest($data, $groups);
         } else {
             foreach ($data as $_dataName => $_data) {

@@ -6,7 +6,6 @@ $DeveloperCode = [
     ...call_app_resources(ROOT . SEP . 'routes'),
     ...call_app_resources(ROOT . SEP . 'api' . SEP . 'routes'),
     ...call_app_resources(ROOT . SEP . 'app' . SEP . 'Model'),
-    ...call_app_resources(ROOT . SEP . 'app' . SEP . 'Paris'),
     ...call_app_resources(ROOT . SEP . 'includes')
 ];
 

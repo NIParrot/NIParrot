@@ -17,25 +17,15 @@ use PhpParser\Node\Expr;
  */
 class PrintableNewAnonClassNode extends Expr
 {
-    /**
-     * @var Node\AttributeGroup[] PHP attribute groups 
-     */
+    /** @var Node\AttributeGroup[] PHP attribute groups */
     public $attrGroups;
-    /**
-     * @var Node\Arg[] Arguments 
-     */
+    /** @var Node\Arg[] Arguments */
     public $args;
-    /**
-     * @var null|Node\Name Name of extended class 
-     */
+    /** @var null|Node\Name Name of extended class */
     public $extends;
-    /**
-     * @var Node\Name[] Names of implemented interfaces 
-     */
+    /** @var Node\Name[] Names of implemented interfaces */
     public $implements;
-    /**
-     * @var Node\Stmt[] Statements 
-     */
+    /** @var Node\Stmt[] Statements */
     public $stmts;
 
     public function __construct(
@@ -50,8 +40,7 @@ class PrintableNewAnonClassNode extends Expr
         $this->stmts = $stmts;
     }
 
-    public static function fromNewNode(Expr\New_ $newNode)
-    {
+    public static function fromNewNode(Expr\New_ $newNode) {
         $class = $newNode->class;
         assert($class instanceof Node\Stmt\Class_);
         // We don't assert that $class->name is null here, to allow consumers to assign unique names
@@ -62,13 +51,11 @@ class PrintableNewAnonClassNode extends Expr
         );
     }
 
-    public function getType() : string
-    {
+    public function getType() : string {
         return 'Expr_PrintableNewAnonClass';
     }
 
-    public function getSubNodeNames() : array
-    {
+    public function getSubNodeNames() : array {
         return ['attrGroups', 'args', 'extends', 'implements', 'stmts'];
     }
 }

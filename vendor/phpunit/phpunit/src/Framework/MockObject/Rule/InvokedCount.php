@@ -79,21 +79,21 @@ final class InvokedCount extends InvocationOrder
             $message = $invocation->toString() . ' ';
 
             switch ($this->expectedCount) {
-            case 0:
-                $message .= 'was not expected to be called.';
+                case 0:
+                    $message .= 'was not expected to be called.';
 
-                break;
+                    break;
 
-            case 1:
-                $message .= 'was not expected to be called more than once.';
+                case 1:
+                    $message .= 'was not expected to be called more than once.';
 
-                break;
+                    break;
 
-            default:
-                $message .= sprintf(
-                    'was not expected to be called more than %d times.',
-                    $this->expectedCount
-                );
+                default:
+                    $message .= sprintf(
+                        'was not expected to be called more than %d times.',
+                        $this->expectedCount
+                    );
             }
 
             throw new ExpectationFailedException($message);

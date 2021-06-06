@@ -39,8 +39,7 @@ class Comment implements \JsonSerializable
      *
      * @return string The comment text (including comment delimiters like /*)
      */
-    public function getText() : string
-    {
+    public function getText() : string {
         return $this->text;
     }
 
@@ -49,8 +48,7 @@ class Comment implements \JsonSerializable
      *
      * @return int Line number (or -1 if not available)
      */
-    public function getStartLine() : int
-    {
+    public function getStartLine() : int {
         return $this->startLine;
     }
 
@@ -59,8 +57,7 @@ class Comment implements \JsonSerializable
      *
      * @return int File offset (or -1 if not available)
      */
-    public function getStartFilePos() : int
-    {
+    public function getStartFilePos() : int {
         return $this->startFilePos;
     }
 
@@ -69,8 +66,7 @@ class Comment implements \JsonSerializable
      *
      * @return int Token offset (or -1 if not available)
      */
-    public function getStartTokenPos() : int
-    {
+    public function getStartTokenPos() : int {
         return $this->startTokenPos;
     }
 
@@ -79,8 +75,7 @@ class Comment implements \JsonSerializable
      *
      * @return int Line number (or -1 if not available)
      */
-    public function getEndLine() : int
-    {
+    public function getEndLine() : int {
         return $this->endLine;
     }
 
@@ -89,8 +84,7 @@ class Comment implements \JsonSerializable
      *
      * @return int File offset (or -1 if not available)
      */
-    public function getEndFilePos() : int
-    {
+    public function getEndFilePos() : int {
         return $this->endFilePos;
     }
 
@@ -99,8 +93,7 @@ class Comment implements \JsonSerializable
      *
      * @return int Token offset (or -1 if not available)
      */
-    public function getEndTokenPos() : int
-    {
+    public function getEndTokenPos() : int {
         return $this->endTokenPos;
     }
 
@@ -111,8 +104,7 @@ class Comment implements \JsonSerializable
      *
      * @return int Line number
      */
-    public function getLine() : int
-    {
+    public function getLine() : int {
         return $this->startLine;
     }
 
@@ -123,8 +115,7 @@ class Comment implements \JsonSerializable
      *
      * @return int File offset
      */
-    public function getFilePos() : int
-    {
+    public function getFilePos() : int {
         return $this->startFilePos;
     }
 
@@ -135,8 +126,7 @@ class Comment implements \JsonSerializable
      *
      * @return int Token offset
      */
-    public function getTokenPos() : int
-    {
+    public function getTokenPos() : int {
         return $this->startTokenPos;
     }
 
@@ -145,8 +135,7 @@ class Comment implements \JsonSerializable
      *
      * @return string The comment text (including comment delimiters like /*)
      */
-    public function __toString() : string
-    {
+    public function __toString() : string {
         return $this->text;
     }
 
@@ -160,8 +149,7 @@ class Comment implements \JsonSerializable
      *
      * @return mixed|string
      */
-    public function getReformattedText()
-    {
+    public function getReformattedText() {
         $text = trim($this->text);
         $newlinePos = strpos($text, "\n");
         if (false === $newlinePos) {
@@ -213,11 +201,10 @@ class Comment implements \JsonSerializable
      *
      * If there is a line with no prefix whitespace, 0 is a valid return value.
      *
-     * @param  string $str String to check
+     * @param string $str String to check
      * @return int Length in characters. Tabs count as single characters.
      */
-    private function getShortestWhitespacePrefixLen(string $str) : int
-    {
+    private function getShortestWhitespacePrefixLen(string $str) : int {
         $lines = explode("\n", $str);
         $shortestPrefixLen = \INF;
         foreach ($lines as $line) {
@@ -234,8 +221,7 @@ class Comment implements \JsonSerializable
      * @return       array
      * @psalm-return array{nodeType:string, text:mixed, line:mixed, filePos:mixed}
      */
-    public function jsonSerialize() : array
-    {
+    public function jsonSerialize() : array {
         // Technically not a node, but we make it look like one anyway
         $type = $this instanceof Comment\Doc ? 'Comment_Doc' : 'Comment';
         return [

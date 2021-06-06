@@ -6,9 +6,7 @@ use PhpParser\Node\Stmt;
 
 class InlineHTML extends Stmt
 {
-    /**
-     * @var string String 
-     */
+    /** @var string String */
     public $value;
 
     /**
@@ -17,19 +15,16 @@ class InlineHTML extends Stmt
      * @param string $value      String
      * @param array  $attributes Additional attributes
      */
-    public function __construct(string $value, array $attributes = [])
-    {
+    public function __construct(string $value, array $attributes = []) {
         $this->attributes = $attributes;
         $this->value = $value;
     }
 
-    public function getSubNodeNames() : array
-    {
+    public function getSubNodeNames() : array {
         return ['value'];
     }
     
-    public function getType() : string
-    {
+    public function getType() : string {
         return 'Stmt_InlineHTML';
     }
 }

@@ -190,9 +190,7 @@ final class TestSuiteSorter
         }
 
         if ($resolveDependencies && !($suite instanceof DataProviderTestSuite)) {
-            /**
- * @var TestCase[] $tests 
-*/
+            /** @var TestCase[] $tests */
             $tests = $suite->tests();
 
             $suite->setTests($this->resolveDependencies($tests));

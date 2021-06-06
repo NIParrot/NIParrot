@@ -6,9 +6,7 @@ use PhpParser\Node\Expr;
 
 abstract class Cast extends Expr
 {
-    /**
-     * @var Expr Expression 
-     */
+    /** @var Expr Expression */
     public $expr;
 
     /**
@@ -17,14 +15,12 @@ abstract class Cast extends Expr
      * @param Expr  $expr       Expression
      * @param array $attributes Additional attributes
      */
-    public function __construct(Expr $expr, array $attributes = [])
-    {
+    public function __construct(Expr $expr, array $attributes = []) {
         $this->attributes = $attributes;
         $this->expr = $expr;
     }
 
-    public function getSubNodeNames() : array
-    {
+    public function getSubNodeNames() : array {
         return ['expr'];
     }
 }

@@ -10,30 +10,25 @@ class Array_ extends Expr
     const KIND_LONG = 1;  // array() syntax
     const KIND_SHORT = 2; // [] syntax
 
-    /**
-     * @var (ArrayItem|null)[] Items 
-     */
+    /** @var (ArrayItem|null)[] Items */
     public $items;
 
     /**
      * Constructs an array node.
      *
      * @param (ArrayItem|null)[] $items      Items of the array
-     * @param array              $attributes Additional attributes
+     * @param array       $attributes Additional attributes
      */
-    public function __construct(array $items = [], array $attributes = [])
-    {
+    public function __construct(array $items = [], array $attributes = []) {
         $this->attributes = $attributes;
         $this->items = $items;
     }
 
-    public function getSubNodeNames() : array
-    {
+    public function getSubNodeNames() : array {
         return ['items'];
     }
     
-    public function getType() : string
-    {
+    public function getType() : string {
         return 'Expr_Array';
     }
 }

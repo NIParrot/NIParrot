@@ -6,17 +6,11 @@ use PhpParser\Node;
 
 class ClassConst extends Node\Stmt
 {
-    /**
-     * @var int Modifiers 
-     */
+    /** @var int Modifiers */
     public $flags;
-    /**
-     * @var Node\Const_[] Constant declarations 
-     */
+    /** @var Node\Const_[] Constant declarations */
     public $consts;
-    /**
-     * @var Node\AttributeGroup[] 
-     */
+    /** @var Node\AttributeGroup[] */
     public $attrGroups;
 
     /**
@@ -39,8 +33,7 @@ class ClassConst extends Node\Stmt
         $this->attrGroups = $attrGroups;
     }
 
-    public function getSubNodeNames() : array
-    {
+    public function getSubNodeNames() : array {
         return ['attrGroups', 'flags', 'consts'];
     }
 
@@ -49,8 +42,7 @@ class ClassConst extends Node\Stmt
      *
      * @return bool
      */
-    public function isPublic() : bool
-    {
+    public function isPublic() : bool {
         return ($this->flags & Class_::MODIFIER_PUBLIC) !== 0
             || ($this->flags & Class_::VISIBILITY_MODIFIER_MASK) === 0;
     }
@@ -60,8 +52,7 @@ class ClassConst extends Node\Stmt
      *
      * @return bool
      */
-    public function isProtected() : bool
-    {
+    public function isProtected() : bool {
         return (bool) ($this->flags & Class_::MODIFIER_PROTECTED);
     }
 
@@ -70,13 +61,11 @@ class ClassConst extends Node\Stmt
      *
      * @return bool
      */
-    public function isPrivate() : bool
-    {
+    public function isPrivate() : bool {
         return (bool) ($this->flags & Class_::MODIFIER_PRIVATE);
     }
 
-    public function getType() : string
-    {
+    public function getType() : string {
         return 'Stmt_ClassConst';
     }
 }

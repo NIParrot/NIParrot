@@ -24,11 +24,9 @@ final class CoaleseEqualTokenEmulator extends TokenEmulator
         for ($i = 0, $c = count($tokens); $i < $c; ++$i) {
             if (isset($tokens[$i + 1])) {
                 if ($tokens[$i][0] === T_COALESCE && $tokens[$i + 1] === '=') {
-                    array_splice(
-                        $tokens, $i, 2, [
+                    array_splice($tokens, $i, 2, [
                         [\T_COALESCE_EQUAL, '??=', $line]
-                        ]
-                    );
+                    ]);
                     $c--;
                     continue;
                 }

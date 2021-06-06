@@ -690,32 +690,31 @@ final class TestResult implements Countable
         try {
             $invoker = new Invoker;
 
-            if (!$test instanceof ErrorTestCase 
-                && !$test instanceof WarningTestCase 
-                && $this->enforceTimeLimit 
-                && ($this->defaultTimeLimit || $test->getSize() != \PHPUnit\Util\Test::UNKNOWN) 
-                && $invoker->canInvokeWithTimeout()
-            ) {
+            if (!$test instanceof ErrorTestCase &&
+                !$test instanceof WarningTestCase &&
+                $this->enforceTimeLimit &&
+                ($this->defaultTimeLimit || $test->getSize() != \PHPUnit\Util\Test::UNKNOWN) &&
+                $invoker->canInvokeWithTimeout()) {
                 switch ($test->getSize()) {
-                case \PHPUnit\Util\Test::SMALL:
-                    $_timeout = $this->timeoutForSmallTests;
+                    case \PHPUnit\Util\Test::SMALL:
+                        $_timeout = $this->timeoutForSmallTests;
 
-                    break;
+                        break;
 
-                case \PHPUnit\Util\Test::MEDIUM:
-                    $_timeout = $this->timeoutForMediumTests;
+                    case \PHPUnit\Util\Test::MEDIUM:
+                        $_timeout = $this->timeoutForMediumTests;
 
-                    break;
+                        break;
 
-                case \PHPUnit\Util\Test::LARGE:
-                    $_timeout = $this->timeoutForLargeTests;
+                    case \PHPUnit\Util\Test::LARGE:
+                        $_timeout = $this->timeoutForLargeTests;
 
-                    break;
+                        break;
 
-                case \PHPUnit\Util\Test::UNKNOWN:
-                    $_timeout = $this->defaultTimeLimit;
+                    case \PHPUnit\Util\Test::UNKNOWN:
+                        $_timeout = $this->defaultTimeLimit;
 
-                    break;
+                        break;
                 }
 
                 $invoker->invoke([$test, 'runBare'], [], $_timeout);
@@ -772,9 +771,7 @@ final class TestResult implements Countable
         if ($monitorFunctions) {
             $excludeList = new ExcludeList;
 
-            /**
- * @noinspection ForgottenDebugOutputInspection 
-*/
+            /** @noinspection ForgottenDebugOutputInspection */
             $functions = xdebug_get_monitored_functions();
 
             /* @noinspection ForgottenDebugOutputInspection */
@@ -798,9 +795,8 @@ final class TestResult implements Countable
             }
         }
 
-        if ($this->beStrictAboutTestsThatDoNotTestAnything 
-            && $test->getNumAssertions() === 0
-        ) {
+        if ($this->beStrictAboutTestsThatDoNotTestAnything &&
+            $test->getNumAssertions() === 0) {
             $risky = true;
         }
 
@@ -810,11 +806,10 @@ final class TestResult implements Countable
                 $test->getName(false)
             );
 
-            if (!isset($annotations['class']['covers']) 
-                && !isset($annotations['method']['covers']) 
-                && !isset($annotations['class']['coversNothing']) 
-                && !isset($annotations['method']['coversNothing'])
-            ) {
+            if (!isset($annotations['class']['covers']) &&
+                !isset($annotations['method']['covers']) &&
+                !isset($annotations['class']['coversNothing']) &&
+                !isset($annotations['method']['coversNothing'])) {
                 $this->addFailure(
                     $test,
                     new MissingCoversAnnotationException(
@@ -890,10 +885,9 @@ final class TestResult implements Countable
                 $unintentionallyCoveredCodeError,
                 $time
             );
-        } elseif ($this->beStrictAboutTestsThatDoNotTestAnything 
-            && !$test->doesNotPerformAssertions() 
-            && $test->getNumAssertions() === 0
-        ) {
+        } elseif ($this->beStrictAboutTestsThatDoNotTestAnything &&
+            !$test->doesNotPerformAssertions() &&
+            $test->getNumAssertions() === 0) {
             try {
                 $reflected = new ReflectionClass($test);
                 // @codeCoverageIgnoreStart
@@ -933,10 +927,9 @@ final class TestResult implements Countable
                 ),
                 $time
             );
-        } elseif ($this->beStrictAboutTestsThatDoNotTestAnything 
-            && $test->doesNotPerformAssertions() 
-            && $test->getNumAssertions() > 0
-        ) {
+        } elseif ($this->beStrictAboutTestsThatDoNotTestAnything &&
+            $test->doesNotPerformAssertions() &&
+            $test->getNumAssertions() > 0) {
             $this->addFailure(
                 $test,
                 new RiskyTestError(

@@ -19,9 +19,7 @@ interface InvocationStubber
 {
     public function will(Stub $stub): Identity;
 
-    /**
-     * @return self 
-     */
+    /** @return self */
     public function willReturn($value, ...$nextValues)/*: self */;
 
     /**
@@ -52,9 +50,7 @@ interface InvocationStubber
      */
     public function willReturnCallback($callback)/*: self */;
 
-    /**
-     * @return self 
-     */
+    /** @return self */
     public function willReturnSelf()/*: self */;
 
     /**
@@ -64,8 +60,6 @@ interface InvocationStubber
      */
     public function willReturnOnConsecutiveCalls(...$values)/*: self */;
 
-    /**
-     * @return self 
-     */
+    /** @return self */
     public function willThrowException(Throwable $exception)/*: self */;
 }

@@ -111,201 +111,201 @@ class CLI_Plugin
             $FileType = $arr[0];
 
             switch ($FileType) {
-            case 'view':
-                if (!is_dir(VIEW . $arr[1])) {
-                    mkdir(VIEW . $arr[1], 0755);
-                }
-                if (count($arr) - 3  <= 0) {
-                    if (!file_exists(VIEW . $arr[1] . SEP . $arr[2])) {
-                        copy($file, VIEW . $arr[1] . SEP . $arr[2]);
+                case 'view':
+                    if (!is_dir(VIEW . $arr[1])) {
+                        mkdir(VIEW . $arr[1], 0755);
+                    }
+                    if (count($arr) - 3  <= 0) {
+                        if (!file_exists(VIEW . $arr[1] . SEP . $arr[2])) {
+                            copy($file, VIEW . $arr[1] . SEP . $arr[2]);
+                        } else {
+                            copy($file, VIEW . $arr[1] . SEP . time() . $arr[2]);
+                        }
                     } else {
-                        copy($file, VIEW . $arr[1] . SEP . time() . $arr[2]);
+                        $arr2 = $arr;
+                        $arr22 = $arr;
+                        array_shift($arr2);
+                        array_shift($arr22);
+                        array_pop($arr2);
+                        $newinnerpath = VIEW . implode(SEP, $arr2);
+                        $NewInnerFilePath = VIEW . implode(SEP, $arr22);
+                        if (!is_dir($newinnerpath)) {
+                            mkdir($newinnerpath);
+                        }
+                        if (!file_exists($NewInnerFilePath)) {
+                            $NewInnerFilePath_array = explode(SEP, $NewInnerFilePath);
+                            array_pop($NewInnerFilePath_array);
+                            $n2 = implode(SEP, $NewInnerFilePath_array);
+                            //copy($file, $NewInnerFilePath);
+                            copy($file, $n2);
+                        }
                     }
-                } else {
-                    $arr2 = $arr;
-                    $arr22 = $arr;
-                    array_shift($arr2);
-                    array_shift($arr22);
-                    array_pop($arr2);
-                    $newinnerpath = VIEW . implode(SEP, $arr2);
-                    $NewInnerFilePath = VIEW . implode(SEP, $arr22);
-                    if (!is_dir($newinnerpath)) {
-                        mkdir($newinnerpath);
-                    }
-                    if (!file_exists($NewInnerFilePath)) {
-                        $NewInnerFilePath_array = explode(SEP, $NewInnerFilePath);
-                        array_pop($NewInnerFilePath_array);
-                        $n2 = implode(SEP, $NewInnerFilePath_array);
-                        //copy($file, $NewInnerFilePath);
-                        copy($file, $n2);
-                    }
-                }
-                break;
+                    break;
 
-            case 'model':
-                if (!is_dir(MODEL . $arr[1])) {
-                    mkdir(MODEL . $arr[1], 0755);
-                }
-                if (count($arr) - 3  <= 0) {
-                    if (!file_exists(MODEL . $arr[1] . SEP . $arr[2])) {
-                        copy($file, MODEL . $arr[1] . SEP . $arr[2]);
+                case 'model':
+                    if (!is_dir(ORMMODEL . $arr[1])) {
+                        mkdir(ORMMODEL . $arr[1], 0755);
+                    }
+                    if (count($arr) - 3  <= 0) {
+                        if (!file_exists(ORMMODEL . $arr[1] . SEP . $arr[2])) {
+                            copy($file, ORMMODEL . $arr[1] . SEP . $arr[2]);
+                        } else {
+                            copy($file, ORMMODEL . $arr[1] . SEP . time() . $arr[2]);
+                        }
                     } else {
-                        copy($file, MODEL . $arr[1] . SEP . time() . $arr[2]);
+                        $arr2 = $arr;
+                        $arr22 = $arr;
+                        array_shift($arr2);
+                        array_shift($arr22);
+                        array_pop($arr2);
+                        $newinnerpath = ORMMODEL . implode(SEP, $arr2);
+                        $NewInnerFilePath = ORMMODEL . implode(SEP, $arr22);
+                        if (!is_dir($newinnerpath)) {
+                            mkdir($newinnerpath);
+                        }
+                        if (!file_exists($NewInnerFilePath)) {
+                            $NewInnerFilePath_array = explode(SEP, $NewInnerFilePath);
+                            array_pop($NewInnerFilePath_array);
+                            $n2 = implode(SEP, $NewInnerFilePath_array);
+                            //copy($file, $NewInnerFilePath);
+                            copy($file, $n2);
+                        }
                     }
-                } else {
-                    $arr2 = $arr;
-                    $arr22 = $arr;
-                    array_shift($arr2);
-                    array_shift($arr22);
-                    array_pop($arr2);
-                    $newinnerpath = MODEL . implode(SEP, $arr2);
-                    $NewInnerFilePath = MODEL . implode(SEP, $arr22);
-                    if (!is_dir($newinnerpath)) {
-                        mkdir($newinnerpath);
-                    }
-                    if (!file_exists($NewInnerFilePath)) {
-                        $NewInnerFilePath_array = explode(SEP, $NewInnerFilePath);
-                        array_pop($NewInnerFilePath_array);
-                        $n2 = implode(SEP, $NewInnerFilePath_array);
-                        //copy($file, $NewInnerFilePath);
-                        copy($file, $n2);
-                    }
-                }
-                break;
+                    break;
 
-            case 'api_model':
-                if (!is_dir(API_MODEL . $arr[1])) {
-                    mkdir(API_MODEL . $arr[1], 0755);
-                }
-                if (count($arr) - 3  <= 0) {
-                    if (!file_exists(API_MODEL . $arr[1] . SEP . $arr[2])) {
-                        copy($file, API_MODEL . $arr[1] . SEP . $arr[2]);
+                case 'api_model':
+                    if (!is_dir(API_MODEL . $arr[1])) {
+                        mkdir(API_MODEL . $arr[1], 0755);
+                    }
+                    if (count($arr) - 3  <= 0) {
+                        if (!file_exists(API_MODEL . $arr[1] . SEP . $arr[2])) {
+                            copy($file, API_MODEL . $arr[1] . SEP . $arr[2]);
+                        } else {
+                            copy($file, API_MODEL . $arr[1] . SEP . time() . $arr[2]);
+                        }
                     } else {
-                        copy($file, API_MODEL . $arr[1] . SEP . time() . $arr[2]);
+                        $arr2 = $arr;
+                        $arr22 = $arr;
+                        array_shift($arr2);
+                        array_shift($arr22);
+                        array_pop($arr2);
+                        $newinnerpath = API_MODEL . implode(SEP, $arr2);
+                        $NewInnerFilePath = API_MODEL . implode(SEP, $arr22);
+                        if (!is_dir($newinnerpath)) {
+                            mkdir($newinnerpath);
+                        }
+                        if (!file_exists($NewInnerFilePath)) {
+                            $NewInnerFilePath_array = explode(SEP, $NewInnerFilePath);
+                            array_pop($NewInnerFilePath_array);
+                            $n2 = implode(SEP, $NewInnerFilePath_array);
+                            //copy($file, $NewInnerFilePath);
+                            copy($file, $n2);
+                        }
                     }
-                } else {
-                    $arr2 = $arr;
-                    $arr22 = $arr;
-                    array_shift($arr2);
-                    array_shift($arr22);
-                    array_pop($arr2);
-                    $newinnerpath = API_MODEL . implode(SEP, $arr2);
-                    $NewInnerFilePath = API_MODEL . implode(SEP, $arr22);
-                    if (!is_dir($newinnerpath)) {
-                        mkdir($newinnerpath);
-                    }
-                    if (!file_exists($NewInnerFilePath)) {
-                        $NewInnerFilePath_array = explode(SEP, $NewInnerFilePath);
-                        array_pop($NewInnerFilePath_array);
-                        $n2 = implode(SEP, $NewInnerFilePath_array);
-                        //copy($file, $NewInnerFilePath);
-                        copy($file, $n2);
-                    }
-                }
-                break;
+                    break;
 
-            case 'storage':
-                if (!is_dir(STORAGE . $arr[1])) {
-                    mkdir(STORAGE . $arr[1], 0755);
-                }
-                if (count($arr) - 3  <= 0) {
-                    if (!file_exists(STORAGE . $arr[1] . SEP . $arr[2])) {
-                        copy($file, STORAGE . $arr[1] . SEP . $arr[2]);
+                case 'storage':
+                    if (!is_dir(STORAGE . $arr[1])) {
+                        mkdir(STORAGE . $arr[1], 0755);
+                    }
+                    if (count($arr) - 3  <= 0) {
+                        if (!file_exists(STORAGE . $arr[1] . SEP . $arr[2])) {
+                            copy($file, STORAGE . $arr[1] . SEP . $arr[2]);
+                        } else {
+                            copy($file, STORAGE . $arr[1] . SEP . time() . $arr[2]);
+                        }
                     } else {
-                        copy($file, STORAGE . $arr[1] . SEP . time() . $arr[2]);
+                        $arr2 = $arr;
+                        $arr22 = $arr;
+                        array_shift($arr2);
+                        array_shift($arr22);
+                        array_pop($arr2);
+                        $newinnerpath = STORAGE . implode(SEP, $arr2);
+                        $NewInnerFilePath = STORAGE . implode(SEP, $arr22);
+                        if (!is_dir($newinnerpath)) {
+                            mkdir($newinnerpath);
+                        }
+                        if (!file_exists($NewInnerFilePath)) {
+                            $NewInnerFilePath_array = explode(SEP, $NewInnerFilePath);
+                            array_pop($NewInnerFilePath_array);
+                            $n2 = implode(SEP, $NewInnerFilePath_array);
+                            //copy($file, $NewInnerFilePath);
+                            copy($file, $n2);
+                        }
                     }
-                } else {
-                    $arr2 = $arr;
-                    $arr22 = $arr;
-                    array_shift($arr2);
-                    array_shift($arr22);
-                    array_pop($arr2);
-                    $newinnerpath = STORAGE . implode(SEP, $arr2);
-                    $NewInnerFilePath = STORAGE . implode(SEP, $arr22);
-                    if (!is_dir($newinnerpath)) {
-                        mkdir($newinnerpath);
-                    }
-                    if (!file_exists($NewInnerFilePath)) {
-                        $NewInnerFilePath_array = explode(SEP, $NewInnerFilePath);
-                        array_pop($NewInnerFilePath_array);
-                        $n2 = implode(SEP, $NewInnerFilePath_array);
-                        //copy($file, $NewInnerFilePath);
-                        copy($file, $n2);
-                    }
-                }
-                break;
+                    break;
 
-            case 'controller':
-                if (!is_dir(CONTROLLER . $arr[1])) {
-                    mkdir(CONTROLLER . $arr[1], 0755);
-                }
-                if (count($arr) - 3  <= 0) {
-                    if (!file_exists(CONTROLLER . $arr[1] . SEP . $arr[2])) {
-                        copy($file, CONTROLLER . $arr[1] . SEP . $arr[2]);
+                case 'controller':
+                    if (!is_dir(CONTROLLER . $arr[1])) {
+                        mkdir(CONTROLLER . $arr[1], 0755);
+                    }
+                    if (count($arr) - 3  <= 0) {
+                        if (!file_exists(CONTROLLER . $arr[1] . SEP . $arr[2])) {
+                            copy($file, CONTROLLER . $arr[1] . SEP . $arr[2]);
+                        } else {
+                            copy($file, CONTROLLER . $arr[1] . SEP . time() . $arr[2]);
+                        }
                     } else {
-                        copy($file, CONTROLLER . $arr[1] . SEP . time() . $arr[2]);
+                        $arr2 = $arr;
+                        $arr22 = $arr;
+                        array_shift($arr2);
+                        array_shift($arr22);
+                        array_pop($arr2);
+                        $newinnerpath = CONTROLLER . implode(SEP, $arr2);
+                        $NewInnerFilePath = CONTROLLER . implode(SEP, $arr22);
+                        if (!is_dir($newinnerpath)) {
+                            mkdir($newinnerpath);
+                        }
+                        if (!file_exists($NewInnerFilePath)) {
+                            $NewInnerFilePath_array = explode(SEP, $NewInnerFilePath);
+                            array_pop($NewInnerFilePath_array);
+                            $n2 = implode(SEP, $NewInnerFilePath_array);
+                            //copy($file, $NewInnerFilePath);
+                            copy($file, $n2);
+                        }
                     }
-                } else {
-                    $arr2 = $arr;
-                    $arr22 = $arr;
-                    array_shift($arr2);
-                    array_shift($arr22);
-                    array_pop($arr2);
-                    $newinnerpath = CONTROLLER . implode(SEP, $arr2);
-                    $NewInnerFilePath = CONTROLLER . implode(SEP, $arr22);
-                    if (!is_dir($newinnerpath)) {
-                        mkdir($newinnerpath);
-                    }
-                    if (!file_exists($NewInnerFilePath)) {
-                        $NewInnerFilePath_array = explode(SEP, $NewInnerFilePath);
-                        array_pop($NewInnerFilePath_array);
-                        $n2 = implode(SEP, $NewInnerFilePath_array);
-                        //copy($file, $NewInnerFilePath);
-                        copy($file, $n2);
-                    }
-                }
-                break;
+                    break;
 
-            case 'js':
-                if (!isset($arr[2])) {
-                    if (!file_exists(JS . $arr[1])) {
-                        copy($file, JS . $arr[1]);
+                case 'js':
+                    if (!isset($arr[2])) {
+                        if (!file_exists(JS . $arr[1])) {
+                            copy($file, JS . $arr[1]);
+                        } else {
+                            copy($file, JS . time() . $arr[1]);
+                        }
                     } else {
-                        copy($file, JS . time() . $arr[1]);
+                        if (!file_exists(JS . $arr[1])) {
+                            mkdir(JS . $arr[1], 0755);
+                        }
+                        if (!file_exists(JS . $arr[1] . SEP . $arr[2])) {
+                            copy($file, JS . $arr[1] . SEP . $arr[2]);
+                        } else {
+                            copy($file, JS . $arr[1] . SEP . time() . $arr[2]);
+                        }
                     }
-                } else {
-                    if (!file_exists(JS . $arr[1])) {
-                        mkdir(JS . $arr[1], 0755);
-                    }
-                    if (!file_exists(JS . $arr[1] . SEP . $arr[2])) {
-                        copy($file, JS . $arr[1] . SEP . $arr[2]);
-                    } else {
-                        copy($file, JS . $arr[1] . SEP . time() . $arr[2]);
-                    }
-                }
-                break;
+                    break;
 
-            case 'css':
-                if (!isset($arr[2])) {
-                    if (!file_exists(CSS . $arr[1])) {
-                        copy($file, CSS . $arr[1]);
+                case 'css':
+                    if (!isset($arr[2])) {
+                        if (!file_exists(CSS . $arr[1])) {
+                            copy($file, CSS . $arr[1]);
+                        } else {
+                            copy($file, CSS . time() . $arr[1]);
+                        }
                     } else {
-                        copy($file, CSS . time() . $arr[1]);
+                        if (!file_exists(CSS . $arr[1])) {
+                            mkdir(CSS . $arr[1], 0755);
+                        }
+                        if (!file_exists(CSS . $arr[1] . SEP . $arr[2])) {
+                            copy($file, CSS . $arr[1] . SEP . $arr[2]);
+                        } else {
+                            copy($file, CSS . $arr[1] . SEP . time() . $arr[2]);
+                        }
                     }
-                } else {
-                    if (!file_exists(CSS . $arr[1])) {
-                        mkdir(CSS . $arr[1], 0755);
-                    }
-                    if (!file_exists(CSS . $arr[1] . SEP . $arr[2])) {
-                        copy($file, CSS . $arr[1] . SEP . $arr[2]);
-                    } else {
-                        copy($file, CSS . $arr[1] . SEP . time() . $arr[2]);
-                    }
-                }
-                break;
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
             }
         }
     }

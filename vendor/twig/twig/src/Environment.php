@@ -38,12 +38,12 @@ use Twig\TokenParser\TokenParserInterface;
  */
 class Environment
 {
-    const VERSION = '3.3.0';
-    const VERSION_ID = 30300;
-    const MAJOR_VERSION = 3;
-    const MINOR_VERSION = 3;
-    const RELEASE_VERSION = 0;
-    const EXTRA_VERSION = '';
+    public const VERSION = '3.3.2';
+    public const VERSION_ID = 30302;
+    public const MAJOR_VERSION = 3;
+    public const MINOR_VERSION = 3;
+    public const RELEASE_VERSION = 2;
+    public const EXTRA_VERSION = '';
 
     private $charset;
     private $loader;
@@ -99,8 +99,7 @@ class Environment
     {
         $this->setLoader($loader);
 
-        $options = array_merge(
-            [
+        $options = array_merge([
             'debug' => false,
             'charset' => 'UTF-8',
             'strict_variables' => false,
@@ -108,8 +107,7 @@ class Environment
             'cache' => false,
             'auto_reload' => null,
             'optimizations' => -1,
-            ], $options
-        );
+        ], $options);
 
         $this->debug = (bool) $options['debug'];
         $this->setCharset($options['charset'] ?? 'UTF-8');
@@ -237,7 +235,7 @@ class Environment
         } elseif ($cache instanceof CacheInterface) {
             $this->originalCache = $this->cache = $cache;
         } else {
-            throw new \LogicException(sprintf('Cache can only be a string, false, or a \Twig\Cache\CacheInterface implementation.'));
+            throw new \LogicException('Cache can only be a string, false, or a \Twig\Cache\CacheInterface implementation.');
         }
     }
 
@@ -391,12 +389,10 @@ class Environment
             $name = sprintf('__string_template__%s', $hash);
         }
 
-        $loader = new ChainLoader(
-            [
+        $loader = new ChainLoader([
             new ArrayLoader([$name => $template]),
             $current = $this->getLoader(),
-            ]
-        );
+        ]);
 
         $this->setLoader($loader);
         try {
@@ -529,7 +525,7 @@ class Environment
 
     public function setCharset(string $charset)
     {
-        if ('UTF8' === $charset = strtoupper($charset)) {
+        if ('UTF8' === $charset = null === $charset ? null : strtoupper($charset)) {
             // iconv on Windows requires "UTF-8" instead of "UTF8"
             $charset = 'UTF-8';
         }
@@ -806,15 +802,13 @@ class Environment
 
     private function updateOptionsHash(): void
     {
-        $this->optionsHash = implode(
-            ':', [
+        $this->optionsHash = implode(':', [
             $this->extensionSet->getSignature(),
-            PHP_MAJOR_VERSION,
-            PHP_MINOR_VERSION,
+            \PHP_MAJOR_VERSION,
+            \PHP_MINOR_VERSION,
             self::VERSION,
             (int) $this->debug,
             (int) $this->strictVariables,
-            ]
-        );
+        ]);
     }
 }

@@ -40,6 +40,8 @@ if (USEDB == true) {
         case 'mysql':
             $NI_connect->mysql();
             $conn = $NI_connect->connection();
+            NI_Eloquent::run();
+
             break;
         case 'sqlsrv':
             $NI_connect->sqlsrv();

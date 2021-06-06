@@ -8,33 +8,19 @@ use PhpParser\Node\FunctionLike;
 
 class Closure extends Expr implements FunctionLike
 {
-    /**
-     * @var bool Whether the closure is static 
-     */
+    /** @var bool Whether the closure is static */
     public $static;
-    /**
-     * @var bool Whether to return by reference 
-     */
+    /** @var bool Whether to return by reference */
     public $byRef;
-    /**
-     * @var Node\Param[] Parameters 
-     */
+    /** @var Node\Param[] Parameters */
     public $params;
-    /**
-     * @var ClosureUse[] use()s 
-     */
+    /** @var ClosureUse[] use()s */
     public $uses;
-    /**
-     * @var null|Node\Identifier|Node\Name|Node\NullableType|Node\UnionType Return type 
-     */
+    /** @var null|Node\Identifier|Node\Name|Node\NullableType|Node\UnionType Return type */
     public $returnType;
-    /**
-     * @var Node\Stmt[] Statements 
-     */
+    /** @var Node\Stmt[] Statements */
     public $stmts;
-    /**
-     * @var Node\AttributeGroup[] PHP attribute groups 
-     */
+    /** @var Node\AttributeGroup[] PHP attribute groups */
     public $attrGroups;
 
     /**
@@ -50,8 +36,7 @@ class Closure extends Expr implements FunctionLike
      *                          'attrGroups' => array(): PHP attributes groups
      * @param array $attributes Additional attributes
      */
-    public function __construct(array $subNodes = [], array $attributes = [])
-    {
+    public function __construct(array $subNodes = [], array $attributes = []) {
         $this->attributes = $attributes;
         $this->static = $subNodes['static'] ?? false;
         $this->byRef = $subNodes['byRef'] ?? false;
@@ -63,41 +48,32 @@ class Closure extends Expr implements FunctionLike
         $this->attrGroups = $subNodes['attrGroups'] ?? [];
     }
 
-    public function getSubNodeNames() : array
-    {
+    public function getSubNodeNames() : array {
         return ['attrGroups', 'static', 'byRef', 'params', 'uses', 'returnType', 'stmts'];
     }
 
-    public function returnsByRef() : bool
-    {
+    public function returnsByRef() : bool {
         return $this->byRef;
     }
 
-    public function getParams() : array
-    {
+    public function getParams() : array {
         return $this->params;
     }
 
-    public function getReturnType()
-    {
+    public function getReturnType() {
         return $this->returnType;
     }
 
-    /**
-     * @return Node\Stmt[] 
-     */
-    public function getStmts() : array
-    {
+    /** @return Node\Stmt[] */
+    public function getStmts() : array {
         return $this->stmts;
     }
 
-    public function getAttrGroups() : array
-    {
+    public function getAttrGroups() : array {
         return $this->attrGroups;
     }
 
-    public function getType() : string
-    {
+    public function getType() : string {
         return 'Expr_Closure';
     }
 }

@@ -7,13 +7,9 @@ use PhpParser\Node\Expr;
 
 class FuncCall extends Expr
 {
-    /**
-     * @var Node\Name|Expr Function name 
-     */
+    /** @var Node\Name|Expr Function name */
     public $name;
-    /**
-     * @var Node\Arg[] Arguments 
-     */
+    /** @var Node\Arg[] Arguments */
     public $args;
 
     /**
@@ -23,20 +19,17 @@ class FuncCall extends Expr
      * @param Node\Arg[]     $args       Arguments
      * @param array          $attributes Additional attributes
      */
-    public function __construct($name, array $args = [], array $attributes = [])
-    {
+    public function __construct($name, array $args = [], array $attributes = []) {
         $this->attributes = $attributes;
         $this->name = $name;
         $this->args = $args;
     }
 
-    public function getSubNodeNames() : array
-    {
+    public function getSubNodeNames() : array {
         return ['name', 'args'];
     }
     
-    public function getType() : string
-    {
+    public function getType() : string {
         return 'Expr_FuncCall';
     }
 }

@@ -134,41 +134,41 @@ final class Invocation implements SelfDescribing
         }
 
         switch (strtolower($returnType)) {
-        case '':
-        case 'void':
-            return;
+            case '':
+            case 'void':
+                return;
 
-        case 'string':
-            return '';
+            case 'string':
+                return '';
 
-        case 'float':
-            return 0.0;
+            case 'float':
+                return 0.0;
 
-        case 'int':
-            return 0;
+            case 'int':
+                return 0;
 
-        case 'bool':
-            return false;
+            case 'bool':
+                return false;
 
-        case 'array':
-            return [];
+            case 'array':
+                return [];
 
-        case 'static':
-            return (new Instantiator)->instantiate(get_class($this->object));
+            case 'static':
+                return (new Instantiator)->instantiate(get_class($this->object));
 
-        case 'object':
-            return new stdClass;
+            case 'object':
+                return new stdClass;
 
-        case 'callable':
-        case 'closure':
-            return static function (): void {
-            };
+            case 'callable':
+            case 'closure':
+                return static function (): void {
+                };
 
             case 'traversable':
             case 'generator':
             case 'iterable':
                 $generator = static function (): \Generator {
-                    yield;
+                    yield from [];
                 };
 
                 return $generator();

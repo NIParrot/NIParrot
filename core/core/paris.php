@@ -1,63 +1,63 @@
 <?php
 
-   /**
-    * Paris
-    *
-    * http://github.com/j4mie/paris/
-    *
-    * A simple Active Record implementation built on top of Idiorm
-    * ( http://github.com/j4mie/idiorm/ ).
-    *
-    * You should include Idiorm before you include this file:
-    * require_once 'your/path/to/idiorm.php';
-    *
-    * BSD Licensed.
-    *
-    * Copyright (c) 2010, Jamie Matthews
-    * All rights reserved.
-    *
-    * Redistribution and use in source and binary forms, with or without
-    * modification, are permitted provided that the following conditions are met:
-    *
-    * * Redistributions of source code must retain the above copyright notice, this
-    * list of conditions and the following disclaimer.
-    *
-    * * Redistributions in binary form must reproduce the above copyright notice,
-    * this list of conditions and the following disclaimer in the documentation
-    * and/or other materials provided with the distribution.
-    *
-    * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-    * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-    * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-    * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
-    * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-    * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-    * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-    * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-    * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-    * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-    */
+/**
+ * Paris
+ *
+ * http://github.com/j4mie/paris/
+ *
+ * A simple Active Record implementation built on top of Idiorm
+ * ( http://github.com/j4mie/idiorm/ ).
+ *
+ * You should include Idiorm before you include this file:
+ * require_once 'your/path/to/idiorm.php';
+ *
+ * BSD Licensed.
+ *
+ * Copyright (c) 2010, Jamie Matthews
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * * Redistributions of source code must retain the above copyright notice, this
+ * list of conditions and the following disclaimer.
+ *
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
-    /**
-     * Subclass of Idiorm's ORM class that supports
-     * returning instances of a specified class rather
-     * than raw instances of the ORM class.
-     *
-     * You shouldn't need to interact with this class
-     * directly. It is used internally by the Model base
-     * class.
-     *
-     *
-     * The methods documented below are magic methods that conform to PSR-1.
-     * This documentation exposes these methods to doc generators and IDEs.
-     *
-     * @see http://www.php-fig.org/psr/psr-1/
-     *
-     * @method void setClassName($class_name)
-     * @method static \ORMWrapper forTable($table_name, $connection_name = parent::DEFAULT_CONNECTION)
-     * @method \Model findOne($id=null)
-     * @method Array|\IdiormResultSet findMany()
-     */
+/**
+ * Subclass of Idiorm's ORM class that supports
+ * returning instances of a specified class rather
+ * than raw instances of the ORM class.
+ *
+ * You shouldn't need to interact with this class
+ * directly. It is used internally by the Model base
+ * class.
+ *
+ *
+ * The methods documented below are magic methods that conform to PSR-1.
+ * This documentation exposes these methods to doc generators and IDEs.
+ *
+ * @see http://www.php-fig.org/psr/psr-1/
+ *
+ * @method void setClassName($class_name)
+ * @method static \ORMWrapper forTable($table_name, $connection_name = parent::DEFAULT_CONNECTION)
+ * @method \Model findOne($id=null)
+ * @method Array|\IdiormResultSet findMany()
+ */
 class ORMWrapper extends ORM
 {
 
@@ -145,7 +145,7 @@ class ORMWrapper extends ORM
      * @param  null|integer $id
      * @return Model
      */
-    public function find_one($id=null)
+    public function find_one($id = null)
     {
         return $this->_create_model_instance(parent::find_one($id));
     }
@@ -160,7 +160,7 @@ class ORMWrapper extends ORM
     public function find_many()
     {
         $results = parent::find_many();
-        foreach($results as $key => $result) {
+        foreach ($results as $key => $result) {
             $results[$key] = $this->_create_model_instance($result);
         }
         return $results;
@@ -173,31 +173,48 @@ class ORMWrapper extends ORM
      *
      * @return ORMWrapper|bool
      */
-    public function create($data=null)
+
+    public function withR(string $relation)
+    {
+        $temp = [];
+
+        $arraydata = $this->findArray();
+        foreach ($arraydata as $obj) {
+            $tempin = [];
+            $tempin = $obj;
+            $tempin[$relation] = $this->find_one($obj['id'])->$relation()->findArray()[0];
+            array_push($temp, $tempin);
+        }
+
+
+        return $temp;
+    }
+
+    public function create($data = null)
     {
         return $this->_create_model_instance(parent::create($data));
     }
 }
 
-    /**
-     * Model base class. Your model objects should extend
-     * this class. A minimal subclass would look like:
-     *
-     * class Widget extends Model {
-     * }
-     *
-     *
-     * The methods documented below are magic methods that conform to PSR-1.
-     * This documentation exposes these methods to doc generators and IDEs.
-     *
-     * @see http://www.php-fig.org/psr/psr-1/
-     *
-     * @method void setOrm($orm)
-     * @method $this setExpr($property, $value = null)
-     * @method bool isDirty($property)
-     * @method bool isNew()
-     * @method Array asArray()
-     */
+/**
+ * Model base class. Your model objects should extend
+ * this class. A minimal subclass would look like:
+ *
+ * class Widget extends Model {
+ * }
+ *
+ *
+ * The methods documented below are magic methods that conform to PSR-1.
+ * This documentation exposes these methods to doc generators and IDEs.
+ *
+ * @see http://www.php-fig.org/psr/psr-1/
+ *
+ * @method void setOrm($orm)
+ * @method $this setExpr($property, $value = null)
+ * @method bool isDirty($property)
+ * @method bool isNew()
+ * @method Array asArray()
+ */
 class Model
 {
 
@@ -248,7 +265,7 @@ class Model
      * @param  null|string $default
      * @return string
      */
-    protected static function _get_static_property($class_name, $property, $default=null)
+    protected static function _get_static_property($class_name, $property, $default = null)
     {
         if (!class_exists($class_name) || !property_exists($class_name, $property)) {
             return $default;
@@ -404,25 +421,25 @@ class Model
      * @param  null|string $connection_name
      * @return ORMWrapper
      */
-    protected function _has_one_or_many($associated_class_name, $foreign_key_name=null, $foreign_key_name_in_current_models_table=null, $connection_name=null)
+    protected function _has_one_or_many($associated_class_name, $foreign_key_name = null, $foreign_key_name_in_current_models_table = null, $connection_name = null)
     {
         $base_table_name = self::_get_table_name(get_class($this));
         $foreign_key_name = self::_build_foreign_key_name($foreign_key_name, $base_table_name);
-            
+
         $where_value = ''; //Value of foreign_table.{$foreign_key_name} we're 
-                           //looking for. Where foreign_table is the actual 
-                           //database table in the associated model.
-            
-        if(is_null($foreign_key_name_in_current_models_table)) {
+        //looking for. Where foreign_table is the actual 
+        //database table in the associated model.
+
+        if (is_null($foreign_key_name_in_current_models_table)) {
             //Match foreign_table.{$foreign_key_name} with the value of 
             //{$this->_table}.{$this->id()}
-            $where_value = $this->id(); 
+            $where_value = $this->id();
         } else {
             //Match foreign_table.{$foreign_key_name} with the value of 
             //{$this->_table}.{$foreign_key_name_in_current_models_table}
             $where_value = $this->$foreign_key_name_in_current_models_table;
         }
-            
+
         return self::factory($associated_class_name, $connection_name)->where($foreign_key_name, $where_value);
     }
 
@@ -436,7 +453,7 @@ class Model
      * @param  null|string $connection_name
      * @return ORMWrapper
      */
-    protected function has_one($associated_class_name, $foreign_key_name=null, $foreign_key_name_in_current_models_table=null, $connection_name=null)
+    protected function has_one($associated_class_name, $foreign_key_name = null, $foreign_key_name_in_current_models_table = null, $connection_name = null)
     {
         return $this->_has_one_or_many($associated_class_name, $foreign_key_name, $foreign_key_name_in_current_models_table, $connection_name);
     }
@@ -451,7 +468,7 @@ class Model
      * @param  null|string $connection_name
      * @return ORMWrapper
      */
-    protected function has_many($associated_class_name, $foreign_key_name=null, $foreign_key_name_in_current_models_table=null, $connection_name=null)
+    protected function has_many($associated_class_name, $foreign_key_name = null, $foreign_key_name_in_current_models_table = null, $connection_name = null)
     {
         return $this->_has_one_or_many($associated_class_name, $foreign_key_name, $foreign_key_name_in_current_models_table, $connection_name);
     }
@@ -466,15 +483,15 @@ class Model
      * @param  null|string $connection_name
      * @return $this|null
      */
-    protected function belongs_to($associated_class_name, $foreign_key_name=null, $foreign_key_name_in_associated_models_table=null, $connection_name=null)
+    protected function belongs_to($associated_class_name, $foreign_key_name = null, $foreign_key_name_in_associated_models_table = null, $connection_name = null)
     {
         $associated_table_name = self::_get_table_name(self::$auto_prefix_models . $associated_class_name);
         $foreign_key_name = self::_build_foreign_key_name($foreign_key_name, $associated_table_name);
         $associated_object_id = $this->$foreign_key_name;
-            
+
         $desired_record = null;
-            
-        if(is_null($foreign_key_name_in_associated_models_table) ) {
+
+        if (is_null($foreign_key_name_in_associated_models_table)) {
             //"{$associated_table_name}.primary_key = {$associated_object_id}"
             //NOTE: primary_key is a placeholder for the actual primary key column's name
             //in $associated_table_name
@@ -483,7 +500,7 @@ class Model
             //"{$associated_table_name}.{$foreign_key_name_in_associated_models_table} = {$associated_object_id}"
             $desired_record = self::factory($associated_class_name, $connection_name)->where($foreign_key_name_in_associated_models_table, $associated_object_id);
         }
-            
+
         return $desired_record;
     }
 
@@ -500,7 +517,7 @@ class Model
      * @param  null|string $connection_name
      * @return ORMWrapper
      */
-    protected function has_many_through($associated_class_name, $join_class_name=null, $key_to_base_table=null, $key_to_associated_table=null,  $key_in_base_table=null, $key_in_associated_table=null, $connection_name=null)
+    protected function has_many_through($associated_class_name, $join_class_name = null, $key_to_base_table = null, $key_to_associated_table = null,  $key_in_base_table = null, $key_in_associated_table = null, $connection_name = null)
     {
         $base_class_name = get_class($this);
 
@@ -520,7 +537,7 @@ class Model
                 $associated_model_name = substr($associated_model_name, strlen(self::$auto_prefix_models), strlen($associated_model_name));
             }
             $class_names = array($base_model_name, $associated_model_name);
-                
+
             sort($class_names, SORT_STRING);
             $join_class_name = join("", $class_names);
         }
@@ -541,7 +558,7 @@ class Model
         // Get the column names for each side of the join table
         $key_to_base_table = self::_build_foreign_key_name($key_to_base_table, $base_table_name);
         $key_to_associated_table = self::_build_foreign_key_name($key_to_associated_table, $associated_table_name);
-    
+
         /*
             "   SELECT {$associated_table_name}.*
                   FROM {$associated_table_name} JOIN {$join_table_name}
@@ -552,7 +569,7 @@ class Model
         return self::factory($associated_class_name, $connection_name)
             ->select("{$associated_table_name}.*")
             ->join($join_table_name, array("{$associated_table_name}.{$associated_table_id_column}", '=', "{$join_table_name}.{$key_to_associated_table}"))
-            ->where("{$join_table_name}.{$key_to_base_table}", $this->$base_table_id_column); ;
+            ->where("{$join_table_name}.{$key_to_base_table}", $this->$base_table_id_column);;
     }
 
     /**
@@ -733,7 +750,7 @@ class Model
      */
     public static function __callStatic($method, $parameters)
     {
-        if(function_exists('get_called_class')) {
+        if (function_exists('get_called_class')) {
             $model = self::factory(get_called_class());
             return call_user_func_array(array($model, $method), $parameters);
         }
