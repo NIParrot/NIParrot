@@ -8,7 +8,7 @@
         "phpunit/phpunit": "^9",
         "cboden/ratchet": "v0.4",
         "samir-hussein/paymob": "^1.0",
-        "illuminate/database": "5.1.8"
+        "illuminate/database": "6.20.26"
     },
     "config": {
         "platform": {
