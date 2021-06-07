@@ -121,6 +121,18 @@ class NI_Api_route
         }
     }
 
+    public static function perfix(string $perfix, array $routes)
+    {
+        foreach ($routes as $value) {
+            $method = $value[0];
+            $route = $value[1];
+            $callback = $value[2];
+
+            $action = $perfix . $route;
+            self::$method($action, $callback);
+        }
+    }
+
     public static function run($action)
     {
         $ActionRoute = explode('/', $action);
