@@ -3,7 +3,7 @@ class NI_files
 {
     public static function upload()
     {
-        $args =func_get_args();
+        $args = func_get_args();
         $input = $args[0];
         $upload = new \Delight\FileUpload\FileUpload();
         $upload->withTargetDirectory(STORAGE);
@@ -16,7 +16,7 @@ class NI_files
         }
         try {
             $uploadedFile = $upload->save();
-        
+
             return $uploadedFile->getFilenameWithExtension();
         } catch (\Delight\FileUpload\Throwable\InputNotFoundException $e) {
             return 'input not found';

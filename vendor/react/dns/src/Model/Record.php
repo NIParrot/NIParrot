@@ -9,7 +9,7 @@ namespace React\Dns\Model;
  * fields for resulting TTL and resulting record data (IPs etc.).
  *
  * @link https://tools.ietf.org/html/rfc1035#section-4.1.3
- * @see  \React\Dns\Query\Query
+ * @see \React\Dns\Query\Query
  */
 final class Record
 {
@@ -38,7 +38,7 @@ final class Record
      *
      * For `OPT` records (EDNS0), this defines additional flags instead.
      *
-     * @var  int maximum TTL in seconds (UINT32, most significant bit always unset)
+     * @var int maximum TTL in seconds (UINT32, most significant bit always unset)
      * @link https://tools.ietf.org/html/rfc2181#section-8
      * @link https://tools.ietf.org/html/rfc6891#section-6.1.3 for `OPT` records (EDNS0)
      */

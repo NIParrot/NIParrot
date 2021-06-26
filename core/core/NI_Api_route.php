@@ -133,6 +133,27 @@ class NI_Api_route
         }
     }
 
+    public static function Resource($action, $controller, $middleware = null)
+    {
+        self::perfix($action, [
+            ['get', '', function () use ($controller, $middleware) {
+                NI_Api_Controller::run('Api\\' . $controller . '@index', $middleware);
+            }],
+            ['get', '/{{id}}', function ($id)  use ($controller, $middleware) {
+                NI_Api_Controller::run('Api\\' . $controller . '@show', $middleware);
+            }],
+            ['post', '', function ()  use ($controller, $middleware) {
+                NI_Api_Controller::run('Api\\' . $controller . '@create', $middleware);
+            }],
+            ['put', '/{{id}}', function ($id)  use ($controller, $middleware) {
+                NI_Api_Controller::run('Api\\' . $controller . '@update', $middleware);
+            }],
+            ['delete', '/{{id}}', function ($id)  use ($controller, $middleware) {
+                NI_Api_Controller::run('Api\\' . $controller . '@delete', $middleware);
+            }]
+        ]);
+    }
+
     public static function run($action)
     {
         $ActionRoute = explode('/', $action);

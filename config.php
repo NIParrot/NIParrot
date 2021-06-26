@@ -28,15 +28,18 @@ if (isset($_SERVER['HTTP_USER_AGENT'])) {
 define("SEP", DIRECTORY_SEPARATOR);
 define("ROOT", __DIR__);
 
-define("VIEW", ROOT . SEP . 'app' . SEP . 'View' . SEP);
+define("VIEW", ROOT . SEP . 'resources' . SEP . 'View' . SEP);
+define("ASSETS", ROOT . SEP . 'resources' . SEP . 'Static' . SEP);
 define("ROUTE", ROOT . SEP . 'routes' . SEP);
 define("APIROUTE", ROOT . SEP . 'api' . SEP . 'routes' . SEP);
 define("MODEL", ROOT . SEP . 'app' . SEP . 'Model' . SEP);
+define("TRAITS", ROOT . SEP . 'app' . SEP . 'Trait' . SEP);
 define("PARISMODEL", MODEL . 'Paris' . SEP);
 define("ORMMODEL", MODEL . 'Orm' . SEP);
 define("ELOQUENTMODEL", MODEL . 'Eloquent' . SEP);
 define("MIDDLEWARE", ROOT . SEP . 'app' . SEP . 'Middleware' . SEP);
 define("CONTROLLER", ROOT . SEP . 'app' . SEP . 'Controller' . SEP);
+define("APICONTROLLER", ROOT . SEP . 'api' . SEP . 'Controller' . SEP);
 define("STORAGE", ROOT . SEP . 'storage' . SEP);
 define("Tracktable", ROOT . SEP . 'engien' . SEP . 'Tracktable.csv');
 define("RelationFile", ROOT . SEP . 'CLI' . SEP . 'relation.txt');

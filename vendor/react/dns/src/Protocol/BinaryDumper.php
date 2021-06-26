@@ -9,7 +9,7 @@ use React\Dns\Query\Query;
 final class BinaryDumper
 {
     /**
-     * @param  Message $message
+     * @param Message $message
      * @return string
      */
     public function toBinary(Message $message)
@@ -26,7 +26,7 @@ final class BinaryDumper
     }
 
     /**
-     * @param  Message $message
+     * @param Message $message
      * @return string
      */
     private function headerToBinary(Message $message)
@@ -56,7 +56,7 @@ final class BinaryDumper
     }
 
     /**
-     * @param  Query[] $questions
+     * @param Query[] $questions
      * @return string
      */
     private function questionToBinary(array $questions)
@@ -72,7 +72,7 @@ final class BinaryDumper
     }
 
     /**
-     * @param  Record[] $records
+     * @param Record[] $records
      * @return string
      */
     private function recordsToBinary(array $records)
@@ -82,75 +82,76 @@ final class BinaryDumper
         foreach ($records as $record) {
             /* @var $record Record */
             switch ($record->type) {
-            case Message::TYPE_A:
-            case Message::TYPE_AAAA:
-                $binary = \inet_pton($record->data);
-                break;
-            case Message::TYPE_CNAME:
-            case Message::TYPE_NS:
-            case Message::TYPE_PTR:
-                $binary = $this->domainNameToBinary($record->data);
-                break;
-            case Message::TYPE_TXT:
-                $binary = $this->textsToBinary($record->data);
-                break;
-            case Message::TYPE_MX:
-                $binary = \pack(
-                    'n',
-                    $record->data['priority']
-                );
-                $binary .= $this->domainNameToBinary($record->data['target']);
-                break;
-            case Message::TYPE_SRV:
-                $binary = \pack(
-                    'n*',
-                    $record->data['priority'],
-                    $record->data['weight'],
-                    $record->data['port']
-                );
-                $binary .= $this->domainNameToBinary($record->data['target']);
-                break;
-            case Message::TYPE_SOA:
-                $binary  = $this->domainNameToBinary($record->data['mname']);
-                $binary .= $this->domainNameToBinary($record->data['rname']);
-                $binary .= \pack(
-                    'N*',
-                    $record->data['serial'],
-                    $record->data['refresh'],
-                    $record->data['retry'],
-                    $record->data['expire'],
-                    $record->data['minimum']
-                );
-                break;
-            case Message::TYPE_CAA:
-                $binary = \pack(
-                    'C*',
-                    $record->data['flag'],
-                    \strlen($record->data['tag'])
-                );
-                $binary .= $record->data['tag'];
-                $binary .= $record->data['value'];
-                break;
-            case Message::TYPE_SSHFP:
-                $binary = \pack(
-                    'CCH*',
-                    $record->data['algorithm'],
-                    $record->data['type'],
-                    $record->data['fingerprint']
-                );
-                break;
-            case Message::TYPE_OPT:
-                $binary = '';
-                foreach ($record->data as $opt => $value) {
-                    if ($opt === Message::OPT_TCP_KEEPALIVE && $value !== null) {
-                        $value = \pack('n', round($value * 10));
+                case Message::TYPE_A:
+                case Message::TYPE_AAAA:
+                    $binary = \inet_pton($record->data);
+                    break;
+                case Message::TYPE_CNAME:
+                case Message::TYPE_NS:
+                case Message::TYPE_PTR:
+                    $binary = $this->domainNameToBinary($record->data);
+                    break;
+                case Message::TYPE_TXT:
+                case Message::TYPE_SPF:
+                    $binary = $this->textsToBinary($record->data);
+                    break;
+                case Message::TYPE_MX:
+                    $binary = \pack(
+                        'n',
+                        $record->data['priority']
+                    );
+                    $binary .= $this->domainNameToBinary($record->data['target']);
+                    break;
+                case Message::TYPE_SRV:
+                    $binary = \pack(
+                        'n*',
+                        $record->data['priority'],
+                        $record->data['weight'],
+                        $record->data['port']
+                    );
+                    $binary .= $this->domainNameToBinary($record->data['target']);
+                    break;
+                case Message::TYPE_SOA:
+                    $binary  = $this->domainNameToBinary($record->data['mname']);
+                    $binary .= $this->domainNameToBinary($record->data['rname']);
+                    $binary .= \pack(
+                        'N*',
+                        $record->data['serial'],
+                        $record->data['refresh'],
+                        $record->data['retry'],
+                        $record->data['expire'],
+                        $record->data['minimum']
+                    );
+                    break;
+                case Message::TYPE_CAA:
+                    $binary = \pack(
+                        'C*',
+                        $record->data['flag'],
+                        \strlen($record->data['tag'])
+                    );
+                    $binary .= $record->data['tag'];
+                    $binary .= $record->data['value'];
+                    break;
+                case Message::TYPE_SSHFP:
+                    $binary = \pack(
+                        'CCH*',
+                        $record->data['algorithm'],
+                        $record->data['type'],
+                        $record->data['fingerprint']
+                    );
+                    break;
+                case Message::TYPE_OPT:
+                    $binary = '';
+                    foreach ($record->data as $opt => $value) {
+                        if ($opt === Message::OPT_TCP_KEEPALIVE && $value !== null) {
+                            $value = \pack('n', round($value * 10));
+                        }
+                        $binary .= \pack('n*', $opt, \strlen($value)) . $value;
                     }
-                    $binary .= \pack('n*', $opt, \strlen($value)) . $value;
-                }
-                break;
-            default:
-                // RDATA is already stored as binary value for unknown record types
-                $binary = $record->data;
+                    break;
+                default:
+                    // RDATA is already stored as binary value for unknown record types
+                    $binary = $record->data;
             }
 
             $data .= $this->domainNameToBinary($record->name);
@@ -162,7 +163,7 @@ final class BinaryDumper
     }
 
     /**
-     * @param  string[] $texts
+     * @param string[] $texts
      * @return string
      */
     private function textsToBinary(array $texts)
@@ -175,7 +176,7 @@ final class BinaryDumper
     }
 
     /**
-     * @param  string $host
+     * @param string $host
      * @return string
      */
     private function domainNameToBinary($host)

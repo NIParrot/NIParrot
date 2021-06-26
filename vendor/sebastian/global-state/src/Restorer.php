@@ -59,10 +59,9 @@ class Restorer
         $globalVariables = $snapshot->globalVariables();
 
         foreach (array_keys($GLOBALS) as $key) {
-            if ($key !== 'GLOBALS' 
-                && !in_array($key, $superGlobalArrays) 
-                && !$snapshot->excludeList()->isGlobalVariableExcluded($key)
-            ) {
+            if ($key !== 'GLOBALS' &&
+                !in_array($key, $superGlobalArrays, true) &&
+                !$snapshot->excludeList()->isGlobalVariableExcluded($key)) {
                 if (array_key_exists($key, $globalVariables)) {
                     $GLOBALS[$key] = $globalVariables[$key];
                 } else {
@@ -122,10 +121,9 @@ class Restorer
     {
         $superGlobalVariables = $snapshot->superGlobalVariables();
 
-        if (isset($GLOBALS[$superGlobalArray]) 
-            && is_array($GLOBALS[$superGlobalArray]) 
-            && isset($superGlobalVariables[$superGlobalArray])
-        ) {
+        if (isset($GLOBALS[$superGlobalArray]) &&
+            is_array($GLOBALS[$superGlobalArray]) &&
+            isset($superGlobalVariables[$superGlobalArray])) {
             $keys = array_keys(
                 array_merge(
                     $GLOBALS[$superGlobalArray],

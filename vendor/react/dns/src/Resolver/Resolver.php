@@ -21,11 +21,9 @@ final class Resolver implements ResolverInterface
 
     public function resolve($domain)
     {
-        return $this->resolveAll($domain, Message::TYPE_A)->then(
-            function (array $ips) {
-                return $ips[array_rand($ips)];
-            }
-        );
+        return $this->resolveAll($domain, Message::TYPE_A)->then(function (array $ips) {
+            return $ips[array_rand($ips)];
+        });
     }
 
     public function resolveAll($domain, $type)
@@ -35,20 +33,18 @@ final class Resolver implements ResolverInterface
 
         return $this->executor->query(
             $query
-        )->then(
-            function (Message $response) use ($query, $that) {
-                return $that->extractValues($query, $response);
-            }
-        );
+        )->then(function (Message $response) use ($query, $that) {
+            return $that->extractValues($query, $response);
+        });
     }
 
     /**
      * [Internal] extract all resource record values from response for this query
      *
-     * @param    Query   $query
-     * @param    Message $response
-     * @return   array
-     * @throws   RecordNotFoundException when response indicates an error or contains no data
+     * @param Query   $query
+     * @param Message $response
+     * @return array
+     * @throws RecordNotFoundException when response indicates an error or contains no data
      * @internal
      */
     public function extractValues(Query $query, Message $response)
@@ -57,23 +53,23 @@ final class Resolver implements ResolverInterface
         $code = $response->rcode;
         if ($code !== Message::RCODE_OK) {
             switch ($code) {
-            case Message::RCODE_FORMAT_ERROR:
-                $message = 'Format Error';
-                break;
-            case Message::RCODE_SERVER_FAILURE:
-                $message = 'Server Failure';
-                break;
-            case Message::RCODE_NAME_ERROR:
-                $message = 'Non-Existent Domain / NXDOMAIN';
-                break;
-            case Message::RCODE_NOT_IMPLEMENTED:
-                $message = 'Not Implemented';
-                break;
-            case Message::RCODE_REFUSED:
-                $message = 'Refused';
-                break;
-            default:
-                $message = 'Unknown error response code ' . $code;
+                case Message::RCODE_FORMAT_ERROR:
+                    $message = 'Format Error';
+                    break;
+                case Message::RCODE_SERVER_FAILURE:
+                    $message = 'Server Failure';
+                    break;
+                case Message::RCODE_NAME_ERROR:
+                    $message = 'Non-Existent Domain / NXDOMAIN';
+                    break;
+                case Message::RCODE_NOT_IMPLEMENTED:
+                    $message = 'Not Implemented';
+                    break;
+                case Message::RCODE_REFUSED:
+                    $message = 'Refused';
+                    break;
+                default:
+                    $message = 'Unknown error response code ' . $code;
             }
             throw new RecordNotFoundException(
                 'DNS query for ' . $query->describe() . ' returned an error response (' . $message . ')',
@@ -95,9 +91,9 @@ final class Resolver implements ResolverInterface
     }
 
     /**
-     * @param  \React\Dns\Model\Record[] $answers
-     * @param  string                    $name
-     * @param  int                       $type
+     * @param \React\Dns\Model\Record[] $answers
+     * @param string                    $name
+     * @param int                       $type
      * @return array
      */
     private function valuesByNameAndType(array $answers, $name, $type)
@@ -137,19 +133,15 @@ final class Resolver implements ResolverInterface
     private function filterByField(array $answers, $field, $value)
     {
         $value = strtolower($value);
-        return array_filter(
-            $answers, function ($answer) use ($field, $value) {
-                return $value === strtolower($answer->$field);
-            }
-        );
+        return array_filter($answers, function ($answer) use ($field, $value) {
+            return $value === strtolower($answer->$field);
+        });
     }
 
     private function mapRecordData(array $records)
     {
-        return array_map(
-            function ($record) {
-                return $record->data;
-            }, $records
-        );
+        return array_map(function ($record) {
+            return $record->data;
+        }, $records);
     }
 }

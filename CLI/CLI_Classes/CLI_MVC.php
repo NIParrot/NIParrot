@@ -26,6 +26,33 @@ namespace ParisModel;
         }
     }
 
+    public static function makeEloquentModel()
+    {
+        $dbarr = CLI_Helper::GetDBColumnArray();
+        foreach ($dbarr as $table => $ColArr) {
+            $tableClass = Inflect::singularize($table);
+            $new_model = ELOQUENTMODEL . $tableClass . '.php';
+            if (is_file($new_model)) {
+                echo "\e[1;33;40m Model $tableClass already exists \e[0m\n";
+                continue;
+            }
+            $mymodel = fopen($new_model, "w");
+
+            $code = '<?php   
+namespace EloquentModel; 
+use Illuminate\Database\Eloquent\Model as Eloquent;
+
+    class ' . $tableClass . ' extends Eloquent
+    {
+        protected $fillable = [\'' . implode("', '", $ColArr) . '\'];
+    }';
+
+            $msg = fwrite($mymodel, $code) ? "\e[1;33;40m Model $tableClass create successfully \e[0m\n" : "\e[1;33;40m Model $table create Error [*_*] \e[0m\n";
+            echo $msg;
+        }
+    }
+    //
+
 
 
     public static function hasone(array $input)

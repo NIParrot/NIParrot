@@ -11,7 +11,7 @@ use React\Dns\Model\Message;
  * contain fields for resulting TTL and resulting record data (IPs etc.).
  *
  * @link https://tools.ietf.org/html/rfc1035#section-4.1.2
- * @see  \React\Dns\Message\Record
+ * @see \React\Dns\Message\Record
  */
 final class Query
 {
@@ -49,7 +49,7 @@ final class Query
      * The format is inspired by RFC 3597 when handling unkown types/classes.
      *
      * @return string "example.com (A)" or "example.com (CLASS0 TYPE1234)"
-     * @link   https://tools.ietf.org/html/rfc3597
+     * @link https://tools.ietf.org/html/rfc3597
      */
     public function describe()
     {

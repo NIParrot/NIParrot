@@ -7,20 +7,20 @@ class NI_template
     public static $lang_dir;
     public static $page;
     public static $url_array = [];
-    
+
     public static function css_lang()
     {
         switch (self::$lang_code) {
-        case 'ar':
-            self::$kit = 'uikit-rtl';
-            self::$bootstrap = 'bootstrap-rtl';
-            self::$lang_dir = 'rtl';
-            break;
-        default:
-            self::$kit = 'uikit';
-            self::$bootstrap = 'bootstrap';
-            self::$lang_dir = 'ltr';
-            break;
+            case 'ar':
+                self::$kit = 'uikit-rtl';
+                self::$bootstrap = 'bootstrap-rtl';
+                self::$lang_dir = 'rtl';
+                break;
+            default:
+                self::$kit = 'uikit';
+                self::$bootstrap = 'bootstrap';
+                self::$lang_dir = 'ltr';
+                break;
         }
     }
 
@@ -46,9 +46,9 @@ class NI_template
         $result = [];
         if (!empty($args)) {
             foreach ($args as $css_file) {
-                $path = 'app'.SEP.'static'.SEP.'css'.SEP.$css_file.'.css';
+                $path = ASSETS . 'css' . SEP . $css_file . '.css';
                 if (file_exists($path)) {
-                    array_push($result, '    <link rel="stylesheet" href="/'.$path.'">');
+                    array_push($result, '    <link rel="stylesheet" href="/' . $path . '">');
                 }
             }
         }
@@ -60,9 +60,9 @@ class NI_template
         $result = [];
         if (!empty($args)) {
             foreach ($args as $js_file) {
-                $path = 'app'.SEP.'static'.SEP.'js'.SEP.$js_file.'.js';
+                $path = ASSETS . 'js' . SEP . $js_file . '.js';
                 if (file_exists($path)) {
-                    array_push($result, '<script src="/'.$path.'"></script>');
+                    array_push($result, '<script src="/' . $path . '"></script>');
                 }
             }
         }
@@ -73,7 +73,7 @@ class NI_template
     {
         echo '
         <!DOCTYPE html>
-        <html lang="'.self::$lang_code.'" dir="'.self::$lang_dir.'">
+        <html lang="' . self::$lang_code . '" dir="' . self::$lang_dir . '">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -81,33 +81,33 @@ class NI_template
             <link rel="stylesheet" href="/engien/static/css/all.css">
             ';
         switch (FrontFrame) {
-        case 'UIkit':
-            echo '
-                <link rel="stylesheet" href="/engien/static/css/'.self::$kit.'.min.css">
+            case 'UIkit':
+                echo '
+                <link rel="stylesheet" href="/engien/static/css/' . self::$kit . '.min.css">
                 <script src="/engien/static/js/uikit.min.js"></script>
                 <script src="/engien/static/js/uikit-icons.min.js"></script>
                 ';
-            break;
-        case 'Bootstrap':
-            echo '
-                <link rel="stylesheet" href="/engien/static/css/'.self::$bootstrap.'.min.css">
+                break;
+            case 'Bootstrap':
+                echo '
+                <link rel="stylesheet" href="/engien/static/css/' . self::$bootstrap . '.min.css">
                 ';
-            break;
-        case 'all':
-            echo '
-                <link rel="stylesheet" href="/engien/static/css/'.self::$kit.'.min.css">
-                <link rel="stylesheet" href="/engien/static/css/'.self::$bootstrap.'.min.css">
+                break;
+            case 'all':
+                echo '
+                <link rel="stylesheet" href="/engien/static/css/' . self::$kit . '.min.css">
+                <link rel="stylesheet" href="/engien/static/css/' . self::$bootstrap . '.min.css">
                 <script src="/engien/static/js/uikit.min.js"></script>
                 <script src="/engien/static/js/uikit-icons.min.js"></script>
                 ';
-            break;
-        default:
+                break;
+            default:
         }
     }
 
     public static function langfile()
     {
-        $lang_file = ROOT.SEP.'engien'.SEP.'lang'.SEP.self::$lang_code.'.php';
+        $lang_file = ROOT . SEP . 'engien' . SEP . 'lang' . SEP . self::$lang_code . '.php';
         if (file_exists($lang_file)) {
             include_once $lang_file;
         }
@@ -134,7 +134,7 @@ class NI_template
             $css_lib = self::special_css($args[1]);
             if (!empty($css_lib)) {
                 foreach ($css_lib as $key) {
-                    echo $key."\n";
+                    echo $key . "\n";
                 }
             }
         }
@@ -177,7 +177,7 @@ class NI_template
             <div class="container">
                 <div class="row">
                     <div class="col">
-                        <p class="m-0 text-muted">Copyright © 2019 <a class="text-light" href="https://nullissues.com">NULLissues</a> Inc. All rights reserved.</p>
+                        <p class="m-0 text-muted">Copyright © 2022 <a class="text-light" href="https://nullissues.com">NULLissues</a> Inc. All rights reserved.</p>
                     </div>
                 </div>
             </div>

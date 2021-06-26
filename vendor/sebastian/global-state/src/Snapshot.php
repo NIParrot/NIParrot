@@ -270,11 +270,10 @@ class Snapshot
         }
 
         foreach (array_keys($GLOBALS) as $key) {
-            if ($key !== 'GLOBALS' 
-                && !in_array($key, $superGlobalArrays) 
-                && $this->canBeSerialized($GLOBALS[$key]) 
-                && !$this->excludeList->isGlobalVariableExcluded($key)
-            ) {
+            if ($key !== 'GLOBALS' &&
+                !in_array($key, $superGlobalArrays, true) &&
+                $this->canBeSerialized($GLOBALS[$key]) &&
+                !$this->excludeList->isGlobalVariableExcluded($key)) {
                 /* @noinspection UnserializeExploitsInspection */
                 $this->globalVariables[$key] = unserialize(serialize($GLOBALS[$key]));
             }
@@ -402,9 +401,7 @@ class Snapshot
                 }
 
                 if (!is_resource($element)) {
-                    /**
- * @noinspection SlowArrayOperationsInLoopInspection 
-*/
+                    /** @noinspection SlowArrayOperationsInLoopInspection */
                     $result = array_merge(
                         $result,
                         $this->enumerateObjectsAndResources($element, $processed)
@@ -422,9 +419,7 @@ class Snapshot
                 }
 
                 if (!is_resource($value)) {
-                    /**
- * @noinspection SlowArrayOperationsInLoopInspection 
-*/
+                    /** @noinspection SlowArrayOperationsInLoopInspection */
                     $result = array_merge(
                         $result,
                         $this->enumerateObjectsAndResources($value, $processed)

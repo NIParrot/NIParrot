@@ -25,3 +25,15 @@ NI_Api_route::get('/appname', function () {
     ];
     return;
 });
+
+NI_Api_route::post('/test', function () {
+    $valedator = [
+        'file' => 'file,key:file,allowd:png;jpg,max:3',
+    ];
+    $valed_data = \NI_request::API_validate(NI_request::all(), $valedator);
+    NI_Api::$response['status'] = 200;
+    NI_Api::$response['data'] = [
+        'file' => $valed_data
+    ];
+    return;
+});

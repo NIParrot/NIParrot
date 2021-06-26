@@ -20,6 +20,7 @@ abstract class Filter
         'uuid'   => 'Filterus\Filters\UUID',
 
         'enum'   => 'Filterus\Filters\Enum',
+        'file'  => 'Filterus\Filters\Files',
 
     );
 

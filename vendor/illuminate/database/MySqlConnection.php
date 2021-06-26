@@ -2,14 +2,24 @@
 
 namespace Illuminate\Database;
 
-use Illuminate\Database\Schema\MySqlBuilder;
-use Illuminate\Database\Query\Processors\MySqlProcessor;
 use Doctrine\DBAL\Driver\PDOMySql\Driver as DoctrineDriver;
 use Illuminate\Database\Query\Grammars\MySqlGrammar as QueryGrammar;
+use Illuminate\Database\Query\Processors\MySqlProcessor;
 use Illuminate\Database\Schema\Grammars\MySqlGrammar as SchemaGrammar;
+use Illuminate\Database\Schema\MySqlBuilder;
 
 class MySqlConnection extends Connection
 {
+    /**
+     * Get the default query grammar instance.
+     *
+     * @return \Illuminate\Database\Query\Grammars\MySqlGrammar
+     */
+    protected function getDefaultQueryGrammar()
+    {
+        return $this->withTablePrefix(new QueryGrammar);
+    }
+
     /**
      * Get a schema builder instance for the connection.
      *
@@ -25,16 +35,6 @@ class MySqlConnection extends Connection
     }
 
     /**
-     * Get the default query grammar instance.
-     *
-     * @return \Illuminate\Database\Query\Grammars\MySqlGrammar
-     */
-    protected function getDefaultQueryGrammar()
-    {
-        return $this->withTablePrefix(new QueryGrammar);
-    }
-
-    /**
      * Get the default schema grammar instance.
      *
      * @return \Illuminate\Database\Schema\Grammars\MySqlGrammar
@@ -47,7 +47,7 @@ class MySqlConnection extends Connection
     /**
      * Get the default post processor instance.
      *
-     * @return \Illuminate\Database\Query\Processors\Processor
+     * @return \Illuminate\Database\Query\Processors\MySqlProcessor
      */
     protected function getDefaultPostProcessor()
     {

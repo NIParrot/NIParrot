@@ -24,7 +24,7 @@ class HostsFile
     /**
      * Returns the default path for the hosts file on this system
      *
-     * @return             string
+     * @return string
      * @codeCoverageIgnore
      */
     public static function getDefaultPath()
@@ -55,7 +55,7 @@ class HostsFile
      * or contains an excessive number of entries. In particular, this method
      * should only be executed before the loop starts, not while it is running.
      *
-     * @param  ?string $path (optional) path to hosts file or null=load default location
+     * @param ?string $path (optional) path to hosts file or null=load default location
      * @return self
      * @throws RuntimeException if the path can not be loaded (does not exist)
      */
@@ -91,7 +91,7 @@ class HostsFile
     /**
      * Returns all IPs for the given hostname
      *
-     * @param  string $name
+     * @param string $name
      * @return string[]
      */
     public function getIpsForHost($name)
@@ -120,7 +120,7 @@ class HostsFile
     /**
      * Returns all hostnames for the given IPv4 or IPv6 address
      *
-     * @param  string $ip
+     * @param string $ip
      * @return string[]
      */
     public function getHostsForIp($ip)

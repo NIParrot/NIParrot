@@ -39,7 +39,18 @@ final class CodeExporter
 
     public function globalVariables(Snapshot $snapshot): string
     {
-        $result = '$GLOBALS = [];' . PHP_EOL;
+        $result = <<<'EOT'
+call_user_func(
+    function ()
+    {
+        foreach (array_keys($GLOBALS) as $key) {
+            unset($GLOBALS[$key]);
+        }
+    }
+);
+
+
+EOT;
 
         foreach ($snapshot->globalVariables() as $name => $value) {
             $result .= sprintf(
@@ -69,9 +80,8 @@ final class CodeExporter
 
     private function exportVariable($variable): string
     {
-        if (is_scalar($variable) || null === $variable 
-            || (is_array($variable) && $this->arrayOnlyContainsScalars($variable))
-        ) {
+        if (is_scalar($variable) || null === $variable ||
+            (is_array($variable) && $this->arrayOnlyContainsScalars($variable))) {
             return var_export($variable, true);
         }
 

@@ -46,7 +46,7 @@ class POP3
      *
      * @var string
      */
-    const VERSION = '6.4.1';
+    const VERSION = '6.5.0';
 
     /**
      * Default POP3 port number.
@@ -66,7 +66,6 @@ class POP3
      * POP3 class debug output mode.
      * Debug output level.
      * Options:
-     *
      * @see POP3::DEBUG_OFF: No output
      * @see POP3::DEBUG_SERVER: Server messages, connection/server errors
      * @see POP3::DEBUG_CLIENT: Client and Server messages, connection/server errors

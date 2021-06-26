@@ -57,7 +57,19 @@ class NI_route
 
         if ($checkIfStop == 1) {
             $callback =  $MasterRouteArray[$keyToRedirect];
-            echo call_user_func_array($callback, $newPassVarArr);
+
+            if (is_object($callback)) {
+                echo call_user_func_array($callback, $newPassVarArr);
+            } else {
+                NI_request::$data = $newPassVarArr;
+                (is_string($callback)) ? NI_Controller::run($callback) : function () use ($callback) {
+                    (is_array($callback)) ? NI_Controller::run($callback[0], $callback[1]) : function () {
+                        include_once ROOT . SEP . 'ServerErrorHandeler.php';
+                        header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found", true, 404);
+                        exit;
+                    };
+                };
+            }
             return;
         } else {
             include_once ROOT . SEP . 'ServerErrorHandeler.php';
@@ -76,7 +88,9 @@ class NI_route
             'any' => array_keys(self::$any)
         ];
     }
-    public static function get($action, Closure $callback)
+    public static function get($action, $callback)
+    // public static function get($action, Closure $callback)
+    // mixed
     {
         $action = strtolower($action);
 
@@ -86,7 +100,7 @@ class NI_route
         self::$routes[$action] = $callback;
     }
 
-    public static function post($action, Closure $callback)
+    public static function post($action, $callback)
     {
         $action = strtolower($action);
 
@@ -96,7 +110,7 @@ class NI_route
         self::$PostRoutes[$action] = $callback;
     }
 
-    public static function put($action, Closure $callback)
+    public static function put($action, $callback)
     {
         $action = strtolower($action);
 
@@ -107,7 +121,7 @@ class NI_route
         self::$PutRoutes[$action] = $callback;
     }
 
-    public static function delete($action, Closure $callback)
+    public static function delete($action, $callback)
     {
         $action = strtolower($action);
 
@@ -118,7 +132,27 @@ class NI_route
         self::$DeleteRoutes[$action] = $callback;
     }
 
-    public static function any($action, Closure $callback)
+    public static function Resource($action, $controller, $middleware = null)
+    {
+        self::perfix($action, [
+            ['get', '', function () use ($controller, $middleware) {
+                NI_Controller::run('Api\\' . $controller . '@index', $middleware);
+            }],
+            ['get', '/{{id}}', function ($id)  use ($controller, $middleware) {
+                NI_Controller::run('Api\\' . $controller . '@show', $middleware);
+            }],
+            ['post', '', function ()  use ($controller, $middleware) {
+                NI_Controller::run('Api\\' . $controller . '@create', $middleware);
+            }],
+            ['put', '/{{id}}', function ($id)  use ($controller, $middleware) {
+                NI_Controller::run('Api\\' . $controller . '@update', $middleware);
+            }],
+            ['delete', '/{{id}}', function ($id)  use ($controller, $middleware) {
+                NI_Controller::run('Api\\' . $controller . '@delete', $middleware);
+            }]
+        ]);
+    }
+    public static function any($action, $callback)
     {
         $action = strtolower($action);
 
@@ -160,11 +194,31 @@ class NI_route
 
                 if (array_key_exists($action, self::$routes)) {
                     $callback =  self::$routes[$action];
-                    echo call_user_func($callback);
+                    if (is_object($callback)) {
+                        echo call_user_func($callback);
+                    } else {
+                        (is_string($callback)) ? NI_Controller::run($callback) : function () use ($callback) {
+                            (is_array($callback)) ? NI_Controller::run($callback[0], $callback[1]) : function () {
+                                include_once ROOT . SEP . 'ServerErrorHandeler.php';
+                                header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found", true, 404);
+                                exit;
+                            };
+                        };
+                    }
                     return;
                 } elseif (array_key_exists($action, self::$any)) {
                     $callback =  self::$any[$action];
-                    echo call_user_func($callback);
+                    if (is_object($callback)) {
+                        echo call_user_func($callback);
+                    } else {
+                        (is_string($callback)) ? NI_Controller::run($callback) : function () use ($callback) {
+                            (is_array($callback)) ? NI_Controller::run($callback[0], $callback[1]) : function () {
+                                include_once ROOT . SEP . 'ServerErrorHandeler.php';
+                                header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found", true, 404);
+                                exit;
+                            };
+                        };
+                    }
                     return;
                 } else {
                     self::MatchParamFromUrl(self::$routes, $ActionRoute);
@@ -175,11 +229,31 @@ class NI_route
 
                 if (array_key_exists($action, self::$PostRoutes)) {
                     $callback =  self::$PostRoutes[$action];
-                    echo call_user_func($callback);
+                    if (is_object($callback)) {
+                        echo call_user_func($callback);
+                    } else {
+                        (is_string($callback)) ? NI_Controller::run($callback) : function () use ($callback) {
+                            (is_array($callback)) ? NI_Controller::run($callback[0], $callback[1]) : function () {
+                                include_once ROOT . SEP . 'ServerErrorHandeler.php';
+                                header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found", true, 404);
+                                exit;
+                            };
+                        };
+                    }
                     return;
                 } elseif (array_key_exists($action, self::$any)) {
                     $callback =  self::$any[$action];
-                    echo call_user_func($callback);
+                    if (is_object($callback)) {
+                        echo call_user_func($callback);
+                    } else {
+                        (is_string($callback)) ? NI_Controller::run($callback) : function () use ($callback) {
+                            (is_array($callback)) ? NI_Controller::run($callback[0], $callback[1]) : function () {
+                                include_once ROOT . SEP . 'ServerErrorHandeler.php';
+                                header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found", true, 404);
+                                exit;
+                            };
+                        };
+                    }
                     return;
                 } else {
                     self::MatchParamFromUrl(self::$PostRoutes, $ActionRoute);
@@ -190,11 +264,31 @@ class NI_route
 
                 if (array_key_exists($action, self::$PutRoutes)) {
                     $callback =  self::$PutRoutes[$action];
-                    echo call_user_func($callback);
+                    if (is_object($callback)) {
+                        echo call_user_func($callback);
+                    } else {
+                        (is_string($callback)) ? NI_Controller::run($callback) : function () use ($callback) {
+                            (is_array($callback)) ? NI_Controller::run($callback[0], $callback[1]) : function () {
+                                include_once ROOT . SEP . 'ServerErrorHandeler.php';
+                                header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found", true, 404);
+                                exit;
+                            };
+                        };
+                    }
                     return;
                 } elseif (array_key_exists($action, self::$any)) {
                     $callback =  self::$any[$action];
-                    echo call_user_func($callback);
+                    if (is_object($callback)) {
+                        echo call_user_func($callback);
+                    } else {
+                        (is_string($callback)) ? NI_Controller::run($callback) : function () use ($callback) {
+                            (is_array($callback)) ? NI_Controller::run($callback[0], $callback[1]) : function () {
+                                include_once ROOT . SEP . 'ServerErrorHandeler.php';
+                                header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found", true, 404);
+                                exit;
+                            };
+                        };
+                    }
                     return;
                 } else {
                     self::MatchParamFromUrl(self::$PutRoutes, $ActionRoute);
@@ -205,11 +299,31 @@ class NI_route
 
                 if (array_key_exists($action, self::$DeleteRoutes)) {
                     $callback =  self::$DeleteRoutes[$action];
-                    echo call_user_func($callback);
+                    if (is_object($callback)) {
+                        echo call_user_func($callback);
+                    } else {
+                        (is_string($callback)) ? NI_Controller::run($callback) : function () use ($callback) {
+                            (is_array($callback)) ? NI_Controller::run($callback[0], $callback[1]) : function () {
+                                include_once ROOT . SEP . 'ServerErrorHandeler.php';
+                                header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found", true, 404);
+                                exit;
+                            };
+                        };
+                    }
                     return;
                 } elseif (array_key_exists($action, self::$any)) {
                     $callback =  self::$any[$action];
-                    echo call_user_func($callback);
+                    if (is_object($callback)) {
+                        echo call_user_func($callback);
+                    } else {
+                        (is_string($callback)) ? NI_Controller::run($callback) : function () use ($callback) {
+                            (is_array($callback)) ? NI_Controller::run($callback[0], $callback[1]) : function () {
+                                include_once ROOT . SEP . 'ServerErrorHandeler.php';
+                                header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found", true, 404);
+                                exit;
+                            };
+                        };
+                    }
                     return;
                 } else {
                     self::MatchParamFromUrl(self::$DeleteRoutes, $ActionRoute);
@@ -219,7 +333,18 @@ class NI_route
             default:
                 if (array_key_exists($action, self::$any)) {
                     $callback =  self::$any[$action];
-                    echo call_user_func($callback);
+                    if (is_object($callback)) {
+                        echo call_user_func($callback);
+                    } else {
+                        (is_string($callback)) ? NI_Controller::run($callback) : function () use ($callback) {
+                            (is_array($callback)) ? NI_Controller::run($callback[0], $callback[1]) : function () {
+                                include_once ROOT . SEP . 'ServerErrorHandeler.php';
+                                header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found", true, 404);
+                                exit;
+                            };
+                        };
+                    }
+                    return;
                 } else {
                     include_once ROOT . SEP . 'ServerErrorHandeler.php';
                     header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found", true, 404);

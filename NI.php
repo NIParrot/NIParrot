@@ -95,6 +95,11 @@ class NI_CLI
                     case 'ParisModel':
                         CLI_MVC::makeParisModel();
                         break;
+
+                    case 'eloquent':
+                        CLI_MVC::makeEloquentModel();
+                        break;
+
                         /*
                 case 'Route':
                     CLI_MVC::relation($args);
